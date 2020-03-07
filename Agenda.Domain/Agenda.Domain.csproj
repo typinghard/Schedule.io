@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CommandHandlers\CustomerCommandHandler.cs" />
+    <Compile Remove="Commands\CustomerCommand.cs" />
+    <Compile Remove="Commands\RegisterNewCustomerCommand.cs" />
+    <Compile Remove="Commands\RemoveCustomerCommand.cs" />
+    <Compile Remove="Commands\UpdateCustomerCommand.cs" />
+    <Compile Remove="EventHandlers\CustomerEventHandler.cs" />
+    <Compile Remove="Events\CustomerRegisteredEvent.cs" />
+    <Compile Remove="Events\CustomerRemovedEvent.cs" />
+    <Compile Remove="Events\CustomerUpdatedEvent.cs" />
+    <Compile Remove="Interfaces\ICustomerRepository.cs" />
+    <Compile Remove="Interfaces\IUser.cs" />
+    <Compile Remove="Models\Customer.cs" />
+    <Compile Remove="Validations\CustomerValidation.cs" />
+    <Compile Remove="Validations\NovoEventoAgendaValidation.cs" />
+    <Compile Remove="Validations\RegisterNewCustomerCommandValidation.cs" />
+    <Compile Remove="Validations\RemoveCustomerCommandValidation.cs" />
+    <Compile Remove="Validations\UpdateCustomerCommandValidation.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Agenda.Domain.Core\Agenda.Domain.Core.csproj" />
+  </ItemGroup>
+
+</Project>

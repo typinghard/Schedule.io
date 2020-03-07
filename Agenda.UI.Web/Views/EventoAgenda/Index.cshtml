@@ -1,0 +1,106 @@
+﻿
+@{
+
+    ViewData["Title"] = "Agenda 0.0.01";
+    Layout = "";
+}
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>TOAST UI Calendar App DEMO</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css">
+    <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css">
+    <link href="~/dist/css/tui-calendar.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    @*<div>
+            <div id="calendar" style="height: 800px;"></div>
+        </div>*@
+    <div>
+        <div id="calendarList" class="lnb-calendars-d1">
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="~/dist/js/jquery-3.4.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.min.js"></script>
+    <script src="https://uicdn.toast.com/tui.dom/v3.0.0/tui-dom.js"></script>
+    <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+    <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.13/chance.min.js"></script>
+    <script type="text/javascript" src="~/dist/js/calendar.js"></script>
+    <script type="text/javascript" src="~/dist/js/calendars.js"></script>
+    <script type="text/javascript" src="~/dist/js/schedules.js"></script>
+    <script type="text/javascript" src="~/dist/js/tui-calendar.min.js"></script>
+
+    <script>
+        (function (window, Calendar) {
+            console.log("AQUI");
+            var cal, resizeThrottled;
+            var useCreationPopup = true;
+            var useDetailPopup = true;
+            var datePicker, selectedCalendar;
+
+            var calendar;
+            var id = 0;
+
+            calendar = new CalendarInfo();
+            id += 1;
+            calendar.id = String(id);
+            calendar.name = 'My Calendar';
+            calendar.color = '#ffffff';
+            calendar.bgColor = '#9e5fff';
+            calendar.dragBgColor = '#9e5fff';
+            calendar.borderColor = '#9e5fff';
+            addCalendar(calendar);
+
+
+            cal = new Calendar('#calendar', {
+                defaultView: 'week',
+                useCreationPopup: useCreationPopup,
+                useDetailPopup: useDetailPopup,
+                calendars: CalendarList,
+                template: {
+                    milestone: function (model) {
+                        return '<span class="calendar-font-icon ic-milestone-b"></span> <span style="background-color: ' + model.bgColor + '">' + model.title + '</span>';
+                    },
+                    allday: function (schedule) {
+                        return getTimeTemplate(schedule, true);
+                    },
+                    time: function (schedule) {
+                        return getTimeTemplate(schedule, false);
+                    }
+                }
+            });
+
+            console.log(CalendarList);
+
+        });
+
+        // set calendars
+        (function () {
+            var calendarList = document.getElementById('calendarList');
+            var html = [];
+            CalendarList.forEach(function (calendar) {
+                html.push('<div class="lnb-calendars-item"><label>' +
+                    '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' + calendar.id + '" checked>' +
+                    '<span style="border-color: ' + calendar.borderColor + '; background-color: ' + calendar.borderColor + ';"></span>' +
+                    '<span>' + calendar.name + '</span>' +
+                    '</label></div>'
+                );
+            });
+            calendarList.innerHTML = html.join('\n');
+
+            console.log("AQUI2");
+        })();
+
+
+    </script>
+</body>
+</html>

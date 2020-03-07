@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
+
+namespace Agenda.Application.ViewModels
+{
+    public class AtualizarUsuarioViewModel
+    {
+        public Guid Id { get; set; }
+        [DisplayName("E-mail")]
+        public string UsuarioEmail { get; set; }
+    }
+}

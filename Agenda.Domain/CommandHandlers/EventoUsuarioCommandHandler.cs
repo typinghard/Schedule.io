@@ -65,7 +65,10 @@ namespace Agenda.Domain.CommandHandlers
             }
 
             eventoUsuario.DefinirUsuarioId(message.UsuarioId);
-            eventoUsuario.DefinirStatusConfirmacaoDoUsuario(message.Confirmacao);
+            if (eventoUsuario.Confirmacao)
+                eventoUsuario.ConfirmacaoUsuario();
+            else
+                eventoUsuario.RemoverConfirmacaoUsuario();
             eventoUsuario.DefinirPermissao(message.Permissao);
 
             _eventoUsuarioRepository.Atualizar(eventoUsuario);

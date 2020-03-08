@@ -27,13 +27,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agenda.Application", "Agend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agenda.Infra.CrossCutting.IoC", "Agenda.Infra.CrossCutting.IoC\Agenda.Infra.CrossCutting.IoC.csproj", "{A3461FA8-469D-4D45-8A77-0A0C508EB73F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventSoursing", "EventSoursing\EventSoursing.csproj", "{8FF2EF80-76F7-42F1-94E8-02D2DD5A4081}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventSoursing", "EventSoursing\EventSoursing.csproj", "{8FF2EF80-76F7-42F1-94E8-02D2DD5A4081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agenda.Infra.Data.MongoDB", "Agenda.Infra.Data.MongoDB\Agenda.Infra.Data.MongoDB.csproj", "{C9C5C5B9-5DDB-4A07-886A-CEB5885A795E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agenda.Infra.Data.MongoDB", "Agenda.Infra.Data.MongoDB\Agenda.Infra.Data.MongoDB.csproj", "{C9C5C5B9-5DDB-4A07-886A-CEB5885A795E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agenda.Infra.Data", "Agenda.Infra.Data\Agenda.Infra.Data.csproj", "{12F9693C-F0C6-4FA8-91D9-F076CEAF715E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agenda.UI.Web", "Agenda.UI.Web\Agenda.UI.Web.csproj", "{072254AE-BAFA-4DB1-82A2-53D3DEBE36B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agenda.UI.Web", "Agenda.UI.Web\Agenda.UI.Web.csproj", "{072254AE-BAFA-4DB1-82A2-53D3DEBE36B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agenda.Domain.Test", "Agenda.Domain.Test\Agenda.Domain.Test.csproj", "{9AF88C87-A0C3-4C39-9D48-DB6072C2441D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{072254AE-BAFA-4DB1-82A2-53D3DEBE36B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{072254AE-BAFA-4DB1-82A2-53D3DEBE36B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{072254AE-BAFA-4DB1-82A2-53D3DEBE36B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AF88C87-A0C3-4C39-9D48-DB6072C2441D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF88C87-A0C3-4C39-9D48-DB6072C2441D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AF88C87-A0C3-4C39-9D48-DB6072C2441D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AF88C87-A0C3-4C39-9D48-DB6072C2441D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +99,7 @@ Global
 		{C9C5C5B9-5DDB-4A07-886A-CEB5885A795E} = {AA0A7110-8ACC-4137-9662-CE7118D54CCA}
 		{12F9693C-F0C6-4FA8-91D9-F076CEAF715E} = {AA0A7110-8ACC-4137-9662-CE7118D54CCA}
 		{072254AE-BAFA-4DB1-82A2-53D3DEBE36B3} = {3E2BD83F-5A31-415A-990F-FA1FB1F44A5B}
+		{9AF88C87-A0C3-4C39-9D48-DB6072C2441D} = {F6EF8F9C-26F4-473A-A323-F8B5276DB91A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C308AC2-EACD-400F-A790-F593582B1BA1}

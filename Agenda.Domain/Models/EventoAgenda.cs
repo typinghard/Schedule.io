@@ -1,6 +1,8 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
 using Agenda.Domain.Enums;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -72,7 +74,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que digitou um título.");
             }
 
-            if (titulo.ValidarTamanho(2, 150))
+            if (!titulo.ValidarTamanho(2, 150))
             {
                 throw new DomainException("O título deve ter entre 2 e 150 caracteres.");
 
@@ -83,7 +85,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição deve ter entre 2 e 500 caracteres.");
             }
@@ -163,20 +165,12 @@ namespace Agenda.Domain.Models
             this.OcupaUsuario = false;
         }
 
-        public void DefinirEventoPublicoOuPrivado(bool eventoPublicOuPrivado)
-        {
-            if (eventoPublicOuPrivado)
-                this.TornarEventoPublico();
-            else
-                this.TornarEventoPrivado();
-        }
-
-        private void TornarEventoPublico()
+        public void TornarEventoPublico()
         {
             this.EventoPublico = true;
         }
 
-        private void TornarEventoPrivado()
+        public void TornarEventoPrivado()
         {
             this.EventoPublico = false;
         }
@@ -193,6 +187,12 @@ namespace Agenda.Domain.Models
         public void DefinirFrequencia(EnumFrequencia enumFrequencia)
         {
             this.EnumFrequencia = enumFrequencia;
+        }
+
+
+        public ValidationResult NovoEventoAgendaEhValido()
+        {
+            return new NovoEventoAgendaValidation().Validate(this);
         }
     }
 
@@ -215,9 +215,9 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que digitou um nome para o tipo do evento.");
             }
 
-            if (nome.ValidarTamanho(2, 150))
+            if (!nome.ValidarTamanho(2, 120))
             {
-                throw new DomainException("O nome do tipo do evento deve ter entre 2 e 150 caracteres.");
+                throw new DomainException("O nome do tipo do evento deve ter entre 2 e 120 caracteres.");
 
             }
 
@@ -226,7 +226,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição deve ter entre 2 e 500 caracteres.");
             }

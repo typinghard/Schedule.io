@@ -1,5 +1,7 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,6 +38,11 @@ namespace Agenda.Domain.Models
             }
 
             AgendaId = agendaId;
+        }
+
+        public ValidationResult NovaAgendaUsuarioEhValido()
+        {
+            return new AgendaUsuarioValidation().Validate(this);
         }
     }
 }

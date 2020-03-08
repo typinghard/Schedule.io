@@ -1,5 +1,7 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +28,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
         {
-            if (!string.IsNullOrEmpty(identificadorExterno))
+            if (string.IsNullOrEmpty(identificadorExterno))
             {
                 throw new DomainException("O Identificador do local não pode ser nulo ou vazio!");
             }
@@ -36,7 +38,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirNomeLocal(string nomeLocal)
         {
-            if (nomeLocal.ValidarTamanho(2, 200))
+            if (!nomeLocal.ValidarTamanho(2, 200))
             {
                 throw new DomainException("O nome do local deve ter entre 2 e 200 caracteres.");
             }
@@ -46,23 +48,11 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição do local deve ter entre 2 e 500 caracteres.");
             }
             this.Descricao = descricao;
-        }
-
-        /// <summary>
-        /// Pode ser assim? - Tirar Dúvida com o Elvis.
-        /// </summary>
-        /// <param name="reservaDoLocal"></param>
-        public void DefinirReservaDoLocal(bool reservaDoLocal)
-        {
-            if (reservaDoLocal)
-                this.ReservarLocal();
-            else
-                this.RemoverReservaLocal();
         }
 
         public void ReservarLocal()
@@ -84,5 +74,11 @@ namespace Agenda.Domain.Models
 
             this.LotacaoMaxima = lotacaoMaxima;
         }
+
+        public ValidationResult NovoLocalEhValido()
+        {
+            return new NovoLocalValidation().Validate(this);
+        }
+
     }
 }

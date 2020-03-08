@@ -31,10 +31,7 @@
     <ProjectReference Include="..\Agenda.Infra.CrossCutting.IoC\Agenda.Infra.CrossCutting.IoC.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\dist\css\" />
-    <Folder Include="wwwroot\dist\js\" />
-  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 
 

@@ -1,5 +1,7 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,8 +23,6 @@ namespace Agenda.Domain.Models
             Publico = publico;
         }
 
-        /*Verificar se o titulo e descrição por ser usado mais de uma vez, não pode estar na base (entity) */
-
         public void DefinirTitulo(string titulo)
         {
             if (string.IsNullOrEmpty(titulo))
@@ -30,7 +30,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que digitou um título.");
             }
 
-            if (titulo.ValidarTamanho(2, 150))
+            if (!titulo.ValidarTamanho(2, 150))
             {
                 throw new DomainException("O título deve ter entre 2 e 150 caracteres.");
 
@@ -41,7 +41,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição deve ter entre 2 e 500 caracteres.");
             }
@@ -57,6 +57,11 @@ namespace Agenda.Domain.Models
         public void TornarAgendaPrivado()
         {
             this.Publico = false;
+        }
+
+        public ValidationResult NovaAgendaEhValida()
+        {
+            return new NovaAgendaValidation().Validate(this);
         }
 
     }

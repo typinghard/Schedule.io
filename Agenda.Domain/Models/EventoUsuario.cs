@@ -1,5 +1,7 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,24 +22,6 @@ namespace Agenda.Domain.Models
             Permissao = permissao;
         }
 
-        public void DefinirStatusConfirmacaoDoUsuario(bool confirmacao)
-        {
-            if (confirmacao)
-                ConfirmacaoUsuario();
-            else
-                RemoverConfirmacaoUsuario();
-        }
-
-        private void ConfirmacaoUsuario()
-        {
-            Confirmacao = true;
-        }
-
-        private void RemoverConfirmacaoUsuario()
-        {
-            Confirmacao = false;
-        }
-
         public void DefinirUsuarioId(Guid usuarioId)
         {
             if (usuarioId.EhVazio())
@@ -48,14 +32,39 @@ namespace Agenda.Domain.Models
             UsuarioId = usuarioId;
         }
 
+        public void ConfirmacaoUsuario()
+        {
+            Confirmacao = true;
+        }
+
+        public void RemoverConfirmacaoUsuario()
+        {
+            Confirmacao = false;
+        }
+
         public void DefinirPermissao(Permissao permissao)
         {
-            permissao.DefinirSePodeModificarEvento(permissao.ModificaEvento);
-            permissao.DefinirSePodeConvidar(permissao.ConvidaUsuario);
-            permissao.DefinirSePodeVerListaDeConvidados(permissao.VeListaDeConvidados);
+            if (permissao.ModificaEvento)
+                permissao.PodeModificarEvento();
+            else
+                permissao.NaoPodeModificarEvento();
+
+            if (permissao.ConvidaUsuario)
+                permissao.PodeConvidar();
+            else
+                permissao.NaoPodeConvidar();
+
+            if (permissao.VeListaDeConvidados)
+                permissao.PodeVerListaDeConvidados();
+            else
+                permissao.NaoPodeVerListaDeConvidados();
 
             this.Permissao = permissao;
-            ///instancia uma nova tipo evento antes de atribuir? 
+        }
+
+        public ValidationResult NovoEventoUsuarioEhValido()
+        {
+            return new NovoEventoUsuarioValidation().Validate(this);
         }
     }
 
@@ -65,12 +74,6 @@ namespace Agenda.Domain.Models
         public bool ConvidaUsuario { get; private set; }
         public bool VeListaDeConvidados { get; private set; }
 
-        /*
-             Modificar Evento
-             Convidar outros
-             Ver Lista de convidados
-        */
-
         public Permissao(bool modificaEvento, bool convidaUsuario, bool veListaDeConvidados)
         {
             ModificaEvento = modificaEvento;
@@ -78,57 +81,36 @@ namespace Agenda.Domain.Models
             VeListaDeConvidados = veListaDeConvidados;
         }
 
-        public void DefinirSePodeModificarEvento(bool podeModificar)
-        {
-            if (podeModificar)
-                this.PodeModificarEvento();
-            else
-                this.NaoPodeModificarEvento();
-        }
-        private void PodeModificarEvento()
+        public void PodeModificarEvento()
         {
             ModificaEvento = true;
         }
 
-        private void NaoPodeModificarEvento()
+        public void NaoPodeModificarEvento()
         {
             ModificaEvento = false;
         }
 
 
-        public void DefinirSePodeConvidar(bool podeConvidar)
-        {
-            if (podeConvidar)
-                this.PodeConvidar();
-            else
-                this.NaoPodeConvidar();
-        }
-
-        private void PodeConvidar()
+        public void PodeConvidar()
         {
             ConvidaUsuario = true;
         }
 
-        private void NaoPodeConvidar()
+        public void NaoPodeConvidar()
         {
             ConvidaUsuario = false;
         }
 
 
-        public void DefinirSePodeVerListaDeConvidados(bool podeVerListaConvidados)
-        {
-            if (podeVerListaConvidados)
-                this.PodeVerListaDeConvidados();
-            else
-                NaoPodeVerListaDeConvidados();
-        }
 
-        private void PodeVerListaDeConvidados()
+
+        public void PodeVerListaDeConvidados()
         {
             VeListaDeConvidados = true;
         }
 
-        private void NaoPodeVerListaDeConvidados()
+        public void NaoPodeVerListaDeConvidados()
         {
             VeListaDeConvidados = false;
         }

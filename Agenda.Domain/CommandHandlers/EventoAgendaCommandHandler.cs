@@ -83,7 +83,11 @@ namespace Agenda.Domain.CommandHandlers
             else
                 eventoAgenda.DesocuparUsuario();
 
-            eventoAgenda.DefinirEventoPublicoOuPrivado(message.EventoPublico);
+            if (message.EventoPublico)
+                eventoAgenda.TornarEventoPublico();
+            else
+                eventoAgenda.TornarEventoPrivado();
+
             eventoAgenda.DefinirTipoEvento(message.TipoEvento);
             eventoAgenda.DefinirFrequencia(message.EnumFrequencia);
 

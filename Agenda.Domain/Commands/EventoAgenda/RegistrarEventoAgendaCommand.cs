@@ -16,16 +16,16 @@ namespace Agenda.Domain.Commands
             this.IdentificadorExterno = identificadorExterno;
             this.Titulo = titulo;
             this.Descricao = descricao;
-            this.Pessoas = pessoas;
+            this.Usuarios = pessoas;
             this.Local = local;
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;
             this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
             this.OcupaUsuario = ocuparUsuario;
-            this.EventoPublico = eventoPublico;
-            this.TipoEvento = tipoEvento;
-            this.EnumFrequencia = enumFrequencia;
+            this.Publico = eventoPublico;
+            this.Tipo = tipoEvento;
+            this.Frequencia = enumFrequencia;
         }
 
         public override bool EhValido()

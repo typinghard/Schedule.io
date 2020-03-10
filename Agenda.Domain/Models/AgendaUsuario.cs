@@ -4,45 +4,39 @@ using Agenda.Domain.Validations;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Agenda.Domain.Models
 {
     public class AgendaUsuario : Entity, IAggregateRoot
     {
-        public Guid AgendaId { get; protected set; }
-        public Guid UsuarioId { get; protected set; }
+        public Guid AgendaId { get; protected set; } // Obrigatório
+        public Guid UsuarioId { get; protected set; } // Obrigatório
+
+        public PermissoesAgenda Permissoes { get; protected set; } 
 
         public AgendaUsuario(Guid agendaId, Guid usuarioId)
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;
-        }
+            Permissoes = new PermissoesAgenda();
 
-        public void DefinirUsuarioId(Guid usuarioId)
-        {
-            if (usuarioId.EhVazio())
-            {
-                throw new DomainException("Por favor, certifique-se que adicinou uma pessoa.");
-            }
-
-            UsuarioId = usuarioId;
-        }
-
-
-        public void DefinirAgendaId(Guid agendaId)
-        {
-            if (AgendaId.EhVazio())
-            {
-                throw new DomainException("Por favor, certifique-se que adicinou uma agenda.");
-            }
-
-            AgendaId = agendaId;
+            var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public ValidationResult NovaAgendaUsuarioEhValido()
         {
             return new AgendaUsuarioValidation().Validate(this);
         }
+
+    }
+
+
+    public class PermissoesAgenda
+    {
+        //fazer 
     }
 }

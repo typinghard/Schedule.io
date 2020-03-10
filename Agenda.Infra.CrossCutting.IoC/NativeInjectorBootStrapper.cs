@@ -47,7 +47,7 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
-            services.AddScoped<IEventoUsuarioRepository, EventoUsuarioRepository>();
+            services.AddScoped<IConviteRepository, ConviteRepository>();
             services.AddScoped<ILocalRepository, LocalRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -56,7 +56,7 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IUsuarioAppService, UsuarioAppService>();
             services.AddScoped<IAgendaUsuarioAppService, AgendaUsuarioAppService>();
             services.AddScoped<IEventoAgendaAppService, EventoAgendaAppService>();
-            services.AddScoped<IEventoUsuarioAppService, EventoUsuarioAppService>();
+            services.AddScoped<IConviteAppService, ConviteAppService>();
             services.AddScoped<ILocalAppService, LocalAppService>();
 
             // Domain - Events
@@ -76,9 +76,9 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<INotificationHandler<EventoAgendaAtualizadoEvent>, EventoAgendaEventHandler>();
             services.AddScoped<INotificationHandler<EventoAgendaRemovidoEvent>, EventoAgendaEventHandler>();
 
-            services.AddScoped<INotificationHandler<EventoUsuarioRegistradoEvent>, EventoUsuarioEventHandler>();
-            services.AddScoped<INotificationHandler<EventoUsuarioAtualizadoEvent>, EventoUsuarioEventHandler>();
-            services.AddScoped<INotificationHandler<EventoUsuarioRemovidoEvent>, EventoUsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteRegistradoEvent>, ConviteEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteAtualizadoEvent>, ConviteEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteRemovidoEvent>, ConviteEventHandler>();
 
             services.AddScoped<INotificationHandler<LocalRegistradoEvent>, LocalEventHandler>();
             services.AddScoped<INotificationHandler<LocalAtualizadoEvent>, LocalEventHandler>();
@@ -101,9 +101,9 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<AtualizarEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
             services.AddScoped<IRequestHandler<RemoverEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
 
-            services.AddScoped<IRequestHandler<RegistrarEventoUsuarioCommand, bool>, EventoUsuarioCommandHandler>();
-            services.AddScoped<IRequestHandler<AtualizarEventoUsuarioCommand, bool>, EventoUsuarioCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoverEventoUsuarioCommand, bool>, EventoUsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarConviteCommand, bool>, ConviteCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarConviteCommand, bool>, ConviteCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverConviteCommand, bool>, ConviteCommandHandler>();
 
             services.AddScoped<IRequestHandler<RegistrarLocalCommand, bool>, LocalCommandHandler>();
             services.AddScoped<IRequestHandler<AtualizarLocalCommand, bool>, LocalCommandHandler>();

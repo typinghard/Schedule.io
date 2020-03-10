@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Agenda.Domain.Validations
 {
-    public class AtualizarEventoUsuarioCommandValidacao : EventoUsuarioValidacao<AtualizarEventoUsuarioCommand>
+    public class AtualizarConviteCommandValidacao : ConviteValidacao<AtualizarConviteCommand>
     {
-        public AtualizarEventoUsuarioCommandValidacao()
+        public AtualizarConviteCommandValidacao()
         {
             //metodos aqui
         }

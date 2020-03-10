@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Agenda.Domain.Commands
 {
-    public class RemoverEventoUsuarioCommand : EventoUsuarioCommand
+    public class RemoverConviteCommand : ConviteCommand
     {
-        public RemoverEventoUsuarioCommand(Guid id)
+        public RemoverConviteCommand(Guid id)
         {
             this.Id = id;
             this.AggregateId = id;
@@ -15,7 +15,7 @@ namespace Agenda.Domain.Commands
 
         public override bool EhValido()
         {
-            ValidationResult = new RemoverEventoUsuarioCommandValidacao().Validate(this);
+            ValidationResult = new RemoverConviteCommandValidacao().Validate(this);
             return ValidationResult.IsValid;
         }
     }

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Agenda.Infra.Data
 {
-    public class EventoUsuarioRepository : Repository<EventoUsuario>, IEventoUsuarioRepository
+    public class ConviteRepository : Repository<Convite>, IConviteRepository
     {
-        public EventoUsuarioRepository(AgendaContext context) : base(context)
+        public ConviteRepository(AgendaContext context) : base(context)
         {
         }
     }

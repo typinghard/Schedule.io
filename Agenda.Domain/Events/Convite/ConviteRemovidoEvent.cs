@@ -3,11 +3,11 @@ using System;
 
 namespace Agenda.Domain.Events
 {
-    public class EventoUsuarioRemovidoEvent : Event
+    public class ConviteRemovidoEvent : Event
     {
         public Guid Id { get; set; }
 
-        public EventoUsuarioRemovidoEvent(Guid id)
+        public ConviteRemovidoEvent(Guid id)
         {
             this.Id = id;
             this.AggregateId = id;

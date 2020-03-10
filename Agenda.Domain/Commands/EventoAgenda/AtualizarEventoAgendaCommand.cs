@@ -24,9 +24,9 @@ namespace Agenda.Domain.Commands
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;
             this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
             this.OcupaUsuario = ocuparUsuario;
-            this.EventoPublico = eventoPublico;
-            this.TipoEvento = tipoEvento;
-            this.EnumFrequencia = enumFrequencia;
+            this.Publico = eventoPublico;
+            this.Tipo = tipoEvento;
+            this.Frequencia = enumFrequencia;
         }
 
         public override bool EhValido()

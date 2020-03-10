@@ -14,10 +14,6 @@ namespace Agenda.Domain.Validations
                 .NotEmpty()
                 .WithMessage("Título não informado.");
 
-            RuleFor(a => a.Descricao)
-                .NotEmpty()
-                .WithMessage("Descrição não informada.");
-
             RuleFor(a => a.Publico)
                 .NotNull()
                 .WithMessage("Agenda público/privado não pode ser nulo.");

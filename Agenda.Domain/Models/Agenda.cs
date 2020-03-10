@@ -4,6 +4,7 @@ using Agenda.Domain.Validations;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Agenda.Domain.Models
@@ -16,11 +17,13 @@ namespace Agenda.Domain.Models
 
         public bool Publico { get; private set; }
 
-        public Agenda(string titulo, string descricao, bool publico)
+        public Agenda(string titulo)
         {
             Titulo = titulo;
-            Descricao = descricao;
-            Publico = publico;
+
+            var resultadoValidacao = this.NovaAgendaEhValida();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirTitulo(string titulo)

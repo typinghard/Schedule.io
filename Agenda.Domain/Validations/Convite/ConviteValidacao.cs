@@ -4,7 +4,7 @@ using System;
 
 namespace Agenda.Domain.Validations
 {
-    public class EventoUsuarioValidacao<T> : AbstractValidator<T> where T : EventoUsuarioCommand
+    public class ConviteValidacao<T> : AbstractValidator<T> where T : ConviteCommand
     {
         protected void ValidateId()
         {

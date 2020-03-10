@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Agenda.Domain.Interfaces
 {
-    public interface IEventoUsuarioRepository : IRepository<EventoUsuario>
+    public interface IConviteRepository : IRepository<Convite>
     {
     }
 }

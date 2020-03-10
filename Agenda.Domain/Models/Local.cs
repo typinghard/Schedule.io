@@ -4,26 +4,27 @@ using Agenda.Domain.Validations;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Agenda.Domain.Models
 {
     public class Local : Entity, IAggregateRoot
     {
-        public string IdentificadorExterno { get; private set; }
+        public string IdentificadorExterno { get; private set; } 
         public string NomeLocal { get; private set; }
         public string Descricao { get; private set; }
-        public bool ReservaLocal { get; private set; }
+        public bool ReservaLocal { get; private set; } 
         public int LotacaoMaxima { get; private set; }
 
 
-        public Local(string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaoMaxima)
+        public Local(string nomeLocal)
         {
-            this.IdentificadorExterno = identificadorExterno;
             this.NomeLocal = nomeLocal;
-            this.Descricao = descricao;
-            this.ReservaLocal = reservaLocal;
-            this.LotacaoMaxima = lotacaoMaxima;
+
+            var resultadoValidacao = this.NovoLocalEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirIdentificadorExterno(string identificadorExterno)

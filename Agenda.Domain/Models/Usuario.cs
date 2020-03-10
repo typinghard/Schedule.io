@@ -5,16 +5,21 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using System.Text;
+using System.Linq;
 
 namespace Agenda.Domain.Models
 {
     public class Usuario : Entity, IAggregateRoot
     {
-        public string UsuarioEmail { get; private set; }
+        public string Email { get; private set; }
 
-        public Usuario(string usuarioEmail)
+        public Usuario(string email)
         {
-            this.UsuarioEmail = usuarioEmail;
+            this.Email = email;
+
+            var resultadoValidacao = this.NovoUsuarioEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirEmail(string email)
@@ -24,7 +29,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que digitou um e-mail válido.");
             }
 
-            this.UsuarioEmail = email.ToLower();
+            this.Email = email.ToLower();
         }
 
         public ValidationResult NovoUsuarioEhValido()

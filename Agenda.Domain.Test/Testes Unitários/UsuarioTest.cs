@@ -30,7 +30,7 @@ namespace Agenda.Domain.Test
             usuario.DefinirEmail(novoEmail);
 
             //Assert
-            Assert.Equal(novoEmail, usuario.UsuarioEmail);
+            Assert.Equal(novoEmail, usuario.Email);
         }
 
         [Fact(DisplayName = "Usuario - NovoUsuarioEhValido - Deve Ser Valido")]

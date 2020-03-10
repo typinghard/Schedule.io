@@ -11,7 +11,7 @@ namespace Agenda.Domain.Validations
     {
         public NovoEventoAgendaValidation()
         {
-            RuleFor(c => c.Id)
+            RuleFor(c => c.AgendaId)
                 .NotEqual(Guid.Empty)
                 .WithMessage("Id da Agenda não pode ser vazio!");
 
@@ -21,47 +21,38 @@ namespace Agenda.Domain.Validations
                 .WithMessage("Por favor, certifique-se que digitou um título.")
                 .Length(2, 150).WithMessage("O título deve ter entre 2 e 150 caracteres.");
 
-            RuleFor(e => e.Descricao)
-                .Length(2, 500)
-                .WithMessage("A descrição deve ter entre 2 e 500 caracteres.");
-
-            RuleFor(e => e.Pessoas)
-                .Must(ValidaPessoas)
-                .WithMessage("Por favor, certifique-se que adicinou uma pessoa.");
-
             RuleFor(e => e.DataInicio)
                 .NotEmpty()
                 .NotEqual(DateTime.MinValue)
                 .WithMessage("Por favor, escolha a data e hora inicial do evento.");
 
-            RuleFor(e => e.QuantidadeMinimaDeUsuarios)
-                .NotEmpty()
-                .Must(QuantidadeMinimaDeUsuario)
-                .WithMessage("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.");
-
-            RuleFor(e => e.OcupaUsuario)
+            RuleFor(e => e.Frequencia)
                 .NotNull()
-                .WithMessage("Ocupar Usuário não pode ser nulo");
+                .WithMessage("Frequencia não pode ser nula!");
 
-            RuleFor(e => e.EventoPublico)
-                .NotNull()
-                .WithMessage("Evento Público/Privado não pode ser nulo");
-
-            RuleFor(e => e.TipoEvento.Nome)
+            RuleFor(e => e.Tipo.Nome)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("Por favor, certifique-se que digitou um Nome para o Tipo do Evento.")
                 .Length(2, 120).WithMessage("O Nome do Tipo do Evento deve ter entre 2 e 120 caracteres.");
 
-            RuleFor(e => e.TipoEvento.Descricao)
+            RuleFor(e => e.Tipo.Descricao)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("Por favor, certifique-se que digitou uma Descrição para o Tipo do Evento.")
                 .Length(2, 500).WithMessage("A Descrição do Tipo do Evento deve ter entre 2 e 500 caracteres.");
 
-            RuleFor(e => e.EnumFrequencia)
+            RuleFor(e => e.QuantidadeMinimaDeUsuarios)
+              .Must(QuantidadeMinimaDeUsuario)
+              .WithMessage("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.");
+
+            RuleFor(e => e.OcupaUsuario)
                 .NotNull()
-                .WithMessage("Frequencia não pode ser nula!");
+                .WithMessage("Ocupar Usuário não pode ser nulo");
+
+            RuleFor(e => e.Publico)
+                .NotNull()
+                .WithMessage("Evento Público/Privado não pode ser nulo");
         }
 
         protected static bool QuantidadeMinimaDeUsuario(int qtdeUsuario)

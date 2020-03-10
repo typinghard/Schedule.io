@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Agenda.Domain.Validations
 {
-    public class RemoverEventoUsuarioCommandValidacao : EventoUsuarioValidacao<RemoverEventoUsuarioCommand>
+    public class RemoverConviteCommandValidacao : ConviteValidacao<RemoverConviteCommand>
     {
-        public RemoverEventoUsuarioCommandValidacao()
+        public RemoverConviteCommandValidacao()
         {
             ValidateId();
         }

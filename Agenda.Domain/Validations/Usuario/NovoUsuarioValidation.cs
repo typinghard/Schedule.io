@@ -12,7 +12,7 @@ namespace Agenda.Domain.Validations
     {
         public NovoUsuarioValidation()
         {
-            RuleFor(u => u.UsuarioEmail)
+            RuleFor(u => u.Email)
                   .NotEmpty()
                   .WithMessage("Título não informado.")
                   .Must(ValidaFormatoEmail)

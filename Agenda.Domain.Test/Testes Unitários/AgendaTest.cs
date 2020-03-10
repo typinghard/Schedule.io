@@ -33,6 +33,19 @@ namespace Agenda.Domain.Test
             Assert.Equal(novoTitulo, agenda.Titulo);
         }
 
+        [Fact(DisplayName = "Agenda - DefinirTítulo - Título deve ser alterado")]
+        public void Agenda_DefinirTitulo_TituloDeveSerInValidoPorSerVazio()
+        {
+            //Arrange
+            var novoTitulo = "";
+
+            //Act
+            agenda.DefinirTitulo(novoTitulo);
+
+            //Assert
+            Assert.Equal(novoTitulo, agenda.Titulo);
+        }
+
         [Fact(DisplayName = "Agenda - DefinirDescricao - Descrição deve ser alterada")]
         public void Agenda_DefinirDescricao_DescricaoDeveSerAlterado()
         {
@@ -49,27 +62,21 @@ namespace Agenda.Domain.Test
         [Fact(DisplayName = "Agenda - TornarAgendaPublica - Agenda Deve Ser Pública")]
         public void Agenda_TornarAgendaPublica_AgendaDeveSerPublica()
         {
-            //Arrange
-            var tornarAgendaPublica = true;
-
             //Act
             agenda.TornarAgendaPublica();
 
             //Assert
-            Assert.Equal(tornarAgendaPublica, agenda.Publico);
+            Assert.True(agenda.Publico);
         }
 
         [Fact(DisplayName = "Agenda - TornarAgendaPrivada - Agenda Deve Ser Privada")]
         public void Agenda_TornarAgendaPrivada_AgendaDeveSerPrivada()
         {
-            //Arrange
-            var tornarAgendaPrivada = false;
-
             //Act
             agenda.TornarAgendaPrivado();
 
             //Assert
-            Assert.Equal(tornarAgendaPrivada, agenda.Publico);
+            Assert.False(agenda.Publico);
         }
 
         [Fact(DisplayName = "Agenda - NovaAgendaEhValida - Deve Ser Valido")]
@@ -92,10 +99,11 @@ namespace Agenda.Domain.Test
                 .First();
 
             //Act
-            var ehValido = agenda.NovaAgendaEhValida().IsValid;
+            var validacao = agenda.NovaAgendaEhValida();
 
             //Assert
-            Assert.False(ehValido);
+            Assert.Contains(validacao.Errors, x => x.ErrorMessage == "Título não informado.");
+            Assert.Contains(validacao.Errors, x => x.ErrorMessage == "Descrição não informada.");
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Agenda.Application.ViewModels
 {
-    public class PermissaoViewModel
+    public class PermissaoConviteViewModel
     {
         [DisplayName("Modificar Evento")]
         public bool ModificaEvento { get; set; }

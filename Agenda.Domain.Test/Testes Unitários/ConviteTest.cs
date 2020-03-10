@@ -8,20 +8,20 @@ using System.Text;
 
 namespace Agenda.Domain.Test
 {
-    public class EventoUsuarioTest
+    public class ConviteTest
     {
-        private EventoUsuario eventoUsuario;
-        private Permissao permissao;
+        private Convite eventoUsuario;
+        private PermissoesConvite permissao;
 
-        public EventoUsuarioTest()
+        public ConviteTest()
         {
-            permissao = new Faker<Permissao>("pt_BR")
-                .CustomInstantiator((p) => new Permissao(p.Random.Bool(), p.Random.Bool(), p.Random.Bool()))
+            permissao = new Faker<PermissoesConvite>("pt_BR")
+                .CustomInstantiator((p) => new PermissoesConvite(p.Random.Bool(), p.Random.Bool(), p.Random.Bool()))
                 .Generate(1)
                 .First();
 
-            eventoUsuario = new Faker<EventoUsuario>("pt_BR")
-                .CustomInstantiator((f) => new EventoUsuario(f.Random.Guid(), f.Random.Bool(), permissao))
+            eventoUsuario = new Faker<Convite>("pt_BR")
+                .CustomInstantiator((f) => new Convite(f.Random.Guid(), f.Random.Bool(), permissao))
                 .Generate(1)
                 .First();
         }
@@ -50,7 +50,7 @@ namespace Agenda.Domain.Test
             eventoUsuario.ConfirmacaoUsuario();
 
             //Assert
-            Assert.Equal(confirmacao, eventoUsuario.Confirmacao);
+            Assert.Equal(confirmacao, eventoUsuario.Status);
         }
 
         [Fact(DisplayName = "EventoUsuario - RemoverConfirmacaoUsuario - Remover Confirmação Usuário deve ser alterado.")]
@@ -63,7 +63,7 @@ namespace Agenda.Domain.Test
             eventoUsuario.RemoverConfirmacaoUsuario();
 
             //Assert
-            Assert.Equal(removerConfirmacao, eventoUsuario.Confirmacao);
+            Assert.Equal(removerConfirmacao, eventoUsuario.Status);
         }
 
         [Fact(DisplayName = "EventoUsuario - Permissao - PodeModificarEvento - Pode Modificar Evento deve ser alterado.")]
@@ -73,10 +73,10 @@ namespace Agenda.Domain.Test
             var podeModificar = true;
 
             //Act
-            eventoUsuario.Permissao.PodeModificarEvento();
+            eventoUsuario.Permissoes.PodeModificarEvento();
 
             //Assert
-            Assert.Equal(podeModificar, eventoUsuario.Permissao.ModificaEvento);
+            Assert.Equal(podeModificar, eventoUsuario.Permissoes.ModificaEvento);
         }
 
         [Fact(DisplayName = "EventoUsuario - Permissao - NaoPodeModificarEvento - Não Pode Modificar Evento deve ser alterado.")]
@@ -86,10 +86,10 @@ namespace Agenda.Domain.Test
             var podeModificar = false;
 
             //Act
-            eventoUsuario.Permissao.NaoPodeModificarEvento();
+            eventoUsuario.Permissoes.NaoPodeModificarEvento();
 
             //Assert
-            Assert.Equal(podeModificar, eventoUsuario.Permissao.ModificaEvento);
+            Assert.Equal(podeModificar, eventoUsuario.Permissoes.ModificaEvento);
         }
 
         [Fact(DisplayName = "EventoUsuario - Permissao - PodeConvidar - Pode Convidar deve ser alterado.")]
@@ -99,10 +99,10 @@ namespace Agenda.Domain.Test
             var podeConvidar = true;
 
             //Act
-            eventoUsuario.Permissao.PodeConvidar();
+            eventoUsuario.Permissoes.PodeConvidar();
 
             //Assert
-            Assert.Equal(podeConvidar, eventoUsuario.Permissao.ConvidaUsuario);
+            Assert.Equal(podeConvidar, eventoUsuario.Permissoes.ConvidaUsuario);
         }
 
         [Fact(DisplayName = "EventoUsuario - Permissao - NaoPodeConvidar - Não Pode Convidar deve ser alterado.")]
@@ -112,10 +112,10 @@ namespace Agenda.Domain.Test
             var podeConvidar = false;
 
             //Act
-            eventoUsuario.Permissao.NaoPodeConvidar();
+            eventoUsuario.Permissoes.NaoPodeConvidar();
 
             //Assert
-            Assert.Equal(podeConvidar, eventoUsuario.Permissao.ConvidaUsuario);
+            Assert.Equal(podeConvidar, eventoUsuario.Permissoes.ConvidaUsuario);
         }
 
 
@@ -126,10 +126,10 @@ namespace Agenda.Domain.Test
             var podeVerLista = true;
 
             //Act
-            eventoUsuario.Permissao.PodeVerListaDeConvidados();
+            eventoUsuario.Permissoes.PodeVerListaDeConvidados();
 
             //Assert
-            Assert.Equal(podeVerLista, eventoUsuario.Permissao.VeListaDeConvidados);
+            Assert.Equal(podeVerLista, eventoUsuario.Permissoes.VeListaDeConvidados);
         }
 
         [Fact(DisplayName = "EventoUsuario - Permissao - NaoPodeVerListaDeConvidados - Não Pode Ver Lista Convidados deve ser alterado.")]
@@ -139,17 +139,17 @@ namespace Agenda.Domain.Test
             var podeVerLista = false;
 
             //Act
-            eventoUsuario.Permissao.NaoPodeVerListaDeConvidados();
+            eventoUsuario.Permissoes.NaoPodeVerListaDeConvidados();
 
             //Assert
-            Assert.Equal(podeVerLista, eventoUsuario.Permissao.VeListaDeConvidados);
+            Assert.Equal(podeVerLista, eventoUsuario.Permissoes.VeListaDeConvidados);
         }
 
         [Fact(DisplayName = "EventoUsuario - NovoEventoUsuarioEhValido - Deve Ser Valido")]
         public void EventoUsuario_NovoEventoUsuarioEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = eventoUsuario.NovoEventoUsuarioEhValido().IsValid;
+            var ehValido = eventoUsuario.NovoConviteEhValido().IsValid;
 
             //Assert
             Assert.True(ehValido);
@@ -159,13 +159,13 @@ namespace Agenda.Domain.Test
         public void EventoUsuario_NovoEventoUsuarioEhValido_DeveSerInvalido()
         {
             //Arrange
-            eventoUsuario = new Faker<EventoUsuario>("pt_BR")
-                .CustomInstantiator((f) => new EventoUsuario(Guid.Empty, f.Random.Bool(), permissao))
+            eventoUsuario = new Faker<Convite>("pt_BR")
+                .CustomInstantiator((f) => new Convite(Guid.Empty, f.Random.Bool(), permissao))
                 .Generate(1)
                 .First();
 
             //Act
-            var ehValido = eventoUsuario.NovoEventoUsuarioEhValido().IsValid;
+            var ehValido = eventoUsuario.NovoConviteEhValido().IsValid;
 
             //Assert
             Assert.False(ehValido);

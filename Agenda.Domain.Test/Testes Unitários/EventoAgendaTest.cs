@@ -106,16 +106,13 @@ namespace Agenda.Domain.Test
         public void EventoAgenda_AdicionarPessoa_PessoaDeveSerAlterado()
         {
             //Arrange
-            IList<Guid> guidList = Enumerable.Range(1, 2)
-               .Select(_ => new Faker("pt_BR").Random.Guid())
-               .ToList();
+            Guid guid = new Faker("pt_BR").Random.Guid();
 
             //Act
-            foreach (Guid item in guidList)
-                eventoAgenda.AdicionarPessoa(item);
+            eventoAgenda.AdicionarPessoa(guid);
 
             //Assert
-            Assert.Equal(guidList, eventoAgenda.Pessoas);
+            Assert.Contains(eventoAgenda.Usuario, x => x == guid);
         }
 
         [Fact(DisplayName = "EventoAgenda - DefinirLocal - Local deve ser alterado")]
@@ -236,7 +233,7 @@ namespace Agenda.Domain.Test
             eventoAgenda.DefinirFrequencia(novaFrequencia);
 
             //Assert
-            Assert.Equal(novaFrequencia, eventoAgenda.EnumFrequencia);
+            Assert.Equal(novaFrequencia, eventoAgenda.Frequencia);
         }
 
         [Fact(DisplayName = "EventoAgenda - TipoEvento - Definir Nome - Nome do Tipo Evento deve ser alterado")]

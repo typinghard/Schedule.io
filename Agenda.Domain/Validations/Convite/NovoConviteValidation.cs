@@ -7,27 +7,31 @@ using System.Text;
 
 namespace Agenda.Domain.Validations
 {
-    public class NovoEventoUsuarioValidation : EntityValidation<EventoUsuario>
+    public class NovoConviteValidation : EntityValidation<Convite>
     {
-        public NovoEventoUsuarioValidation()
+        public NovoConviteValidation()
         {
+            RuleFor(e => e.EventoId)
+                .NotEqual(Guid.Empty)
+                .WithMessage("EventoId não informado!");
+
             RuleFor(e => e.UsuarioId)
                 .NotEqual(Guid.Empty)
                 .WithMessage("UsuarioId não informado!");
 
-            RuleFor(e => e.Confirmacao)
+            RuleFor(e => e.Status)
                 .NotNull()
                 .WithMessage("Confirmação não pode ser nulo!");
 
-            RuleFor(e => e.Permissao.ModificaEvento)
+            RuleFor(e => e.Permissoes.ModificaEvento)
                 .NotNull()
                 .WithMessage("Permissão Mdificar Evento não pode ser nulo!");
 
-            RuleFor(e => e.Permissao.ConvidaUsuario)
+            RuleFor(e => e.Permissoes.ConvidaUsuario)
                 .NotNull()
                 .WithMessage("Permissão Convida Usuário não pode ser nulo!");
 
-            RuleFor(e => e.Permissao.VeListaDeConvidados)
+            RuleFor(e => e.Permissoes.VeListaDeConvidados)
                 .NotNull()
                 .WithMessage("Permissão Ver Lista de Convidados não pode ser nulo!");
         }

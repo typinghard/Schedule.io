@@ -16,10 +16,6 @@ namespace Agenda.Domain.Validations
                 .NotNull()
                 .WithMessage("Nome do Local não informado.");
 
-            RuleFor(l => l.Descricao)
-                .NotEmpty()
-                .WithMessage("Descrição não informada.");
-
             RuleFor(l => l.ReservaLocal)
                 .NotNull()
                 .WithMessage("Reserva do local não informado.");

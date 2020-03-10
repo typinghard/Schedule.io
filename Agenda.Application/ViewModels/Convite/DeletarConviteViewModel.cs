@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Agenda.Application.ViewModels
 {
-    public class DeletarEventoUsuarioViewModel
+    public class DeletarConviteViewModel
     {
         public Guid Id { get; set; }
     }

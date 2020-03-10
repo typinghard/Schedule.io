@@ -14,9 +14,9 @@ namespace Agenda.Domain.Validations
         {
             RuleFor(u => u.Email)
                   .NotEmpty()
-                  .WithMessage("Título não informado.")
+                  .WithMessage("E-mail não informado.")
                   .Must(ValidaFormatoEmail)
-                  .WithMessage("Por favor, certifique - se que digitou um e - mail válido.");
+                  .WithMessage("Por favor, certifique-se que digitou um e-mail válido.");
         }
 
         /// <summary>

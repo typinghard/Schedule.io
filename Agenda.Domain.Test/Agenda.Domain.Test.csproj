@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Testes Unitários\AgendaTest.cs" />
+    <Compile Remove="Testes Unitários\AgendaUsuarioTest.cs" />
+    <Compile Remove="Testes Unitários\ConviteTest.cs" />
+    <Compile Remove="Testes Unitários\EventoAgendaTest.cs" />
+    <Compile Remove="Testes Unitários\LocalTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Bogus" Version="29.0.1" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.2" />

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Agenda.Domain.Core.DomainObjects;
 
 namespace Agenda.Domain.Test
 {
@@ -20,6 +21,16 @@ namespace Agenda.Domain.Test
                 .First();
         }
 
+        [Fact(DisplayName = "Usuario - NovoUsuarioEhValido - Deve Ser Valido")]
+        public void Usuario_NovoaUsuarioEhValido_DeveSerValido()
+        {
+            //Act
+            var ehValido = usuario.NovoUsuarioEhValido().IsValid;
+
+            //Assert
+            Assert.True(ehValido);
+        }
+
         [Fact(DisplayName = "Usuario - DefinirUsuarioEmail - O E-mail deve ser alterado.")]
         public void Usuario_DefinirUsuarioEmail_UsuarioEmailDeveSerAlterado()
         {
@@ -33,30 +44,27 @@ namespace Agenda.Domain.Test
             Assert.Equal(novoEmail, usuario.Email);
         }
 
-        [Fact(DisplayName = "Usuario - NovoUsuarioEhValido - Deve Ser Valido")]
-        public void Usuario_NovoaUsuarioEhValido_DeveSerValido()
+        [Fact(DisplayName = "Usuario - DefinirUsuarioEmail - O E-mail deve ser inválido por estar vazio.")]
+        public void Usuario_DefinirUsuarioEmail_UsuarioEmailDeveSerInvalidoVazio()
         {
             //Act
-            var ehValido = usuario.NovoUsuarioEhValido().IsValid;
+            var exception = Assert.Throws<DomainException>(() => usuario.DefinirEmail(""));
 
             //Assert
-            Assert.True(ehValido);
+            Assert.Equal("Por favor, certifique-se que digitou um e-mail válido.", exception.Message);
         }
 
         [Fact(DisplayName = "Usuario - NovoUsuarioEhValido - Deve Ser Inválido")]
         public void Usuario_NovaAgendaEhValida_DeveSerInvalido()
         {
             //Arrange
-            usuario = usuario = new Faker<Usuario>("pt_BR")
-                .CustomInstantiator((f) => new Usuario(f.Random.String(20, 'a', 'z')))
-                .Generate(1)
-                .First();
-
-            //Act
-            var ehValido = usuario.NovoUsuarioEhValido().IsValid;
+            var exception = Assert.Throws<DomainException>(() => new Faker<Usuario>("pt_BR")
+                                                                .CustomInstantiator((f) => new Usuario(f.Person.Email + "123"))
+                                                                .Generate(1)
+                                                                .First());
 
             //Assert
-            Assert.False(ehValido);
+            Assert.Equal("Por favor, certifique-se que digitou um e-mail válido.", exception.Message);
         }
     }
 }

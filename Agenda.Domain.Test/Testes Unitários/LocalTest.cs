@@ -1,10 +1,8 @@
-﻿using Agenda.Domain.Models;
+﻿using Agenda.Domain.Core.DomainObjects;
+using Agenda.Domain.Models;
 using Bogus;
 using System.Linq;
 using Xunit;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Agenda.Domain.Test
 {
@@ -15,10 +13,37 @@ namespace Agenda.Domain.Test
         public LocalTest()
         {
             local = new Faker<Local>("pt_BR")
-                .CustomInstantiator((f) => new Local(f.Random.Guid().ToString(), f.Random.String(200, 'a', 'z'), f.Random.String(500, 'a', 'z'), f.Random.Bool(), f.Random.Int(0)))
+                .CustomInstantiator((f) => new Local(f.Random.String(200, 'a', 'z')))
                 .Generate(1)
                 .First();
         }
+
+        [Fact(DisplayName = "Local - DefinirNomeLocal - Nome Local deve ser alterado")]
+        public void Local_DefinirNomeLocal_NomeLocalDeveSerAlterado()
+        {
+            //Arrange
+            var novoNomeLocal = "Novo nome do local";
+
+            //Act
+            local.DefinirNomeLocal(novoNomeLocal);
+
+            //Assert
+            Assert.Equal(novoNomeLocal, local.NomeLocal);
+        }
+
+        [Fact(DisplayName = "Local - DefinirNomeLocal - Nome Local deve ser inválido pelo tamanho")]
+        public void Local_DefinirNomeLocal_NomeLocalDeveSerInvalidoPeloTamanho()
+        {
+            //Arrange
+            var nomelocalInvalido = new Faker().Random.String(201, 'a', 'z');
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => local.DefinirNomeLocal(nomelocalInvalido));
+
+            //Assert
+            Assert.Equal("O nome do local deve ter entre 2 e 200 caracteres.", exception.Message);
+        }
+
 
         [Fact(DisplayName = "Local - DefinirIdentificadorExterno - Identificador Externo deve ser alterado")]
         public void Local_DefinirIdentificadorExterno_IdentificadorExternoDeveSerAlterado()
@@ -33,17 +58,17 @@ namespace Agenda.Domain.Test
             Assert.Equal(novoIdentificadorExterno, local.IdentificadorExterno);
         }
 
-        [Fact(DisplayName = "Local - DefinirNomeLocal - Nome Local deve ser alterado")]
-        public void Local_DefinirNomeLocal_NomeLocalDeveSerAlterado()
-        {
-            //Arrange
-            var novoNomeLocal = "Novo nome do local";
+        [Fact(DisplayName = "Local - DefinirIdentificadorExterno - Identificador Externo deve ser inválido")]
+        public void Local_DefinirIdentificadorExterno_IdentificadorExternoDeveSerInvalido()
+        {            //Arrange
+            var novoIdentificadorExternoInvalido = "";
 
             //Act
-            local.DefinirNomeLocal(novoNomeLocal);
+            var exception = Assert.Throws<DomainException>(() => local.DefinirIdentificadorExterno(novoIdentificadorExternoInvalido));
 
             //Assert
-            Assert.Equal(novoNomeLocal, local.NomeLocal);
+            Assert.Equal("O Identificador do local não pode ser vazio!", exception.Message);
+
         }
 
 
@@ -60,6 +85,20 @@ namespace Agenda.Domain.Test
             Assert.Equal(novaDescricao, local.Descricao);
         }
 
+        [Fact(DisplayName = "Local - DefinirDescricao - Descrição deve ser invalido pelo tamanho")]
+        public void Local_DefinirDescricao_DescricaoDeveSerInvalidoPeloTamanho()
+        {
+            //Arrange
+            var novaDescricao = new Faker().Random.String(501, 'a', 'z');
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => local.DefinirDescricao(novaDescricao));
+
+            //Assert
+            Assert.Equal("A descrição do local deve ter entre 2 e 500 caracteres.", exception.Message);
+        }
+
+
         [Fact(DisplayName = "Local - ReservarLocal - O Local Deve Ser Reservado")]
         public void Local_ReservarLocal_DeveSerReservado()
         {
@@ -73,6 +112,7 @@ namespace Agenda.Domain.Test
             Assert.Equal(localReserva, local.ReservaLocal);
         }
 
+        
         [Fact(DisplayName = "Local - RemoverReservaLocal - A Reserva Deve Ser Removida")]
         public void Local_RemoverReservaLocal_AReservaDeveSerRemovida()
         {
@@ -86,6 +126,7 @@ namespace Agenda.Domain.Test
             Assert.Equal(localReserva, local.ReservaLocal);
         }
 
+        
         [Fact(DisplayName = "Local - DefinirLotacaoMaxima - Deve Ser Valido")]
         public void Local_DefinirLotacaoMaxima_DeveSerValido()
         {
@@ -99,6 +140,20 @@ namespace Agenda.Domain.Test
             Assert.Equal(lotacaoMaxima, local.LotacaoMaxima);
         }
 
+        [Fact(DisplayName = "Local - DefinirLotacaoMaxima - Deve Ser Invalido")]
+        public void Local_DefinirLotacaoMaxima_DeveSerInvalido()
+        {
+            //Arrange
+            int lotacaoMaxima = -1;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => local.DefinirLotacaoMaxima(lotacaoMaxima));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se qua a lotação máxima de usuários para o local não é menor que 0.", exception.Message);
+        }
+
+        
         [Fact(DisplayName = "Local - NovalocalEhValido - Deve Ser Valido")]
         public void Local_NovoLocalEhValido_DeveSerValido()
         {
@@ -113,16 +168,13 @@ namespace Agenda.Domain.Test
         public void Local_NovaLocalEhValido_DeveSerInvalido()
         {
             //Arrange
-            local = new Faker<Local>("pt_BR")
-                .CustomInstantiator((f) => new Local("", "", "", f.Random.Bool(), -122))
-                .Generate(1)
-                .First();
-
-            //Act
-            var ehValido = local.NovoLocalEhValido().IsValid;
+            var exception = Assert.Throws<DomainException>(() => local = new Faker<Local>("pt_BR")
+                                                                        .CustomInstantiator((f) => new Local(""))
+                                                                        .Generate(1)
+                                                                        .First());
 
             //Assert
-            Assert.False(ehValido);
+            Assert.Equal("Nome do Local não informado.", exception.Message);
         }
     }
 }

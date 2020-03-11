@@ -2,10 +2,7 @@
 using Agenda.Domain.Core.Helpers;
 using Agenda.Domain.Validations;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Agenda.Domain.Models
 {
@@ -17,7 +14,6 @@ namespace Agenda.Domain.Models
         public bool ReservaLocal { get; private set; } 
         public int LotacaoMaxima { get; private set; }
 
-
         public Local(string nomeLocal)
         {
             this.NomeLocal = nomeLocal;
@@ -25,16 +21,6 @@ namespace Agenda.Domain.Models
             var resultadoValidacao = this.NovoLocalEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
-        }
-
-        public void DefinirIdentificadorExterno(string identificadorExterno)
-        {
-            if (string.IsNullOrEmpty(identificadorExterno))
-            {
-                throw new DomainException("O Identificador do local não pode ser nulo ou vazio!");
-            }
-
-            this.IdentificadorExterno = identificadorExterno;
         }
 
         public void DefinirNomeLocal(string nomeLocal)
@@ -45,6 +31,16 @@ namespace Agenda.Domain.Models
             }
 
             this.NomeLocal = nomeLocal;
+        }
+
+        public void DefinirIdentificadorExterno(string identificadorExterno)
+        {
+            if (string.IsNullOrEmpty(identificadorExterno))
+            {
+                throw new DomainException("O Identificador do local não pode ser vazio!");
+            }
+
+            this.IdentificadorExterno = identificadorExterno;
         }
 
         public void DefinirDescricao(string descricao)

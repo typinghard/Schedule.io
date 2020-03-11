@@ -11,7 +11,6 @@
     <Compile Remove="Testes Unitários\AgendaUsuarioTest.cs" />
     <Compile Remove="Testes Unitários\ConviteTest.cs" />
     <Compile Remove="Testes Unitários\EventoAgendaTest.cs" />
-    <Compile Remove="Testes Unitários\LocalTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

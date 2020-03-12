@@ -46,7 +46,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que adicinou um evento.");
             }
 
-            UsuarioId = eventoId;
+            EventoId = eventoId;
         }
 
         public void AtualizarStatusConvite(EnumStatusConviteEvento status)

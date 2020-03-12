@@ -5,170 +5,199 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Agenda.Domain.Core.DomainObjects;
+using Agenda.Domain.Enums;
 
 namespace Agenda.Domain.Test
 {
     public class ConviteTest
     {
-        private Convite eventoUsuario;
-        private PermissoesConvite permissao;
+        private Convite convite;
 
         public ConviteTest()
         {
-            permissao = new Faker<PermissoesConvite>("pt_BR")
-                .CustomInstantiator((p) => new PermissoesConvite(p.Random.Bool(), p.Random.Bool(), p.Random.Bool()))
-                .Generate(1)
-                .First();
-
-            eventoUsuario = new Faker<Convite>("pt_BR")
-                .CustomInstantiator((f) => new Convite(f.Random.Guid(), f.Random.Bool(), permissao))
+            convite = new Faker<Convite>("pt_BR")
+                .CustomInstantiator((f) => new Convite(f.Random.Guid(), f.Random.Guid()))
                 .Generate(1)
                 .First();
         }
 
 
-        [Fact(DisplayName = "EventoUsuario - DefinirUsuarioId - UsuarioId deve ser alterado.")]
-        public void EventoUsuario_DefinirUsuarioId_UsuarioIdDeveSerAlterado()
+
+        [Fact(DisplayName = "Convite - DefinirEventoId - EventoId deve ser alterado.")]
+        public void Convite_DefinirEventoId_EventoIdDeveSerAlterado()
+        {
+            //Arrange
+            var novoEventoId = Guid.NewGuid();
+
+            //Act
+            convite.DefinirEventoId(novoEventoId);
+
+            //Assert
+            Assert.Equal(novoEventoId, convite.EventoId);
+        }
+
+        [Fact(DisplayName = "Convite - DefinirEventoId - EventoId deve ser inválido por ser vazio.")]
+        public void Convite_DefinirEventoId_EventoIdDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            var novoEventoId = Guid.Empty;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => convite.DefinirEventoId(novoEventoId));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que adicinou um evento.", exception.Message);
+        }
+
+
+        [Fact(DisplayName = "Convite - DefinirUsuarioId - UsuarioId deve ser alterado.")]
+        public void Convite_DefinirUsuarioId_UsuarioIdDeveSerAlterado()
         {
             //Arrange
             var novoUsuarioId = Guid.NewGuid();
 
             //Act
-            eventoUsuario.DefinirUsuarioId(novoUsuarioId);
+            convite.DefinirUsuarioId(novoUsuarioId);
 
             //Assert
-            Assert.Equal(novoUsuarioId, eventoUsuario.UsuarioId);
+            Assert.Equal(novoUsuarioId, convite.UsuarioId);
         }
 
-        [Fact(DisplayName = "EventoUsuario - ConfirmacaoUsuario - Confirmação Usuário deve ser alterado.")]
-        public void EventoUsuario_ConfirmacaoUsuario_ConfirmacaoUsuarioDeveSerAlterado()
+        [Fact(DisplayName = "Convite - DefinirUsuarioId - UsuarioId deve ser inválido por ser vazio.")]
+        public void Convite_DefinirUsuarioId_UsuarioIdDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            var novoUsuarioId = Guid.Empty;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => convite.DefinirUsuarioId(novoUsuarioId));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que adicinou uma pessoa.", exception.Message);
+        }
+
+
+        [Fact(DisplayName = "Convite - AtualizarStatusConvite - AtualizarStatusConvite deve ser alterado.")]
+        public void Convite_AtualizarStatusConvite_AtualizarStatusConviteDeveSerAlterado()
+        {
+            //Arrange
+            var novoStatus = new Faker().Random.Enum<EnumStatusConviteEvento>();
+
+            //Act
+            convite.AtualizarStatusConvite(novoStatus);
+
+            //Assert
+            Assert.Equal(novoStatus, convite.Status);
+        }
+
+
+        [Fact(DisplayName = "Convite - Permissões - PodeModificarEvento - PodeModificarEvento deve ser alterado.")]
+        public void Convite_Permissoes_PodeModificarEvento_PodeModificarEventoDeveSerAlterado()
         {
             //Arrange
             var confirmacao = true;
 
             //Act
-            eventoUsuario.ConfirmacaoUsuario();
+            convite.Permissoes.PodeModificarEvento();
 
             //Assert
-            Assert.Equal(confirmacao, eventoUsuario.Status);
+            Assert.Equal(confirmacao, convite.Permissoes.ModificaEvento);
         }
 
-        [Fact(DisplayName = "EventoUsuario - RemoverConfirmacaoUsuario - Remover Confirmação Usuário deve ser alterado.")]
-        public void EventoUsuario_RemoverConfirmacaoUsuario_RemoverConfirmacaoUsuarioDeveSerAlterado()
+        [Fact(DisplayName = "Convite - Permissões - NaoPodeModificarEvento - NaoPodeModificarEvento deve ser alterado.")]
+        public void Convite_Permissoes_NaoPodeModificarEventoo_NaoPodeModificarEventoDeveSerAlterado()
         {
             //Arrange
-            var removerConfirmacao = false;
+            var confirmacao = false;
 
             //Act
-            eventoUsuario.RemoverConfirmacaoUsuario();
+            convite.Permissoes.NaoPodeModificarEvento();
 
             //Assert
-            Assert.Equal(removerConfirmacao, eventoUsuario.Status);
+            Assert.Equal(confirmacao, convite.Permissoes.ModificaEvento);
         }
 
-        [Fact(DisplayName = "EventoUsuario - Permissao - PodeModificarEvento - Pode Modificar Evento deve ser alterado.")]
-        public void EventoUsuario_Permissao_PodeModificarEvento_PodeModificarEventoDeveSerAlterado()
+
+        [Fact(DisplayName = "Convite - Permissões - PodeVerListaDeConvidados - PodeVerListaDeConvidados deve ser alterado.")]
+        public void Convite_Permissoes_PodeVerListaDeConvidados_PodeVerListaDeConvidadosDeveSerAlterado()
         {
             //Arrange
-            var podeModificar = true;
+            var confirmacao = true;
 
             //Act
-            eventoUsuario.Permissoes.PodeModificarEvento();
+            convite.Permissoes.PodeVerListaDeConvidados();
 
             //Assert
-            Assert.Equal(podeModificar, eventoUsuario.Permissoes.ModificaEvento);
+            Assert.Equal(confirmacao, convite.Permissoes.VeListaDeConvidados);
         }
 
-        [Fact(DisplayName = "EventoUsuario - Permissao - NaoPodeModificarEvento - Não Pode Modificar Evento deve ser alterado.")]
-        public void EventoUsuario_Permissao_NaoPodeModificarEventoo_NaoPodeModificarDeveSerAlterado()
+        [Fact(DisplayName = "Convite - Permissões - NaoPodeVerListaDeConvidados - NaoPodeVerListaDeConvidados deve ser alterado.")]
+        public void Convite_Permissoes_NaoPodeVerListaDeConvidados_NaoPodeVerListaDeConvidadosDeveSerAlterado()
         {
             //Arrange
-            var podeModificar = false;
+            var confirmacao = false;
 
             //Act
-            eventoUsuario.Permissoes.NaoPodeModificarEvento();
+            convite.Permissoes.NaoPodeVerListaDeConvidados();
 
             //Assert
-            Assert.Equal(podeModificar, eventoUsuario.Permissoes.ModificaEvento);
+            Assert.Equal(confirmacao, convite.Permissoes.VeListaDeConvidados);
         }
 
-        [Fact(DisplayName = "EventoUsuario - Permissao - PodeConvidar - Pode Convidar deve ser alterado.")]
-        public void EventoUsuario_Permissao_PodeConvidar_PodeConvidarEventoDeveSerAlterado()
+
+        [Fact(DisplayName = "Convite - Permissões - PodeConvidar - PodeConvidar deve ser alterado.")]
+        public void Convite_Permissoes_PodeConvidar_PodeConvidarDeveSerAlterado()
         {
             //Arrange
-            var podeConvidar = true;
+            var confirmacao = true;
 
             //Act
-            eventoUsuario.Permissoes.PodeConvidar();
+            convite.Permissoes.PodeConvidar();
 
             //Assert
-            Assert.Equal(podeConvidar, eventoUsuario.Permissoes.ConvidaUsuario);
+            Assert.Equal(confirmacao, convite.Permissoes.ConvidaUsuario);
         }
 
-        [Fact(DisplayName = "EventoUsuario - Permissao - NaoPodeConvidar - Não Pode Convidar deve ser alterado.")]
-        public void EventoUsuario_Permissao_NaoPodeConvidar_NaoPodeConvidarEventoDeveSerAlterado()
+        [Fact(DisplayName = "Convite - Permissões - NaoPodeConvidar - NaoPodeConvidar deve ser alterado.")]
+        public void Convite_Permissoes_NaoPodeConvidar_NaoPodeConvidarDeveSerAlterado()
         {
             //Arrange
-            var podeConvidar = false;
+            var confirmacao = false;
 
             //Act
-            eventoUsuario.Permissoes.NaoPodeConvidar();
+            convite.Permissoes.NaoPodeConvidar();
 
             //Assert
-            Assert.Equal(podeConvidar, eventoUsuario.Permissoes.ConvidaUsuario);
+            Assert.Equal(confirmacao, convite.Permissoes.ConvidaUsuario);
         }
 
 
-        [Fact(DisplayName = "EventoUsuario - Permissao - PodeVerListaDeConvidados - Pode Ver Lista Convidados deve ser alterado.")]
-        public void EventoUsuario_Permissao_PodeVerListaDeConvidados_PodeVerListaConvidadosDeveSerAlterado()
-        {
-            //Arrange
-            var podeVerLista = true;
-
-            //Act
-            eventoUsuario.Permissoes.PodeVerListaDeConvidados();
-
-            //Assert
-            Assert.Equal(podeVerLista, eventoUsuario.Permissoes.VeListaDeConvidados);
-        }
-
-        [Fact(DisplayName = "EventoUsuario - Permissao - NaoPodeVerListaDeConvidados - Não Pode Ver Lista Convidados deve ser alterado.")]
-        public void EventoUsuario_Permissao_NaoPodeVerListaDeConvidados_NaoPodeVerListaConvidadosDeveSerAlterado()
-        {
-            //Arrange
-            var podeVerLista = false;
-
-            //Act
-            eventoUsuario.Permissoes.NaoPodeVerListaDeConvidados();
-
-            //Assert
-            Assert.Equal(podeVerLista, eventoUsuario.Permissoes.VeListaDeConvidados);
-        }
-
-        [Fact(DisplayName = "EventoUsuario - NovoEventoUsuarioEhValido - Deve Ser Valido")]
-        public void EventoUsuario_NovoEventoUsuarioEhValido_DeveSerValido()
+        [Fact(DisplayName = "Convite - NovoConviteEhValido - Deve Ser Valido")]
+        public void Convite_NovoConviteEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = eventoUsuario.NovoConviteEhValido().IsValid;
+            var ehValido = convite.NovoConviteEhValido().IsValid;
 
             //Assert
             Assert.True(ehValido);
         }
 
-        [Fact(DisplayName = "EventoUsuario - NovoEventoUsuarioEhValido - Deve Ser Inválido")]
-        public void EventoUsuario_NovoEventoUsuarioEhValido_DeveSerInvalido()
+        [Fact(DisplayName = "Convite - NovoConviteEhValido - Deve Ser Inválido")]
+        public void Convite_NovoConviteEhValido_DeveSerInvalido()
         {
             //Arrange
-            eventoUsuario = new Faker<Convite>("pt_BR")
-                .CustomInstantiator((f) => new Convite(Guid.Empty, f.Random.Bool(), permissao))
-                .Generate(1)
-                .First();
+            var exception = Assert.Throws<DomainException>(() => new Faker<Convite>("pt_BR")
+                                                                    .CustomInstantiator((f) => new Convite(Guid.Empty, Guid.Empty))
+                                                                    .Generate(1)
+                                                                    .First());
 
             //Act
-            var ehValido = eventoUsuario.NovoConviteEhValido().IsValid;
+            var validacao = exception.Message.Split(',').ToList();
 
             //Assert
-            Assert.False(ehValido);
+            Assert.Contains(validacao, x => x.Contains("EventoId não informado!"));
+            Assert.Contains(validacao, x => x.Contains("UsuarioId não informado!"));
         }
     }
 }

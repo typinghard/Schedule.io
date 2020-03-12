@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agenda.Infra.Data", "Agenda
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Agenda.UI.Web", "Agenda.UI.Web\Agenda.UI.Web.csproj", "{072254AE-BAFA-4DB1-82A2-53D3DEBE36B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agenda.Nuget", "Agenda.Nuget\Agenda.Nuget.csproj", "{78BD49F9-95BC-49C1-96A0-4D6D10EF786E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScheduleIo.Nuget", "Agenda.Nuget\ScheduleIo.Nuget.csproj", "{78BD49F9-95BC-49C1-96A0-4D6D10EF786E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

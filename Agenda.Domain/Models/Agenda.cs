@@ -2,10 +2,8 @@
 using Agenda.Domain.Core.Helpers;
 using Agenda.Domain.Validations;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 
 namespace Agenda.Domain.Models
 {

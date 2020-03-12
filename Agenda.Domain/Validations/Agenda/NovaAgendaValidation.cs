@@ -11,6 +11,7 @@ namespace Agenda.Domain.Validations
         public NovaAgendaValidation()
         {
             RuleFor(a => a.Titulo)
+                .NotNull()
                 .NotEmpty()
                 .WithMessage("Título não informado.");
 

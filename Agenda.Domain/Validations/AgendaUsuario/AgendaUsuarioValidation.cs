@@ -17,7 +17,7 @@ namespace Agenda.Domain.Validations
 
             RuleFor(a => a.AgendaId)
                 .NotEqual(Guid.Empty)
-                .WithMessage("AgendId não informado!");
+                .WithMessage("AgendaId não informado!");
         }
     }
 }

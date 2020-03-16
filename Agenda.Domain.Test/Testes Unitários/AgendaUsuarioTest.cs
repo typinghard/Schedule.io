@@ -5,6 +5,7 @@ using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Agenda.Domain.Core.DomainObjects;
 
 namespace Agenda.Domain.Test
 {
@@ -20,9 +21,6 @@ namespace Agenda.Domain.Test
                 .First();
         }
 
-        //DefinirUsuarioId
-        //    DefinirAgendaId
-
         [Fact(DisplayName = "AgendaUsuario - DefinirUsuarioId - UsuarioId deve ser definido")]
 
         public void AgendaUsuario_DefinirUsuarioId_UsuarioIdDeveSerDefinido()
@@ -37,8 +35,21 @@ namespace Agenda.Domain.Test
             Assert.Equal(novoUsuarioId, agendaUsuario.UsuarioId);
         }
 
-        [Fact(DisplayName = "AgendaUsuario - DefinirAgendaId - AgendaId deve ser definido")]
+        [Fact(DisplayName = "AgendaUsuario - DefinirUsuarioId - UsuarioId deve ser inválido por ser vazio.")]
+        public void AgendaUsuario_DefinirUsuarioId_UsuarioIdDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            var novoEventoId = Guid.Empty;
 
+            //Act
+            var exception = Assert.Throws<DomainException>(() => agendaUsuario.DefinirUsuarioId(novoEventoId));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que adicinou uma pessoa.", exception.Message);
+        }
+
+
+        [Fact(DisplayName = "AgendaUsuario - DefinirAgendaId - AgendaId deve ser definido")]
         public void AgendaUsuario_DefinirAgendaId_AgendaIdDeveSerDefinido()
         {
             //Arrange
@@ -50,6 +61,20 @@ namespace Agenda.Domain.Test
             //Assert
             Assert.Equal(novoAgendaId, agendaUsuario.AgendaId);
         }
+
+        [Fact(DisplayName = "AgendaUsuario - DefinirAgendaId - AgendaId deve ser inválido por ser vazio.")]
+        public void AgendaUsuario_DefinirAgendaId_AgendaIdDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            var novoAgendaId = Guid.Empty;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => agendaUsuario.DefinirAgendaId(novoAgendaId));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que adicinou uma agenda.", exception.Message);
+        }
+
 
         [Fact(DisplayName = "AgendaUsuario - NovaAgendaUsuarioEhValida - Deve Ser Valido")]
         public void AgendaUsuario_NovaAgendaUsuarioEhValida_DeveSerValido()
@@ -65,16 +90,17 @@ namespace Agenda.Domain.Test
         public void AgendaUsuario_NovaAgendaUsuarioEhValida_DeveSerInvalido()
         {
             //Arrange
-            agendaUsuario = new Faker<AgendaUsuario>("pt_BR")
-            .CustomInstantiator((f) => new AgendaUsuario(Guid.Empty, Guid.Empty))
-            .Generate(1)
-            .First();
+            var exception = Assert.Throws<DomainException>(() => agendaUsuario = new Faker<AgendaUsuario>("pt_BR")
+                                                                                    .CustomInstantiator((f) => new AgendaUsuario(Guid.Empty, Guid.Empty))
+                                                                                    .Generate(1)
+                                                                                    .First());
 
             //Act
-            var ehValido = agendaUsuario.NovaAgendaUsuarioEhValido().IsValid;
+            var validacao = exception.Message.Split(',').ToList();
 
             //Assert
-            Assert.False(ehValido);
+            Assert.Contains(validacao, x => x.Contains("UsuarioId não informado!"));
+            Assert.Contains(validacao, x => x.Contains("AgendaId não informado!"));
         }
 
     }

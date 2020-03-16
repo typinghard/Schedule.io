@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Testes Unitários\AgendaUsuarioTest.cs" />
     <Compile Remove="Testes Unitários\EventoAgendaTest.cs" />
   </ItemGroup>
 

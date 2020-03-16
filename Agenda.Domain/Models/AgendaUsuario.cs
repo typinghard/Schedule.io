@@ -27,6 +27,26 @@ namespace Agenda.Domain.Models
                 throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
+        public void DefinirUsuarioId(Guid usuarioId)
+        {
+            if (usuarioId.EhVazio())
+            {
+                throw new DomainException("Por favor, certifique-se que adicinou uma pessoa.");
+            }
+
+            UsuarioId = usuarioId;
+        }
+
+        public void DefinirAgendaId(Guid agendaId)
+        {
+            if (agendaId.EhVazio())
+            {
+                throw new DomainException("Por favor, certifique-se que adicinou uma agenda.");
+            }
+
+            AgendaId = agendaId;
+        }
+
         public ValidationResult NovaAgendaUsuarioEhValido()
         {
             return new AgendaUsuarioValidation().Validate(this);

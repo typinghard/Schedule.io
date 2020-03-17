@@ -36,9 +36,11 @@ namespace Agenda.Domain.Models
             this.Tipo = tipoEvento;
             this.Frequencia = EnumFrequencia.Nao_Repete;
 
+            this.Usuarios = new List<Guid>();
+
             var resultadoValidacao = this.NovoEventoAgendaEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new DomainException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirAgenda(Guid agendaId)

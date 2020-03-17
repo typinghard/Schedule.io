@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Agenda.Domain.Enums;
+using Agenda.Domain.Core.DomainObjects;
 
 namespace Agenda.Domain.Test
 {
@@ -17,32 +18,15 @@ namespace Agenda.Domain.Test
         public EventoAgendaTest()
         {
             tipoEvento = new Faker<TipoEvento>("pt_BR")
-                .CustomInstantiator((t) => new TipoEvento(t.Random.String(120, 'a', 'z'), t.Random.String(500, 'a', 'z')))
+                .CustomInstantiator((f) => new TipoEvento(f.Random.String(120, 'a', 'z'), f.Random.String(120, 'a', 'z')))
                 .Generate(1)
                 .First();
-
-
-            //var guidList = Enumerable.Range(1, 5)
-            //              .Select(_ => new Faker("pt_BR").Random.Guid())
-            //              .ToList();
-
-            List<Guid> guidList = new List<Guid>();
 
             eventoAgenda = new Faker<EventoAgenda>("pt_BR")
                 .CustomInstantiator((f) => new EventoAgenda(f.Random.Guid(),
                                      f.Random.String(25, 'a', 'z'),
-                                     f.Random.String(120, 'a', 'z'),
-                                     f.Random.String(500, 'a', 'z'),
-                                     f.Random.ListItems<Guid>(guidList),
-                                     f.Random.Guid(),
-                                     f.Date.Recent(1),
                                      f.Date.Soon(30),
-                                     f.Date.Soon(25),
-                                     f.Random.Int(0),
-                                     f.Random.Bool(),
-                                     f.Random.Bool(),
-                                     tipoEvento,
-                                     f.Random.Enum<EnumFrequencia>()))
+                                     tipoEvento))
                 .Generate(1)
                 .First();
         }
@@ -60,6 +44,19 @@ namespace Agenda.Domain.Test
             //Assert
             Assert.Equal(novaAgendaId, eventoAgenda.AgendaId);
         }
+        [Fact(DisplayName = "EventoAgenda - DefinirAgenda - Agenda deve ser inválido por ser vazio")]
+        public void EventoAgenda_DefinirAgenda_AgendaDeveSerInvalido()
+        {
+            //Arrange
+            var novaAgendaId = Guid.Empty;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirAgenda(novaAgendaId));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que escolheu uma agenda.", exception.Message);
+        }
+
 
         [Fact(DisplayName = "EventoAgenda - DefinirIdentificadorExterno - Identificador Externo deve ser alterado")]
         public void EventoAgenda_DefinirIdentificadorExterno_IdentificadorExternoDeveSerAlterado()
@@ -87,6 +84,30 @@ namespace Agenda.Domain.Test
             //Assert
             Assert.Equal(novoTitulo, eventoAgenda.Titulo);
         }
+        [Fact(DisplayName = "EventoAgenda - DefinirTitulo - Título deve ser invalido por ser vazio")]
+        public void EventoAgenda_DefinirTitulo_TituloDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            var novoTitulo = "";
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirTitulo(novoTitulo));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que digitou um título.", exception.Message);
+        }
+        [Fact(DisplayName = "EventoAgenda - DefinirTitulo - Título deve ser ser invalido pelo tamanho")]
+        public void EventoAgenda_DefinirTitulo_TituloDeveSerAlteradoInvalidoPeloTamanho()
+        {
+            //Arrange
+            var novoTitulo = new Faker().Random.String(151, 'a', 'z');
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirTitulo(novoTitulo));
+
+            //Assert
+            Assert.Equal("O título deve ter entre 2 e 150 caracteres.", exception.Message);
+        }
 
 
         [Fact(DisplayName = "EventoAgenda - DefinirDescrição - Descrição deve ser alterado")]
@@ -102,6 +123,19 @@ namespace Agenda.Domain.Test
             Assert.Equal(novaDescricao, eventoAgenda.Descricao);
         }
 
+        [Fact(DisplayName = "EventoAgenda - DefinirDescrição - Descrição deve ser invalido pelo tamanho")]
+        public void EventoAgenda_DefinirDescricao_DescricaoDeveSerInvalidoPeloTamanho()
+        {
+            //Arrange
+            var novaDescricao = new Faker().Random.String(501, 'a', 'z');
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirDescricao(novaDescricao));
+
+            //Assert
+            Assert.Equal("A descrição deve ter entre 2 e 500 caracteres.", exception.Message);
+        }
+
         [Fact(DisplayName = "EventoAgenda - AdicionarPessoa - Pessoa deve ser alterado")]
         public void EventoAgenda_AdicionarPessoa_PessoaDeveSerAlterado()
         {
@@ -112,7 +146,20 @@ namespace Agenda.Domain.Test
             eventoAgenda.AdicionarPessoa(guid);
 
             //Assert
-            Assert.Contains(eventoAgenda.Usuario, x => x == guid);
+            Assert.Contains(eventoAgenda.Usuarios, x => x == guid);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - AdicionarPessoa - Pessoa deve ser invalido por ser vazio")]
+        public void EventoAgenda_AdicionarPessoa_PessoaDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            Guid guid = Guid.Empty;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.AdicionarPessoa(guid));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que adicinou uma pessoa.", exception.Message);
         }
 
         [Fact(DisplayName = "EventoAgenda - DefinirLocal - Local deve ser alterado")]
@@ -126,6 +173,19 @@ namespace Agenda.Domain.Test
 
             //Assert
             Assert.Equal(novoLocalId, eventoAgenda.Local);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - DefinirLocal - Local deve ser invalido por ser vazio")]
+        public void EventoAgenda_DefinirLocal_LocalDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            Guid novoLocalId = Guid.Empty;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirLocal(novoLocalId));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que adicionou um local.", exception.Message);
         }
 
         [Fact(DisplayName = "EventoAgenda - DefinirDatas - Datas de Inicio e Final deve ser alterado")]
@@ -143,6 +203,60 @@ namespace Agenda.Domain.Test
             Assert.Equal(dataFinal, eventoAgenda.DataFinal);
         }
 
+        [Fact(DisplayName = "EventoAgenda - DefinirDatas - Datas de Inicio e Final deve ser alterado")]
+        public void EventoAgenda_DefinirDatas_DatasInicioEFinalDeveSerInvalidoPorDaTaInicialSerInvalida()
+        {
+            //Arrange
+            DateTime dataInicio = DateTime.MinValue;
+            DateTime dataFinal = DateTime.Now.Date.AddDays(30);
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirDatas(dataInicio, dataFinal));
+
+            //Assert
+            Assert.Equal("Por favor, escolha a data e hora inicial do evento.", exception.Message);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - DefinirDatas - Datas Inválidas, data final maior que dara inicial")]
+        public void EventoAgenda_DefinirDatas_DatasInvalidasDataFinalMaiorQueInicial()
+        {
+            //Arrange
+            DateTime dataInicio = DateTime.Now.Date.AddDays(10);
+            DateTime dataFinal = DateTime.Now.Date.AddDays(8);
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirDatas(dataInicio, dataFinal));
+
+            //Assert
+            Assert.Equal("Por certifique-se de que a data inicial é maior que a data final do evento.", exception.Message);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - DefinirDatas - Datas de Inicio deve ser alterado")]
+        public void EventoAgenda_DefinirDatas_DatasInicialDeveSerAlterado()
+        {
+            //Arrange
+            DateTime dataInicio = DateTime.Now.Date.AddDays(10);
+
+            //Act
+            eventoAgenda.DefinirDataInicial(dataInicio);
+
+            //Assert
+            Assert.Equal(dataInicio, eventoAgenda.DataInicio);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - DefinirDatas - Datas de Inicio deve ser inválido")]
+        public void EventoAgenda_DefinirDatas_DatasInicioDeveSerInvalido()
+        {
+            //Arrange
+            DateTime dataInicio = DateTime.MinValue;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirDataInicial(dataInicio));
+
+            //Assert
+            Assert.Equal("Por favor, escolha a data e hora inicial do evento.", exception.Message);
+        }
+
         [Fact(DisplayName = "EventoAgenda - DefinirDataLimiteConfirmacao - Data Limite Confirmação deve ser alterado")]
         public void EventoAgenda_DefinirDataLimiteConfirmacao_DataLimiteConfirmacaoDeveSerAlterado()
         {
@@ -154,6 +268,32 @@ namespace Agenda.Domain.Test
 
             //Assert
             Assert.Equal(dataLimite, eventoAgenda.DataLimiteConfirmacao);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - DefinirDataLimiteConfirmacao - Data Limite Confirmação deve ser invalida por não ter valor")]
+        public void EventoAgenda_DefinirDataLimiteConfirmacao_DataLimiteConfirmacaoDeveSerInvalidaPorNaoTerValor()
+        {
+            //Arrange
+            DateTime dataLimite = DateTime.MinValue;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirDataLimiteConfirmacao(dataLimite));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que informou uma data limite.", exception.Message);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - DefinirDataLimiteConfirmacao - Data Limite Confirmação deve ser invalida por ser menor que a DataInicio")]
+        public void EventoAgenda_DefinirDataLimiteConfirmacao_DataLimiteConfirmacaoDeveSerInvalidaPorSerMenorQueDataInicio()
+        {
+            //Arrange
+            DateTime dataLimite = DateTime.Now.Date.AddDays(2);
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirDataLimiteConfirmacao(dataLimite));
+
+            //Assert
+            Assert.Equal("Por certifique-se de que a data limite é maior que a data inicio do evento.", exception.Message);
         }
 
         [Fact(DisplayName = "EventoAgenda - DefinirQuantidadeMinimaDeUsuarios - Quantidade Mínima de Usuários deve ser alterado")]
@@ -168,6 +308,20 @@ namespace Agenda.Domain.Test
             //Assert
             Assert.Equal(quantidadeMinimaDeUsuarios, eventoAgenda.QuantidadeMinimaDeUsuarios);
         }
+
+        [Fact(DisplayName = "EventoAgenda - DefinirQuantidadeMinimaDeUsuarios - Quantidade Mínima de Usuários deve ser invalido menor que 0")]
+        public void EventoAgenda_DefinirQuantidadeMinimaDeUsuarios_QuantidadeMinimaDeUsuariosDeveSerInvalidoMenorQue0()
+        {
+            //Arrange
+            int quantidadeMinimaDeUsuarios = -1;
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.DefinirQuantidadeMinimaDeUsuarios(quantidadeMinimaDeUsuarios));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.", exception.Message);
+        }
+
 
         [Fact(DisplayName = "EventoAgenda - OcuparUsuario - Ocupar Usuário deve ser alterado")]
         public void EventoAgenda_OcuparUsuario_OcuparUsuarioDeveSerAlterado1()
@@ -206,7 +360,7 @@ namespace Agenda.Domain.Test
             eventoAgenda.TornarEventoPublico();
 
             //Assert
-            Assert.Equal(eventopublico, eventoAgenda.EventoPublico);
+            Assert.Equal(eventopublico, eventoAgenda.Publico);
         }
 
         [Fact(DisplayName = "EventoAgenda - TornarEventoPrivado - Evento Privado deve ser alterado")]
@@ -219,7 +373,7 @@ namespace Agenda.Domain.Test
             eventoAgenda.TornarEventoPrivado();
 
             //Assert
-            Assert.Equal(eventopublico, eventoAgenda.EventoPublico);
+            Assert.Equal(eventopublico, eventoAgenda.Publico);
         }
 
 
@@ -227,7 +381,7 @@ namespace Agenda.Domain.Test
         public void EventoAgenda_DefinirFrequencia_FrequenciaDoEventoDeveSerAlterado1()
         {
             //Arrange
-            var novaFrequencia = EnumFrequencia.TodosOsMeses;
+            var novaFrequencia = new Faker().Random.Enum<EnumFrequencia>();
 
             //Act
             eventoAgenda.DefinirFrequencia(novaFrequencia);
@@ -243,11 +397,38 @@ namespace Agenda.Domain.Test
             var novoNome = "Nova nome do tipo evento";
 
             //Act
-            eventoAgenda.TipoEvento.DefinirNome(novoNome);
+            eventoAgenda.Tipo.DefinirNome(novoNome);
 
             //Assert
-            Assert.Equal(novoNome, eventoAgenda.TipoEvento.Nome);
+            Assert.Equal(novoNome, eventoAgenda.Tipo.Nome);
         }
+
+        [Fact(DisplayName = "EventoAgenda - TipoEvento - Definir Nome - Nome do Tipo Evento deve ser invalido por ser vazio")]
+        public void EventoAgenda_TipoEvento_DefinirNome_NomeTiipoEventoDeveSerInvalidoPorSerVazio()
+        {
+            //Arrange
+            var novoNome = "";
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.Tipo.DefinirNome(novoNome));
+
+            //Assert
+            Assert.Equal("Por favor, certifique-se que digitou um nome para o tipo do evento.", exception.Message);
+        }
+
+        [Fact(DisplayName = "EventoAgenda - TipoEvento - Definir Nome - Nome do Tipo Evento deve ser invalido por ser vazio")]
+        public void EventoAgenda_TipoEvento_DefinirNome_NomeTiipoEventoDeveSerInvalidoPeloTamanho()
+        {
+            //Arrange
+            var novoNome = new Faker().Random.String(1, 'a', 'z');
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.Tipo.DefinirNome(novoNome));
+
+            //Assert
+            Assert.Equal("O nome do tipo do evento deve ter entre 2 e 120 caracteres.", exception.Message);
+        }
+
 
         [Fact(DisplayName = "EventoAgenda - TipoEvento - DefinirDescricaoTipoEvento - Descrição do Tipo Evento deve ser alterado")]
         public void EventoAgenda_DefinirDescricaoTipoEvento_DescricaoDeveSerAlterado()
@@ -256,10 +437,24 @@ namespace Agenda.Domain.Test
             var novaDescricao = "Nova descrição do tipo evento";
 
             //Act
-            eventoAgenda.TipoEvento.DefinirDescricao(novaDescricao);
+            eventoAgenda.Tipo.DefinirDescricao(novaDescricao);
 
             //Assert
-            Assert.Equal(novaDescricao, eventoAgenda.TipoEvento.Descricao);
+            Assert.Equal(novaDescricao, eventoAgenda.Tipo.Descricao);
+        }
+
+
+        [Fact(DisplayName = "EventoAgenda - TipoEvento - DefinirDescricaoTipoEvento - Descrição do Tipo Evento deve ser invalido pelo tamanho")]
+        public void EventoAgenda_DefinirDescricaoTipoEvento_DescricaoDeveSerInvalidoPeloTamanho()
+        {
+            //Arrange
+            var novaDescricao = new Faker().Random.String(501, 'a', 'z');
+
+            //Act
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda.Tipo.DefinirDescricao(novaDescricao));
+
+            //Assert
+            Assert.Equal("A descrição deve ter entre 2 e 500 caracteres.", exception.Message);
         }
 
 
@@ -282,29 +477,26 @@ namespace Agenda.Domain.Test
                 .Generate(1)
                 .First();
 
-            eventoAgenda = new Faker<EventoAgenda>("pt_BR")
-                .CustomInstantiator((f) => new EventoAgenda(f.Random.Guid(),
-                                     "",
-                                     "",
-                                     "",
-                                     null,
-                                     null,
-                                     DateTime.MinValue,
-                                     null,
-                                     null,
-                                     -550,
-                                     false,
-                                     false,
-                                     tipoEvento,
-                                     EnumFrequencia.NaoRepete))
-                .Generate(1)
-                .First();
+            var exception = Assert.Throws<DomainException>(() => eventoAgenda = new Faker<EventoAgenda>("pt_BR")
+                                                                                    .CustomInstantiator((f) => new EventoAgenda(Guid.Empty,
+                                                                                    "", DateTime.MinValue, tipoEvento))
+                                                                                    .Generate(1)
+                                                                                    .First());
 
             //Act
-            var ehValido = eventoAgenda.NovoEventoAgendaEhValido().IsValid;
+            var validacao = exception.Message.Split("##").ToList();
+
 
             //Assert
-            Assert.False(ehValido);
+            Assert.Contains(validacao, x => x.Contains("Id da Agenda não pode ser vazio!"));
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um título."));
+            Assert.Contains(validacao, x => x.Contains("O título deve ter entre 2 e 150 caracteres."));
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um título."));
+            Assert.Contains(validacao, x => x.Contains("'Data Inicio' deve ser informado."));
+            Assert.Contains(validacao, x => x.Contains("Por favor, escolha a data e hora inicial do evento."));
+            Assert.Contains(validacao, x => x.Contains("O Nome do Tipo do Evento deve ter entre 2 e 120 caracteres."));
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou uma Descrição para o Tipo do Evento."));
+            Assert.Contains(validacao, x => x.Contains("A Descrição do Tipo do Evento deve ter entre 2 e 500 caracteres."));
         }
     }
 }

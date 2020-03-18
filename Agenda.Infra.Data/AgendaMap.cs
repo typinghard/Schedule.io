@@ -1,5 +1,4 @@
 ﻿using Agenda.Domain.Models;
-using Agenda.Infra.Data.MongoDB;
 using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;

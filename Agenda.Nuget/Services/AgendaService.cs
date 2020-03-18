@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ScheduleIo.Nuget.Services
 {
-    public class AgendaService : IAgendaService
+    internal class AgendaService : IAgendaService
     {
         private readonly IAgendaRepository _agendaRepository;
         public AgendaService(IAgendaRepository agendaRepository)

@@ -5,9 +5,5 @@ using System.Text;
 
 namespace ScheduleIo.Nuget.Interfaces
 {
-    public interface IDataBaseConfigurationService
-    {
-        void SetConfig(DataBaseConfig dataBaseConfig);
-        DataBaseConfig GetConfig();
-    }
+    
 }

@@ -1,11 +1,12 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Models;
-using Agenda.Infra.Data.MongoDB.Interface.Connection;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Agenda.Infra.Data.Configs;
+using Agenda.Core.Data.EventSourcing;
 
 namespace Agenda.Infra.Data
 {
@@ -14,11 +15,11 @@ namespace Agenda.Infra.Data
         private readonly MongoClient _mongoClient;
         private readonly IMongoDatabase _database;
         private readonly IClientSessionHandle _session;
-        public AgendaContext(IConfig config)
+        public AgendaContext()
         {
-            _mongoClient = new MongoClient(config.MongoConnectionString);
+            _mongoClient = new MongoClient(ScheduleIoConfigurationHelper.DataBaseConfig.ConnectionString);
             _session = _mongoClient.StartSession();
-            _database = _mongoClient.GetDatabase(config.MongoDatabase);
+            _database = _mongoClient.GetDatabase(ScheduleIoConfigurationHelper.DataBaseConfig.DatabaseName);
             Map();
         }
 
@@ -59,6 +60,8 @@ namespace Agenda.Infra.Data
         internal IMongoCollection<EventoAgenda> EventoAgenda { get { return _database.GetCollection<EventoAgenda>(typeof(EventoAgenda).Name.ToLower()); } }
         internal IMongoCollection<EventoUsuario> EventoUsuario { get { return _database.GetCollection<EventoUsuario>(typeof(EventoUsuario).Name.ToLower()); } }
         internal IMongoCollection<Local> Local { get { return _database.GetCollection<Local>(typeof(Local).Name.ToLower()); } }
+
+        public IMongoCollection<StoredEvent> StoredEvents { get { return _database.GetCollection<StoredEvent>(typeof(StoredEvent).Name.ToLower()); } }
 
 
 

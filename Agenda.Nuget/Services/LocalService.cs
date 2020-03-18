@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ScheduleIo.Nuget.Services
 {
-    public class LocalService : ILocalService
+    internal class LocalService : ILocalService
     {
         Guid ILocalService.Criar(Local local)
         {

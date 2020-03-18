@@ -1,4 +1,5 @@
-﻿using EventStore.ClientAPI;
+﻿using Agenda.Infra.Data.Configs;
+using EventStore.ClientAPI;
 using Microsoft.Extensions.Configuration;
 
 namespace EventSoursing
@@ -7,10 +8,10 @@ namespace EventSoursing
     {
         private readonly IEventStoreConnection _connection;
 
-        public EventStoreService(IConfiguration configuration)
+        public EventStoreService()
         {
             _connection = EventStoreConnection.Create(
-                configuration.GetConnectionString("EventStoreConnection"));
+                ScheduleIoConfigurationHelper.DataBaseConfig.ConnectionString);
 
             _connection.ConnectAsync();
         }

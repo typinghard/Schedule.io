@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ScheduleIo.Nuget.Services
 {
-    public class UsuarioService : IUsuarioService
+    internal class UsuarioService : IUsuarioService
     {
         Guid IUsuarioService.Criar(Usuario usuario)
         {

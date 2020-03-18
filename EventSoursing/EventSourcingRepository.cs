@@ -1,5 +1,4 @@
-﻿using Agenda.Infra.Data.MongoDB.Interface.Connection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Agenda.Core.Data.EventSourcing;
@@ -8,29 +7,30 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Agenda.Infra.Data;
 
 namespace EventSoursing
 {
     public class EventSourcingRepository : IEventSourcingRepository
     {
-        protected IConnect _connect { get; private set; }
+        protected AgendaContext _agendaContext { get; private set; }
         protected IMongoCollection<StoredEvent> _collection { get; private set; }
         protected string _collectionName { get; private set; }
 
-        public EventSourcingRepository(IConnect connect)
+        public EventSourcingRepository(AgendaContext agendaContext)
         {
+            _agendaContext = agendaContext;
             setCollectionName();
-            setConnectAndCollection(connect);
+            setConnectAndCollection();
         }
         #region internal
         internal void setCollectionName()
         {
             _collectionName = "storedevent";
         }
-        internal void setConnectAndCollection(IConnect connect)
+        internal void setConnectAndCollection()
         {
-            _connect = connect;
-            _collection = _connect.Collection<StoredEvent>(_collectionName);
+            _collection = _agendaContext.StoredEvents;
         }
         #endregion
 

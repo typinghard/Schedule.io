@@ -1,4 +1,5 @@
 ﻿using Agenda.Infra.CrossCutting.IoC;
+using Agenda.Infra.Data.Configs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleIo.Nuget.Interfaces;
@@ -20,8 +21,6 @@ namespace ScheduleIo.Nuget
 
         private static void RegisterScheduleIoServices(IServiceCollection services)
         {
-            services.AddSingleton<IDataBaseConfigurationService, DataBaseConfigurationService>();
-
             services.AddScoped<IScheduleIo, ScheduleIoService>();
             services.AddScoped<IAgendaService, AgendaService>();
             services.AddScoped<ILocalService, LocalService>();

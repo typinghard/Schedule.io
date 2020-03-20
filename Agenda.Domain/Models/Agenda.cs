@@ -27,12 +27,12 @@ namespace Agenda.Domain.Models
         {
             if (string.IsNullOrEmpty(titulo))
             {
-                throw new DomainException("Por favor, certifique-se que digitou um título.");
+                throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um título." });
             }
 
             if (titulo.ValidarTamanho(2, 150))
             {
-                throw new DomainException("O título deve ter entre 2 e 150 caracteres.");
+                throw new ScheduleIoException(new List<string>() { "O título deve ter entre 2 e 150 caracteres." });
 
             }
 
@@ -43,7 +43,7 @@ namespace Agenda.Domain.Models
         {
             if (descricao.ValidarTamanho(2, 500))
             {
-                throw new DomainException("A descrição deve ter entre 2 e 500 caracteres.");
+                throw new ScheduleIoException(new List<string>() { "A descrição deve ter entre 2 e 500 caracteres." });
             }
 
             this.Descricao = descricao;

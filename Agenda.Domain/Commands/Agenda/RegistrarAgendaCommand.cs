@@ -7,8 +7,9 @@ namespace Agenda.Domain.Commands
 {
     public class RegistrarAgendaCommand : AgendaCommand
     {
-        public RegistrarAgendaCommand(string titulo, string descricao, bool publico)
+        public RegistrarAgendaCommand(Guid id, string titulo, string descricao, bool publico)
         {
+            this.Id = id;
             this.Titulo = titulo;
             this.Descricao = descricao;
             this.Publico = publico;

@@ -1,22 +1,37 @@
-﻿using Agenda.Domain.Interfaces;
+﻿using Agenda.Domain.Commands;
+using Agenda.Domain.Core.Communication.Mediator;
+using Agenda.Domain.Core.DomainObjects;
+using Agenda.Domain.Core.Messages.CommonMessages.Notifications;
+using Agenda.Domain.Interfaces;
+using MediatR;
 using ScheduleIo.Nuget.Interfaces;
 using ScheduleIo.Nuget.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScheduleIo.Nuget.Services
 {
-    internal class AgendaService : IAgendaService
+    internal class AgendaService : ServiceBase, IAgendaService 
     {
         private readonly IAgendaRepository _agendaRepository;
-        public AgendaService(IAgendaRepository agendaRepository)
+        private readonly IMediatorHandler _bus;
+        public AgendaService(
+            IAgendaRepository agendaRepository, 
+            IMediatorHandler bus,
+            INotificationHandler<DomainNotification> notifications) : base(notifications)
         {
+            _bus = bus;
             _agendaRepository = agendaRepository;
         }
+
         public Guid Criar(Models.Agenda agenda)
         {
-            throw new NotImplementedException();
+            var idAgenda = Guid.NewGuid();
+            _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, "Primeiro teste", "Foi slc", true)).Wait();
+            ValidarComando();
+            return idAgenda;
         }
 
         public void Editar(Models.Agenda agenda)

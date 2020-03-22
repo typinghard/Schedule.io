@@ -1,8 +1,11 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
 using Agenda.Domain.Enums;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Agenda.Domain.Models
@@ -13,55 +16,45 @@ namespace Agenda.Domain.Models
         public string IdentificadorExterno { get; set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
-        public IList<Guid> Pessoas { get; private set; }
+        public IList<Guid> Usuarios { get; private set; } 
+        public IList<Convite> Convites { get; private set; }
         public Guid? Local { get; private set; }
         public DateTime DataInicio { get; private set; }
-        public DateTime? DataFinal { get; private set; }
+        public DateTime? DataFinal { get; private set; } // Não obrigatório = padrão data final no mesmo dia.
         public DateTime? DataLimiteConfirmacao { get; private set; }
         public int QuantidadeMinimaDeUsuarios { get; private set; }
         public bool OcupaUsuario { get; private set; }
-        public bool EventoPublico { get; private set; }
-        public TipoEvento TipoEvento { get; private set; }
-        public EnumFrequencia EnumFrequencia { get; private set; }
+        public bool Publico { get; private set; }
+        public TipoEvento Tipo { get; private set; }
+        public EnumFrequencia Frequencia { get; private set; }
 
-        public EventoAgenda(Guid agendaId, string identificadorExterno, string titulo, string descricao, IList<Guid> pessoas, Guid? local,
-                            DateTime dataInicio, DateTime? dataFinal,
-                            DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario, bool eventoPublico,
-                            TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
+        public EventoAgenda(Guid agendaId, string titulo,  DateTime dataInicio, TipoEvento tipoEvento)
         {
             this.AgendaId = agendaId;
-            this.IdentificadorExterno = identificadorExterno;
             this.Titulo = titulo;
-            this.Descricao = descricao;
-            this.Pessoas = pessoas;
-            this.Local = local;
             this.DataInicio = dataInicio;
-            this.DataFinal = dataFinal;
-            this.DataLimiteConfirmacao = dataLimiteConfirmacao;
-            this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
-            this.OcupaUsuario = ocuparUsuario;
-            this.EventoPublico = eventoPublico;
-            this.TipoEvento = tipoEvento;
-            this.EnumFrequencia = enumFrequencia;
+            this.Tipo = tipoEvento;
+            this.Frequencia = EnumFrequencia.Nao_Repete;
+
+            this.Usuarios = new List<Guid>();
+
+            var resultadoValidacao = this.NovoEventoAgendaEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
-        public void DefinirAgenda(Guid agenda)
+        public void DefinirAgenda(Guid agendaId)
         {
-            if (agenda.EhVazio())
+            if (agendaId.EhVazio())
             {
                 throw new DomainException("Por favor, certifique-se que escolheu uma agenda.");
             }
 
-            this.AgendaId = agenda;
+            this.AgendaId = agendaId;
         }
 
         public void DefinirIdentificadorExterno(string idExterno)
         {
-            //if (string.IsNullOrEmpty(idExterno))
-            //{
-            //    throw new DomainException("Por favor, certifique-se que digitou um título.");
-            //}
-
             this.IdentificadorExterno = idExterno;
         }
 
@@ -72,7 +65,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que digitou um título.");
             }
 
-            if (titulo.ValidarTamanho(2, 150))
+            if (!titulo.ValidarTamanho(2, 150))
             {
                 throw new DomainException("O título deve ter entre 2 e 150 caracteres.");
 
@@ -83,7 +76,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição deve ter entre 2 e 500 caracteres.");
             }
@@ -98,7 +91,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que adicinou uma pessoa.");
             }
 
-            Pessoas.Add(pessoa);
+            Usuarios.Add(pessoa);
         }
 
         public void DefinirLocal(Guid Local)
@@ -125,6 +118,17 @@ namespace Agenda.Domain.Models
 
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
+        }
+
+        public void DefinirDataInicial(DateTime dataInicio)
+        {
+            if (dataInicio == DateTime.MinValue)
+            {
+                throw new DomainException("Por favor, escolha a data e hora inicial do evento.");
+            }
+
+            this.DataInicio = dataInicio;
+            this.DataFinal = DateTime.MinValue;
         }
 
 
@@ -163,36 +167,25 @@ namespace Agenda.Domain.Models
             this.OcupaUsuario = false;
         }
 
-        public void DefinirEventoPublicoOuPrivado(bool eventoPublicOuPrivado)
+        public void TornarEventoPublico()
         {
-            if (eventoPublicOuPrivado)
-                this.TornarEventoPublico();
-            else
-                this.TornarEventoPrivado();
+            this.Publico = true;
         }
 
-        private void TornarEventoPublico()
+        public void TornarEventoPrivado()
         {
-            this.EventoPublico = true;
+            this.Publico = false;
         }
 
-        private void TornarEventoPrivado()
+        public void DefinirFrequencia(EnumFrequencia frequencia)
         {
-            this.EventoPublico = false;
+            this.Frequencia = frequencia;
         }
 
-        public void DefinirTipoEvento(TipoEvento tipoEvento)
-        {
-            tipoEvento.DefinirNome(tipoEvento.Nome);
-            tipoEvento.DefinirDescricao(tipoEvento.Descricao);
 
-            this.TipoEvento = TipoEvento;
-            ///instancia uma nova tipo evento antes de atribuir? 
-        }
-
-        public void DefinirFrequencia(EnumFrequencia enumFrequencia)
+        public ValidationResult NovoEventoAgendaEhValido()
         {
-            this.EnumFrequencia = enumFrequencia;
+            return new NovoEventoAgendaValidation().Validate(this);
         }
     }
 
@@ -215,9 +208,9 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que digitou um nome para o tipo do evento.");
             }
 
-            if (nome.ValidarTamanho(2, 150))
+            if (!nome.ValidarTamanho(2, 120))
             {
-                throw new DomainException("O nome do tipo do evento deve ter entre 2 e 150 caracteres.");
+                throw new DomainException("O nome do tipo do evento deve ter entre 2 e 120 caracteres.");
 
             }
 
@@ -226,7 +219,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição deve ter entre 2 e 500 caracteres.");
             }

@@ -4,6 +4,7 @@ using Agenda.Domain.Core.Messages.CommonMessages.Notifications;
 using Agenda.Domain.Events;
 using Agenda.Domain.Interfaces;
 using Agenda.Domain.Models;
+using Agenda.Domain.Core.Helpers;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,22 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Local local = new Local(message.IdentificadorExterno, message.NomeLocal, message.Descricao, message.ReservaLocal, message.LotacaoMaxima);
+            Local local = new Local(message.NomeLocal);
+
+            if (!string.IsNullOrEmpty(message.IdentificadorExterno))
+                local.DefinirIdentificadorExterno(message.IdentificadorExterno);
+
+            if (!string.IsNullOrEmpty(message.Descricao))
+                local.DefinirDescricao(message.Descricao);
+
+            if (message.ReservaLocal)
+                local.ReservarLocal();
+            else
+                local.RemoverReservaLocal();
+
+            if (message.LotacaoMaxima > 0)
+                local.DefinirLotacaoMaxima(message.LotacaoMaxima);
+
             _localRepository.Adicionar(local);
 
             if (Commit())
@@ -63,11 +79,14 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            local.DefinirIdentificadorExterno(message.IdentificadorExterno);
             local.DefinirNomeLocal(message.NomeLocal);
-            local.DefinirDescricao(message.Descricao);
 
-            //local.DefinirReservaDoLocal(message.ReservaLocal);
+            if (!string.IsNullOrEmpty(message.IdentificadorExterno))
+                local.DefinirIdentificadorExterno(message.IdentificadorExterno);
+
+            if (!string.IsNullOrEmpty(message.Descricao))
+                local.DefinirDescricao(message.Descricao);
+
             if (message.ReservaLocal)
                 local.ReservarLocal();
             else

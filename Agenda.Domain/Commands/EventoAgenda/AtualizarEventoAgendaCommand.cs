@@ -9,7 +9,7 @@ namespace Agenda.Domain.Commands
 {
     public class AtualizarEventoAgendaCommand : EventoAgendaCommand
     {
-        public AtualizarEventoAgendaCommand(Guid id, Guid agendaId, string identificadorExterno, string titulo, string descricao, IList<Guid> pessoas, Guid local, DateTime dataInicio, DateTime? dataFinal,
+        public AtualizarEventoAgendaCommand(Guid id, Guid agendaId, string identificadorExterno, string titulo, string descricao, IList<Guid> usuarios, Guid local, DateTime dataInicio, DateTime? dataFinal,
             DateTime dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario, bool eventoPublico, TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
         {
             this.Id = id;
@@ -17,16 +17,16 @@ namespace Agenda.Domain.Commands
             this.IdentificadorExterno = identificadorExterno;
             this.Titulo = titulo;
             this.Descricao = descricao;
-            this.Pessoas = pessoas;
+            this.Usuarios = usuarios;
             this.Local = local;
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;
             this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
             this.OcupaUsuario = ocuparUsuario;
-            this.EventoPublico = eventoPublico;
-            this.TipoEvento = tipoEvento;
-            this.EnumFrequencia = enumFrequencia;
+            this.Publico = eventoPublico;
+            this.Tipo = tipoEvento;
+            this.Frequencia = enumFrequencia;
         }
 
         public override bool EhValido()

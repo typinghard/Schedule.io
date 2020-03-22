@@ -1,42 +1,31 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
+using System.Linq;
 
 namespace Agenda.Domain.Models
 {
     public class Local : Entity, IAggregateRoot
     {
-        public string IdentificadorExterno { get; private set; }
+        public string IdentificadorExterno { get; private set; } 
         public string NomeLocal { get; private set; }
         public string Descricao { get; private set; }
-        public bool ReservaLocal { get; private set; }
+        public bool ReservaLocal { get; private set; } 
         public int LotacaoMaxima { get; private set; }
 
-
-        public Local(string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaoMaxima)
+        public Local(string nomeLocal)
         {
-            this.IdentificadorExterno = identificadorExterno;
             this.NomeLocal = nomeLocal;
-            this.Descricao = descricao;
-            this.ReservaLocal = reservaLocal;
-            this.LotacaoMaxima = lotacaoMaxima;
-        }
 
-        public void DefinirIdentificadorExterno(string identificadorExterno)
-        {
-            if (!string.IsNullOrEmpty(identificadorExterno))
-            {
-                throw new DomainException("O Identificador do local não pode ser nulo ou vazio!");
-            }
-
-            this.IdentificadorExterno = identificadorExterno;
+            var resultadoValidacao = this.NovoLocalEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirNomeLocal(string nomeLocal)
         {
-            if (nomeLocal.ValidarTamanho(2, 200))
+            if (!nomeLocal.ValidarTamanho(2, 200))
             {
                 throw new DomainException("O nome do local deve ter entre 2 e 200 caracteres.");
             }
@@ -44,25 +33,23 @@ namespace Agenda.Domain.Models
             this.NomeLocal = nomeLocal;
         }
 
+        public void DefinirIdentificadorExterno(string identificadorExterno)
+        {
+            if (string.IsNullOrEmpty(identificadorExterno))
+            {
+                throw new DomainException("O Identificador do local não pode ser vazio!");
+            }
+
+            this.IdentificadorExterno = identificadorExterno;
+        }
+
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição do local deve ter entre 2 e 500 caracteres.");
             }
             this.Descricao = descricao;
-        }
-
-        /// <summary>
-        /// Pode ser assim? - Tirar Dúvida com o Elvis.
-        /// </summary>
-        /// <param name="reservaDoLocal"></param>
-        public void DefinirReservaDoLocal(bool reservaDoLocal)
-        {
-            if (reservaDoLocal)
-                this.ReservarLocal();
-            else
-                this.RemoverReservaLocal();
         }
 
         public void ReservarLocal()
@@ -84,5 +71,11 @@ namespace Agenda.Domain.Models
 
             this.LotacaoMaxima = lotacaoMaxima;
         }
+
+        public ValidationResult NovoLocalEhValido()
+        {
+            return new NovoLocalValidation().Validate(this);
+        }
+
     }
 }

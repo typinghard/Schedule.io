@@ -35,7 +35,7 @@ namespace Agenda.UI.Web
 
             services.AddAutoMapper(typeof(DomainToViewModelMappingProfile), typeof(ViewModelToDomainMappingProfile));
 
-            services.AddMediatR(typeof(EventoAgendaRegistradoEvent));
+            //services.AddMediatR(typeof(EventoAgendaRegistradoEvent));
             services.AddMediatR(typeof(Startup));
 
             RegisterServices(services);

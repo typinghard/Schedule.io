@@ -7,8 +7,9 @@ using Agenda.Domain.Core.Messages.CommonMessages.Notifications;
 using Agenda.Domain.Events;
 using Agenda.Domain.Interfaces;
 using Agenda.Domain.Models;
+using Agenda.Domain.Core.Helpers;
 using MediatR;
-
+using Agenda.Domain.Enums;
 
 namespace Agenda.Domain.CommandHandlers
 {
@@ -37,12 +38,47 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            EventoAgenda eventoAgenda = new EventoAgenda(message.AgendaId, message.IdentificadorExterno, message.Titulo, message.Descricao, message.Pessoas, message.Local, message.DataInicio, message.DataFinal, message.DataLimiteConfirmacao, message.QuantidadeMinimaDeUsuarios, message.OcupaUsuario, message.EventoPublico, message.TipoEvento, message.EnumFrequencia);
+            EventoAgenda eventoAgenda = new EventoAgenda(message.AgendaId, message.Titulo, message.DataInicio, message.Tipo);
+
+            if (!string.IsNullOrEmpty(message.IdentificadorExterno))
+                eventoAgenda.DefinirIdentificadorExterno(message.IdentificadorExterno);
+
+            if (!string.IsNullOrEmpty(message.Descricao))
+                eventoAgenda.DefinirDescricao(message.Descricao);
+
+            if (message.Usuarios.Count > 0)
+                foreach (Guid pessoaId in message.Usuarios)
+                    eventoAgenda.AdicionarPessoa(pessoaId);
+
+            if (!message.Local.EhVazio())
+                eventoAgenda.DefinirLocal(message.Local);
+
+            if (message.DataFinal != DateTime.MinValue)
+                eventoAgenda.DefinirDatas(eventoAgenda.DataInicio, message.DataFinal);
+
+            if (message.DataLimiteConfirmacao != DateTime.MinValue)
+                eventoAgenda.DefinirDataLimiteConfirmacao(message.DataLimiteConfirmacao.Value);
+
+            if (message.QuantidadeMinimaDeUsuarios > 0)
+                eventoAgenda.DefinirQuantidadeMinimaDeUsuarios(message.QuantidadeMinimaDeUsuarios);
+
+            if (message.OcupaUsuario)
+                eventoAgenda.OcuparUsuario();
+
+            if (message.Publico)
+                eventoAgenda.TornarEventoPublico();
+
+            if (message.Frequencia != EnumFrequencia.Nao_Repete)
+                eventoAgenda.DefinirFrequencia(message.Frequencia);
+
+            eventoAgenda.Tipo.DefinirNome(message.Tipo.Nome);
+            eventoAgenda.Tipo.DefinirDescricao(message.Tipo.Descricao);
+
             _eventoAgendaRepository.Adicionar(eventoAgenda);
 
             if (Commit())
             {
-                Bus.PublicarEvento(new EventoAgendaRegistradoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao, eventoAgenda.Pessoas, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal, eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios, eventoAgenda.OcupaUsuario, eventoAgenda.EventoPublico, eventoAgenda.TipoEvento, eventoAgenda.EnumFrequencia));
+                Bus.PublicarEvento(new EventoAgendaRegistradoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao, eventoAgenda.Usuarios, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal, eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios, eventoAgenda.OcupaUsuario, eventoAgenda.Publico, eventoAgenda.Tipo, eventoAgenda.Frequencia));
             }
 
             return Task.FromResult(true);
@@ -63,34 +99,39 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            eventoAgenda.DefinirAgenda(message.AgendaId);
             eventoAgenda.DefinirIdentificadorExterno(message.IdentificadorExterno);
-            eventoAgenda.DefinirTitulo(message.Titulo);
             eventoAgenda.DefinirDescricao(message.Descricao);
 
-            foreach (Guid pessoa in message.Pessoas)
-                eventoAgenda.AdicionarPessoa(pessoa);
-
+            foreach (Guid pessoaId in message.Usuarios)
+                eventoAgenda.AdicionarPessoa(pessoaId);
             eventoAgenda.DefinirLocal(message.Local);
-            eventoAgenda.DefinirDatas(message.DataInicio, message.DataFinal);
-            ///essa data limite confirmação acho que tá zuado pq ela posso passar nulo também
-            eventoAgenda.DefinirDataLimiteConfirmacao(message.DataLimiteConfirmacao);
+
+            if (message.DataFinal == DateTime.MinValue)
+                eventoAgenda.DefinirDataInicial(message.DataInicio);
+            else
+                eventoAgenda.DefinirDatas(eventoAgenda.DataInicio, message.DataFinal);
+
+            eventoAgenda.DefinirDataLimiteConfirmacao(message.DataLimiteConfirmacao.GetValueOrDefault());
             eventoAgenda.DefinirQuantidadeMinimaDeUsuarios(message.QuantidadeMinimaDeUsuarios);
 
-            ///verificar se é assim ou se pode ser da forma igual ao metodo de DefirnirEventoPublicoOuPrivado
             if (message.OcupaUsuario)
                 eventoAgenda.OcuparUsuario();
             else
                 eventoAgenda.DesocuparUsuario();
 
-            eventoAgenda.DefinirEventoPublicoOuPrivado(message.EventoPublico);
-            eventoAgenda.DefinirTipoEvento(message.TipoEvento);
-            eventoAgenda.DefinirFrequencia(message.EnumFrequencia);
+            if (message.Publico)
+                eventoAgenda.TornarEventoPublico();
+            else
+                eventoAgenda.TornarEventoPrivado();
+
+            eventoAgenda.Tipo.DefinirNome(message.Tipo.Nome);
+            eventoAgenda.Tipo.DefinirDescricao(message.Tipo.Descricao);
+            eventoAgenda.DefinirFrequencia(message.Frequencia);
 
             _eventoAgendaRepository.Atualizar(eventoAgenda);
             if (Commit())
             {
-                Bus.PublicarEvento(new EventoAgendaAtualizadoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao, eventoAgenda.Pessoas, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal, eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios, eventoAgenda.OcupaUsuario, eventoAgenda.EventoPublico, eventoAgenda.TipoEvento, eventoAgenda.EnumFrequencia));
+                Bus.PublicarEvento(new EventoAgendaAtualizadoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao, eventoAgenda.Usuarios, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal, eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios, eventoAgenda.OcupaUsuario, eventoAgenda.Publico, eventoAgenda.Tipo, eventoAgenda.Frequencia));
             }
 
             return Task.FromResult(true);

@@ -14,15 +14,15 @@ namespace Agenda.Domain.Commands
         public string IdentificadorExterno { get; protected set; }
         public string Titulo { get; protected set; }
         public string Descricao { get; protected set; }
-        public IList<Guid> Pessoas { get; protected set; }
+        public IList<Guid> Usuarios { get; protected set; }
         public Guid Local { get; protected set; }
         public DateTime DataInicio { get; protected set; }
         public DateTime? DataFinal { get; protected set; }
-        public DateTime DataLimiteConfirmacao { get; protected set; }
+        public DateTime? DataLimiteConfirmacao { get; protected set; }
         public int QuantidadeMinimaDeUsuarios { get; protected set; }
         public bool OcupaUsuario { get; protected set; }
-        public bool EventoPublico { get; protected set; }
-        public TipoEvento TipoEvento { get; protected set; }
-        public EnumFrequencia EnumFrequencia { get; protected set; }
+        public bool Publico { get; protected set; }
+        public TipoEvento Tipo { get; protected set; }
+        public EnumFrequencia Frequencia { get; protected set; }
     }
 }

@@ -37,7 +37,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Agenda.Domain.Models.Agenda agenda = new Agenda.Domain.Models.Agenda(message.Titulo, message.Descricao, message.Publico);
+            Models.Agenda agenda = new Agenda.Domain.Models.Agenda(message.Titulo, message.Descricao, message.Publico);
             _agendaRepository.Adicionar(agenda);
 
             if (Commit())

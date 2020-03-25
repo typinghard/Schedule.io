@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Agenda.Infra.Data.UoW
+namespace ScheduleIo.Infra.MongoDB.UoW
 {
     public class UnitOfWork : IUnitOfWork
     {

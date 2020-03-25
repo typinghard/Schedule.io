@@ -6,6 +6,8 @@ namespace ScheduleIo.Nuget.Models
 {
     public class Evento
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
+        public string AgendaId { get; set; }
+
     }
 }

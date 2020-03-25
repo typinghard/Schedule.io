@@ -7,7 +7,7 @@ namespace Agenda.Application.ViewModels
 {
     public class AtualizarAgendaViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         [DisplayName("Nome")]
         public string Titulo { get; set; }
         [DisplayName("Descrição")]

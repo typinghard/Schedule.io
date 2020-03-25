@@ -8,16 +8,16 @@ namespace Agenda.Domain.Models
 {
     public class AgendaUsuario : Entity, IAggregateRoot
     {
-        public Guid AgendaId { get; protected set; }
-        public Guid UsuarioId { get; protected set; }
+        public string AgendaId { get; protected set; }
+        public string UsuarioId { get; protected set; }
 
-        public AgendaUsuario(Guid agendaId, Guid usuarioId)
+        public AgendaUsuario(string agendaId, string usuarioId)
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;
         }
 
-        public void DefinirUsuarioId(Guid usuarioId)
+        public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())
             {
@@ -28,7 +28,7 @@ namespace Agenda.Domain.Models
         }
 
 
-        public void DefinirAgendaId(Guid agendaId)
+        public void DefinirAgendaId(string agendaId)
         {
             if (AgendaId.EhVazio())
             {

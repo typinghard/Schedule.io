@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
     public class UsuarioCommand : Command
     {
-        public Guid Id { get; protected set; }
+        public string Id { get; protected set; }
         public string UsuarioEmail { get; protected set; }
     }
 }

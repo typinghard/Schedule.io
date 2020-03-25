@@ -12,8 +12,8 @@
     <ProjectReference Include="..\Agenda.Application\Agenda.Application.csproj" />
     <ProjectReference Include="..\Agenda.Domain.Core\Agenda.Domain.Core.csproj" />
     <ProjectReference Include="..\Agenda.Domain\Agenda.Domain.csproj" />
-    <ProjectReference Include="..\Agenda.Infra.Data\Agenda.Infra.Data.csproj" />
-    <ProjectReference Include="..\EventSoursing\EventSoursing.csproj" />
+    <ProjectReference Include="..\Agenda.Infra.Data\ScheduleIo.Infra.MongoDB.csproj" />
+    <ProjectReference Include="..\ScheduleIo.Infra.RavenDB\ScheduleIo.Infra.RavenDB.csproj" />
   </ItemGroup>
 
 </Project>

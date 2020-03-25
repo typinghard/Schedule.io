@@ -5,10 +5,11 @@ using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Agenda.Infra.Data.Configs;
 using Agenda.Core.Data.EventSourcing;
+using ScheduleIo.Infra.Configurations;
+using ScheduleIo.Infra.MongoDB.Configs;
 
-namespace Agenda.Infra.Data
+namespace ScheduleIo.Infra.MongoDB
 {
     public class AgendaContext : IDisposable
     {
@@ -17,9 +18,13 @@ namespace Agenda.Infra.Data
         private readonly IClientSessionHandle _session;
         public AgendaContext()
         {
-            _mongoClient = new MongoClient(ScheduleIoConfigurationHelper.DataBaseConfig.ConnectionString);
+            if (DataBaseConfigurationHelper.DataBaseConfig.GetDataBaseType() != Configurations.Enums.EDataBaseType.MONGODB)
+                return;
+
+            var mongoDbConfig = (MongoDBConfig)DataBaseConfigurationHelper.DataBaseConfig;
+            _mongoClient = new MongoClient(mongoDbConfig.ConnectionString);
             _session = _mongoClient.StartSession();
-            _database = _mongoClient.GetDatabase(ScheduleIoConfigurationHelper.DataBaseConfig.DatabaseName);
+            _database = _mongoClient.GetDatabase(mongoDbConfig.DatabaseName);
             Map();
         }
 
@@ -51,7 +56,6 @@ namespace Agenda.Infra.Data
                 {
                     GuidRepresentation = GuidRepresentation.CSharpLegacy
                 });
-
         }
 
         internal IMongoCollection<Agenda.Domain.Models.Agenda> Agenda { get { return _database.GetCollection<Agenda.Domain.Models.Agenda>(typeof(Agenda.Domain.Models.Agenda).Name.ToLower()); } }

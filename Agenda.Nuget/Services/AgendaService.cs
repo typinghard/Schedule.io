@@ -26,9 +26,9 @@ namespace ScheduleIo.Nuget.Services
             _agendaRepository = agendaRepository;
         }
 
-        public Guid Criar(Models.Agenda agenda)
+        public string Criar(Models.Agenda agenda)
         {
-            var idAgenda = Guid.NewGuid();
+            var idAgenda = Guid.NewGuid().ToString();
             _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, "Primeiro teste", "Foi slc", true)).Wait();
             ValidarComando();
             return idAgenda;
@@ -44,7 +44,7 @@ namespace ScheduleIo.Nuget.Services
             throw new NotImplementedException();
         }
 
-        public Models.Agenda Obter(Guid agendaId)
+        public Models.Agenda Obter(string agendaId)
         {
             throw new NotImplementedException();
         }

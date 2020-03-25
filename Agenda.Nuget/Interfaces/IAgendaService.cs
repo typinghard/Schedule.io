@@ -6,7 +6,14 @@ namespace ScheduleIo.Nuget.Interfaces
 {
     public interface IAgendaService
     {
-        Guid Criar(Models.Agenda agenda);
+        string Criar(Models.Agenda agenda);
+
+
+
+
+
+
+
         void Editar(Models.Agenda agenda);
         void Excluir(Models.Agenda agenda);
         /// <summary>
@@ -14,7 +21,8 @@ namespace ScheduleIo.Nuget.Interfaces
         /// </summary>
         /// <param name="agendaId"></param>
         /// <returns></returns>
-        Models.Agenda Obter(Guid agendaId);
+        Models.Agenda Obter(string agendaId);
         IEnumerable<Models.Agenda> ObterTodas();
     }
 }
+

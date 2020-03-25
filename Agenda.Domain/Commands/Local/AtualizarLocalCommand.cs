@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
     public class AtualizarLocalCommand : LocalCommand
     {
-        public AtualizarLocalCommand(Guid id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaomaxima)
+        public AtualizarLocalCommand(string id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaomaxima)
         {
             this.Id = id;
             this.IdentificadorExterno = identificadorExterno;

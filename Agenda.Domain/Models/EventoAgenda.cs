@@ -9,12 +9,12 @@ namespace Agenda.Domain.Models
 {
     public class EventoAgenda : Entity, IAggregateRoot
     {
-        public Guid AgendaId { get; private set; }
+        public string AgendaId { get; private set; }
         public string IdentificadorExterno { get; set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
-        public IList<Guid> Pessoas { get; private set; }
-        public Guid? Local { get; private set; }
+        public IList<string> Pessoas { get; private set; }
+        public string Local { get; private set; }
         public DateTime DataInicio { get; private set; }
         public DateTime? DataFinal { get; private set; }
         public DateTime? DataLimiteConfirmacao { get; private set; }
@@ -24,7 +24,7 @@ namespace Agenda.Domain.Models
         public TipoEvento TipoEvento { get; private set; }
         public EnumFrequencia EnumFrequencia { get; private set; }
 
-        public EventoAgenda(Guid agendaId, string identificadorExterno, string titulo, string descricao, IList<Guid> pessoas, Guid? local,
+        public EventoAgenda(string agendaId, string identificadorExterno, string titulo, string descricao, IList<string> pessoas, string local,
                             DateTime dataInicio, DateTime? dataFinal,
                             DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario, bool eventoPublico,
                             TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
@@ -45,7 +45,7 @@ namespace Agenda.Domain.Models
             this.EnumFrequencia = enumFrequencia;
         }
 
-        public void DefinirAgenda(Guid agenda)
+        public void DefinirAgenda(string agenda)
         {
             if (agenda.EhVazio())
             {
@@ -91,7 +91,7 @@ namespace Agenda.Domain.Models
             this.Descricao = descricao;
         }
 
-        public void AdicionarPessoa(Guid pessoa)
+        public void AdicionarPessoa(string pessoa)
         {
             if (pessoa.EhVazio())
             {
@@ -101,7 +101,7 @@ namespace Agenda.Domain.Models
             Pessoas.Add(pessoa);
         }
 
-        public void DefinirLocal(Guid Local)
+        public void DefinirLocal(string Local)
         {
             if (Local.EhVazio())
             {

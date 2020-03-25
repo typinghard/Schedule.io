@@ -14,7 +14,7 @@ namespace ScheduleIo.Nuget.Services
         {
             _eventoAgendaRepository = eventoAgendaRepository;
         }
-        public Guid Criar(Evento evento)
+        public string Criar(Evento evento)
         {
             throw new NotImplementedException();
         }
@@ -29,7 +29,7 @@ namespace ScheduleIo.Nuget.Services
             throw new NotImplementedException();
         }
 
-        public Evento Obter(Guid eventoId)
+        public Evento Obter(string eventoId)
         {
             var eventoModel = _eventoAgendaRepository.ObterPorId(eventoId);
             var eventoVm = new Evento()

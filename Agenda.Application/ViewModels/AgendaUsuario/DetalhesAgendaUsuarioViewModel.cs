@@ -7,11 +7,11 @@ namespace Agenda.Application.ViewModels
 {
     public class DetalhesAgendaUsuarioViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [DisplayName("Id Agenda")]
-        public Guid AgendaId { get; set; }
+        public string AgendaId { get; set; }
         [DisplayName("Id Usuario")]
-        public Guid UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
     }
 }

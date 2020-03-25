@@ -7,9 +7,9 @@ namespace Agenda.Application.ViewModels
 {
     public class AtualizarEventoUsuarioViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         [DisplayName("Id Usuario")]
-        public Guid UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
         [DisplayName("Confirmação")]
         public bool Confirmacao { get; set; }
 

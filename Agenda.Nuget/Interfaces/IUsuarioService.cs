@@ -7,9 +7,9 @@ namespace ScheduleIo.Nuget.Interfaces
 {
     public interface IUsuarioService
     {
-        Guid Criar(Usuario usuario);
+        string Criar(Usuario usuario);
         void Editar(Usuario usuario);
         void Excluir(Usuario usuario);
-        void Obter(Guid usuarioId);
+        void Obter(string usuarioId);
     }
 }

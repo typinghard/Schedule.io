@@ -8,7 +8,7 @@ namespace ScheduleIo.Nuget.Services
 {
     internal class LocalService : ILocalService
     {
-        Guid ILocalService.Criar(Local local)
+        string ILocalService.Criar(Local local)
         {
             throw new NotImplementedException();
         }
@@ -23,7 +23,7 @@ namespace ScheduleIo.Nuget.Services
             throw new NotImplementedException();
         }
 
-        void ILocalService.Obter(Guid localId)
+        void ILocalService.Obter(string localId)
         {
             throw new NotImplementedException();
         }

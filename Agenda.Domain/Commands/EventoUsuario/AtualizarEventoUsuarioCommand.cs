@@ -8,7 +8,7 @@ namespace Agenda.Domain.Commands
 {
     public class AtualizarEventoUsuarioCommand : EventoUsuarioCommand
     {
-        public AtualizarEventoUsuarioCommand(Guid id, Guid usuarioId, bool confirmacao, Permissao permissao)
+        public AtualizarEventoUsuarioCommand(string id, string usuarioId, bool confirmacao, Permissao permissao)
         {
             this.Id = id;
             this.UsuarioId = usuarioId;

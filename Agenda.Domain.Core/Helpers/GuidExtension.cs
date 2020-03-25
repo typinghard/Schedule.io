@@ -6,9 +6,9 @@ namespace Agenda.Domain.Core.Helpers
 {
     public static class GuidExtension
     {
-        public static bool EhVazio(this Guid guid)
+        public static bool EhVazio(this string guid)
         {
-            return guid == Guid.Empty;
+            return string.IsNullOrEmpty(guid);
         }
 
     }

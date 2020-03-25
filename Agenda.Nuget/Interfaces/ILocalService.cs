@@ -7,9 +7,9 @@ namespace ScheduleIo.Nuget.Interfaces
 {
     public interface ILocalService
     {
-        Guid Criar(Local local);
+        string Criar(Local local);
         void Editar(Local local);
         void Excluir(Local local);
-        void Obter(Guid localId);
+        void Obter(string localId);
     }
 }

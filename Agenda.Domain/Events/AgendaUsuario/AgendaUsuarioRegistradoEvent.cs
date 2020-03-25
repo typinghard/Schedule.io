@@ -7,11 +7,11 @@ namespace Agenda.Domain.Events
 {
     public class AgendaUsuarioRegistradoEvent : Event
     {
-        public Guid Id { get; set; }
-        public Guid AgendaId { get; set; }
-        public Guid UsuarioId { get; set; }
+        public string Id { get; set; }
+        public string AgendaId { get; set; }
+        public string UsuarioId { get; set; }
 
-        public AgendaUsuarioRegistradoEvent(Guid id, Guid agendaId, Guid usuarioId)
+        public AgendaUsuarioRegistradoEvent(string id, string agendaId, string usuarioId)
         {
             this.Id = id;
             this.AggregateId = id;

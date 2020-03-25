@@ -33,7 +33,7 @@ namespace Agenda.Application.Services
 
 
 
-        public DetalhesAgendaUsuarioViewModel ObterPorId(Guid id)
+        public DetalhesAgendaUsuarioViewModel ObterPorId(string id)
         {
             return _mapper.Map<DetalhesAgendaUsuarioViewModel>(_agendaUsuarioRepository.ObterPorId(id));
         }
@@ -49,7 +49,7 @@ namespace Agenda.Application.Services
             Bus.EnviarComando(registrarCommand);
         }
 
-        public void Remover(Guid id)
+        public void Remover(string id)
         {
             var removerCommand = new RemoverAgendaUsuarioCommand(id);
             Bus.EnviarComando(removerCommand);

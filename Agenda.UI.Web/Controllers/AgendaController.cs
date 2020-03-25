@@ -4,14 +4,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ScheduleIo.Nuget.Interfaces;
 
 namespace Agenda.UI.Web.Controllers
 {
     public class AgendaController : Controller
     {
+        private readonly IScheduleIo _scheduleIo;
+        public AgendaController(IScheduleIo scheduleIo)
+        {
+            _scheduleIo = scheduleIo;
+        }
         // GET: Agenda
         public ActionResult Index()
         {
+            _scheduleIo.Agendas().Criar(new ScheduleIo.Nuget.Models.Agenda()
+            {
+                Id = Guid.NewGuid().ToString()
+            });
+
             return View();
         }
 

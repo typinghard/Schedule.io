@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agenda.Infra.CrossCutting.IoC\Agenda.Infra.CrossCutting.IoC.csproj" />
-    <ProjectReference Include="..\Agenda.Infra.Data\Agenda.Infra.Data.csproj" />
+    <ProjectReference Include="..\Agenda.Infra.Data\ScheduleIo.Infra.MongoDB.csproj" />
   </ItemGroup>
 
 </Project>

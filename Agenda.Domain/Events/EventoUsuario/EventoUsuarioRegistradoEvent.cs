@@ -6,12 +6,12 @@ namespace Agenda.Domain.Events
 {
     public class EventoUsuarioRegistradoEvent : Event
     {
-        public Guid Id { get; set; }
-        public Guid UsuarioId { get; set; }
+        public string Id { get; set; }
+        public string UsuarioId { get; set; }
         public bool Confirmacao { get; set; }
         public Permissao Permissao { get; set; }
 
-        public EventoUsuarioRegistradoEvent(Guid id, Guid usuarioId, bool confirmacao, Permissao permissao)
+        public EventoUsuarioRegistradoEvent(string id, string usuarioId, bool confirmacao, Permissao permissao)
         {
             this.Id = id;
             this.UsuarioId = usuarioId;

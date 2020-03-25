@@ -8,7 +8,7 @@ namespace ScheduleIo.Nuget.Services
 {
     internal class UsuarioService : IUsuarioService
     {
-        Guid IUsuarioService.Criar(Usuario usuario)
+        string IUsuarioService.Criar(Usuario usuario)
         {
             throw new NotImplementedException();
         }
@@ -23,7 +23,7 @@ namespace ScheduleIo.Nuget.Services
             throw new NotImplementedException();
         }
 
-        void IUsuarioService.Obter(Guid usuarioId)
+        void IUsuarioService.Obter(string usuarioId)
         {
             throw new NotImplementedException();
         }

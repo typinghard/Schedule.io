@@ -68,7 +68,7 @@ namespace Agenda.Domain.CommandHandlers
             eventoAgenda.DefinirTitulo(message.Titulo);
             eventoAgenda.DefinirDescricao(message.Descricao);
 
-            foreach (Guid pessoa in message.Pessoas)
+            foreach (string pessoa in message.Pessoas)
                 eventoAgenda.AdicionarPessoa(pessoa);
 
             eventoAgenda.DefinirLocal(message.Local);

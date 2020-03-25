@@ -4,7 +4,7 @@ namespace Agenda.Core.Data.EventSourcing
 {
     public class StoredEvent
     {
-        public StoredEvent(Guid id, Guid aggregatedId, string tipo, DateTime dataOcorrencia, string dados)
+        public StoredEvent(string id, string aggregatedId, string tipo, DateTime dataOcorrencia, string dados)
         {
             Id = id;
             AggregatedId = aggregatedId;
@@ -13,9 +13,9 @@ namespace Agenda.Core.Data.EventSourcing
             Dados = dados;
         }
 
-        public Guid Id { get; private set; }
+        public string Id { get; private set; }
 
-        public Guid AggregatedId { get; private set; }
+        public string AggregatedId { get; private set; }
 
         public string Tipo { get; private set; }
 

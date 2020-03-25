@@ -5,14 +5,14 @@ namespace Agenda.Domain.Events
 {
     public class LocalRegistradoEvent : Event
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string IdentificadorExterno { get; set; }
         public string NomeLocal { get; set; }
         public string Descricao { get; set; }
         public bool ReservaLocal { get; set; }
         public int LotacaoMaxima { get; set; }
 
-        public LocalRegistradoEvent(Guid id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaoMaxima)
+        public LocalRegistradoEvent(string id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaoMaxima)
         {
             this.Id = id;
             this.AggregateId = id;

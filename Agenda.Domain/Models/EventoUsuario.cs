@@ -8,12 +8,12 @@ namespace Agenda.Domain.Models
 {
     public class EventoUsuario : Entity, IAggregateRoot
     {
-        public Guid UsuarioId { get; private set; }
+        public string UsuarioId { get; private set; }
         public bool Confirmacao { get; private set; }
 
         public Permissao Permissao { get; private set; }
 
-        public EventoUsuario(Guid usuarioId, bool confirmacao, Permissao permissao)
+        public EventoUsuario(string usuarioId, bool confirmacao, Permissao permissao)
         {
             UsuarioId = usuarioId;
             Confirmacao = confirmacao;
@@ -38,7 +38,7 @@ namespace Agenda.Domain.Models
             Confirmacao = false;
         }
 
-        public void DefinirUsuarioId(Guid usuarioId)
+        public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())
             {

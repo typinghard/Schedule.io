@@ -9,10 +9,10 @@ namespace Agenda.Application.Interfaces
     {
         void Registrar(CriarUsuarioViewModel usuarioViewModel);
         IEnumerable<DetalhesUsuarioViewModel> ObterTodosUsuariosAtivos();
-        DetalhesUsuarioViewModel ObterPorId(Guid id);
+        DetalhesUsuarioViewModel ObterPorId(string id);
         void Atualizar(AtualizarUsuarioViewModel usuarioViewModel);
-        void Remover(Guid id);
-        //IList<CustomerHistoryData> GetAllHistory(Guid id);
+        void Remover(string id);
+        //IList<CustomerHistoryData> GetAllHistory(string id);
 
         void Dispose();
     }

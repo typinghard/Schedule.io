@@ -1,11 +1,10 @@
 ﻿using Agenda.Domain.Models;
-using Agenda.Infra.Data.MongoDB;
 using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Agenda.Infra.Data
+namespace ScheduleIo.Infra.MongoDB
 {
     public class AgendaMap : MongoMap<EventoAgenda>
     {

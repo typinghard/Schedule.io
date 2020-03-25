@@ -7,10 +7,10 @@ namespace Agenda.Domain.Events
 {
    public class UsuarioAtualizadoEvent : Event
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string UsuarioEmail { get; set; }
 
-        public UsuarioAtualizadoEvent(Guid id, string usuarioEmail)
+        public UsuarioAtualizadoEvent(string id, string usuarioEmail)
         {
             this.Id = id;
             this.AggregateId = id;

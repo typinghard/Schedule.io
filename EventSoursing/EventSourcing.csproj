@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agenda.Domain.Core\Agenda.Domain.Core.csproj" />
-    <ProjectReference Include="..\Agenda.Infra.Data.MongoDB\Agenda.Infra.Data.MongoDB.csproj" />
+    <ProjectReference Include="..\Agenda.Infra.Data\ScheduleIo.Infra.MongoDB.csproj" />
   </ItemGroup>
 
 </Project>

@@ -30,10 +30,5 @@ namespace Agenda.Domain.Core.Messages.CommonMessages.Notifications
         {
             return ObterNotificacoes().Any();
         }
-
-        public void Dispose()
-        {
-            _notifications = new List<DomainNotification>();
-        }
     }
 }

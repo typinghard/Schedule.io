@@ -8,6 +8,6 @@ namespace Agenda.Core.Data.EventSourcing
     public interface IEventSourcingRepository
     {
         void SalvarEvento<TEvent>(TEvent evento) where TEvent : Event;
-        IList<StoredEvent> ObterEventos(Guid aggregateId);
+        IList<StoredEvent> ObterEventos(string aggregateId);
     }
 }

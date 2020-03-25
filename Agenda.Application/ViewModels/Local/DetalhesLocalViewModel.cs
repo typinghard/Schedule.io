@@ -7,7 +7,7 @@ namespace Agenda.Application.ViewModels
 {
    public class DetalhesLocalViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         [DisplayName("Id Externo")]
         public string IdentificadorExterno { get; set; }
         [DisplayName("Nome do Local")]

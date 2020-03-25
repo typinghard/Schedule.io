@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
     public class RegistrarAgendaUsuarioCommand : AgendaUsuarioCommand
     {
-        public RegistrarAgendaUsuarioCommand(Guid agendaId, Guid usuarioId)
+        public RegistrarAgendaUsuarioCommand(string agendaId, string usuarioId)
         {
             this.AgendaId = agendaId;
             this.UsuarioId = usuarioId;

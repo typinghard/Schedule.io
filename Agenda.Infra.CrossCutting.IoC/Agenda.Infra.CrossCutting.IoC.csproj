@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,9 +12,8 @@
     <ProjectReference Include="..\Agenda.Application\Agenda.Application.csproj" />
     <ProjectReference Include="..\Agenda.Domain.Core\Agenda.Domain.Core.csproj" />
     <ProjectReference Include="..\Agenda.Domain\Agenda.Domain.csproj" />
-    <ProjectReference Include="..\Agenda.Infra.Data.MongoDB\Agenda.Infra.Data.MongoDB.csproj" />
-    <ProjectReference Include="..\Agenda.Infra.Data\Agenda.Infra.Data.csproj" />
-    <ProjectReference Include="..\EventSoursing\EventSoursing.csproj" />
+    <ProjectReference Include="..\Agenda.Infra.Data\ScheduleIo.Infra.MongoDB.csproj" />
+    <ProjectReference Include="..\ScheduleIo.Infra.RavenDB\ScheduleIo.Infra.RavenDB.csproj" />
   </ItemGroup>
 
 </Project>

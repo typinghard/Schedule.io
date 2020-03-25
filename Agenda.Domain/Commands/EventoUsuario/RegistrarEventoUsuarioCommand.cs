@@ -8,7 +8,7 @@ namespace Agenda.Domain.Commands
 {
     public class RegistrarEventoUsuarioCommand : EventoUsuarioCommand
     {
-        public RegistrarEventoUsuarioCommand(Guid usuarioId, bool confirmacao, Permissao permissao)
+        public RegistrarEventoUsuarioCommand(string usuarioId, bool confirmacao, Permissao permissao)
         {
             this.UsuarioId = usuarioId;
             this.Confirmacao = confirmacao;

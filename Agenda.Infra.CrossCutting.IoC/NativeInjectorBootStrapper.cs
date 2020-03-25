@@ -8,16 +8,11 @@ using Agenda.Domain.Core.Messages.CommonMessages.Notifications;
 using Agenda.Domain.EventHandlers;
 using Agenda.Domain.Events;
 using Agenda.Domain.Interfaces;
-using Agenda.Infra.Data;
-using Agenda.Infra.Data.MongoDB.Connection;
-using Agenda.Infra.Data.MongoDB.Interface.Connection;
-using Agenda.Infra.Data.UoW;
-using EventSoursing;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ScheduleIo.Infra.Configurations;
+using ScheduleIo.Infra.MongoDB.EventSourcing;
+using ScheduleIo.Infra.RavenDB.EventSourcing;
 
 namespace Agenda.Infra.CrossCutting.IoC
 {
@@ -25,31 +20,23 @@ namespace Agenda.Infra.CrossCutting.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            //MongoDB
-            services.AddScoped<IConnect, Connect>();
-            services.AddScoped<IConfig, Config>();
+            services.AddScoped<ScheduleIo.Infra.MongoDB.AgendaContext>();
+            switch (DataBaseConfigurationHelper.DataBaseConfig.GetDataBaseType())
+            {
+                case ScheduleIo.Infra.Configurations.Enums.EDataBaseType.MONGODB:
+                    RegisterMongoDbServices(services);
+                    break;
+                case ScheduleIo.Infra.Configurations.Enums.EDataBaseType.RAVENDB:
+                    RegisterRavenDbServices(services);
+                    break;
+            }
 
             // Mediator
             services.AddScoped<IMediatorHandler, MediatorHandler>();
 
             // Notifications
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
-
-            //Event Sourcing
-            services.AddScoped<IEventStoreService, EventStoreService>();
-            services.AddScoped<IEventSourcingRepository, EventSourcingRepository>();
-
-            //Evento Agenda Context
-            services.AddScoped<AgendaContext>();
-
-            //Repository
-            services.AddScoped<IAgendaRepository, AgendaRepository>();
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();
-            services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
-            services.AddScoped<IEventoUsuarioRepository, EventoUsuarioRepository>();
-            services.AddScoped<ILocalRepository, LocalRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
 
             // Application
             services.AddScoped<IAgendaAppService, AgendaAppService>();
@@ -59,7 +46,8 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IEventoUsuarioAppService, EventoUsuarioAppService>();
             services.AddScoped<ILocalAppService, LocalAppService>();
 
-            // Domain - Events
+            /* ASSIM COMO NO CONDOMINIO_SERVICE, NÃO DEVE SER NECESSÁRIO ADICIONAR EVENTO OU COMANDOS */
+            //Domain - Events
             services.AddScoped<INotificationHandler<AgendaRegistradaEvent>, AgendaEventHandler>();
             services.AddScoped<INotificationHandler<AgendaAtualizadaEvent>, AgendaEventHandler>();
             services.AddScoped<INotificationHandler<AgendaRemovidaEvent>, AgendaEventHandler>();
@@ -108,6 +96,32 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<RegistrarLocalCommand, bool>, LocalCommandHandler>();
             services.AddScoped<IRequestHandler<AtualizarLocalCommand, bool>, LocalCommandHandler>();
             services.AddScoped<IRequestHandler<RemoverLocalCommand, bool>, LocalCommandHandler>();
+        }
+
+        private static void RegisterMongoDbServices(IServiceCollection services)
+        {
+            services.AddScoped<IEventSourcingRepository, ScheduleIo.Infra.MongoDB.EventSourcing.EventSourcingRepository>();
+
+            
+            services.AddScoped<IAgendaRepository, ScheduleIo.Infra.MongoDB.AgendaRepository>();
+            services.AddScoped<IUsuarioRepository, ScheduleIo.Infra.MongoDB.UsuarioRepository>();
+            services.AddScoped<IAgendaUsuarioRepository, ScheduleIo.Infra.MongoDB.AgendaUsuarioRepository>();
+            services.AddScoped<IEventoAgendaRepository, ScheduleIo.Infra.MongoDB.EventoAgendaRepository>();
+            services.AddScoped<IEventoUsuarioRepository, ScheduleIo.Infra.MongoDB.EventoUsuarioRepository>();
+            services.AddScoped<ILocalRepository, ScheduleIo.Infra.MongoDB.LocalRepository>();
+            services.AddScoped<IUnitOfWork, ScheduleIo.Infra.MongoDB.UoW.UnitOfWork>();
+        }
+        private static void RegisterRavenDbServices(IServiceCollection services)
+        {
+            services.AddScoped<IEventSourcingRepository, ScheduleIo.Infra.RavenDB.EventSourcing.EventSourcingRepository>();
+
+            services.AddScoped<IAgendaRepository, ScheduleIo.Infra.RavenDB.AgendaRepository>();
+            services.AddScoped<IUsuarioRepository, ScheduleIo.Infra.RavenDB.UsuarioRepository>();
+            services.AddScoped<IAgendaUsuarioRepository, ScheduleIo.Infra.RavenDB.AgendaUsuarioRepository>();
+            services.AddScoped<IEventoAgendaRepository, ScheduleIo.Infra.RavenDB.EventoAgendaRepository>();
+            services.AddScoped<IEventoUsuarioRepository, ScheduleIo.Infra.RavenDB.EventoUsuarioRepository>();
+            services.AddScoped<ILocalRepository, ScheduleIo.Infra.RavenDB.LocalRepository>();
+            services.AddScoped<IUnitOfWork, ScheduleIo.Infra.RavenDB.UoW.UnitOfWork>();
         }
     }
 }

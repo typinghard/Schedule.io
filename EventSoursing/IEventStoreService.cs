@@ -1,9 +1,9 @@
-﻿using EventStore.ClientAPI;
+﻿//using EventStore.ClientAPI;
 
-namespace EventSoursing
-{
-    public interface IEventStoreService
-    {
-        IEventStoreConnection GetConnection();
-    }
-}
+//namespace EventSoursing
+//{
+//    public interface IEventStoreService
+//    {
+//        IEventStoreConnection GetConnection();
+//    }
+//}

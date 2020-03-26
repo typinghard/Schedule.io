@@ -6,9 +6,9 @@ namespace Agenda.Domain.Events
 {
     public class LocalRemovidoEvent : Event
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public LocalRemovidoEvent(Guid id)
+        public LocalRemovidoEvent(string id)
         {
             this.Id = id;
             this.AggregateId = id;

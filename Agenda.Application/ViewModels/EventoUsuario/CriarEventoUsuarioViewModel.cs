@@ -9,12 +9,12 @@ namespace Agenda.Application.ViewModels
     public class CriarEventoUsuarioViewModel
     {
         [DisplayName("Id Usuario")]
-        public Guid UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
         [DisplayName("Confirmação")]
         public bool Confirmacao { get; set; }
 
-        [DisplayName("Permissões")]
-        public PermissaoViewModel PermissaoViewModel { get; set; }
+        //[DisplayName("Permissões")]
+        //public PermissaoViewModel PermissaoViewModel { get; set; }
     }
 
 }

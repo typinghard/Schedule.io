@@ -4,6 +4,6 @@ namespace Agenda.Application.ViewModels
 {
     public class DeletarUsuarioViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

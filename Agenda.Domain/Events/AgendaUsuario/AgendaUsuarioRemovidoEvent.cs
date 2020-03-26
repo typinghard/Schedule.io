@@ -7,9 +7,9 @@ namespace Agenda.Domain.Events
 {
     public class AgendaUsuarioRemovidoEvent : Event
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public AgendaUsuarioRemovidoEvent(Guid id)
+        public AgendaUsuarioRemovidoEvent(string id)
         {
             this.Id = id;
             this.AggregateId = id;

@@ -29,7 +29,7 @@ namespace Agenda.Domain.Validations
 
         protected void ValidaTipoEvento()
         {
-            RuleFor(c => c.TipoEvento)
+            RuleFor(c => c.Tipo)
                 .NotNull().WithMessage("Por favor, cetifique-se de que escolher o Tipo do Evento.");
         }
 
@@ -50,7 +50,7 @@ namespace Agenda.Domain.Validations
         protected void ValidateId()
         {
             RuleFor(c => c.Id)
-                .NotEqual(Guid.Empty);
+                .NotEmpty();
         }
 
         protected static bool HaveMinimumAge(DateTime birthDate)

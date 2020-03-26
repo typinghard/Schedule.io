@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Agenda.Infra.Data
+namespace ScheduleIo.Infra.MongoDB
 {
     public class LocalRepository : Repository<Local>, ILocalRepository
     {

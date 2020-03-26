@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using MediatR;
+using ScheduleIo.Infra.RavenDB.Configs;
+using ScheduleIo.Nuget;
 
 namespace Agenda.UI.Web
 {
@@ -37,6 +39,11 @@ namespace Agenda.UI.Web
 
             services.AddMediatR(typeof(EventoAgendaRegistradoEvent));
             services.AddMediatR(typeof(Startup));
+
+            services.AddScheduleIo(new ScheduleIo.Nuget.Models.ScheduleIoConfigurations(
+                new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" }, "Schedule.io", @"D:\Área de Trabalho\free.elvis.client.certificate\free.elvis.client.certificate.pfx"),
+                false
+                ));
 
             RegisterServices(services);
         }

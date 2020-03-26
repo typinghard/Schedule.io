@@ -9,10 +9,10 @@ namespace Agenda.Application.AutoMapper
     {
         public DomainToViewModelMappingProfile()
         {
-            CreateMap<Agenda.Domain.Models.Agenda, DetalhesAgendaViewModel>();
-            CreateMap<Agenda.Domain.Models.Agenda, CriarAgendaViewModel>();
-            CreateMap<Agenda.Domain.Models.Agenda, AtualizarAgendaViewModel>();
-            CreateMap<Agenda.Domain.Models.Agenda, DeletarAgendaViewModel>();
+            CreateMap<Domain.Models.Agenda, DetalhesAgendaViewModel>();
+            CreateMap<Domain.Models.Agenda, CriarAgendaViewModel>();
+            CreateMap<Domain.Models.Agenda, AtualizarAgendaViewModel>();
+            CreateMap<Domain.Models.Agenda, DeletarAgendaViewModel>();
 
             CreateMap<Usuario, DetalhesUsuarioViewModel>();
             CreateMap<Usuario, CriarUsuarioViewModel>();
@@ -29,10 +29,10 @@ namespace Agenda.Application.AutoMapper
             CreateMap<EventoAgenda, AtualizarEventoAgendaViewModel>();
             CreateMap<EventoAgenda, DeletarEventoAgendaViewModel>();
 
-            CreateMap<EventoUsuario, DetalhesEventoUsuarioViewModel>();
-            CreateMap<EventoUsuario, CriarEventoUsuarioViewModel>();
-            CreateMap<EventoUsuario, AtualizarEventoUsuarioViewModel>();
-            CreateMap<EventoUsuario, DeletarEventoUsuarioViewModel>();
+            CreateMap<Convite, DetalhesConviteViewModel>();
+            CreateMap<Convite, CriarConviteViewModel>();
+            CreateMap<Convite, AtualizarConviteViewModel>();
+            CreateMap<Convite, DeletarConviteViewModel>();
 
             CreateMap<Local, DetalhesLocalViewModel>();
             CreateMap<Local, CriarLocalViewModel>();

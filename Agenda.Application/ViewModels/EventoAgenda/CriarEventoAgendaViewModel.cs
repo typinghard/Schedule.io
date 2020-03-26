@@ -10,7 +10,7 @@ namespace Agenda.Application.ViewModels
    public class CriarEventoAgendaViewModel
     {
         [DisplayName("Agenda")]
-        public Guid AgendaId { get; set; }
+        public string AgendaId { get; set; }
         [DisplayName("Identificador Externo")]
         public string IdentificadorExterno { get; set; }
         [DisplayName("Título")]
@@ -18,7 +18,7 @@ namespace Agenda.Application.ViewModels
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
         [DisplayName("Pessoas")]
-        public IList<Guid> Pessoas { get; set; }
+        public IList<string> Pessoas { get; set; }
         [DisplayName("Endereço")]
         public Guid? Local { get; set; }
         [DisplayName("Data do Evento")]

@@ -43,7 +43,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new UsuarioRegistradoEvent(usuario.Id, usuario.UsuarioEmail));
+                Bus.PublicarEvento(new UsuarioRegistradoEvent(usuario.Id, usuario.Email));
             }
 
             return Task.FromResult(true);
@@ -69,7 +69,7 @@ namespace Agenda.Domain.CommandHandlers
             _usuarioRepository.Atualizar(usuario);
             if (Commit())
             {
-                Bus.PublicarEvento(new UsuarioAtualizadoEvent(usuario.Id, usuario.UsuarioEmail));
+                Bus.PublicarEvento(new UsuarioAtualizadoEvent(usuario.Id, usuario.Email));
             }
 
             return Task.FromResult(true);

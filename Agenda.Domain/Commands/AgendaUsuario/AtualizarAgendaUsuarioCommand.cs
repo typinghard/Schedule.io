@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
    public class AtualizarAgendaUsuarioCommand : AgendaUsuarioCommand
     {
-        public AtualizarAgendaUsuarioCommand(Guid id, Guid agendaId, Guid usuarioId)
+        public AtualizarAgendaUsuarioCommand(string id, string agendaId, string usuarioId)
         {
             this.Id = id;
             this.AggregateId = id;

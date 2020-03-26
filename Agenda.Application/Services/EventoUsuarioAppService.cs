@@ -13,11 +13,11 @@ namespace Agenda.Application.Services
     public class EventoUsuarioAppService : IEventoUsuarioAppService
     {
         private readonly IMapper _mapper;
-        private readonly IEventoUsuarioRepository _eventoUsuarioRepository;
+        private readonly IConviteRepository _eventoUsuarioRepository;
         private readonly IMediatorHandler Bus;
 
-        public EventoUsuarioAppService(IMapper mapper, 
-                                       IEventoUsuarioRepository eventoUsuarioRepository, 
+        public EventoUsuarioAppService(IMapper mapper,
+                                       IConviteRepository eventoUsuarioRepository, 
                                        IMediatorHandler bus)
         {
             _mapper = mapper;
@@ -25,31 +25,31 @@ namespace Agenda.Application.Services
             Bus = bus;
         }
 
-        public void Atualizar(AtualizarEventoUsuarioViewModel eventoUsuarioViewModel)
-        {
-            var atualizarCommand = _mapper.Map<AtualizarEventoUsuarioCommand>(eventoUsuarioViewModel);
-            Bus.EnviarComando(atualizarCommand);
-        }
+        //public void Atualizar(AtualizarEventoUsuarioViewModel eventoUsuarioViewModel)
+        //{
+        //    var atualizarCommand = _mapper.Map<AtualizarEventoUsuarioCommand>(eventoUsuarioViewModel);
+        //    Bus.EnviarComando(atualizarCommand);
+        //}
 
-        public DetalhesEventoUsuarioViewModel ObterPorId(Guid id)
-        {
-            return _mapper.Map<DetalhesEventoUsuarioViewModel>(_eventoUsuarioRepository.ObterPorId(id));
-        }
+        //public DetalhesEventoUsuarioViewModel ObterPorId(string id)
+        //{
+        //    return _mapper.Map<DetalhesEventoUsuarioViewModel>(_eventoUsuarioRepository.ObterPorId(id));
+        //}
 
-        public IEnumerable<DetalhesEventoUsuarioViewModel> ObterTodosEventosUsuarioAtivos()
-        {
-            return _mapper.Map<IEnumerable<DetalhesEventoUsuarioViewModel>>(_eventoUsuarioRepository.ObterTodosAtivos());
-        }
+        //public IEnumerable<DetalhesEventoUsuarioViewModel> ObterTodosEventosUsuarioAtivos()
+        //{
+        //    return _mapper.Map<IEnumerable<DetalhesEventoUsuarioViewModel>>(_eventoUsuarioRepository.ObterTodosAtivos());
+        //}
 
         public void Registrar(CriarEventoUsuarioViewModel eventoUsuarioViewModel)
         {
-            var registrarCommand = _mapper.Map<RegistrarEventoUsuarioCommand>(eventoUsuarioViewModel);
+            var registrarCommand = _mapper.Map<RegistrarConviteCommand>(eventoUsuarioViewModel);
             Bus.EnviarComando(registrarCommand);
         }
 
-        public void Remover(Guid id)
+        public void Remover(string id)
         {
-            var removerCommand = new RemoverEventoUsuarioCommand(id);
+            var removerCommand = new RemoverConviteCommand(id);
             Bus.EnviarComando(removerCommand);
         }
 

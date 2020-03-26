@@ -37,8 +37,14 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Agenda.Domain.Models.Agenda agenda = new Agenda.Domain.Models.Agenda(message.Titulo, message.Descricao, message.Publico);
+            Models.Agenda agenda = new Models.Agenda(message.Titulo);
             _agendaRepository.Adicionar(agenda);
+
+            if (!string.IsNullOrEmpty(message.Descricao))
+                agenda.DefinirDescricao(message.Descricao);
+
+            if (message.Publico)
+                agenda.TornarAgendaPublica();
 
             if (Commit())
             {
@@ -56,7 +62,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Agenda.Domain.Models.Agenda agenda = _agendaRepository.ObterPorId(message.Id);
+            Models.Agenda agenda = _agendaRepository.ObterPorId(message.Id);
             if (agenda == null)
             {
                 Bus.PublicarNotificacao(new DomainNotification("agenda", "Agenda não encontrada pelo Id!")).Wait();
@@ -64,7 +70,14 @@ namespace Agenda.Domain.CommandHandlers
             }
 
             agenda.DefinirTitulo(message.Titulo);
-            agenda.DefinirDescricao(message.Descricao);
+
+            if (!string.IsNullOrEmpty(message.Descricao))
+                agenda.DefinirDescricao(message.Descricao);
+
+            if (message.Publico)
+                agenda.TornarAgendaPublica();
+            else
+                agenda.TornarAgendaPrivado();
 
             _agendaRepository.Atualizar(agenda);
             if (Commit())

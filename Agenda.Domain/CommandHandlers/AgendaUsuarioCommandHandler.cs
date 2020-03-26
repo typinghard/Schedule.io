@@ -43,7 +43,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId));
+                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId/*, agendaUsuario.Permissoes*/));
             }
 
             return Task.FromResult(true);
@@ -64,13 +64,14 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            agendaUsuario.DefinirAgendaId(message.AgendaId);
-            agendaUsuario.DefinirUsuarioId(message.UsuarioId);
+            _agendaUsuarioRepository.Remover(agendaUsuario);
+            Bus.PublicarEvento(new AgendaUsuarioRemovidoEvent(agendaUsuario.Id)).Wait();
 
-            _agendaUsuarioRepository.Atualizar(agendaUsuario);
+            AgendaUsuario novoAgendaUsuario = new AgendaUsuario(message.AgendaId, message.UsuarioId);
+            _agendaUsuarioRepository.Adicionar(novoAgendaUsuario);
             if (Commit())
             {
-                Bus.PublicarEvento(new AgendaUsuarioAtualizadoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId));
+                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId/*, agendaUsuario.Permissoes*/));
             }
 
             return Task.FromResult(true);

@@ -6,6 +6,6 @@ namespace Agenda.Application.ViewModels
 {
     public class DeletarLocalViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
     }
 }

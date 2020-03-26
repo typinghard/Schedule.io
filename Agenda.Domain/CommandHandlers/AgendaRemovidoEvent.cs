@@ -4,9 +4,9 @@ namespace Agenda.Domain.CommandHandlers
 {
     internal class AgendaRemovidoEvent
     {
-        private Guid id;
+        private string id;
 
-        public AgendaRemovidoEvent(Guid id)
+        public AgendaRemovidoEvent(string id)
         {
             this.id = id;
         }

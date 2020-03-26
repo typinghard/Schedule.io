@@ -2,6 +2,8 @@
 using Agenda.Domain.Core.Helpers;
 using Agenda.Domain.Validations;
 using FluentValidation.Results;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -15,7 +17,7 @@ namespace Agenda.Domain.Models
 
         public bool Publico { get; private set; }
 
-        public Agenda(string titulo)
+        public Agenda(Guid id, string titulo) : base(id)
         {
             Titulo = titulo;
 

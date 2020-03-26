@@ -14,7 +14,7 @@ namespace Agenda.Domain.Commands
         public string IdentificadorExterno { get; protected set; }
         public string Titulo { get; protected set; }
         public string Descricao { get; protected set; }
-        public IList<Guid> Usuarios { get; protected set; }
+        public IList<Convite> Convites { get; set; }
         public Guid Local { get; protected set; }
         public DateTime DataInicio { get; protected set; }
         public DateTime? DataFinal { get; protected set; }

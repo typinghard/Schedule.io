@@ -17,7 +17,7 @@ namespace Agenda.Domain.Models
         public EnumStatusConviteEvento Status { get; private set; }
         public PermissoesConvite Permissoes { get; private set; }
 
-        public Convite(Guid eventoId, Guid usuarioId)
+        public Convite(Guid id, Guid eventoId, Guid usuarioId) : base(id)
         {
             EventoId = eventoId;
             UsuarioId = usuarioId;

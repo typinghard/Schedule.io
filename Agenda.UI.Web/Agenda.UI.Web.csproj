@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Agenda.Infra.CrossCutting.IoC\Agenda.Infra.CrossCutting.IoC.csproj" />
+    <ProjectReference Include="..\Agenda.Nuget\ScheduleIo.Nuget.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -2,21 +2,22 @@
 using Agenda.Domain.Core.Helpers;
 using Agenda.Domain.Validations;
 using FluentValidation.Results;
+using System;
 using System.Linq;
 
 namespace Agenda.Domain.Models
 {
     public class Local : Entity, IAggregateRoot
     {
-        public string IdentificadorExterno { get; private set; } 
-        public string NomeLocal { get; private set; }
+        public string IdentificadorExterno { get; private set; }
+        public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public bool ReservaLocal { get; private set; } 
+        public bool Reserva { get; private set; }
         public int LotacaoMaxima { get; private set; }
 
-        public Local(string nomeLocal)
+        public Local(Guid id, string nomeLocal) : base(id)
         {
-            this.NomeLocal = nomeLocal;
+            this.Nome = nomeLocal;
 
             var resultadoValidacao = this.NovoLocalEhValido();
             if (!resultadoValidacao.IsValid)
@@ -30,7 +31,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("O nome do local deve ter entre 2 e 200 caracteres.");
             }
 
-            this.NomeLocal = nomeLocal;
+            this.Nome = nomeLocal;
         }
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
@@ -54,12 +55,12 @@ namespace Agenda.Domain.Models
 
         public void ReservarLocal()
         {
-            this.ReservaLocal = true;
+            this.Reserva = true;
         }
 
         public void RemoverReservaLocal()
         {
-            this.ReservaLocal = false;
+            this.Reserva = false;
         }
 
         public void DefinirLotacaoMaxima(int lotacaoMaxima)

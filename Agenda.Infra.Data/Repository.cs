@@ -16,6 +16,10 @@ namespace Agenda.Infra.Data
         public Repository(AgendaContext context)
         {
             Db = context;
+
+            if (!Db.Session.IsInTransaction)
+                Db.Session.StartTransaction();
+
             _collection = Db.Set<TEntity>();
         }
 
@@ -32,7 +36,7 @@ namespace Agenda.Infra.Data
 
         public TEntity ObterPorId(Guid id)
         {
-            return _collection.Find(t => t.Id == id).FirstOrDefault();
+            return _collection.Find(t => t.Id == id && t.Inativo == false).FirstOrDefault();
         }
 
 

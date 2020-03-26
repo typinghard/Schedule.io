@@ -10,9 +10,9 @@ namespace Agenda.Domain.Core.DomainObjects
 
         public bool Inativo { get; protected set; }
 
-        public Entity()
+        public Entity(Guid id)
         {
-            Id = Guid.NewGuid();
+            Id = id;
         }
 
         public void Inativar()

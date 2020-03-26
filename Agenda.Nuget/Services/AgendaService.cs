@@ -8,17 +8,15 @@ using ScheduleIo.Nuget.Interfaces;
 using ScheduleIo.Nuget.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ScheduleIo.Nuget.Services
 {
-    internal class AgendaService : ServiceBase, IAgendaService 
+    internal class AgendaService : ServiceBase, IAgendaService
     {
         private readonly IAgendaRepository _agendaRepository;
         private readonly IMediatorHandler _bus;
         public AgendaService(
-            IAgendaRepository agendaRepository, 
+            IAgendaRepository agendaRepository,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications) : base(notifications)
         {
@@ -26,37 +24,72 @@ namespace ScheduleIo.Nuget.Services
             _agendaRepository = agendaRepository;
         }
 
-        public Guid Criar(Models.Agenda agenda)
+        public bool Excluir(Guid id)
         {
-            var idAgenda = Guid.NewGuid();
-            _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, "Primeiro teste", "Foi slc", true)).Wait();
+            _bus.EnviarComando(new RemoverAgendaCommand(id)).Wait();
+            ValidarComando();
+            return true;
+        }
+
+        public Guid Gravar(Models.Agenda agenda)
+        {
+            var idAgenda = Guid.Empty;
+            if (agenda.Id == Guid.Empty)
+            {
+                idAgenda = Guid.NewGuid();
+                _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
+            }
+            else
+            {
+                idAgenda = agenda.Id;
+                _bus.EnviarComando(new AtualizarAgendaCommand(agenda.Id, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
+            }
+
             ValidarComando();
             return idAgenda;
         }
 
-        public void Editar(Models.Agenda agenda)
+        public bool Inativar(Guid agendaId)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Excluir(Models.Agenda agenda)
-        {
-            throw new NotImplementedException();
+            var agenda = _agendaRepository.ObterPorId(agendaId);
+            _agendaRepository.Remover(agenda);
+            ValidarComando();
+            return true;
         }
 
         public Models.Agenda Obter(Guid agendaId)
         {
-            throw new NotImplementedException();
+            var agenda = _agendaRepository.ObterPorId(agendaId);
+
+            if (agenda == null)
+            {
+                throw new ScheduleIoException(new List<string>() { "Agenda não encontrada!" });
+            }
+
+            return new Models.Agenda()
+            {
+                Id = agenda.Id,
+                CriadoAs = agenda.CriadoAs,
+                AtualizadoAs = agenda.AtualizadoAs,
+                Titulo = agenda.Titulo,
+                Descricao = agenda.Descricao,
+                Publico = agenda.Publico
+            };
         }
 
         public IEnumerable<Models.Agenda> ObterTodas()
         {
             var agendas = _agendaRepository.ObterTodosAtivos();
-            foreach(var agenda in agendas) 
+            foreach (var agenda in agendas)
             {
                 yield return new Models.Agenda()
                 {
-                    Id = agenda.Id
+                    Id = agenda.Id,
+                    CriadoAs = agenda.CriadoAs,
+                    AtualizadoAs = agenda.AtualizadoAs,
+                    Titulo = agenda.Titulo,
+                    Descricao = agenda.Descricao,
+                    Publico = agenda.Publico
                 };
             }
         }

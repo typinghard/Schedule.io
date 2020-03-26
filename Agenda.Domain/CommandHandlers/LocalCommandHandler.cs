@@ -38,7 +38,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Local local = new Local(message.NomeLocal);
+            Local local = new Local(message.Id, message.NomeLocal);
 
             if (!string.IsNullOrEmpty(message.IdentificadorExterno))
                 local.DefinirIdentificadorExterno(message.IdentificadorExterno);
@@ -58,7 +58,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new LocalRegistradoEvent(local.Id, local.IdentificadorExterno, local.NomeLocal, local.Descricao, local.ReservaLocal, local.LotacaoMaxima));
+                Bus.PublicarEvento(new LocalRegistradoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
             }
 
             return Task.FromResult(true);
@@ -97,7 +97,7 @@ namespace Agenda.Domain.CommandHandlers
             _localRepository.Atualizar(local);
             if (Commit())
             {
-                Bus.PublicarEvento(new LocalAtualizadoEvent(local.Id, local.IdentificadorExterno, local.NomeLocal, local.Descricao, local.ReservaLocal, local.LotacaoMaxima));
+                Bus.PublicarEvento(new LocalAtualizadoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
             }
 
             return Task.FromResult(true);

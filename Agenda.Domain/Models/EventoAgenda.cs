@@ -13,14 +13,15 @@ namespace Agenda.Domain.Models
     public class EventoAgenda : Entity, IAggregateRoot
     {
         public Guid AgendaId { get; private set; }
-        public string IdentificadorExterno { get; set; }
+        public Guid UsuarioId { get; private set; }
+        public string IdentificadorExterno { get; private set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
-        public IList<Guid> Usuarios { get; private set; } 
-        public IList<Convite> Convites { get; private set; }
+        public IReadOnlyCollection<Convite> Convites { get { return _convites; } }
+        private List<Convite> _convites { get; set; }
         public Guid? Local { get; private set; }
         public DateTime DataInicio { get; private set; }
-        public DateTime? DataFinal { get; private set; } // Não obrigatório = padrão data final no mesmo dia.
+        public DateTime? DataFinal { get; private set; }
         public DateTime? DataLimiteConfirmacao { get; private set; }
         public int QuantidadeMinimaDeUsuarios { get; private set; }
         public bool OcupaUsuario { get; private set; }
@@ -28,7 +29,7 @@ namespace Agenda.Domain.Models
         public TipoEvento Tipo { get; private set; }
         public EnumFrequencia Frequencia { get; private set; }
 
-        public EventoAgenda(Guid agendaId, string titulo,  DateTime dataInicio, TipoEvento tipoEvento)
+        public EventoAgenda(Guid id, Guid agendaId, string titulo, DateTime dataInicio, TipoEvento tipoEvento) : base(id)
         {
             this.AgendaId = agendaId;
             this.Titulo = titulo;
@@ -36,7 +37,7 @@ namespace Agenda.Domain.Models
             this.Tipo = tipoEvento;
             this.Frequencia = EnumFrequencia.Nao_Repete;
 
-            this.Usuarios = new List<Guid>();
+            this._convites = new List<Convite>();
 
             var resultadoValidacao = this.NovoEventoAgendaEhValido();
             if (!resultadoValidacao.IsValid)
@@ -84,14 +85,20 @@ namespace Agenda.Domain.Models
             this.Descricao = descricao;
         }
 
-        public void AdicionarPessoa(Guid pessoa)
-        {
-            if (pessoa.EhVazio())
-            {
-                throw new DomainException("Por favor, certifique-se que adicinou uma pessoa.");
-            }
+        //public void AdicionarPessoa(Guid pessoa)
+        //{
+        //    if (pessoa.EhVazio())
+        //    {
+        //        throw new DomainException("Por favor, certifique-se que adicinou uma pessoa.");
+        //    }
 
-            Usuarios.Add(pessoa);
+        //    Usuarios.Add(pessoa);
+        //}
+
+        public void AdicionarConvite(Convite convite)
+        {
+            convite.NovoConviteEhValido();
+            _convites.Add(convite);
         }
 
         public void DefinirLocal(Guid Local)
@@ -195,7 +202,7 @@ namespace Agenda.Domain.Models
         public string Nome { get; set; }
         public string Descricao { get; set; }
 
-        public TipoEvento(string nome, string descricao)
+        public TipoEvento(Guid id, string nome, string descricao) : base(id)
         {
             this.Nome = nome;
             this.Descricao = descricao;

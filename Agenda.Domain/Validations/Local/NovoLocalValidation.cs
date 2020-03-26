@@ -8,12 +8,12 @@ namespace Agenda.Domain.Validations
     {
         public NovoLocalValidation()
         {
-            RuleFor(l => l.NomeLocal)
+            RuleFor(l => l.Nome)
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("Nome do Local não informado.");
 
-            RuleFor(l => l.ReservaLocal)
+            RuleFor(l => l.Reserva)
                 .NotNull()
                 .WithMessage("Reserva do local não informado.");
 

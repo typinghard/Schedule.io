@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using MediatR;
+using ScheduleIo.Nuget;
 
 namespace Agenda.UI.Web
 {
@@ -37,6 +38,13 @@ namespace Agenda.UI.Web
 
             //services.AddMediatR(typeof(EventoAgendaRegistradoEvent));
             services.AddMediatR(typeof(Startup));
+
+            services.AddScheduleIo(new ScheduleIo.Nuget.Models.ScheduleIoConfigurations(
+                    new Infra.Data.Configs.DataBaseConfig(
+                        Infra.Data.Enums.EDataBaseType.MONGO,
+                        Configuration["DataBase:ConnectionString"],
+                        Configuration["DataBase:Database"]
+                        )));
 
             RegisterServices(services);
         }

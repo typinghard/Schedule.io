@@ -32,10 +32,15 @@ namespace Agenda.Infra.Data
         {
             try
             {
+                if (!_session.IsInTransaction)
+                {
+                    _session.StartTransaction();
+                }
+
                 _session.CommitTransaction();
                 return 1;
             }
-            catch
+            catch (Exception ex)
             {
                 _session.AbortTransaction();
                 return 0;

@@ -38,7 +38,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            AgendaUsuario agendaUsuario = new AgendaUsuario(message.AgendaId, message.UsuarioId);
+            AgendaUsuario agendaUsuario = new AgendaUsuario(message.Id,message.AgendaId, message.UsuarioId);
             _agendaUsuarioRepository.Adicionar(agendaUsuario);
 
             if (Commit())
@@ -67,7 +67,7 @@ namespace Agenda.Domain.CommandHandlers
             _agendaUsuarioRepository.Remover(agendaUsuario);
             Bus.PublicarEvento(new AgendaUsuarioRemovidoEvent(agendaUsuario.Id)).Wait();
 
-            AgendaUsuario novoAgendaUsuario = new AgendaUsuario(message.AgendaId, message.UsuarioId);
+            AgendaUsuario novoAgendaUsuario = new AgendaUsuario(message.Id,message.AgendaId, message.UsuarioId);
             _agendaUsuarioRepository.Adicionar(novoAgendaUsuario);
             if (Commit())
             {

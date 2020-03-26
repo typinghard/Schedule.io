@@ -38,7 +38,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Usuario usuario = new Usuario(message.UsuarioEmail);
+            Usuario usuario = new Usuario(message.Id, message.UsuarioEmail);
             _usuarioRepository.Adicionar(usuario);
 
             if (Commit())

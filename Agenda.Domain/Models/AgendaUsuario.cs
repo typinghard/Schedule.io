@@ -14,9 +14,9 @@ namespace Agenda.Domain.Models
         public Guid AgendaId { get; protected set; } // Obrigatório
         public Guid UsuarioId { get; protected set; } // Obrigatório
 
-        public PermissoesAgenda Permissoes { get; protected set; } 
+        public PermissoesAgenda Permissoes { get; protected set; }
 
-        public AgendaUsuario(Guid agendaId, Guid usuarioId)
+        public AgendaUsuario(Guid id, Guid agendaId, Guid usuarioId) : base(id)
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;

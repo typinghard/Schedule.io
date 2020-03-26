@@ -7,8 +7,9 @@ namespace Agenda.Domain.Commands
 {
     public class RegistrarLocalCommand : LocalCommand
     {
-        public RegistrarLocalCommand(string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaomaxima)
+        public RegistrarLocalCommand(Guid id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaomaxima)
         {
+            this.Id = id;
             this.IdentificadorExterno = identificadorExterno;
             this.NomeLocal = NomeLocal;
             this.Descricao = descricao;

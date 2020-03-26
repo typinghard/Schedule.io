@@ -11,9 +11,9 @@ namespace Agenda.Infra.Data.Configs
         public static void SetDataBaseConfig(DataBaseConfig dataBaseConfig)
         {
             if (dataBaseConfig == null)
-                throw new ScheduleIoException("Configurações do banco de dados não informadas");
+                throw new ScheduleIoException(new List<string> { "Configurações do banco de dados não informadas" });
             if (string.IsNullOrEmpty(dataBaseConfig.ConnectionString))
-                throw new ScheduleIoException("ConnectionString não informada");
+                throw new ScheduleIoException(new List<string> { "ConnectionString não informada" });
 
             DataBaseConfig = dataBaseConfig;
         }

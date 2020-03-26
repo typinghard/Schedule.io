@@ -56,54 +56,54 @@ namespace Agenda.Infra.CrossCutting.IoC
 
             /* ASSIM COMO NO CONDOMINIO_SERVICE, NÃO DEVE SER NECESSÁRIO ADICIONAR EVENTO OU COMANDOS */
             // Domain - Events
-            //services.AddScoped<INotificationHandler<AgendaRegistradaEvent>, AgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaAtualizadaEvent>, AgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaRemovidaEvent>, AgendaEventHandler>();
+            services.AddScoped<INotificationHandler<AgendaRegistradaEvent>, AgendaEventHandler>();
+            services.AddScoped<INotificationHandler<AgendaAtualizadaEvent>, AgendaEventHandler>();
+            services.AddScoped<INotificationHandler<AgendaRemovidaEvent>, AgendaEventHandler>();
 
-            //services.AddScoped<INotificationHandler<UsuarioRegistradoEvent>, UsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<UsuarioAtualizadoEvent>, UsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<UsuarioRemovidoEvent>, UsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<UsuarioRegistradoEvent>, UsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<UsuarioAtualizadoEvent>, UsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<UsuarioRemovidoEvent>, UsuarioEventHandler>();
 
-            //services.AddScoped<INotificationHandler<AgendaUsuarioRegistradoEvent>, AgendaUsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaUsuarioAtualizadoEvent>, AgendaUsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaUsuarioRemovidoEvent>, AgendaUsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<AgendaUsuarioRegistradoEvent>, AgendaUsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<AgendaUsuarioAtualizadoEvent>, AgendaUsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<AgendaUsuarioRemovidoEvent>, AgendaUsuarioEventHandler>();
 
-            //services.AddScoped<INotificationHandler<EventoAgendaRegistradoEvent>, EventoAgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<EventoAgendaAtualizadoEvent>, EventoAgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<EventoAgendaRemovidoEvent>, EventoAgendaEventHandler>();
+            services.AddScoped<INotificationHandler<EventoAgendaRegistradoEvent>, EventoAgendaEventHandler>();
+            services.AddScoped<INotificationHandler<EventoAgendaAtualizadoEvent>, EventoAgendaEventHandler>();
+            services.AddScoped<INotificationHandler<EventoAgendaRemovidoEvent>, EventoAgendaEventHandler>();
 
-            //services.AddScoped<INotificationHandler<ConviteRegistradoEvent>, ConviteEventHandler>();
-            //services.AddScoped<INotificationHandler<ConviteAtualizadoEvent>, ConviteEventHandler>();
-            //services.AddScoped<INotificationHandler<ConviteRemovidoEvent>, ConviteEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteRegistradoEvent>, ConviteEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteAtualizadoEvent>, ConviteEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteRemovidoEvent>, ConviteEventHandler>();
 
-            //services.AddScoped<INotificationHandler<LocalRegistradoEvent>, LocalEventHandler>();
-            //services.AddScoped<INotificationHandler<LocalAtualizadoEvent>, LocalEventHandler>();
-            //services.AddScoped<INotificationHandler<LocalRemovidoEvent>, LocalEventHandler>();
+            services.AddScoped<INotificationHandler<LocalRegistradoEvent>, LocalEventHandler>();
+            services.AddScoped<INotificationHandler<LocalAtualizadoEvent>, LocalEventHandler>();
+            services.AddScoped<INotificationHandler<LocalRemovidoEvent>, LocalEventHandler>();
 
             //// Domain - Commands
-            //services.AddScoped<IRequestHandler<RegistrarAgendaCommand, bool>, AgendaCommandHandler>();
-            //services.AddScoped<IRequestHandler<AtualizarAgendaCommand, bool>, AgendaCommandHandler>();
-            //services.AddScoped<IRequestHandler<RemoverAgendaCommand, bool>, AgendaCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarAgendaCommand, bool>, AgendaCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarAgendaCommand, bool>, AgendaCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverAgendaCommand, bool>, AgendaCommandHandler>();
 
-            //services.AddScoped<IRequestHandler<RegistrarUsuarioCommand, bool>, UsuarioCommandHandler>();
-            //services.AddScoped<IRequestHandler<AtualizarUsuarioCommand, bool>, UsuarioCommandHandler>();
-            //services.AddScoped<IRequestHandler<RemoverUsuarioCommand, bool>, UsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarUsuarioCommand, bool>, UsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarUsuarioCommand, bool>, UsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverUsuarioCommand, bool>, UsuarioCommandHandler>();
 
-            //services.AddScoped<IRequestHandler<RegistrarAgendaUsuarioCommand, bool>, AgendaUsuarioCommandHandler>();
-            //services.AddScoped<IRequestHandler<AtualizarAgendaUsuarioCommand, bool>, AgendaUsuarioCommandHandler>();
-            //services.AddScoped<IRequestHandler<RemoverAgendaUsuarioCommand, bool>, AgendaUsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarAgendaUsuarioCommand, bool>, AgendaUsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarAgendaUsuarioCommand, bool>, AgendaUsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverAgendaUsuarioCommand, bool>, AgendaUsuarioCommandHandler>();
 
-            //services.AddScoped<IRequestHandler<RegistrarEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
-            //services.AddScoped<IRequestHandler<AtualizarEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
-            //services.AddScoped<IRequestHandler<RemoverEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
 
-            //services.AddScoped<IRequestHandler<RegistrarConviteCommand, bool>, ConviteCommandHandler>();
-            //services.AddScoped<IRequestHandler<AtualizarConviteCommand, bool>, ConviteCommandHandler>();
-            //services.AddScoped<IRequestHandler<RemoverConviteCommand, bool>, ConviteCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarConviteCommand, bool>, ConviteCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarConviteCommand, bool>, ConviteCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverConviteCommand, bool>, ConviteCommandHandler>();
 
-            //services.AddScoped<IRequestHandler<RegistrarLocalCommand, bool>, LocalCommandHandler>();
-            //services.AddScoped<IRequestHandler<AtualizarLocalCommand, bool>, LocalCommandHandler>();
-            //services.AddScoped<IRequestHandler<RemoverLocalCommand, bool>, LocalCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarLocalCommand, bool>, LocalCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarLocalCommand, bool>, LocalCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverLocalCommand, bool>, LocalCommandHandler>();
         }
     }
 }

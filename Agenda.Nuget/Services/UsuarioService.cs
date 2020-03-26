@@ -1,4 +1,10 @@
-﻿using ScheduleIo.Nuget.Interfaces;
+﻿using Agenda.Domain.Commands;
+using Agenda.Domain.Core.Communication.Mediator;
+using Agenda.Domain.Core.DomainObjects;
+using Agenda.Domain.Core.Messages.CommonMessages.Notifications;
+using Agenda.Domain.Interfaces;
+using MediatR;
+using ScheduleIo.Nuget.Interfaces;
 using ScheduleIo.Nuget.Models;
 using System;
 using System.Collections.Generic;
@@ -6,26 +12,60 @@ using System.Text;
 
 namespace ScheduleIo.Nuget.Services
 {
-    internal class UsuarioService : IUsuarioService
+    internal class UsuarioService : ServiceBase, IUsuarioService
     {
-        Guid IUsuarioService.Criar(Usuario usuario)
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IMediatorHandler _bus;
+
+        public UsuarioService(IUsuarioRepository usuarioRepository,
+                              IMediatorHandler bus,
+                              INotificationHandler<DomainNotification> notifications) : base(notifications)
         {
-            throw new NotImplementedException();
+            _usuarioRepository = usuarioRepository;
+            _bus = bus;
         }
 
-        void IUsuarioService.Editar(Usuario usuario)
+        public Guid Gravar(Usuario usuario)
         {
-            throw new NotImplementedException();
+            Guid usuarioId;
+
+            if (usuario.Id == Guid.NewGuid())
+            {
+                usuarioId = Guid.NewGuid();
+                _bus.EnviarComando(new RegistrarUsuarioCommand(usuarioId, usuario.Email)).Wait();
+            }
+            else
+            {
+                usuarioId = usuario.Id;
+                _bus.EnviarComando(new AtualizarUsuarioCommand(usuario.Id, usuario.Email)).Wait();
+            }
+            ValidarComando();
+            return usuarioId;
         }
 
-        void IUsuarioService.Excluir(Usuario usuario)
+        public bool Excluir(Guid usuarioId)
         {
-            throw new NotImplementedException();
+            _bus.EnviarComando(new RemoverUsuarioCommand(usuarioId)).Wait();
+            ValidarComando();
+            return true;
         }
 
-        void IUsuarioService.Obter(Guid usuarioId)
+        public Usuario Obter(Guid usuarioId)
         {
-            throw new NotImplementedException();
+            var usuario = _usuarioRepository.ObterPorId(usuarioId);
+
+            if (usuario == null)
+            {
+                throw new ScheduleIoException(new List<string>() { "Usuario não encontrado!" });
+            }
+
+            return new Usuario()
+            {
+                Id = usuario.Id,
+                CriadoAs = usuario.CriadoAs,
+                AtualizadoAs = usuario.AtualizadoAs,
+                Email = usuario.Email
+            };
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Agenda.Domain.Commands;
 using Agenda.Domain.Core.Communication.Mediator;
+using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Messages.CommonMessages.Notifications;
 using Agenda.Domain.Events;
 using Agenda.Domain.Interfaces;
@@ -7,6 +8,7 @@ using Agenda.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,9 +24,9 @@ namespace Agenda.Domain.CommandHandlers
         private readonly IMediatorHandler Bus;
 
         public ConviteCommandHandler(IConviteRepository conviteRepository,
-                                           IUnitOfWork uow,
-                                           IMediatorHandler bus,
-                                           INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
+                                     IUnitOfWork uow,
+                                     IMediatorHandler bus,
+                                     INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
         {
             this._conviteRepository = conviteRepository;
             this.Bus = bus;
@@ -38,7 +40,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Convite convite = new Convite(message.EventoId, message.UsuarioId);
+            Convite convite = new Convite(message.Id, message.EventoId, message.UsuarioId);
 
             if (message.Status != Enums.EnumStatusConviteEvento.Aguardando_Confirmacao)
                 convite.AtualizarStatusConvite(message.Status);
@@ -125,5 +127,6 @@ namespace Agenda.Domain.CommandHandlers
         {
             _conviteRepository.Dispose();
         }
+
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
-using System;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+
 
 namespace Agenda.Domain.Models
 {
@@ -14,14 +16,14 @@ namespace Agenda.Domain.Models
 
         public bool Publico { get; private set; }
 
-        public Agenda(string titulo, string descricao, bool publico)
+        public Agenda(string titulo)
         {
             Titulo = titulo;
-            Descricao = descricao;
-            Publico = publico;
-        }
 
-        /*Verificar se o titulo e descrição por ser usado mais de uma vez, não pode estar na base (entity) */
+            var resultadoValidacao = this.NovaAgendaEhValida();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
 
         public void DefinirTitulo(string titulo)
         {
@@ -30,7 +32,7 @@ namespace Agenda.Domain.Models
                 throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um título." });
             }
 
-            if (titulo.ValidarTamanho(2, 150))
+            if (!titulo.ValidarTamanho(2, 150))
             {
                 throw new ScheduleIoException(new List<string>() { "O título deve ter entre 2 e 150 caracteres." });
 
@@ -41,7 +43,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (descricao.ValidarTamanho(2, 500))
+            if (!descricao.ValidarTamanho(2, 500))
             {
                 throw new ScheduleIoException(new List<string>() { "A descrição deve ter entre 2 e 500 caracteres." });
             }
@@ -57,6 +59,11 @@ namespace Agenda.Domain.Models
         public void TornarAgendaPrivado()
         {
             this.Publico = false;
+        }
+
+        public ValidationResult NovaAgendaEhValida()
+        {
+            return new NovaAgendaValidation().Validate(this);
         }
 
     }

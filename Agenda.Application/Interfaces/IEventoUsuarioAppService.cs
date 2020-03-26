@@ -8,9 +8,9 @@ namespace Agenda.Application.Interfaces
     public interface IEventoUsuarioAppService
     {
         void Registrar(CriarEventoUsuarioViewModel eventoUsuarioViewModel);
-        IEnumerable<DetalhesEventoUsuarioViewModel> ObterTodosEventosUsuarioAtivos();
-        DetalhesEventoUsuarioViewModel ObterPorId(string id);
-        void Atualizar(AtualizarEventoUsuarioViewModel eventoUsuarioViewModel);
+        //IEnumerable<DetalhesEventoUsuarioViewModel> ObterTodosEventosUsuarioAtivos();
+        //DetalhesEventoUsuarioViewModel ObterPorId(string id);
+        //void Atualizar(AtualizarEventoUsuarioViewModel eventoUsuarioViewModel);
         void Remover(string id);
         //IList<CustomerHistoryData> GetAllHistory(string id);
 

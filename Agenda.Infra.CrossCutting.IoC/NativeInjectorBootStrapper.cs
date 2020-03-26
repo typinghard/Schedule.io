@@ -43,7 +43,7 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IUsuarioAppService, UsuarioAppService>();
             services.AddScoped<IAgendaUsuarioAppService, AgendaUsuarioAppService>();
             services.AddScoped<IEventoAgendaAppService, EventoAgendaAppService>();
-            services.AddScoped<IEventoUsuarioAppService, EventoUsuarioAppService>();
+            services.AddScoped<IConviteAppService, ConviteAppService>();
             services.AddScoped<ILocalAppService, LocalAppService>();
 
             /* ASSIM COMO NO CONDOMINIO_SERVICE, NÃO DEVE SER NECESSÁRIO ADICIONAR EVENTO OU COMANDOS */
@@ -64,9 +64,9 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<INotificationHandler<EventoAgendaAtualizadoEvent>, EventoAgendaEventHandler>();
             services.AddScoped<INotificationHandler<EventoAgendaRemovidoEvent>, EventoAgendaEventHandler>();
 
-            services.AddScoped<INotificationHandler<EventoUsuarioRegistradoEvent>, EventoUsuarioEventHandler>();
-            services.AddScoped<INotificationHandler<EventoUsuarioAtualizadoEvent>, EventoUsuarioEventHandler>();
-            services.AddScoped<INotificationHandler<EventoUsuarioRemovidoEvent>, EventoUsuarioEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteRegistradoEvent>, ConviteEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteAtualizadoEvent>, ConviteEventHandler>();
+            services.AddScoped<INotificationHandler<ConviteRemovidoEvent>, ConviteEventHandler>();
 
             services.AddScoped<INotificationHandler<LocalRegistradoEvent>, LocalEventHandler>();
             services.AddScoped<INotificationHandler<LocalAtualizadoEvent>, LocalEventHandler>();
@@ -89,9 +89,9 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IRequestHandler<AtualizarEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
             services.AddScoped<IRequestHandler<RemoverEventoAgendaCommand, bool>, EventoAgendaCommandHandler>();
 
-            services.AddScoped<IRequestHandler<RegistrarEventoUsuarioCommand, bool>, EventoUsuarioCommandHandler>();
-            services.AddScoped<IRequestHandler<AtualizarEventoUsuarioCommand, bool>, EventoUsuarioCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoverEventoUsuarioCommand, bool>, EventoUsuarioCommandHandler>();
+            services.AddScoped<IRequestHandler<RegistrarConviteCommand, bool>, ConviteCommandHandler>();
+            services.AddScoped<IRequestHandler<AtualizarConviteCommand, bool>, ConviteCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoverConviteCommand, bool>, ConviteCommandHandler>();
 
             services.AddScoped<IRequestHandler<RegistrarLocalCommand, bool>, LocalCommandHandler>();
             services.AddScoped<IRequestHandler<AtualizarLocalCommand, bool>, LocalCommandHandler>();
@@ -107,7 +107,7 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IUsuarioRepository, ScheduleIo.Infra.MongoDB.UsuarioRepository>();
             services.AddScoped<IAgendaUsuarioRepository, ScheduleIo.Infra.MongoDB.AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, ScheduleIo.Infra.MongoDB.EventoAgendaRepository>();
-            services.AddScoped<IEventoUsuarioRepository, ScheduleIo.Infra.MongoDB.EventoUsuarioRepository>();
+            services.AddScoped<IConviteRepository, ScheduleIo.Infra.MongoDB.ConviteRepository>();
             services.AddScoped<ILocalRepository, ScheduleIo.Infra.MongoDB.LocalRepository>();
             services.AddScoped<IUnitOfWork, ScheduleIo.Infra.MongoDB.UoW.UnitOfWork>();
         }
@@ -119,7 +119,7 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IUsuarioRepository, ScheduleIo.Infra.RavenDB.UsuarioRepository>();
             services.AddScoped<IAgendaUsuarioRepository, ScheduleIo.Infra.RavenDB.AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, ScheduleIo.Infra.RavenDB.EventoAgendaRepository>();
-            services.AddScoped<IEventoUsuarioRepository, ScheduleIo.Infra.RavenDB.EventoUsuarioRepository>();
+            services.AddScoped<IConviteRepository, ScheduleIo.Infra.RavenDB.ConviteRepository>();
             services.AddScoped<ILocalRepository, ScheduleIo.Infra.RavenDB.LocalRepository>();
             services.AddScoped<IUnitOfWork, ScheduleIo.Infra.RavenDB.UoW.UnitOfWork>();
         }

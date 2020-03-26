@@ -1,7 +1,10 @@
 ﻿using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Helpers;
+using Agenda.Domain.Validations;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Agenda.Domain.Models
@@ -15,6 +18,11 @@ namespace Agenda.Domain.Models
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;
+            //Permissoes = new PermissoesAgenda();
+
+            var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirUsuarioId(string usuarioId)
@@ -30,12 +38,24 @@ namespace Agenda.Domain.Models
 
         public void DefinirAgendaId(string agendaId)
         {
-            if (AgendaId.EhVazio())
+            if (agendaId.EhVazio())
             {
                 throw new DomainException("Por favor, certifique-se que adicinou uma agenda.");
             }
 
             AgendaId = agendaId;
         }
+
+        public ValidationResult NovaAgendaUsuarioEhValido()
+        {
+            return new AgendaUsuarioValidation().Validate(this);
+        }
+
+    }
+
+
+    public class PermissoesAgenda
+    {
+        //fazer 
     }
 }

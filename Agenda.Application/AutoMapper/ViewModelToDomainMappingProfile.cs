@@ -31,10 +31,10 @@ namespace Agenda.Application.AutoMapper
             CreateMap<DetalhesEventoAgendaViewModel, EventoAgenda>();
 
 
-            CreateMap<CriarEventoUsuarioViewModel, EventoUsuario>();
-            CreateMap<AtualizarEventoUsuarioViewModel, EventoUsuario>();
-            CreateMap<DeletarEventoUsuarioViewModel, EventoUsuario>();
-            CreateMap<DetalhesEventoUsuarioViewModel, EventoUsuario>();
+            CreateMap<CriarConviteViewModel, Convite>();
+            CreateMap<AtualizarConviteViewModel, Convite>();
+            CreateMap<DeletarConviteViewModel, Convite>();
+            CreateMap<DetalhesConviteViewModel, Convite>();
 
 
             CreateMap<CriarLocalViewModel, Local>();

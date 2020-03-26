@@ -62,7 +62,7 @@ namespace ScheduleIo.Infra.MongoDB
         internal IMongoCollection<Usuario> Usuario { get { return _database.GetCollection<Usuario>(typeof(Usuario).Name.ToLower()); } }
         internal IMongoCollection<AgendaUsuario> AgendaUsuario { get { return _database.GetCollection<AgendaUsuario>(typeof(AgendaUsuario).Name.ToLower()); } }
         internal IMongoCollection<EventoAgenda> EventoAgenda { get { return _database.GetCollection<EventoAgenda>(typeof(EventoAgenda).Name.ToLower()); } }
-        internal IMongoCollection<EventoUsuario> EventoUsuario { get { return _database.GetCollection<EventoUsuario>(typeof(EventoUsuario).Name.ToLower()); } }
+        internal IMongoCollection<Convite> Convite { get { return _database.GetCollection<Convite>(typeof(Convite).Name.ToLower()); } }
         internal IMongoCollection<Local> Local { get { return _database.GetCollection<Local>(typeof(Local).Name.ToLower()); } }
 
         public IMongoCollection<StoredEvent> StoredEvents { get { return _database.GetCollection<StoredEvent>(typeof(StoredEvent).Name.ToLower()); } }

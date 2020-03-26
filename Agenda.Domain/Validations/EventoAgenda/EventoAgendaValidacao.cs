@@ -29,7 +29,7 @@ namespace Agenda.Domain.Validations
 
         protected void ValidaTipoEvento()
         {
-            RuleFor(c => c.TipoEvento)
+            RuleFor(c => c.Tipo)
                 .NotNull().WithMessage("Por favor, cetifique-se de que escolher o Tipo do Evento.");
         }
 

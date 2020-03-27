@@ -15,7 +15,7 @@ namespace ScheduleIo.Infra.MongoDB
 
         }
 
-        public IList<EventoAgenda> ObterTodosEventosUsuario(Guid eventoId, Guid usuarioId)
+        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string eventoId, string usuarioId)
         {
             //var agendaUsuario = Db.AgendaUsuario.Find(x => x.AgendaId == agendaId).ToList();
 

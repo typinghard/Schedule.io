@@ -30,19 +30,19 @@ namespace ScheduleIo.Nuget.Services
             _eventoAgendaRepository = eventoAgendaRepository;
             _agendaUsuarioRepository = agendaUsuarioRepository;
         }
-        public string Criar(Evento evento)
+        public string Gravar(Evento evento)
         {
             string eventoId;
-            if (evento.Id == Guid.Empty)
+            if (string.IsNullOrEmpty(evento.Id))
             {
                 eventoId = Guid.NewGuid().ToString();
                 var listConvites = MontaConviteDomainModel(eventoId, evento);
 
                 _bus.EnviarComando(new RegistrarEventoAgendaCommand(eventoId, evento.AgendaId, evento.IdentificadorExterno, evento.Titulo,
-                    evento.Descricao, listConvites, evento.Local.Value, evento.DataInicio, evento.DataFinal,
+                    evento.Descricao, listConvites, evento.Local, evento.DataInicio, evento.DataFinal,
                     evento.DataLimiteConfirmacao.Value, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
                     evento.Publico,
-                    new Agenda.Domain.Models.TipoEvento(Guid.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
+                    new Agenda.Domain.Models.TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
                     evento.Frequencia)).Wait();
             }
             else
@@ -54,10 +54,10 @@ namespace ScheduleIo.Nuget.Services
                 ValidarComando();
 
                 _bus.EnviarComando(new RegistrarEventoAgendaCommand(evento.Id, evento.AgendaId, evento.IdentificadorExterno, evento.Titulo,
-                        evento.Descricao, listConvites, evento.Local.Value, evento.DataInicio, evento.DataFinal,
+                        evento.Descricao, listConvites, evento.Local, evento.DataInicio, evento.DataFinal,
                         evento.DataLimiteConfirmacao.Value, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
                         evento.Publico,
-                        new Agenda.Domain.Models.TipoEvento(Guid.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
+                        new Agenda.Domain.Models.TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
                         evento.Frequencia)).Wait();
             }
 
@@ -135,14 +135,14 @@ namespace ScheduleIo.Nuget.Services
         }
 
 
-        private List<Agenda.Domain.Models.Convite> MontaConviteDomainModel(Guid eventoId, Evento evento)
+        private List<Agenda.Domain.Models.Convite> MontaConviteDomainModel(string eventoId, Evento evento)
         {
             var usuarioAgenda = _agendaUsuarioRepository.ObterPorId(evento.AgendaId);
 
             var listConvites = new List<Agenda.Domain.Models.Convite>();
             foreach (var conviteVM in evento.Convites)
             {
-                var convite = new Agenda.Domain.Models.Convite(Guid.Empty, eventoId, conviteVM.UsuarioId);
+                var convite = new Agenda.Domain.Models.Convite(string.Empty, eventoId, conviteVM.UsuarioId);
 
                 if (usuarioAgenda.UsuarioId == conviteVM.UsuarioId)
                     convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);

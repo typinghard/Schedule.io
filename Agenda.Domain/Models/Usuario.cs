@@ -13,7 +13,7 @@ namespace Agenda.Domain.Models
     {
         public string Email { get; private set; }
 
-        public Usuario(Guid id, string email) : base(id)
+        public Usuario(string id, string email) : base(id)
         {
             this.Email = email;
 

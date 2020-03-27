@@ -1,4 +1,5 @@
 ﻿using Agenda.Domain.Core.Messages;
+using Agenda.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

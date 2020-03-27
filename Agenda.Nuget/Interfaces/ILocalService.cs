@@ -7,11 +7,11 @@ namespace ScheduleIo.Nuget.Interfaces
 {
     public interface ILocalService
     {
-        Guid Gravar(Local local);
+        string Gravar(Local local);
 
-        bool Excluir(Guid localId);
+        bool Excluir(string localId);
 
-        Local Obter(Guid localId);
+        Local Obter(string localId);
 
         
     }

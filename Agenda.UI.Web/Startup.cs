@@ -46,11 +46,10 @@ namespace Agenda.UI.Web
             //    ));
 
             services.AddScheduleIo(new ScheduleIo.Nuget.Models.ScheduleIoConfigurations(
-                    new Infra.Data.Configs.DataBaseConfig(
-                        Infra.Data.Enums.EDataBaseType.MONGO,
-                        Configuration["DataBase:ConnectionString"],
-                        Configuration["DataBase:Database"]
-                        )));
+                new ScheduleIo.Infra.MongoDB.Configs.MongoDBConfig(
+                    Configuration["DataBase:ConnectionString"],
+                    Configuration["DataBase:Database"]
+                    ), true));
 
             RegisterServices(services);
         }

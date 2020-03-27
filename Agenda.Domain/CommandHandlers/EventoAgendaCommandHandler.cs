@@ -199,9 +199,9 @@ namespace Agenda.Domain.CommandHandlers
 
         private void ValidaQuantidadeDeUsuariosNoLocal(EventoAgenda eventoAgenda)
         {
-            if (eventoAgenda.Local.HasValue)
+            if (string.IsNullOrEmpty(eventoAgenda.Local))
             {
-                var local = _localRepository.ObterPorId(eventoAgenda.Local.Value);
+                var local = _localRepository.ObterPorId(eventoAgenda.Local);
                 if (eventoAgenda.QuantidadeMinimaDeUsuarios > local.LotacaoMaxima)
                 {
                     throw new DomainException("A quantidade máxima de usuários não pode ser maior que a lotação máxima do local!");
@@ -222,7 +222,7 @@ namespace Agenda.Domain.CommandHandlers
             var listConvites = new List<Convite>();
             foreach (var novoConvite in eventoAgenda.Convites)
             {
-                var convite = new Convite(Guid.Empty, eventoAgenda.Id, novoConvite.UsuarioId);
+                var convite = new Convite(string.Empty, eventoAgenda.Id, novoConvite.UsuarioId);
 
                 if (usuarioAgenda.UsuarioId == novoConvite.UsuarioId)
                     convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
@@ -252,7 +252,7 @@ namespace Agenda.Domain.CommandHandlers
             return listConvites;
         }
 
-        private void ValidaUsuarioOcupadoNoMesmoHorario(Guid agendaId, Convite convite)
+        private void ValidaUsuarioOcupadoNoMesmoHorario(string eventoId, Convite convite)
         {
             /* Descrição:
             *  - Um usuário não pode ter dois eventos marcados como OCUPADO coincidindo horário
@@ -262,7 +262,7 @@ namespace Agenda.Domain.CommandHandlers
             var usuario = _usuarioRepository.ObterPorId(convite.UsuarioId);
 
             //eventos_do_usuario
-            var eventosUsuario = _eventoAgendaRepository.ObterTodosEventosUsuario(agendaId, convite.UsuarioId);
+            var eventosUsuario = _eventoAgendaRepository.ObterTodosEventosDoUsuario(eventoId, convite.UsuarioId);
 
             //para cada evento validar se não há eventos no mesmo horário como ocupado
             var cont = eventosUsuario.Select(x => x.DataInicio == x.DataInicio && x.OcupaUsuario).Count();

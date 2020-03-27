@@ -29,7 +29,7 @@ namespace ScheduleIo.Nuget.Services
         {
             string usuarioId;
 
-            if (usuario.Id == Guid.NewGuid())
+            if (string.IsNullOrEmpty(usuario.Id))
             {
                 usuarioId = Guid.NewGuid().ToString();
                 _bus.EnviarComando(new RegistrarUsuarioCommand(usuarioId, usuario.Email)).Wait();

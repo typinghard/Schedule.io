@@ -12,28 +12,26 @@ namespace ScheduleIo.Nuget.Interfaces
         /// </summary>
         /// <param name="agenda"></param>
         /// <returns></returns>
-        Guid Gravar(Models.Agenda agenda);
+        string Gravar(Models.Agenda agenda);
 
         /// <summary>
         /// Excluí a agenda de acordo com o id.
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        bool Excluir(Guid id);
+        bool Inativar(string id);
 
         /// <summary>
         /// Retorna a agenda pelo id.
         /// </summary>
         /// <param name="agendaId"></param>
         /// <returns></returns>
-        Models.Agenda Obter(Guid agendaId);
+        Models.Agenda Obter(string agendaId);
 
         /// <summary>
         /// Retorna todas as agendas ativas.
         /// </summary>
         /// <returns></returns>
         IEnumerable<Models.Agenda> ObterTodas();
-
-        bool Inativar(Guid agendaId);
     }
 }

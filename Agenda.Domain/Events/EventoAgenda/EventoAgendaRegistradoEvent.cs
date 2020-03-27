@@ -27,7 +27,7 @@ namespace Agenda.Domain.Events
 
 
         public EventoAgendaRegistradoEvent(string id, string agendaId, string identificadorExterno, string titulo, string descricao, IList<Convite> convites, string? local, DateTime dataInicio, DateTime? dataFinal,
-            DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocupaUsuario, bool eventoPublico, TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
+            DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocupaUsuario, bool publico, TipoEvento tipoEvento, EnumFrequencia frequencia)
         {
             this.Id = id;
             this.AggregateId = id;
@@ -40,10 +40,10 @@ namespace Agenda.Domain.Events
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;
-            this.QuantidadeMinimaDeUsuarios = qtdeMaximadeUsuarios;
+            this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
             this.OcupaUsuario = ocupaUsuario;
             this.Publico = publico;
-            this.Tipo = Tipo;
+            this.Tipo = tipoEvento;
             this.Frequencia = frequencia;
         }
     }

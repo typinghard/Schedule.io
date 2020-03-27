@@ -7,12 +7,12 @@ namespace ScheduleIo.Nuget.Interfaces
 {
     public interface IEventoService
     {
-        
-        Guid Gravar(Evento evento);
 
-        bool Excluir(Guid id);
+        string Gravar(Evento evento);
 
-        Evento Obter(Guid eventoId);
+        bool Excluir(string id);
+
+        Evento Obter(string eventoId);
 
         //IEnumerable<Evento> ObterTodos();
     }

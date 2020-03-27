@@ -14,14 +14,23 @@ namespace ScheduleIo.Nuget.Services
 {
     internal class LocalService : ServiceBase, ILocalService
     {
-        
+        private readonly ILocalRepository _localRepository;
+        private readonly IMediatorHandler _bus;
+
+        public LocalService(ILocalRepository localRepository,
+            IMediatorHandler bus,
+            INotificationHandler<DomainNotification> notifications) : base(notifications)
+        {
+            _localRepository = localRepository;
+            _bus = bus;
+        }
+
         public string Gravar(Local local)
         {
-            Guid localId;
-            if (local.Id == Guid.Empty)
+            var localId = string.Empty;
+            if (string.IsNullOrEmpty(local.Id))
             {
                 localId = Guid.NewGuid().ToString();
-
                 _bus.EnviarComando(new RegistrarLocalCommand(localId, local.IdentificadorExterno, local.Nome, local.Descricao,
                                                              local.Reserva, local.LotacaoMaxima)).Wait();
             }
@@ -66,5 +75,6 @@ namespace ScheduleIo.Nuget.Services
                 Reserva = local.Reserva
             };
 
+        }
     }
 }

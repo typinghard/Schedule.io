@@ -37,7 +37,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Models.Agenda agenda = new Agenda.Domain.Models.Agenda(message.Titulo, message.Descricao, message.Publico);
+            Models.Agenda agenda = new Agenda.Domain.Models.Agenda(message.Id, message.Titulo);
 
             if (!string.IsNullOrEmpty(message.Descricao))
                 agenda.DefinirDescricao(message.Descricao);

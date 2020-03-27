@@ -11,7 +11,10 @@ using Agenda.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleIo.Infra.Configurations;
+using ScheduleIo.Infra.MongoDB;
 using ScheduleIo.Infra.MongoDB.EventSourcing;
+using ScheduleIo.Infra.MongoDB.UoW;
+using ScheduleIo.Infra.RavenDB.UoW;
 using ScheduleIo.Infra.RavenDB.EventSourcing;
 
 namespace Agenda.Infra.CrossCutting.IoC
@@ -48,7 +51,8 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
             services.AddScoped<IConviteRepository, ConviteRepository>();
             services.AddScoped<ILocalRepository, LocalRepository>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, ScheduleIo.Infra.MongoDB.UoW.UnitOfWork>();
+            services.AddScoped<IUnitOfWork, ScheduleIo.Infra.RavenDB.UoW.UnitOfWork>();
 
             // Application
             services.AddScoped<IAgendaAppService, AgendaAppService>();

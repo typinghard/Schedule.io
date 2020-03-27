@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Agenda.Application.ViewModels
 {
-    public class AtualizarEventoUsuarioViewModel
+    public class AtualizarConviteViewModel
     {
         public string Id { get; set; }
         [DisplayName("Id Usuario")]

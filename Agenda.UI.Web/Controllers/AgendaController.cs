@@ -31,7 +31,7 @@ namespace Agenda.UI.Web.Controllers
         // GET: Agenda
         public IActionResult Index()
         {
-            var Id = Guid.Empty;
+            var Id = string.Empty;
             try
             {
                 //var agenda = new NovaAgenda($"Agenda - {DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second}", "Descrição simples", true);

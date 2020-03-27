@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
     public class RegistrarUsuarioCommand : UsuarioCommand
     {
-        public RegistrarUsuarioCommand(Guid id,string usuarioEmail)
+        public RegistrarUsuarioCommand(string id,string usuarioEmail)
         {
             this.Id = id;
             this.UsuarioEmail = usuarioEmail;

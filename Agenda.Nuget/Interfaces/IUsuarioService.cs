@@ -7,10 +7,10 @@ namespace ScheduleIo.Nuget.Interfaces
 {
     public interface IUsuarioService
     {
-        Guid Gravar(Usuario usuario);
+        string Gravar(Usuario usuario);
 
-        bool Excluir(Guid id);
+        bool Excluir(string usuarioId);
 
-        Usuario Obter(Guid usuarioId);
+        Usuario Obter(string usuarioId);
     }
 }

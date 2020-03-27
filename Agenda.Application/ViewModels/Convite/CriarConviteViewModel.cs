@@ -16,7 +16,7 @@ namespace Agenda.Application.ViewModels
         //public EnumStatusConviteEvento Status { get; private set; }
 
         [DisplayName("Permissões")]
-        public PermissaoConviteViewModel PermissoesViewModel { get; set; }
+        public PermissaoViewModel PermissoesViewModel { get; set; }
     }
 
 }

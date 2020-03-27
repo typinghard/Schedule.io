@@ -15,7 +15,7 @@ namespace Agenda.Domain.Models
         public string UsuarioId { get; protected set; }
         public PermissoesAgenda Permissoes { get; protected set; }
 
-        public AgendaUsuario(string agendaId, string usuarioId)
+        public AgendaUsuario(string id, string agendaId, string usuarioId) : base(id)
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;

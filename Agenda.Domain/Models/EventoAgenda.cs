@@ -101,14 +101,14 @@ namespace Agenda.Domain.Models
             _convites.Add(convite);
         }
 
-        public void DefinirLocal(Guid Local)
+        public void DefinirLocal(string local)
         {
-            if (Local.EhVazio())
+            if (string.IsNullOrEmpty(local))
             {
                 throw new DomainException("Por favor, certifique-se que adicionou um local.");
             }
 
-            this.Local = Local;
+            this.Local = local;
         }
 
         public void DefinirDatas(DateTime dataInicio, DateTime? dataFinal = null)

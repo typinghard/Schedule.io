@@ -28,8 +28,8 @@ namespace ScheduleIo.Nuget.Services
 
         public string Gravar(Models.Agenda agenda)
         {
-            var idAgenda = Guid.Empty;
-            if (agenda.Id == Guid.Empty)
+            var idAgenda = string.Empty;
+            if (Guid.Parse(agenda.Id) == Guid.Empty)
             {
                 idAgenda = Guid.NewGuid().ToString();
                 _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();

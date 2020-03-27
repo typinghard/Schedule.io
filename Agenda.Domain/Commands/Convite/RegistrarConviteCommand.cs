@@ -13,6 +13,7 @@ namespace Agenda.Domain.Commands
         {
             EventoId = eventoId;
             UsuarioId = usuarioId;
+            Status = status;
             Permissoes = permissoes;
         }
 

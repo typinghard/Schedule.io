@@ -10,7 +10,7 @@ namespace Agenda.Domain.Core.DomainObjects
 
         public bool Inativo { get; protected set; }
 
-        public Entity(Guid id)
+        public Entity(string id)
         {
             Id = Guid.NewGuid().ToString();
         }

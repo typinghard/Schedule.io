@@ -15,7 +15,7 @@ namespace Agenda.Domain.Models
         public bool Reserva { get; private set; }
         public int LotacaoMaxima { get; private set; }
 
-        public Local(Guid id, string nomeLocal) : base(id)
+        public Local(string id, string nomeLocal) : base(id)
         {
             this.Nome = nomeLocal;
 

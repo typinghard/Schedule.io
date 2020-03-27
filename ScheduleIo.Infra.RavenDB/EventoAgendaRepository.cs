@@ -13,5 +13,10 @@ namespace ScheduleIo.Infra.RavenDB
         {
 
         }
+
+        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string eventoId, string usuarioId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

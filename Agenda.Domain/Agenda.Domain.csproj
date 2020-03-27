@@ -17,6 +17,7 @@
     <Compile Remove="Interfaces\ICustomerRepository.cs" />
     <Compile Remove="Interfaces\IUser.cs" />
     <Compile Remove="Models\Customer.cs" />
+    <Compile Remove="Models\EventoUsuario.cs" />
     <Compile Remove="Validations\CustomerValidation.cs" />
     <Compile Remove="Validations\NovoEventoAgendaValidation.cs" />
     <Compile Remove="Validations\RegisterNewCustomerCommandValidation.cs" />

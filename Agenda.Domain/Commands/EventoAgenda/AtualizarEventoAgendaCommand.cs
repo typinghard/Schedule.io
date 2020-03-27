@@ -9,7 +9,7 @@ namespace Agenda.Domain.Commands
 {
     public class AtualizarEventoAgendaCommand : EventoAgendaCommand
     {
-        public AtualizarEventoAgendaCommand(Guid id, Guid agendaId, string identificadorExterno, string titulo, string descricao, IList<Convite> convites, Guid local, DateTime dataInicio, DateTime? dataFinal,
+        public AtualizarEventoAgendaCommand(string id, string agendaId, string identificadorExterno, string titulo, string descricao, IList<Convite> convites, string local, DateTime dataInicio, DateTime? dataFinal,
             DateTime dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario, bool eventoPublico, TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
         {
             this.Id = id;

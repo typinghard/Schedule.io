@@ -5,18 +5,15 @@ using System.Text;
 
 namespace Agenda.Application.ViewModels
 {
-    public class AtualizarConviteViewModel
+    public class AtualizarEventoUsuarioViewModel
     {
-        public Guid Id { get; set; }
-
-        [DisplayName("Id Evento")]
-        public Guid EventoId { get; set; }
+        public string Id { get; set; }
         [DisplayName("Id Usuario")]
-        public Guid UsuarioId { get; set; }
-        //ver sobre esse
-        //public EnumStatusConviteEvento Status { get; private set; }
+        public string UsuarioId { get; set; }
+        [DisplayName("Confirmação")]
+        public bool Confirmacao { get; set; }
 
         [DisplayName("Permissões")]
-        public PermissaoConviteViewModel PermissoesViewModel { get; set; }
+        public PermissaoViewModel PermissaoViewModel { get; set; }
     }
 }

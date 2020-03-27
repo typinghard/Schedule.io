@@ -30,13 +30,12 @@ namespace ScheduleIo.Nuget.Services
             _eventoAgendaRepository = eventoAgendaRepository;
             _agendaUsuarioRepository = agendaUsuarioRepository;
         }
-
-        public Guid Gravar(Evento evento)
+        public string Criar(Evento evento)
         {
-            Guid eventoId;
+            string eventoId;
             if (evento.Id == Guid.Empty)
             {
-                eventoId = Guid.NewGuid();
+                eventoId = Guid.NewGuid().ToString();
                 var listConvites = MontaConviteDomainModel(eventoId, evento);
 
                 _bus.EnviarComando(new RegistrarEventoAgendaCommand(eventoId, evento.AgendaId, evento.IdentificadorExterno, evento.Titulo,
@@ -66,14 +65,14 @@ namespace ScheduleIo.Nuget.Services
             return eventoId;
         }
 
-        public bool Excluir(Guid eventoId)
+        public bool Excluir(string eventoId)
         {
             ValidarComando();
             _bus.EnviarComando(new RemoverEventoAgendaCommand(eventoId)).Wait();
             return true;
         }
 
-        public Evento Obter(Guid eventoId)
+        public Evento Obter(string eventoId)
         {
             var eventoModel = _eventoAgendaRepository.ObterPorId(eventoId);
 

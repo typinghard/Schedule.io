@@ -9,7 +9,7 @@ namespace Agenda.Domain.Validations
         protected void ValidateId()
         {
             RuleFor(c => c.Id)
-                .NotEqual(Guid.Empty);
+                .NotEmpty();
         }
     }
 }

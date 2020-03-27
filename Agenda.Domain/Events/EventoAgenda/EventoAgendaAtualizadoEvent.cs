@@ -8,8 +8,8 @@ namespace Agenda.Domain.Events
 {
    public class EventoAgendaAtualizadoEvent : Event
     {
-        public Guid Id { get; set; }
-        public Guid AgendaId { get; set; }
+        public string Id { get; set; }
+        public string AgendaId { get; set; }
         public string IdentificadorExterno { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
@@ -24,7 +24,8 @@ namespace Agenda.Domain.Events
         public TipoEvento Tipo { get; set; }
         public EnumFrequencia Frequencia { get; set; }
 
-        public EventoAgendaAtualizadoEvent(Guid id, Guid agendaId, string identificadorExterno, string titulo, string descricao, IList<Convite> convites, Guid? local, DateTime dataInicio, DateTime? dataFinal, DateTime? dataLimiteConfirmacao, int qtdeMaximadeUsuarios, bool ocupaUsuario, bool publico, TipoEvento tipoEvento, EnumFrequencia frequencia)
+        public EventoAgendaAtualizadoEvent(string id, string agendaId, string identificadorExterno, string titulo, string descricao, IList<Convite> convites, Guid? local, DateTime dataInicio, DateTime? dataFinal, DateTime? dataLimiteConfirmacao, int qtdeMaximadeUsuarios, bool ocupaUsuario, bool publico, TipoEvento tipoEvento, EnumFrequencia frequencia)
+            DateTime? dataLimiteConfirmacao, int qtdeMaximadeUsuarios, bool ocupaUsuario, bool publico, TipoEvento tipoEvento, EnumFrequencia frequencia)
         {
             this.Id = id;
             this.AggregateId = id;

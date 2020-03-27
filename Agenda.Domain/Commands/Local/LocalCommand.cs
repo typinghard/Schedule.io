@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
    public class LocalCommand : Command
     {
-        public Guid Id { get; protected set; }
+        public string Id { get; protected set; }
         public string IdentificadorExterno { get; protected set; }
         public string NomeLocal { get; protected set; }
         public string Descricao { get; protected set; }

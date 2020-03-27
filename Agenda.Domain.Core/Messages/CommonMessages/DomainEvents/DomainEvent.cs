@@ -7,7 +7,7 @@ namespace Agenda.Domain.Core.Messages.CommonMessages.DomainEvents
     {
         public DateTime Timestamp { get; private set; }
 
-        protected DomainEvent(Guid aggregateId)
+        protected DomainEvent(string aggregateId)
         {
             AggregateId = aggregateId;
             Timestamp = DateTime.Now;

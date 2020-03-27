@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
     public class RemoverLocalCommand : LocalCommand
     {
-        public RemoverLocalCommand(Guid id)
+        public RemoverLocalCommand(string id)
         {
             this.Id = id;
             this.AggregateId = id;

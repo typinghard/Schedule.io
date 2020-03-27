@@ -7,7 +7,7 @@ namespace Agenda.Application.ViewModels
 {
     public class AtualizarUsuarioViewModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         [DisplayName("E-mail")]
         public string UsuarioEmail { get; set; }
     }

@@ -4,7 +4,7 @@ namespace Agenda.Domain.Core.DomainObjects
 {
     public abstract class Entity
     {
-        public Guid Id { get; protected set; }
+        public string Id { get; protected set; }
         public DateTime CriadoAs { get; protected set; }
         public DateTime AtualizadoAs { get; protected set; }
 
@@ -12,7 +12,7 @@ namespace Agenda.Domain.Core.DomainObjects
 
         public Entity(Guid id)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
         }
 
         public void Inativar()

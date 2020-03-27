@@ -24,19 +24,14 @@ namespace ScheduleIo.Nuget.Services
             _agendaRepository = agendaRepository;
         }
 
-        public bool Excluir(Guid id)
-        {
-            _bus.EnviarComando(new RemoverAgendaCommand(id)).Wait();
-            ValidarComando();
-            return true;
-        }
+        
 
-        public Guid Gravar(Models.Agenda agenda)
+        public string Gravar(Models.Agenda agenda)
         {
             var idAgenda = Guid.Empty;
             if (agenda.Id == Guid.Empty)
             {
-                idAgenda = Guid.NewGuid();
+                idAgenda = Guid.NewGuid().ToString();
                 _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
             }
             else
@@ -49,7 +44,7 @@ namespace ScheduleIo.Nuget.Services
             return idAgenda;
         }
 
-        public bool Inativar(Guid agendaId)
+        public bool Inativar(string agendaId)
         {
             var agenda = _agendaRepository.ObterPorId(agendaId);
             _agendaRepository.Remover(agenda);
@@ -57,7 +52,7 @@ namespace ScheduleIo.Nuget.Services
             return true;
         }
 
-        public Models.Agenda Obter(Guid agendaId)
+        public Models.Agenda Obter(string agendaId)
         {
             var agenda = _agendaRepository.ObterPorId(agendaId);
 

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Agenda.Infra.Data.Enums
+namespace ScheduleIo.Infra.Configurations.Enums
 {
     public enum EDataBaseType
     {
-        MONGO
+        MONGODB,
+        RAVENDB
     }
 }

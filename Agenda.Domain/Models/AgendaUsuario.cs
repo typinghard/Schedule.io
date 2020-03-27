@@ -11,12 +11,11 @@ namespace Agenda.Domain.Models
 {
     public class AgendaUsuario : Entity, IAggregateRoot
     {
-        public Guid AgendaId { get; protected set; } // Obrigatório
-        public Guid UsuarioId { get; protected set; } // Obrigatório
-
+        public string AgendaId { get; protected set; }
+        public string UsuarioId { get; protected set; }
         public PermissoesAgenda Permissoes { get; protected set; }
 
-        public AgendaUsuario(Guid id, Guid agendaId, Guid usuarioId) : base(id)
+        public AgendaUsuario(string agendaId, string usuarioId)
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;
@@ -27,7 +26,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
-        public void DefinirUsuarioId(Guid usuarioId)
+        public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())
             {
@@ -37,7 +36,8 @@ namespace Agenda.Domain.Models
             UsuarioId = usuarioId;
         }
 
-        public void DefinirAgendaId(Guid agendaId)
+
+        public void DefinirAgendaId(string agendaId)
         {
             if (agendaId.EhVazio())
             {

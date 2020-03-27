@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RavenDB.Client" Version="4.2.101" />
+    <PackageReference Include="RavenDB.DependencyInjection" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Agenda.Domain.Core\Agenda.Domain.Core.csproj" />
+    <ProjectReference Include="..\Agenda.Domain\Agenda.Domain.csproj" />
+    <ProjectReference Include="..\ScheduleIo.Infra.Configurations\ScheduleIo.Infra.Configurations.csproj" />
+  </ItemGroup>
+
+</Project>

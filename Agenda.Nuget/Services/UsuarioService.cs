@@ -25,13 +25,13 @@ namespace ScheduleIo.Nuget.Services
             _bus = bus;
         }
 
-        public Guid Gravar(Usuario usuario)
+        public string Gravar(Usuario usuario)
         {
-            Guid usuarioId;
+            string usuarioId;
 
             if (usuario.Id == Guid.NewGuid())
             {
-                usuarioId = Guid.NewGuid();
+                usuarioId = Guid.NewGuid().ToString();
                 _bus.EnviarComando(new RegistrarUsuarioCommand(usuarioId, usuario.Email)).Wait();
             }
             else
@@ -43,14 +43,14 @@ namespace ScheduleIo.Nuget.Services
             return usuarioId;
         }
 
-        public bool Excluir(Guid usuarioId)
+        public bool Excluir(string usuarioId)
         {
             _bus.EnviarComando(new RemoverUsuarioCommand(usuarioId)).Wait();
             ValidarComando();
             return true;
         }
 
-        public Usuario Obter(Guid usuarioId)
+        public Usuario Obter(string usuarioId)
         {
             var usuario = _usuarioRepository.ObterPorId(usuarioId);
 

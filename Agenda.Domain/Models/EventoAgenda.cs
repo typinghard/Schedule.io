@@ -12,14 +12,14 @@ namespace Agenda.Domain.Models
 {
     public class EventoAgenda : Entity, IAggregateRoot
     {
-        public Guid AgendaId { get; private set; }
-        public Guid UsuarioId { get; private set; }
+        public string AgendaId { get; private set; }
+        public string UsuarioId { get; private set; }
         public string IdentificadorExterno { get; private set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public IReadOnlyCollection<Convite> Convites { get { return _convites; } }
         private List<Convite> _convites { get; set; }
-        public Guid? Local { get; private set; }
+        public string Local { get; private set; }
         public DateTime DataInicio { get; private set; }
         public DateTime? DataFinal { get; private set; }
         public DateTime? DataLimiteConfirmacao { get; private set; }
@@ -29,7 +29,7 @@ namespace Agenda.Domain.Models
         public TipoEvento Tipo { get; private set; }
         public EnumFrequencia Frequencia { get; private set; }
 
-        public EventoAgenda(Guid id, Guid agendaId, string titulo, DateTime dataInicio, TipoEvento tipoEvento) : base(id)
+        public EventoAgenda(string id, string agendaId, string titulo, DateTime dataInicio, TipoEvento tipoEvento) : base(id)
         {
             this.AgendaId = agendaId;
             this.Titulo = titulo;
@@ -44,7 +44,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
-        public void DefinirAgenda(Guid agendaId)
+        public void DefinirAgenda(string agendaId)
         {
             if (agendaId.EhVazio())
             {
@@ -202,7 +202,7 @@ namespace Agenda.Domain.Models
         public string Nome { get; set; }
         public string Descricao { get; set; }
 
-        public TipoEvento(Guid id, string nome, string descricao) : base(id)
+        public TipoEvento(string id, string nome, string descricao) : base(id)
         {
             this.Nome = nome;
             this.Descricao = descricao;

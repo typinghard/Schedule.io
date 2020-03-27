@@ -14,25 +14,13 @@ namespace ScheduleIo.Nuget.Services
 {
     internal class LocalService : ServiceBase, ILocalService
     {
-        private readonly ILocalRepository _localRepository;
-        private readonly IMediatorHandler _bus;
-
-
-        public LocalService(ILocalRepository localRepository,
-                            IMediatorHandler mediatorHandler,
-                            INotificationHandler<DomainNotification> notifications) : base(notifications)
-        {
-            _localRepository = localRepository;
-            _bus = mediatorHandler;
-        }
-
-
-        public Guid Gravar(Local local)
+        
+        public string Gravar(Local local)
         {
             Guid localId;
             if (local.Id == Guid.Empty)
             {
-                localId = Guid.NewGuid();
+                localId = Guid.NewGuid().ToString();
 
                 _bus.EnviarComando(new RegistrarLocalCommand(localId, local.IdentificadorExterno, local.Nome, local.Descricao,
                                                              local.Reserva, local.LotacaoMaxima)).Wait();
@@ -49,14 +37,14 @@ namespace ScheduleIo.Nuget.Services
         }
 
 
-        public bool Excluir(Guid localId)
+        public bool Excluir(string localId)
         {
             _bus.EnviarComando(new RemoverLocalCommand(localId)).Wait();
             ValidarComando();
             return true;
         }
 
-        public Local Obter(Guid localId)
+        public Local Obter(string localId)
         {
             var local = _localRepository.ObterPorId(localId);
 
@@ -64,7 +52,6 @@ namespace ScheduleIo.Nuget.Services
             {
                 throw new ScheduleIoException(new List<string>() { "Local não encontrado!" });
             }
-
             ValidarComando();
 
             return new Local()
@@ -78,6 +65,6 @@ namespace ScheduleIo.Nuget.Services
                 LotacaoMaxima = local.LotacaoMaxima,
                 Reserva = local.Reserva
             };
-        }
+
     }
 }

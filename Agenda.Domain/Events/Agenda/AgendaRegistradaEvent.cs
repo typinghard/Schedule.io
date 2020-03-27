@@ -9,12 +9,12 @@ namespace Agenda.Domain.Events
 {
     public class AgendaRegistradaEvent : Event
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public bool Publico { get; set; }
 
-        public AgendaRegistradaEvent(Guid id, string titulo, string descricao, bool publico)
+        public AgendaRegistradaEvent(string id, string titulo, string descricao, bool publico)
         {
             this.Id = id;
             this.AggregateId = id;

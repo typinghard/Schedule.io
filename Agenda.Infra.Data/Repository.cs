@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Agenda.Infra.Data
+namespace ScheduleIo.Infra.MongoDB
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {
@@ -34,7 +34,7 @@ namespace Agenda.Infra.Data
             return _collection.Find(t => t.Inativo == false).ToList();
         }
 
-        public TEntity ObterPorId(Guid id)
+        public TEntity ObterPorId(string id)
         {
             return _collection.Find(t => t.Id == id && t.Inativo == false).FirstOrDefault();
         }
@@ -62,7 +62,7 @@ namespace Agenda.Infra.Data
             GC.SuppressFinalize(this);
         }
 
-        public virtual void ForcarDelecao(Guid id)
+        public virtual void ForcarDelecao(string id)
         {
             throw new NotImplementedException();
         }

@@ -5,7 +5,7 @@ namespace Agenda.Domain.Commands
 {
     public class AtualizarAgendaCommand : AgendaCommand
     {
-        public AtualizarAgendaCommand(Guid id, string titulo, string descricao, bool publico)
+        public AtualizarAgendaCommand(string id, string titulo, string descricao, bool publico)
         {
             this.Id = id;
             this.Titulo = titulo;

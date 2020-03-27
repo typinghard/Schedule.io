@@ -7,7 +7,7 @@ namespace Agenda.Domain.Commands
 {
    public  class RemoverAgendaUsuarioCommand : AgendaUsuarioCommand
     {
-        public RemoverAgendaUsuarioCommand(Guid id)
+        public RemoverAgendaUsuarioCommand(string id)
         {
             this.Id = id;
             this.AggregateId = id;

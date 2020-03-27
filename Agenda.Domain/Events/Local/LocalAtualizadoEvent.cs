@@ -5,7 +5,7 @@ namespace Agenda.Domain.Events
 {
     public class LocalAtualizadoEvent : Event
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string IdentificadorExterno { get; set; }
         public string NomeLocal { get; set; }
         public string Descricao { get; set; }
@@ -13,7 +13,7 @@ namespace Agenda.Domain.Events
         public int LotacaoMaxima { get;  set; }
 
 
-        public LocalAtualizadoEvent(Guid id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaoMaxima)
+        public LocalAtualizadoEvent(string id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaoMaxima)
         {
             this.Id = id;
             this.AggregateId = id;

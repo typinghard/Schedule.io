@@ -42,8 +42,8 @@ namespace Agenda.Domain.CommandHandlers
 
             Convite convite = new Convite(message.Id, message.EventoId, message.UsuarioId);
 
-            if (message.Status != Enums.EnumStatusConviteEvento.Aguardando_Confirmacao)
-                convite.AtualizarStatusConvite(message.Status);
+            //if (message.Status != Enums.EnumStatusConviteEvento.Aguardando_Confirmacao)
+            //    convite.AtualizarStatusConvite(message.Status);
 
             if (convite.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
@@ -87,7 +87,7 @@ namespace Agenda.Domain.CommandHandlers
 
             convite.DefinirUsuarioId(message.UsuarioId);
             convite.DefinirEventoId(message.EventoId);
-            convite.AtualizarStatusConvite(message.Status);
+            //convite.AtualizarStatusConvite(message.Status);
 
             if (convite.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();

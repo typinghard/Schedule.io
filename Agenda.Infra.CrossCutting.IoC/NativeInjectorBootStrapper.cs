@@ -119,7 +119,7 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IUsuarioRepository, ScheduleIo.Infra.MongoDB.UsuarioRepository>();
             services.AddScoped<IAgendaUsuarioRepository, ScheduleIo.Infra.MongoDB.AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, ScheduleIo.Infra.MongoDB.EventoAgendaRepository>();
-            services.AddScoped<IEventoUsuarioRepository, ScheduleIo.Infra.MongoDB.EventoUsuarioRepository>();
+            services.AddScoped<IConviteRepository, ScheduleIo.Infra.MongoDB.ConviteRepository>();
             services.AddScoped<ILocalRepository, ScheduleIo.Infra.MongoDB.LocalRepository>();
             services.AddScoped<IUnitOfWork, ScheduleIo.Infra.MongoDB.UoW.UnitOfWork>();
         }
@@ -132,7 +132,7 @@ namespace Agenda.Infra.CrossCutting.IoC
             services.AddScoped<IUsuarioRepository, ScheduleIo.Infra.RavenDB.UsuarioRepository>();
             services.AddScoped<IAgendaUsuarioRepository, ScheduleIo.Infra.RavenDB.AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, ScheduleIo.Infra.RavenDB.EventoAgendaRepository>();
-            services.AddScoped<IEventoUsuarioRepository, ScheduleIo.Infra.RavenDB.EventoUsuarioRepository>();
+            services.AddScoped<IConviteRepository, ScheduleIo.Infra.RavenDB.ConviteRepository>();
             services.AddScoped<ILocalRepository, ScheduleIo.Infra.RavenDB.LocalRepository>();
             services.AddScoped<IUnitOfWork, ScheduleIo.Infra.RavenDB.UoW.UnitOfWork>();
         }

@@ -12,11 +12,11 @@ namespace Agenda.Domain.Validations
         public NovoConviteValidation()
         {
             RuleFor(e => e.EventoId)
-                .NotEqual(Guid.Empty)
+                .NotEmpty()
                 .WithMessage("EventoId não informado!");
 
             RuleFor(e => e.UsuarioId)
-                .NotEqual(Guid.Empty)
+                .NotEmpty()
                 .WithMessage("UsuarioId não informado!");
 
             RuleFor(e => e.Status)

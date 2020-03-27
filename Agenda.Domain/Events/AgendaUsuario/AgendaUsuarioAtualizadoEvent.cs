@@ -13,7 +13,7 @@ namespace Agenda.Domain.Events
 
         public PermissoesAgenda Permissoes { get; set; }
 
-        public AgendaUsuarioAtualizadoEvent(string id, string agendaId, string usuarioId)
+        public AgendaUsuarioAtualizadoEvent(string id, string agendaId, string usuarioId, PermissoesAgenda permissoes)
         {
             this.Id = id;
             this.AggregateId = id;

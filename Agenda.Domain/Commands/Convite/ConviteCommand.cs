@@ -11,6 +11,7 @@ namespace Agenda.Domain.Commands
     {
         public string Id { get; protected set; }
         public string UsuarioId { get; protected set; }
+        public string EventoId { get; protected set; }
         public bool Confirmacao { get; protected set; }
 
         public PermissoesConvite Permissoes { get; protected set; }

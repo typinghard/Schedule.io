@@ -43,7 +43,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId, agendaUsuario.Permissoes));
+                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId/*, agendaUsuario.Permissoes*/));
             }
 
             return Task.FromResult(true);
@@ -71,7 +71,7 @@ namespace Agenda.Domain.CommandHandlers
             _agendaUsuarioRepository.Adicionar(novoAgendaUsuario);
             if (Commit())
             {
-                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId, agendaUsuario.Permissoes));
+                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId/*, agendaUsuario.Permissoes*/));
             }
 
             return Task.FromResult(true);

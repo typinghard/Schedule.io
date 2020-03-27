@@ -12,7 +12,7 @@ namespace Agenda.Domain.Validations
         public NovoEventoAgendaValidation()
         {
             RuleFor(c => c.AgendaId)
-                .NotEqual(Guid.Empty)
+                .NotEmpty()
                 .WithMessage("Id da Agenda não pode ser vazio!");
 
             RuleFor(e => e.Titulo)
@@ -60,7 +60,7 @@ namespace Agenda.Domain.Validations
             return qtdeUsuario < 0 ? false : true;
         }
 
-        protected static bool ValidaPessoas(IList<Guid> pessoas)
+        protected static bool ValidaPessoas(IList<string> pessoas)
         {
             if (pessoas != null && pessoas.Count > 0)
                 foreach (var pessoaId in pessoas)

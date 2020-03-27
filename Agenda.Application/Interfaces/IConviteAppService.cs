@@ -9,10 +9,10 @@ namespace Agenda.Application.Interfaces
     {
         void Registrar(CriarConviteViewModel conviteViewModel);
         IEnumerable<DetalhesConviteViewModel> ObterTodosConvitesAtivos();
-        DetalhesConviteViewModel ObterPorId(Guid id);
+        DetalhesConviteViewModel ObterPorId(string id);
         void Atualizar(AtualizarConviteViewModel conviteViewModel);
-        void Remover(Guid id);
-        //IList<CustomerHistoryData> GetAllHistory(Guid id);
+        void Remover(string id);
+        //IList<CustomerHistoryData> GetAllHistory(string id);
 
         void Dispose();
     }

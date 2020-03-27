@@ -13,15 +13,15 @@ namespace Agenda.Application.Services
     public class EventoUsuarioAppService : IEventoUsuarioAppService
     {
         private readonly IMapper _mapper;
-        private readonly IEventoUsuarioRepository _eventoUsuarioRepository;
+        private readonly IConviteRepository _conviteRepository;
         private readonly IMediatorHandler Bus;
 
-        public EventoUsuarioAppService(IMapper mapper, 
-                                       IEventoUsuarioRepository eventoUsuarioRepository, 
+        public EventoUsuarioAppService(IMapper mapper,
+                                       IConviteRepository conviteRepository, 
                                        IMediatorHandler bus)
         {
             _mapper = mapper;
-            _eventoUsuarioRepository = eventoUsuarioRepository;
+            _conviteRepository = conviteRepository;
             Bus = bus;
         }
 
@@ -33,23 +33,23 @@ namespace Agenda.Application.Services
 
         public DetalhesEventoUsuarioViewModel ObterPorId(string id)
         {
-            return _mapper.Map<DetalhesEventoUsuarioViewModel>(_eventoUsuarioRepository.ObterPorId(id));
+            return _mapper.Map<DetalhesEventoUsuarioViewModel>(_conviteRepository.ObterPorId(id));
         }
 
         public IEnumerable<DetalhesEventoUsuarioViewModel> ObterTodosEventosUsuarioAtivos()
         {
-            return _mapper.Map<IEnumerable<DetalhesEventoUsuarioViewModel>>(_eventoUsuarioRepository.ObterTodosAtivos());
+            return _mapper.Map<IEnumerable<DetalhesEventoUsuarioViewModel>>(_conviteRepository.ObterTodosAtivos());
         }
 
         public void Registrar(CriarEventoUsuarioViewModel eventoUsuarioViewModel)
         {
-            var registrarCommand = _mapper.Map<RegistrarEventoUsuarioCommand>(eventoUsuarioViewModel);
+            var registrarCommand = _mapper.Map<RegistrarConviteCommand>(eventoUsuarioViewModel);
             Bus.EnviarComando(registrarCommand);
         }
 
         public void Remover(string id)
         {
-            var removerCommand = new RemoverEventoUsuarioCommand(id);
+            var removerCommand = new RemoverConviteCommand(id);
             Bus.EnviarComando(removerCommand);
         }
 

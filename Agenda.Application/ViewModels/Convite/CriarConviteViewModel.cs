@@ -9,9 +9,9 @@ namespace Agenda.Application.ViewModels
     {
 
         [DisplayName("Id Evento")]
-        public Guid EventoId { get; set; }
+        public string EventoId { get; set; }
         [DisplayName("Id Usuario")]
-        public Guid UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
         //ver sobre esse
         //public EnumStatusConviteEvento Status { get; private set; }
 

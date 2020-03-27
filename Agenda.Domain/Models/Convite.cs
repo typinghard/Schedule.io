@@ -12,12 +12,12 @@ namespace Agenda.Domain.Models
 {
     public class Convite : Entity, IAggregateRoot
     {
-        public Guid EventoId { get; private set; }
-        public Guid UsuarioId { get; private set; }
+        public string EventoId { get; private set; }
+        public string UsuarioId { get; private set; }
         public EnumStatusConviteEvento Status { get; private set; }
         public PermissoesConvite Permissoes { get; private set; }
 
-        public Convite(Guid id, Guid eventoId, Guid usuarioId) : base(id)
+        public Convite(string id, string eventoId, string usuarioId) : base(id)
         {
             EventoId = eventoId;
             UsuarioId = usuarioId;
@@ -29,7 +29,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
-        public void DefinirUsuarioId(Guid usuarioId)
+        public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())
             {
@@ -39,7 +39,7 @@ namespace Agenda.Domain.Models
             UsuarioId = usuarioId;
         }
 
-        public void DefinirEventoId(Guid eventoId)
+        public void DefinirEventoId(string eventoId)
         {
             if (eventoId.EhVazio())
             {

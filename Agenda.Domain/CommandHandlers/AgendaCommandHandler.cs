@@ -38,7 +38,6 @@ namespace Agenda.Domain.CommandHandlers
             }
 
             Models.Agenda agenda = new Agenda.Domain.Models.Agenda(message.Titulo, message.Descricao, message.Publico);
-            Models.Agenda agenda = new Models.Agenda(message.Id, message.Titulo);
 
             if (!string.IsNullOrEmpty(message.Descricao))
                 agenda.DefinirDescricao(message.Descricao);

@@ -9,13 +9,13 @@ namespace Agenda.Domain.Commands
 {
     public class AtualizarConviteCommand : ConviteCommand
     {
-        public AtualizarConviteCommand(Guid id, Guid eventoId, Guid usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
+        public AtualizarConviteCommand(string id, string eventoId, string usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
         {
-            this.Id = id;
-            this.EventoId = eventoId;
-            this.UsuarioId = usuarioId;
-            this.Status = status;
-            this.Permissoes = permissoes;
+            Id = id;
+            EventoId = eventoId;
+            UsuarioId = usuarioId;
+            Status = status;
+            Permissoes = permissoes;
         }
 
 

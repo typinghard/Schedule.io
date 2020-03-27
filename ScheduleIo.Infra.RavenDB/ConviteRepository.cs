@@ -7,9 +7,9 @@ using System.Text;
 
 namespace ScheduleIo.Infra.RavenDB
 {
-    public class EventoUsuarioRepository : Repository<EventoUsuario>, IEventoUsuarioRepository
+    public class ConviteRepository : Repository<Convite>, IConviteRepository
     {
-        public EventoUsuarioRepository(IDocumentSession session) : base(session)
+        public ConviteRepository(IDocumentSession session) : base(session)
         {
         }
     }

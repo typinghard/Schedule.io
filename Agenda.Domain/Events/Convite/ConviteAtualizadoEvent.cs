@@ -8,13 +8,13 @@ namespace Agenda.Domain.Events
 {
     public class ConviteAtualizadoEvent : Event
     {
-        public Guid Id { get; set; }
-        public Guid EventoId { get; set; }
-        public Guid UsuarioId { get; set; }
+        public string Id { get; set; }
+        public string EventoId { get; set; }
+        public string UsuarioId { get; set; }
         public EnumStatusConviteEvento Status { get; set; }
         public PermissoesConvite Permissoes { get; set; }
 
-        public ConviteAtualizadoEvent(Guid id, Guid eventoId, Guid usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
+        public ConviteAtualizadoEvent(string id, string eventoId, string usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
         {
             this.Id = id;
             this.EventoId = eventoId;

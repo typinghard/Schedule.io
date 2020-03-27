@@ -9,12 +9,11 @@ namespace Agenda.Domain.Commands
 {
     public class RegistrarConviteCommand : ConviteCommand
     {
-        public RegistrarConviteCommand(Guid eventoId, Guid usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
+        public RegistrarConviteCommand(string eventoId, string usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
         {
-            this.EventoId = eventoId;
-            this.UsuarioId = usuarioId;
-            this.Status = status;
-            this.Permissoes = permissoes;
+            EventoId = eventoId;
+            UsuarioId = usuarioId;
+            Permissoes = permissoes;
         }
 
 

@@ -17,7 +17,7 @@ namespace Agenda.Domain.Models
 
         public bool Publico { get; private set; }
 
-        public Agenda(Guid id, string titulo) : base(id)
+        public Agenda(string id, string titulo) : base(id)
         {
             Titulo = titulo;
 

@@ -13,8 +13,8 @@ namespace Agenda.Application.ViewModels
         [DisplayName("Confirmação")]
         public bool Confirmacao { get; set; }
 
-        [DisplayName("Permissões")]
-        public PermissaoViewModel PermissaoViewModel { get; set; }
+        //[DisplayName("Permissões")]
+        //public PermissaoViewModel PermissaoViewModel { get; set; }
     }
 
 }

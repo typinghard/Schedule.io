@@ -12,11 +12,11 @@ namespace Agenda.Domain.Validations
         public AgendaUsuarioValidation()
         {
             RuleFor(a => a.UsuarioId)
-                .NotEqual(Guid.Empty)
+                .NotEmpty()
                 .WithMessage("UsuarioId não informado!");
 
             RuleFor(a => a.AgendaId)
-                .NotEqual(Guid.Empty)
+                .NotEmpty()
                 .WithMessage("AgendaId não informado!");
         }
     }

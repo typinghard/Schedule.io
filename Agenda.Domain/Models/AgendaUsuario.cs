@@ -19,7 +19,7 @@ namespace Agenda.Domain.Models
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;
-            Permissoes = new PermissoesAgenda();
+            //Permissoes = new PermissoesAgenda();
 
             var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
             if (!resultadoValidacao.IsValid)

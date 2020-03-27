@@ -7,13 +7,13 @@ namespace Agenda.Domain.Events
 {
     public class ConviteRegistradoEvent : Event
     {
-        public Guid Id { get; set; }
-        public Guid EventoId { get; set; }
-        public Guid UsuarioId { get; set; }
+        public string Id { get; set; }
+        public string EventoId { get; set; }
+        public string UsuarioId { get; set; }
         public EnumStatusConviteEvento Status { get; set; }
         public PermissoesConvite Permissoes { get; set; }
 
-        public ConviteRegistradoEvent(Guid id, Guid eventoId, Guid usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
+        public ConviteRegistradoEvent(string id, string eventoId, string usuarioId, EnumStatusConviteEvento status, PermissoesConvite permissoes)
         {
             this.Id = id;
             this.AggregateId = id;

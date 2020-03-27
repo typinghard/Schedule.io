@@ -14,22 +14,25 @@ namespace ScheduleIo.Nuget.Services
     internal class AgendaService : ServiceBase, IAgendaService
     {
         private readonly IAgendaRepository _agendaRepository;
+        private readonly IUsuarioService _usuarioService;
         private readonly IMediatorHandler _bus;
         public AgendaService(
             IAgendaRepository agendaRepository,
+            IUsuarioService usuarioService,
             IMediatorHandler bus,
             INotificationHandler<DomainNotification> notifications) : base(notifications)
         {
             _bus = bus;
+            _usuarioService = usuarioService;
             _agendaRepository = agendaRepository;
         }
 
-        
-
         public string Gravar(Models.Agenda agenda)
         {
-            var idAgenda = string.Empty;
-            if (Guid.Parse(agenda.Id) == Guid.Empty)
+            agenda.Usuario.Id = _usuarioService.Gravar(agenda.Usuario);
+
+            string idAgenda;
+            if (string.IsNullOrEmpty(agenda.Id))
             {
                 idAgenda = Guid.NewGuid().ToString();
                 _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
@@ -39,6 +42,9 @@ namespace ScheduleIo.Nuget.Services
                 idAgenda = agenda.Id;
                 _bus.EnviarComando(new AtualizarAgendaCommand(agenda.Id, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
             }
+
+            if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.Usuario.Id) == null)
+                _bus.EnviarComando(new RegistrarAgendaUsuarioCommand(idAgenda, agenda.Usuario.Id)).Wait();
 
             ValidarComando();
             return idAgenda;

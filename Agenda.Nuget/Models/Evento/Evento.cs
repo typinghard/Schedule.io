@@ -11,6 +11,7 @@ namespace ScheduleIo.Nuget.Models
         public DateTime CriadoAs { get; internal set; }
         public DateTime AtualizadoAs { get; internal set; }
         public string AgendaId { get; set; }
+        public string UsuarioId { get; set; }
         public string IdentificadorExterno { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }

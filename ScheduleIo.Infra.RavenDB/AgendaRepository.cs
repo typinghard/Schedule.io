@@ -11,5 +11,10 @@ namespace ScheduleIo.Infra.RavenDB
         public AgendaRepository(IDocumentSession session) : base(session)
         {
         }
+
+        public Agenda.Domain.Models.Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

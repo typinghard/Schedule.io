@@ -12,17 +12,17 @@ namespace Agenda.UI.Web.Controllers
     public class AgendaController : Controller
     {
         IAgendaService _agendaService;
-        IUsuarioService _usuarioService;
+        //IUsuarioService _usuarioService;
         ILocalService _localService;
         IEventoService _eventoService;
 
         public AgendaController(IAgendaService agendaService,
-                                IUsuarioService usuarioService,
+                                //IUsuarioService usuarioService,
                                 ILocalService localService,
                                 IEventoService eventoService)
         {
             _agendaService = agendaService;
-            _usuarioService = usuarioService;
+            //_usuarioService = usuarioService;
             _localService = localService;
             _eventoService = eventoService;
         }
@@ -35,20 +35,29 @@ namespace Agenda.UI.Web.Controllers
             try
             {
                 //var agenda = new NovaAgenda($"Agenda - {DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second}", "Descrição simples", true);
+
+                var usuarioDonoAgenda = new Usuario()
+                {
+                    Email = "usuario_donoagenda@mail.com"
+                };
+
                 var agenda = new ScheduleIo.Nuget.Models.Agenda()
                 {
                     Titulo = "Agenda da Limpeza",
                     Descricao = "",
-                    Publico = false
+                    Publico = false,
+                    Usuario = usuarioDonoAgenda
                 };
+
+
                 var agendaId = _agendaService.Gravar(agenda);
 
+                //var usuarioId = _usuarioService.Gravar(usuario);
 
-                var usuarioId = _usuarioService.Gravar(new Usuario()
+                var usuarioConvite = new Usuario()
                 {
-                    Email = "email@mail.com"
-                });
-
+                    Email = "usuario_convite@gmail.com"
+                };
 
                 var evento = new Evento()
                 {
@@ -62,6 +71,7 @@ namespace Agenda.UI.Web.Controllers
                 var eventoId = _eventoService.Gravar(new Evento()
                 {
                     AgendaId = agendaId,
+                    UsuarioId = usuarioDonoAgenda.Id,
                     IdentificadorExterno = string.Empty,
                     Titulo = "Limpar a casa",
                     Descricao = string.Empty,
@@ -69,7 +79,7 @@ namespace Agenda.UI.Web.Controllers
                     {
                         new Convite()
                         {
-                            UsuarioId = usuarioId,
+                            UsuarioId = usuarioConvite.Id,
                             Permissoes = new PermissoesConvite()
                             {
                                 ConvidaUsuario=true,

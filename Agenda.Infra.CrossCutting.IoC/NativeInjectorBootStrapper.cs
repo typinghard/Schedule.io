@@ -11,7 +11,6 @@ using Agenda.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using ScheduleIo.Infra.Configurations;
-using ScheduleIo.Infra.MongoDB;
 using ScheduleIo.Infra.MongoDB.EventSourcing;
 using ScheduleIo.Infra.MongoDB.UoW;
 using ScheduleIo.Infra.RavenDB.UoW;
@@ -23,7 +22,8 @@ namespace Agenda.Infra.CrossCutting.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            services.AddScoped<ScheduleIo.Infra.MongoDB.AgendaContext>();
+           services.AddScoped<ScheduleIo.Infra.MongoDB.AgendaContext>();
+
             switch (DataBaseConfigurationHelper.DataBaseConfig.GetDataBaseType())
             {
                 case ScheduleIo.Infra.Configurations.Enums.EDataBaseType.MONGODB:
@@ -39,20 +39,6 @@ namespace Agenda.Infra.CrossCutting.IoC
 
             // Notifications
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
-            
-
-            //Evento Agenda Context
-            services.AddScoped<AgendaContext>();
-
-            //Repository
-            services.AddScoped<IAgendaRepository, AgendaRepository>();
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();
-            services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
-            services.AddScoped<IConviteRepository, ConviteRepository>();
-            services.AddScoped<ILocalRepository, LocalRepository>();
-            services.AddScoped<IUnitOfWork, ScheduleIo.Infra.MongoDB.UoW.UnitOfWork>();
-            services.AddScoped<IUnitOfWork, ScheduleIo.Infra.RavenDB.UoW.UnitOfWork>();
 
             // Application
             services.AddScoped<IAgendaAppService, AgendaAppService>();
@@ -117,7 +103,6 @@ namespace Agenda.Infra.CrossCutting.IoC
         private static void RegisterMongoDbServices(IServiceCollection services)
         {
             services.AddScoped<IEventSourcingRepository, ScheduleIo.Infra.MongoDB.EventSourcing.EventSourcingRepository>();
-
 
             services.AddScoped<IAgendaRepository, ScheduleIo.Infra.MongoDB.AgendaRepository>();
             services.AddScoped<IUsuarioRepository, ScheduleIo.Infra.MongoDB.UsuarioRepository>();

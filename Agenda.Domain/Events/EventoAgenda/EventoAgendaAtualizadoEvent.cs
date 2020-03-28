@@ -10,6 +10,7 @@ namespace Agenda.Domain.Events
     {
         public string Id { get; set; }
         public string AgendaId { get; set; }
+        public string UsuarioId { get; set; }
         public string IdentificadorExterno { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
@@ -24,12 +25,13 @@ namespace Agenda.Domain.Events
         public TipoEvento Tipo { get; set; }
         public EnumFrequencia Frequencia { get; set; }
 
-        public EventoAgendaAtualizadoEvent(string id, string agendaId, string identificadorExterno, string titulo, string descricao, IList<Convite> convites, string local, DateTime dataInicio, DateTime? dataFinal,
+        public EventoAgendaAtualizadoEvent(string id, string agendaId, string usuarioId,string identificadorExterno, string titulo, string descricao, IList<Convite> convites, string local, DateTime dataInicio, DateTime? dataFinal,
             DateTime? dataLimiteConfirmacao, int qtdeMaximadeUsuarios, bool ocupaUsuario, bool publico, TipoEvento tipoEvento, EnumFrequencia frequencia)
         {
             this.Id = id;
             this.AggregateId = id;
             this.AgendaId = agendaId;
+            this.UsuarioId = usuarioId;
             this.IdentificadorExterno = identificadorExterno;
             this.Titulo = titulo;
             this.Descricao = descricao;

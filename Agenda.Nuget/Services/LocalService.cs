@@ -27,22 +27,20 @@ namespace ScheduleIo.Nuget.Services
 
         public string Gravar(Local local)
         {
-            var localId = string.Empty;
             if (string.IsNullOrEmpty(local.Id))
             {
-                localId = Guid.NewGuid().ToString();
-                _bus.EnviarComando(new RegistrarLocalCommand(localId, local.IdentificadorExterno, local.Nome, local.Descricao,
+                local.Id = Guid.NewGuid().ToString();
+                _bus.EnviarComando(new RegistrarLocalCommand(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao,
                                                              local.Reserva, local.LotacaoMaxima)).Wait();
             }
             else
             {
-                localId = local.Id;
                 _bus.EnviarComando(new AtualizarLocalCommand(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao,
                                                          local.Reserva, local.LotacaoMaxima)).Wait();
             }
 
             ValidarComando();
-            return localId;
+            return local.Id;
         }
 
 

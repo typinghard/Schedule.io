@@ -31,23 +31,21 @@ namespace ScheduleIo.Nuget.Services
         {
             agenda.Usuario.Id = _usuarioService.Gravar(agenda.Usuario);
 
-            string idAgenda;
             if (string.IsNullOrEmpty(agenda.Id))
             {
-                idAgenda = Guid.NewGuid().ToString();
-                _bus.EnviarComando(new RegistrarAgendaCommand(idAgenda, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
+                agenda.Id = Guid.NewGuid().ToString();
+                _bus.EnviarComando(new RegistrarAgendaCommand(agenda.Id, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
             }
             else
             {
-                idAgenda = agenda.Id;
                 _bus.EnviarComando(new AtualizarAgendaCommand(agenda.Id, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
             }
 
             if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.Usuario.Id) == null)
-                _bus.EnviarComando(new RegistrarAgendaUsuarioCommand(idAgenda, agenda.Usuario.Id)).Wait();
+                _bus.EnviarComando(new RegistrarAgendaUsuarioCommand(agenda.Id, agenda.Usuario.Id)).Wait();
 
             ValidarComando();
-            return idAgenda;
+            return agenda.Id;
         }
 
         public bool Inativar(string agendaId)

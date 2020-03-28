@@ -29,9 +29,10 @@ namespace Agenda.Domain.Models
         public TipoEvento Tipo { get; private set; }
         public EnumFrequencia Frequencia { get; private set; }
 
-        public EventoAgenda(string id, string agendaId, string titulo, DateTime dataInicio, TipoEvento tipoEvento) : base(id)
+        public EventoAgenda(string id, string agendaId, string usuarioId, string titulo, DateTime dataInicio, TipoEvento tipoEvento) : base(id)
         {
             this.AgendaId = agendaId;
+            this.UsuarioId = usuarioId;
             this.Titulo = titulo;
             this.DataInicio = dataInicio;
             this.Tipo = tipoEvento;

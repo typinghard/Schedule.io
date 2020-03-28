@@ -15,8 +15,8 @@ namespace ScheduleIo.Nuget.Models
         public string IdentificadorExterno { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
-        public IList<Convite> Convites { get;  set; }
-        public string Local { get; set; }
+        public IList<Convite> Convites { get; set; }
+        public Local Local { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime? DataFinal { get; set; }
         public DateTime? DataLimiteConfirmacao { get; set; }
@@ -45,7 +45,6 @@ namespace ScheduleIo.Nuget.Models
         public PermissoesConvite Permissoes { get; set; }
 
     }
-
 
     public class PermissoesConvite
     {

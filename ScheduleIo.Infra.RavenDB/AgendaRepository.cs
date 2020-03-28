@@ -14,7 +14,16 @@ namespace ScheduleIo.Infra.RavenDB
 
         public Agenda.Domain.Models.Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
-            throw new NotImplementedException();
+            var DocumentName = "agenda";
+            var DocumentNameInnerJoin = "agendausuario";
+
+            return _session.Advanced.RawQuery<Agenda.Domain.Models.Agenda>(
+           "from " + DocumentName + " " +
+           "inner join " + DocumentNameInnerJoin + " on agendaId = $Id and usuarioId = $usuarioId" + " " +
+           "where Id == $Id")
+               .AddParameter("Id", agendaId.ToString())
+               .AddParameter("usuarioId", usuarioId.ToString())
+               .FirstOrDefault();
         }
     }
 }

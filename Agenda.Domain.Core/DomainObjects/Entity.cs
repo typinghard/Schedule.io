@@ -12,7 +12,7 @@ namespace Agenda.Domain.Core.DomainObjects
 
         public Entity(string id)
         {
-            Id = Guid.NewGuid().ToString();
+            Id = id;
         }
 
         public void Inativar()

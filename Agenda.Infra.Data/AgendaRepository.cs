@@ -16,6 +16,10 @@ namespace ScheduleIo.Infra.MongoDB
         public Agenda.Domain.Models.Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
             var agendaUsuario = Db.AgendaUsuario.Find(c => c.AgendaId == agendaId && c.UsuarioId == usuarioId).FirstOrDefault();
+
+            if(agendaUsuario ==null)
+                return null;
+
             return Db.Agenda.Find(x => x.Id == agendaUsuario.AgendaId).FirstOrDefault();
         }
     }

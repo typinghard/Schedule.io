@@ -9,13 +9,14 @@ namespace Agenda.Domain.Commands
 {
     public class RegistrarEventoAgendaCommand : EventoAgendaCommand
     {
-        public RegistrarEventoAgendaCommand(string id, string agendaId, string identificadorExterno, string titulo,
+        public RegistrarEventoAgendaCommand(string id, string agendaId, string usuarioId,string identificadorExterno, string titulo,
             string descricao, IList<Convite> convites, string local, DateTime dataInicio, DateTime? dataFinal,
             DateTime dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario,
             bool eventoPublico, TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
         {
             this.Id = id;
             this.AgendaId = agendaId;
+            this.UsuarioId = usuarioId;
             this.IdentificadorExterno = identificadorExterno;
             this.Titulo = titulo;
             this.Descricao = descricao;

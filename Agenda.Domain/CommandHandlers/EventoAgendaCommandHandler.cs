@@ -52,7 +52,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            EventoAgenda eventoAgenda = new EventoAgenda(message.Id, message.AgendaId, message.Titulo, message.DataInicio, message.Tipo);
+            EventoAgenda eventoAgenda = new EventoAgenda(message.Id, message.AgendaId, message.UsuarioId, message.Titulo, message.DataInicio, message.Tipo);
 
             if (!string.IsNullOrEmpty(message.IdentificadorExterno))
                 eventoAgenda.DefinirIdentificadorExterno(message.IdentificadorExterno);
@@ -79,7 +79,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (message.Convites.Count > 0)
             {
-                var listaConvites = ValidaStatusConviteUsuarios(eventoAgenda);
+                var listaConvites = ValidaStatusConviteUsuarios(eventoAgenda, message.Convites);
                 foreach (Convite convite in listaConvites)
                     eventoAgenda.AdicionarConvite(convite);
             }
@@ -91,7 +91,8 @@ namespace Agenda.Domain.CommandHandlers
                 eventoAgenda.DefinirQuantidadeMinimaDeUsuarios(message.QuantidadeMinimaDeUsuarios);
 
             eventoAgenda.Tipo.DefinirNome(message.Tipo.Nome);
-            eventoAgenda.Tipo.DefinirDescricao(message.Tipo.Descricao);
+            if (!string.IsNullOrEmpty(message.Tipo.Descricao))
+                eventoAgenda.Tipo.DefinirDescricao(message.Tipo.Descricao);
 
             Validacoes(eventoAgenda);
 
@@ -99,7 +100,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new EventoAgendaRegistradoEvent(eventoAgenda.Id, eventoAgenda.AgendaId,
+                Bus.PublicarEvento(new EventoAgendaRegistradoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.UsuarioId,
                                     eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao,
                                     (List<Convite>)eventoAgenda.Convites, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal,
                                     eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios,
@@ -132,7 +133,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (message.Convites.Count > 0)
             {
-                var listaConvites = ValidaStatusConviteUsuarios(eventoAgenda);
+                var listaConvites = ValidaStatusConviteUsuarios(eventoAgenda, message.Convites);
                 foreach (Convite convite in listaConvites)
                     eventoAgenda.AdicionarConvite(convite);
             }
@@ -166,7 +167,7 @@ namespace Agenda.Domain.CommandHandlers
             _eventoAgendaRepository.Atualizar(eventoAgenda);
             if (Commit())
             {
-                Bus.PublicarEvento(new EventoAgendaAtualizadoEvent(eventoAgenda.Id, eventoAgenda.AgendaId,
+                Bus.PublicarEvento(new EventoAgendaAtualizadoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.UsuarioId,
                                    eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao,
                                    (List<Convite>)eventoAgenda.Convites, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal,
                                    eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios,
@@ -194,7 +195,6 @@ namespace Agenda.Domain.CommandHandlers
         private void Validacoes(EventoAgenda eventoAgenda)
         {
             ValidaQuantidadeDeUsuariosNoLocal(eventoAgenda);
-            ValidaStatusConviteUsuarios(eventoAgenda);
         }
 
         private void ValidaQuantidadeDeUsuariosNoLocal(EventoAgenda eventoAgenda)
@@ -202,7 +202,7 @@ namespace Agenda.Domain.CommandHandlers
             if (string.IsNullOrEmpty(eventoAgenda.Local))
             {
                 var local = _localRepository.ObterPorId(eventoAgenda.Local);
-                if (eventoAgenda.QuantidadeMinimaDeUsuarios > local.LotacaoMaxima)
+                if (local != null && eventoAgenda.QuantidadeMinimaDeUsuarios > local.LotacaoMaxima)
                 {
                     throw new DomainException("A quantidade máxima de usuários não pode ser maior que a lotação máxima do local!");
                 }
@@ -210,42 +210,49 @@ namespace Agenda.Domain.CommandHandlers
 
         }
 
-        private List<Convite> ValidaStatusConviteUsuarios(EventoAgenda eventoAgenda)
+        private List<Convite> ValidaStatusConviteUsuarios(EventoAgenda eventoAgenda, IList<Convite> convites = null)
         {
             /* Descrição:
              * - Ao criar um evento com vários usuários, os OUTROS usuários ficaram pendentes de confirmação, porém o usuário que criou já é confirmado
              */
 
             //usuario criador do evento - marcado como confirmado
-            var usuarioAgenda = _agendaUsuarioRepository.ObterPorId(eventoAgenda.AgendaId);
+            var usuarioAgenda = _agendaUsuarioRepository.ObterPorId(eventoAgenda.AgendaId, eventoAgenda.UsuarioId);
+            if (usuarioAgenda == null)
+            {
+                throw new DomainException("Não foi encontrado a agenda do usuário!");
+            }
 
             var listConvites = new List<Convite>();
-            foreach (var novoConvite in eventoAgenda.Convites)
+            if (convites != null && convites.Count > 0)
             {
-                var convite = new Convite(string.Empty, eventoAgenda.Id, novoConvite.UsuarioId);
+                foreach (var novoConvite in convites)
+                {
+                    var convite = new Convite(novoConvite.Id, eventoAgenda.Id, novoConvite.UsuarioId);
 
-                if (usuarioAgenda.UsuarioId == novoConvite.UsuarioId)
-                    convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
-                else
-                    convite.AtualizarStatusConvite(EnumStatusConviteEvento.Aguardando_Confirmacao);
+                    if (usuarioAgenda.UsuarioId == novoConvite.UsuarioId)
+                        convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
+                    else
+                        convite.AtualizarStatusConvite(EnumStatusConviteEvento.Aguardando_Confirmacao);
 
-                if (novoConvite.Permissoes.ConvidaUsuario)
-                    convite.Permissoes.PodeConvidar();
-                else
-                    convite.Permissoes.NaoPodeConvidar();
+                    if (novoConvite.Permissoes.ConvidaUsuario)
+                        convite.Permissoes.PodeConvidar();
+                    else
+                        convite.Permissoes.NaoPodeConvidar();
 
-                if (novoConvite.Permissoes.ModificaEvento)
-                    convite.Permissoes.PodeModificarEvento();
-                else
-                    convite.Permissoes.NaoPodeModificarEvento();
+                    if (novoConvite.Permissoes.ModificaEvento)
+                        convite.Permissoes.PodeModificarEvento();
+                    else
+                        convite.Permissoes.NaoPodeModificarEvento();
 
-                if (novoConvite.Permissoes.VeListaDeConvidados)
-                    convite.Permissoes.PodeVerListaDeConvidados();
-                else
-                    convite.Permissoes.NaoPodeModificarEvento();
+                    if (novoConvite.Permissoes.VeListaDeConvidados)
+                        convite.Permissoes.PodeVerListaDeConvidados();
+                    else
+                        convite.Permissoes.NaoPodeModificarEvento();
 
 
-                listConvites.Add(convite);
+                    listConvites.Add(convite);
+                }
             }
 
             //os demais marcado como pendencia

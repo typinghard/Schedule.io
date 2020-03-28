@@ -12,5 +12,18 @@ namespace ScheduleIo.Infra.RavenDB
         public AgendaUsuarioRepository(IDocumentSession session) : base(session)
         {
         }
+
+        public AgendaUsuario ObterPorId(string agendaId, string usuarioId)
+        {
+            var DocumentName = "agendausuario";
+
+            return _session.Advanced.RawQuery<AgendaUsuario>(
+           "from " + DocumentName + " " +
+           "where agendaId == $agendaId " + " " +
+           "and usuarioId == $usuarioId")
+               .AddParameter("agendaId", agendaId.ToString())
+               .AddParameter("usuarioId", usuarioId.ToString())
+               .FirstOrDefault();
+        }
     }
 }

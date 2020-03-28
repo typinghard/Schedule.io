@@ -38,7 +38,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            AgendaUsuario agendaUsuario = new AgendaUsuario(message.Id, message.AgendaId, message.UsuarioId);
+            AgendaUsuario agendaUsuario = new AgendaUsuario(Guid.NewGuid().ToString(), message.AgendaId, message.UsuarioId);
             _agendaUsuarioRepository.Adicionar(agendaUsuario);
 
             if (Commit())

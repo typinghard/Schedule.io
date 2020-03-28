@@ -88,7 +88,11 @@ namespace Agenda.UI.Web.Controllers
                             }
                         }
                     },
-                    Local = null,
+                    Local = new Local()
+                    {
+                        LotacaoMaxima = 3,
+                        Nome = "Casa",
+                    },
                     DataInicio = DateTime.Now,
                     DataFinal = DateTime.MinValue,
                     DataLimiteConfirmacao = DateTime.Now,
@@ -129,8 +133,7 @@ namespace Agenda.UI.Web.Controllers
 
                 //_agendaService.Excluir(Id);
 
-
-                return Content($"Agenda Criada, atualizada e excluida com sucesso! Id da agenda: {Id}");
+                return Content($"Agenda criada, atualizada e  com sucesso! Id da agenda: {Id}");
                 //teste = _agendaService.Obter(Id);
             }
             catch (Agenda.Domain.Core.DomainObjects.ScheduleIoException ex)

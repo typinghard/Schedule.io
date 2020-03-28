@@ -11,6 +11,7 @@ namespace Agenda.Domain.Commands
     {
         public string Id { get; protected set; }
         public string AgendaId { get; protected set; }
+        public string UsuarioId { get; protected set; }
         public string IdentificadorExterno { get; protected set; }
         public string Titulo { get; protected set; }
         public string Descricao { get; protected set; }

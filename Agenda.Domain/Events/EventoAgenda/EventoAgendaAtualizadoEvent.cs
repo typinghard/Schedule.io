@@ -25,7 +25,7 @@ namespace Agenda.Domain.Events
         public TipoEvento Tipo { get; set; }
         public EnumFrequencia Frequencia { get; set; }
 
-        public EventoAgendaAtualizadoEvent(string id, string agendaId, string usuarioId,string identificadorExterno, string titulo, string descricao, IList<Convite> convites, string local, DateTime dataInicio, DateTime? dataFinal,
+        public EventoAgendaAtualizadoEvent(string id, string agendaId, string usuarioId,string identificadorExterno, string titulo, string descricao, IList<Convite> convites, string localId, DateTime dataInicio, DateTime? dataFinal,
             DateTime? dataLimiteConfirmacao, int qtdeMaximadeUsuarios, bool ocupaUsuario, bool publico, TipoEvento tipoEvento, EnumFrequencia frequencia)
         {
             this.Id = id;
@@ -36,7 +36,7 @@ namespace Agenda.Domain.Events
             this.Titulo = titulo;
             this.Descricao = descricao;
             this.Convites = convites;
-            this.Local = local;
+            this.Local = localId;
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;

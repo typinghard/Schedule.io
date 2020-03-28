@@ -2,6 +2,7 @@
 using Agenda.Domain.Core.Communication.Mediator;
 using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Core.Messages.CommonMessages.Notifications;
+using Agenda.Domain.Enums;
 using Agenda.Domain.Events;
 using Agenda.Domain.Interfaces;
 using Agenda.Domain.Models;
@@ -42,8 +43,7 @@ namespace Agenda.Domain.CommandHandlers
 
             Convite convite = new Convite(message.Id, message.EventoId, message.UsuarioId);
 
-            //if (message.Status != Enums.EnumStatusConviteEvento.Aguardando_Confirmacao)
-            //    convite.AtualizarStatusConvite(message.Status);
+            convite.AtualizarStatusConvite(message.Status);
 
             if (convite.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
@@ -87,7 +87,7 @@ namespace Agenda.Domain.CommandHandlers
 
             convite.DefinirUsuarioId(message.UsuarioId);
             convite.DefinirEventoId(message.EventoId);
-            //convite.AtualizarStatusConvite(message.Status);
+            convite.AtualizarStatusConvite(message.Status);
 
             if (convite.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
@@ -127,6 +127,7 @@ namespace Agenda.Domain.CommandHandlers
         {
             _conviteRepository.Dispose();
         }
+
 
     }
 }

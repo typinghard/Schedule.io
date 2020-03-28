@@ -25,13 +25,11 @@ namespace Agenda.Domain.CommandHandlers
         private readonly ILocalRepository _localRepository;
         private readonly IMediatorHandler Bus;
 
-        private readonly IAgendaUsuarioRepository _agendaUsuarioRepository;
         private readonly IUsuarioRepository _usuarioRepository;
 
         public EventoAgendaCommandHandler(ILocalRepository localRepository,
                                           IEventoAgendaRepository eventoAgendaRepository,
                                           IUsuarioRepository usuarioRepository,
-                                          IAgendaUsuarioRepository agendaUsuarioRepository,
                                           IUnitOfWork uow,
                                           IMediatorHandler bus,
                                           INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
@@ -41,7 +39,6 @@ namespace Agenda.Domain.CommandHandlers
             this.Bus = bus;
 
             this._usuarioRepository = usuarioRepository;
-            this._agendaUsuarioRepository = agendaUsuarioRepository;
         }
 
         public Task<bool> Handle(RegistrarEventoAgendaCommand message, CancellationToken cancellationToken)
@@ -69,20 +66,13 @@ namespace Agenda.Domain.CommandHandlers
             if (message.Frequencia != EnumFrequencia.Nao_Repete)
                 eventoAgenda.DefinirFrequencia(message.Frequencia);
 
-
-
             if (message.DataFinal != DateTime.MinValue)
                 eventoAgenda.DefinirDatas(eventoAgenda.DataInicio, message.DataFinal);
 
             if (message.DataLimiteConfirmacao != DateTime.MinValue)
                 eventoAgenda.DefinirDataLimiteConfirmacao(message.DataLimiteConfirmacao.Value);
 
-            if (message.Convites.Count > 0)
-            {
-                var listaConvites = ValidaStatusConviteUsuarios(eventoAgenda, message.Convites);
-                foreach (Convite convite in listaConvites)
-                    eventoAgenda.AdicionarConvite(convite);
-            }
+            /*EventoHandler não está salvando o convite, ele está sendo realiado no convite service*/
 
             if (!message.Local.EhVazio())
                 eventoAgenda.DefinirLocal(message.Local);
@@ -91,6 +81,7 @@ namespace Agenda.Domain.CommandHandlers
                 eventoAgenda.DefinirQuantidadeMinimaDeUsuarios(message.QuantidadeMinimaDeUsuarios);
 
             eventoAgenda.Tipo.DefinirNome(message.Tipo.Nome);
+
             if (!string.IsNullOrEmpty(message.Tipo.Descricao))
                 eventoAgenda.Tipo.DefinirDescricao(message.Tipo.Descricao);
 
@@ -106,6 +97,9 @@ namespace Agenda.Domain.CommandHandlers
                                     eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios,
                                     eventoAgenda.OcupaUsuario, eventoAgenda.Publico, eventoAgenda.Tipo, eventoAgenda.Frequencia));
             }
+
+
+
 
             return Task.FromResult(true);
         }
@@ -127,16 +121,6 @@ namespace Agenda.Domain.CommandHandlers
 
             eventoAgenda.DefinirIdentificadorExterno(message.IdentificadorExterno);
             eventoAgenda.DefinirDescricao(message.Descricao);
-
-            //foreach (Guid pessoaId in message.Usuarios)
-            //    eventoAgenda.AdicionarPessoa(pessoaId);
-
-            if (message.Convites.Count > 0)
-            {
-                var listaConvites = ValidaStatusConviteUsuarios(eventoAgenda, message.Convites);
-                foreach (Convite convite in listaConvites)
-                    eventoAgenda.AdicionarConvite(convite);
-            }
 
             eventoAgenda.DefinirLocal(message.Local);
 
@@ -210,53 +194,29 @@ namespace Agenda.Domain.CommandHandlers
 
         }
 
-        private List<Convite> ValidaStatusConviteUsuarios(EventoAgenda eventoAgenda, IList<Convite> convites = null)
+        private EventoAgenda ValidaStatusConviteUsuarios(EventoAgenda eventoAgenda, IList<Convite> convites = null)
         {
             /* Descrição:
              * - Ao criar um evento com vários usuários, os OUTROS usuários ficaram pendentes de confirmação, porém o usuário que criou já é confirmado
              */
-
-            //usuario criador do evento - marcado como confirmado
-            var usuarioAgenda = _agendaUsuarioRepository.ObterPorId(eventoAgenda.AgendaId, eventoAgenda.UsuarioId);
-            if (usuarioAgenda == null)
-            {
-                throw new DomainException("Não foi encontrado a agenda do usuário!");
-            }
-
-            var listConvites = new List<Convite>();
+            eventoAgenda.LimparConvites();
             if (convites != null && convites.Count > 0)
             {
                 foreach (var novoConvite in convites)
                 {
                     var convite = new Convite(novoConvite.Id, eventoAgenda.Id, novoConvite.UsuarioId);
 
-                    if (usuarioAgenda.UsuarioId == novoConvite.UsuarioId)
+                    if (eventoAgenda.UsuarioId == novoConvite.UsuarioId)
                         convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
                     else
                         convite.AtualizarStatusConvite(EnumStatusConviteEvento.Aguardando_Confirmacao);
 
-                    if (novoConvite.Permissoes.ConvidaUsuario)
-                        convite.Permissoes.PodeConvidar();
-                    else
-                        convite.Permissoes.NaoPodeConvidar();
-
-                    if (novoConvite.Permissoes.ModificaEvento)
-                        convite.Permissoes.PodeModificarEvento();
-                    else
-                        convite.Permissoes.NaoPodeModificarEvento();
-
-                    if (novoConvite.Permissoes.VeListaDeConvidados)
-                        convite.Permissoes.PodeVerListaDeConvidados();
-                    else
-                        convite.Permissoes.NaoPodeModificarEvento();
-
-
-                    listConvites.Add(convite);
+                    //if (eventoAgenda.Convites.Where(x => x.UsuarioId == novoConvite.UsuarioId).Count() == 0)
+                    eventoAgenda.AdicionarConvite(convite);
                 }
             }
 
-            //os demais marcado como pendencia
-            return listConvites;
+            return eventoAgenda;
         }
 
         private void ValidaUsuarioOcupadoNoMesmoHorario(string eventoId, Convite convite)

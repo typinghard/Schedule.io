@@ -102,6 +102,11 @@ namespace Agenda.Domain.Models
             _convites.Add(convite);
         }
 
+        public void LimparConvites()
+        {
+            _convites.Clear();
+        }
+
         public void DefinirLocal(string local)
         {
             if (string.IsNullOrEmpty(local))

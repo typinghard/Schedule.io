@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Text;
 using Agenda.Domain.Core.DomainObjects;
 using Agenda.Domain.Models;
+using System.Linq;
 
 namespace ScheduleIo.Nuget.Services
 {
@@ -118,6 +119,7 @@ namespace ScheduleIo.Nuget.Services
                 CriadoAs = eventoModel.CriadoAs,
                 AtualizadoAs = eventoModel.AtualizadoAs,
                 AgendaId = eventoModel.AgendaId,
+                UsuarioId = eventoModel.UsuarioId,
                 IdentificadorExterno = eventoModel.IdentificadorExterno,
                 Titulo = eventoModel.Titulo,
                 Descricao = eventoModel.Descricao,
@@ -203,17 +205,7 @@ namespace ScheduleIo.Nuget.Services
 
         private ScheduleIo.Nuget.Models.Convite MontaConviteDonoEvento(Evento evento)
         {
-            bool achou = false;
-            foreach (var conviteVM in evento.Convites)
-            {
-                if (conviteVM.UsuarioId == evento.UsuarioId)
-                {
-                    achou = true;
-                    break;
-                }
-            }
-
-            if (!achou)
+            if (evento.Convites.Where(x => x.UsuarioId == evento.UsuarioId).Count() == 0)
             {
                 return new ScheduleIo.Nuget.Models.Convite()
                 {

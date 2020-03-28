@@ -39,16 +39,18 @@ namespace Agenda.UI.Web
 
             services.AddMediatR(typeof(Startup));
 
-            //services.AddScheduleIo(new ScheduleIo.Nuget.Models.ScheduleIoConfigurations(
-            //    new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" }, "Schedule.io", @"D:\Área de Trabalho\free.elvis.client.certificate\free.elvis.client.certificate.pfx"),
-            //    false
-            //    ));
-
             services.AddScheduleIo(new ScheduleIo.Nuget.Models.ScheduleIoConfigurations(
-                new ScheduleIo.Infra.MongoDB.Configs.MongoDBConfig(
-                    Configuration["DataBase:ConnectionString"],
-                    Configuration["DataBase:Database"]
-                    ), true));
+                new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
+                Configuration["HavenDB_Northwind:Database"],
+                Configuration["HavenDB_Northwind:CertificadePath"]),
+                false
+                ));
+
+            //services.AddScheduleIo(new ScheduleIo.Nuget.Models.ScheduleIoConfigurations(
+            //    new ScheduleIo.Infra.MongoDB.Configs.MongoDBConfig(
+            //        Configuration["DataBase:ConnectionString"],
+            //        Configuration["DataBase:Database"]
+            //        ), true));
 
             RegisterServices(services);
         }

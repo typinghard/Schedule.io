@@ -2,6 +2,7 @@
 using Raven.Client.Documents.Session;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ScheduleIo.Infra.RavenDB
@@ -14,16 +15,18 @@ namespace ScheduleIo.Infra.RavenDB
 
         public Agenda.Domain.Models.Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
-            var DocumentName = "agenda";
-            var DocumentNameInnerJoin = "agendausuario";
+            var agendaUsuario = Sessao
+                 .Query<Agenda.Domain.Models.AgendaUsuario>()
+                 .Where(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
+                 .FirstOrDefault();
 
-            return _session.Advanced.RawQuery<Agenda.Domain.Models.Agenda>(
-           "from " + DocumentName + " " +
-           "inner join " + DocumentNameInnerJoin + " on agendaId = $Id and usuarioId = $usuarioId" + " " +
-           "where Id == $Id")
-               .AddParameter("Id", agendaId.ToString())
-               .AddParameter("usuarioId", usuarioId.ToString())
-               .FirstOrDefault();
+            if (agendaUsuario == null)
+                return null;
+
+            return Sessao
+                .Query<Agenda.Domain.Models.Agenda>()
+                .Where(x => x.Id == agendaId)
+                .FirstOrDefault();
         }
     }
 }

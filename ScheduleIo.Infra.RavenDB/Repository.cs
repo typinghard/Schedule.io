@@ -42,18 +42,18 @@ namespace ScheduleIo.Infra.RavenDB
 
         public TEntity ObterPorId(string id)
         {
-            return _session.Advanced.RawQuery<TEntity>(
-            "from " + DocumentName + " " +
-            "where Id == $Id")
-                .AddParameter("Id", id.ToString())
-                .FirstOrDefault();
+            return _session
+                 .Query<TEntity>()
+                 .Where(x => x.Id == id)
+                 .FirstOrDefault();
         }
 
         public IList<TEntity> ObterTodosAtivos()
         {
-            return _session.Advanced.RawQuery<TEntity>(
-            "from " + DocumentName + " " +
-            "where Inativo == false").ToList();
+            return _session
+                 .Query<TEntity>()
+                 .Where(x => !x.Inativo)
+                 .ToList();
         }
 
         public void Remover(TEntity obj)
@@ -70,7 +70,7 @@ namespace ScheduleIo.Infra.RavenDB
                 _session.SaveChanges();
                 return 1;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return 0;
             }

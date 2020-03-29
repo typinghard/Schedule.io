@@ -29,7 +29,7 @@ namespace ScheduleIo.Nuget.Services
         {
             string usuarioId;
 
-            if (string.IsNullOrEmpty(usuario.Id))
+            if (string.IsNullOrEmpty(usuario.Id) || Guid.Parse(usuario.Id) == Guid.Empty)
             {
                 usuarioId = Guid.NewGuid().ToString();
                 _bus.EnviarComando(new RegistrarUsuarioCommand(usuarioId, usuario.Email)).Wait();
@@ -55,9 +55,10 @@ namespace ScheduleIo.Nuget.Services
             var usuario = _usuarioRepository.ObterPorId(usuarioId);
 
             if (usuario == null)
-            {
-                throw new ScheduleIoException(new List<string>() { "Usuario não encontrado!" });
-            }
+                return null;
+            //{
+            //    throw new ScheduleIoException(new List<string>() { "Usuario não encontrado!" });
+            //}
 
             return new Usuario()
             {
@@ -67,5 +68,6 @@ namespace ScheduleIo.Nuget.Services
                 Email = usuario.Email
             };
         }
+
     }
 }

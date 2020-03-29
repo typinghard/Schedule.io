@@ -194,30 +194,30 @@ namespace Agenda.Domain.CommandHandlers
 
         }
 
-        private EventoAgenda ValidaStatusConviteUsuarios(EventoAgenda eventoAgenda, IList<Convite> convites = null)
-        {
-            /* Descrição:
-             * - Ao criar um evento com vários usuários, os OUTROS usuários ficaram pendentes de confirmação, porém o usuário que criou já é confirmado
-             */
-            eventoAgenda.LimparConvites();
-            if (convites != null && convites.Count > 0)
-            {
-                foreach (var novoConvite in convites)
-                {
-                    var convite = new Convite(novoConvite.Id, eventoAgenda.Id, novoConvite.UsuarioId);
+        //private EventoAgenda ValidaStatusConviteUsuarios(EventoAgenda eventoAgenda, IList<Convite> convites = null)
+        //{
+        //    /* Descrição:
+        //     * - Ao criar um evento com vários usuários, os OUTROS usuários ficaram pendentes de confirmação, porém o usuário que criou já é confirmado
+        //     */
+        //    eventoAgenda.LimparConvites();
+        //    if (convites != null && convites.Count > 0)
+        //    {
+        //        foreach (var novoConvite in convites)
+        //        {
+        //            var convite = new Convite(novoConvite.Id, eventoAgenda.Id, novoConvite.UsuarioId);
 
-                    if (eventoAgenda.UsuarioId == novoConvite.UsuarioId)
-                        convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
-                    else
-                        convite.AtualizarStatusConvite(EnumStatusConviteEvento.Aguardando_Confirmacao);
+        //            if (eventoAgenda.UsuarioId == novoConvite.UsuarioId)
+        //                convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
+        //            else
+        //                convite.AtualizarStatusConvite(EnumStatusConviteEvento.Aguardando_Confirmacao);
 
-                    //if (eventoAgenda.Convites.Where(x => x.UsuarioId == novoConvite.UsuarioId).Count() == 0)
-                    eventoAgenda.AdicionarConvite(convite);
-                }
-            }
+        //            //if (eventoAgenda.Convites.Where(x => x.UsuarioId == novoConvite.UsuarioId).Count() == 0)
+        //            eventoAgenda.AdicionarConvite(convite);
+        //        }
+        //    }
 
-            return eventoAgenda;
-        }
+        //    return eventoAgenda;
+        //}
 
         private void ValidaUsuarioOcupadoNoMesmoHorario(string eventoId, Convite convite)
         {

@@ -40,7 +40,7 @@ namespace ScheduleIo.Nuget.Models
     {
         public string Id { get; set; }
         public string EventoId { get; set; }
-        public string UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
         public EnumStatusConviteEvento Status { get; set; }
         public PermissoesConvite Permissoes { get; set; }
 

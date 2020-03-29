@@ -56,7 +56,7 @@ namespace Agenda.UI.Web.Controllers
 
                 var usuarioConvite = new Usuario()
                 {
-                    Email = "usuario_convite@gmail.com"
+                    Email = "usuario_convidado@gmail.com"
                 };
 
                 var evento = new Evento()
@@ -79,7 +79,7 @@ namespace Agenda.UI.Web.Controllers
                     {
                         new Convite()
                         {
-                            UsuarioId = usuarioConvite.Id,
+                            Usuario = usuarioConvite,
                             Permissoes = new PermissoesConvite()
                             {
                                 ConvidaUsuario=true,

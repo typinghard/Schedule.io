@@ -34,10 +34,8 @@ namespace ScheduleIo.Nuget.Services
                                                              local.Reserva, local.LotacaoMaxima)).Wait();
             }
             else
-            {
                 _bus.EnviarComando(new AtualizarLocalCommand(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao,
                                                          local.Reserva, local.LotacaoMaxima)).Wait();
-            }
 
             ValidarComando();
             return local.Id;
@@ -56,9 +54,8 @@ namespace ScheduleIo.Nuget.Services
             var local = _localRepository.ObterPorId(localId);
 
             if (local == null)
-            {
                 throw new ScheduleIoException(new List<string>() { "Local não encontrado!" });
-            }
+
             ValidarComando();
 
             return new Local()

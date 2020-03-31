@@ -38,16 +38,21 @@ namespace ScheduleIo.Nuget.Services
                 _bus.EnviarComando(new RegistrarAgendaCommand(agenda.Id, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
             }
             else
-            {
                 _bus.EnviarComando(new AtualizarAgendaCommand(agenda.Id, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
-            }
 
-            if (agenda.Usuario != null)
-                if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.Usuario.Id) == null)
-                    _bus.EnviarComando(new RegistrarAgendaUsuarioCommand(agenda.Id, agenda.Usuario.Id)).Wait();
+            RegistraAgendaUsuario(agenda);
 
             ValidarComando();
             return agenda.Id;
+        }
+
+        private void RegistraAgendaUsuario(Models.Agenda agenda)
+        {
+            if (agenda.Usuario != null)
+            {
+                if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.Usuario.Id) == null)
+                    _bus.EnviarComando(new RegistrarAgendaUsuarioCommand(agenda.Id, agenda.Usuario.Id)).Wait();
+            }
         }
 
         public bool Inativar(string agendaId)

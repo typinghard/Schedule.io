@@ -39,83 +39,8 @@ namespace ScheduleIo.Nuget.Services
             _agendaUsuarioRepository = agendaUsuarioRepository;
             _conviteRepository = conviteRepository;
         }
-        public string Gravar(Evento evento)
-        {
-            if (string.IsNullOrEmpty(evento.AgendaId))
-            {
-                throw new ScheduleIoException(new List<string>() { "Agenda não informado!" });
-            }
 
-            if (string.IsNullOrEmpty(evento.UsuarioId))
-            {
-                throw new ScheduleIoException(new List<string>() { "Usuario não informado!" });
-            }
-
-            if (evento.Local != null)
-                evento.Local.Id = _localService.Gravar(evento.Local);
-
-            var listConvites = new List<Agenda.Domain.Models.Convite>();
-            if (string.IsNullOrEmpty(evento.Id))
-            {
-                evento.Id = Guid.NewGuid().ToString();
-                listConvites = MontaConviteDomainModel(evento);
-
-                _bus.EnviarComando(new RegistrarEventoAgendaCommand(evento.Id, evento.AgendaId, evento.UsuarioId, evento.IdentificadorExterno, evento.Titulo,
-                    evento.Descricao, listConvites, evento.Local.Id, evento.DataInicio, evento.DataFinal,
-                    evento.DataLimiteConfirmacao.Value, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
-                    evento.Publico,
-                    new Agenda.Domain.Models.TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
-                    evento.Frequencia)).Wait();
-            }
-            else
-            {
-                listConvites = MontaConviteDomainModel(evento);
-
-                _bus.EnviarComando(new AtualizarEventoAgendaCommand(evento.Id, evento.AgendaId, evento.UsuarioId, evento.IdentificadorExterno, evento.Titulo,
-                        evento.Descricao, listConvites, evento.Local.Id, evento.DataInicio, evento.DataFinal,
-                        evento.DataLimiteConfirmacao.Value, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
-                        evento.Publico,
-                        new Agenda.Domain.Models.TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
-                        evento.Frequencia)).Wait();
-            }
-
-            if (evento.Convites.Count > 0)
-            {
-                GravaConvite(listConvites);
-            }
-
-            ValidarComando();
-            return evento.Id;
-        }
-
-        public bool Excluir(string eventoId)
-        {
-            var evento = Obter(eventoId);
-
-            if (evento == null)
-                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
-
-            RemoverLocal(evento.Local);
-            RemoverConvites(evento);
-
-            ValidarComando();
-            _bus.EnviarComando(new RemoverEventoAgendaCommand(eventoId)).Wait();
-            return true;
-        }
-
-        private void RemoverConvites(Evento evento)
-        {
-            var listConvitesDomain = MontaConviteDomainModel(evento);
-            foreach (var convite in listConvitesDomain)
-                _bus.EnviarComando(new RemoverConviteCommand(convite.Id)).Wait();
-        }
-
-        private void RemoverLocal(Models.Local local)
-        {
-            if (local != null)
-                _localService.Excluir(local.Id);
-        }
-
+        #region Obter
         public Evento Obter(string eventoId)
         {
             var eventoModel = _eventoAgendaRepository.ObterPorId(eventoId);
@@ -123,41 +48,17 @@ namespace ScheduleIo.Nuget.Services
             if (eventoModel == null)
                 throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
 
-            ValidarComando();
+            return MontaEventoVM(eventoModel);
+        }
 
-            var listConvitesVm = new List<Models.Convite>();
-
+        private Evento MontaEventoVM(EventoAgenda eventoModel)
+        {
             var convites = _conviteRepository.ObterConvitesPorEventoId(eventoModel.Id);
-            if (convites != null)
-                foreach (var conviteModel in convites)
-                {
-                    var usuarioVM = _usuarioService.Obter(conviteModel.UsuarioId);
-
-                    if (usuarioVM == null)
-                        usuarioVM = new Models.Usuario()
-                        {
-                            Email = conviteModel.EmailConvidado
-                        };
-
-                    var conviteVm = new Models.Convite()
-                    {
-                        Id = conviteModel.Id,
-                        EventoId = conviteModel.EventoId,
-                        Usuario = usuarioVM,
-                        Permissoes = new Models.PermissoesConvite()
-                        {
-                            ModificaEvento = conviteModel.Permissoes.ModificaEvento,
-                            ConvidaUsuario = conviteModel.Permissoes.ConvidaUsuario,
-                            VeListaDeConvidados = conviteModel.Permissoes.VeListaDeConvidados
-                        }
-                    };
-
-                    listConvitesVm.Add(conviteVm);
-                }
-
             var local = _localService.Obter(eventoModel.Local);
 
-            var eventoVm = new Evento()
+            ValidarComando();
+
+            return new Evento()
             {
                 Id = eventoModel.Id,
                 CriadoAs = eventoModel.CriadoAs,
@@ -167,7 +68,7 @@ namespace ScheduleIo.Nuget.Services
                 IdentificadorExterno = eventoModel.IdentificadorExterno,
                 Titulo = eventoModel.Titulo,
                 Descricao = eventoModel.Descricao,
-                Convites = listConvitesVm,
+                Convites = MontaConvitesVM(convites),
                 Local = local,
                 DataInicio = eventoModel.DataInicio,
                 DataFinal = eventoModel.DataFinal,
@@ -185,39 +86,148 @@ namespace ScheduleIo.Nuget.Services
                     Descricao = eventoModel.Tipo.Descricao
                 }
             };
-
-            return eventoVm;
         }
 
-        private void GravaConvite(List<Agenda.Domain.Models.Convite> convites)
+        private Models.Usuario MontaUsuarioVM(Agenda.Domain.Models.Convite conviteModel)
         {
-            foreach (var convite in convites)
+            var usuarioVM = _usuarioService.Obter(conviteModel.UsuarioId);
+
+            if (usuarioVM == null)
+                usuarioVM = new Models.Usuario()
+                {
+                    Email = conviteModel.EmailConvidado
+                };
+
+            return usuarioVM;
+        }
+
+        private List<Models.Convite> MontaConvitesVM(IList<Agenda.Domain.Models.Convite> convitesModel)
+        {
+            if (convitesModel == null || convitesModel.Count == 0)
+                return new List<Models.Convite>();
+
+            var listConvitesVm = new List<Models.Convite>();
+            foreach (var conviteModel in convitesModel)
+            {
+                var conviteVm = new Models.Convite()
+                {
+                    Id = conviteModel.Id,
+                    EventoId = conviteModel.EventoId,
+                    Usuario = MontaUsuarioVM(conviteModel),
+                    Permissoes = new Models.PermissoesConvite()
+                    {
+                        ModificaEvento = conviteModel.Permissoes.ModificaEvento,
+                        ConvidaUsuario = conviteModel.Permissoes.ConvidaUsuario,
+                        VeListaDeConvidados = conviteModel.Permissoes.VeListaDeConvidados
+                    }
+                };
+
+                listConvitesVm.Add(conviteVm);
+            }
+
+            return listConvitesVm;
+        }
+        #endregion
+
+        #region Gravar
+        public string Gravar(Evento evento)
+        {
+            if (string.IsNullOrEmpty(evento.AgendaId))
+                throw new ScheduleIoException(new List<string>() { "Agenda não informado!" });
+
+            if (string.IsNullOrEmpty(evento.UsuarioId))
+                throw new ScheduleIoException(new List<string>() { "Usuario não informado!" });
+
+            if (evento.Local != null)
+                evento.Local.Id = _localService.Gravar(evento.Local);
+
+            if (string.IsNullOrEmpty(evento.Id))
+                evento.Id = RegistrarEvento(evento);
+            else
+                evento.Id = AtualizarEvento(evento);
+
+            if (evento.Convites.Count > 0)
+                GravarConvite(evento);
+
+            ValidarComando();
+            return evento.Id;
+        }
+
+        private string RegistrarEvento(Evento evento)
+        {
+            evento.Id = Guid.NewGuid().ToString();
+            var listConvites = MontaConviteDomainModel(evento);
+
+            _bus.EnviarComando(new RegistrarEventoAgendaCommand(evento.Id, evento.AgendaId, evento.UsuarioId, evento.IdentificadorExterno, evento.Titulo,
+                evento.Descricao, listConvites, evento.Local.Id, evento.DataInicio, evento.DataFinal,
+                evento.DataLimiteConfirmacao.Value, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
+                evento.Publico,
+                new Agenda.Domain.Models.TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
+                evento.Frequencia)).Wait();
+
+            return evento.Id;
+        }
+
+        private string AtualizarEvento(Evento evento)
+        {
+            var listConvites = MontaConviteDomainModel(evento);
+
+            _bus.EnviarComando(new AtualizarEventoAgendaCommand(evento.Id, evento.AgendaId, evento.UsuarioId, evento.IdentificadorExterno, evento.Titulo,
+                    evento.Descricao, listConvites, evento.Local.Id, evento.DataInicio, evento.DataFinal,
+                    evento.DataLimiteConfirmacao.Value, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
+                    evento.Publico,
+                    new Agenda.Domain.Models.TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
+                    evento.Frequencia)).Wait();
+
+            return evento.Id;
+        }
+
+        private void GravarConvite(Evento evento)
+        {
+            var listConvites = MontaConviteDomainModel(evento);
+            foreach (var convite in listConvites)
             {
                 if (string.IsNullOrEmpty(convite.Id) || Guid.Parse(convite.Id) == Guid.Empty)
-                    _bus.EnviarComando(new RegistrarConviteCommand(Guid.NewGuid().ToString(), convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
+                    _bus.EnviarComando(new RegistrarConviteCommand(Guid.NewGuid().ToString(), convite.EventoId, convite.UsuarioId,
+                                                                   convite.EmailConvidado, convite.Status, convite.Permissoes));
                 else
-                    _bus.EnviarComando(new AtualizarConviteCommand(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
+                    _bus.EnviarComando(new AtualizarConviteCommand(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado,
+                                                                   convite.Status, convite.Permissoes));
             }
 
             ValidarComando();
         }
+        #endregion Gravar
 
-        private void GravaUsuarioConvite(Evento evento)
+        #region Excluir
+        public bool Excluir(string eventoId)
         {
-            var listConvitesAtualizados = new List<Models.Convite>();
-            foreach (var convite in evento.Convites)
-            {
-                var usuario = _usuarioService.Obter(convite.Usuario.Id);
-                if (usuario == null)
-                {
-                    convite.Usuario.Id = _usuarioService.Gravar(convite.Usuario);
-                    listConvitesAtualizados.Add(convite);
-                }
-            }
+            var evento = Obter(eventoId);
 
-            evento.Convites = listConvitesAtualizados;
+            if (evento == null)
+                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
+
+            RemoverLocal(evento.Local);
+            RemoverConvites(evento);
+
+            ValidarComando();
+            _bus.EnviarComando(new RemoverEventoAgendaCommand(eventoId)).Wait();
+            return true;
         }
 
+        private void RemoverLocal(Models.Local local)
+        {
+            if (local != null)
+                _localService.Excluir(local.Id);
+        }
+
+        private void RemoverConvites(Evento evento)
+        {
+            var listConvitesDomain = MontaConviteDomainModel(evento);
+            foreach (var convite in listConvitesDomain)
+                _bus.EnviarComando(new RemoverConviteCommand(convite.Id)).Wait();
+        }
+        #endregion Excluir
 
         private List<Agenda.Domain.Models.Convite> MontaConviteDomainModel(Evento evento)
         {
@@ -266,7 +276,7 @@ namespace ScheduleIo.Nuget.Services
             return listConvites;
         }
 
-        private ScheduleIo.Nuget.Models.Convite MontaConviteDonoEvento(Evento evento)
+        private Models.Convite MontaConviteDonoEvento(Evento evento)
         {
             if (evento.Convites.Where(x => x.Usuario.Id == evento.UsuarioId).Count() == 0)
             {

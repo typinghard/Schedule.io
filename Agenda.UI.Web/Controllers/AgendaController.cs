@@ -34,13 +34,13 @@ namespace Agenda.UI.Web.Controllers
             try
             {
 
-                //GravarAgenda();
-                //GravarUsuario();
-                //GravarLocal();
-                //GravarEvento(false);
+                GravarAgenda();
+                GravarUsuario();
+                GravarLocal();
+                GravarEvento(false);
                 //GravarEvento(true);
                 //GravarEvento(true, true);
-                ExcluirEvento();
+                //ExcluirEvento();
 
                 return Content("Funcionou!");
             }
@@ -300,8 +300,6 @@ namespace Agenda.UI.Web.Controllers
 
                 return evento;
             }
-
-            return null;
         }
 
         // GET: Agenda/Details/5

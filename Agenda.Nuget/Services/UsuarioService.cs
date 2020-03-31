@@ -27,20 +27,17 @@ namespace ScheduleIo.Nuget.Services
 
         public string Gravar(Usuario usuario)
         {
-            string usuarioId;
-
             if (string.IsNullOrEmpty(usuario.Id) || Guid.Parse(usuario.Id) == Guid.Empty)
             {
-                usuarioId = Guid.NewGuid().ToString();
-                _bus.EnviarComando(new RegistrarUsuarioCommand(usuarioId, usuario.Email)).Wait();
+                usuario.Id = Guid.NewGuid().ToString();
+                _bus.EnviarComando(new RegistrarUsuarioCommand(usuario.Id, usuario.Email)).Wait();
             }
             else
-            {
-                usuarioId = usuario.Id;
                 _bus.EnviarComando(new AtualizarUsuarioCommand(usuario.Id, usuario.Email)).Wait();
-            }
+
             ValidarComando();
-            return usuarioId;
+
+            return usuario.Id;
         }
 
         public bool Excluir(string usuarioId)
@@ -55,10 +52,7 @@ namespace ScheduleIo.Nuget.Services
             var usuario = _usuarioRepository.ObterPorId(usuarioId);
 
             if (usuario == null)
-                return null;
-            //{
-            //    throw new ScheduleIoException(new List<string>() { "Usuario não encontrado!" });
-            //}
+                throw new ScheduleIoException(new List<string>() { "Usuario não encontrado!" });
 
             return new Usuario()
             {

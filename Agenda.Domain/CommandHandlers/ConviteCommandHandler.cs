@@ -45,17 +45,17 @@ namespace Agenda.Domain.CommandHandlers
 
             convite.AtualizarStatusConvite(message.Status);
 
-            if (convite.Permissoes.ConvidaUsuario)
+            if (message.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
             else
                 convite.Permissoes.NaoPodeConvidar();
 
-            if (convite.Permissoes.VeListaDeConvidados)
+            if (message.Permissoes.VeListaDeConvidados)
                 convite.Permissoes.PodeVerListaDeConvidados();
             else
                 convite.Permissoes.NaoPodeVerListaDeConvidados();
 
-            if (convite.Permissoes.ModificaEvento)
+            if (message.Permissoes.ModificaEvento)
                 convite.Permissoes.PodeModificarEvento();
             else
                 convite.Permissoes.NaoPodeModificarEvento();
@@ -85,22 +85,24 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            convite.DefinirUsuarioId(message.UsuarioId);
+            if (!string.IsNullOrEmpty(message.UsuarioId))
+                convite.DefinirUsuarioId(message.UsuarioId);
+
             convite.DefinirEmailConvidado(message.EmailConvidado);
             convite.DefinirEventoId(message.EventoId);
             convite.AtualizarStatusConvite(message.Status);
 
-            if (convite.Permissoes.ConvidaUsuario)
+            if (message.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
             else
                 convite.Permissoes.NaoPodeConvidar();
 
-            if (convite.Permissoes.VeListaDeConvidados)
+            if (message.Permissoes.VeListaDeConvidados)
                 convite.Permissoes.PodeVerListaDeConvidados();
             else
                 convite.Permissoes.NaoPodeVerListaDeConvidados();
 
-            if (convite.Permissoes.ModificaEvento)
+            if (message.Permissoes.ModificaEvento)
                 convite.Permissoes.PodeModificarEvento();
             else
                 convite.Permissoes.NaoPodeModificarEvento();
@@ -120,7 +122,8 @@ namespace Agenda.Domain.CommandHandlers
             Convite convite = _conviteRepository.ObterPorId(message.Id);
             _conviteRepository.Remover(convite);
 
-            Bus.PublicarEvento(new EventoAgendaRemovidoEvent(convite.Id)).Wait();
+            if (Commit())
+                Bus.PublicarEvento(new EventoAgendaRemovidoEvent(convite.Id)).Wait();
             return Task.FromResult(true);
         }
 

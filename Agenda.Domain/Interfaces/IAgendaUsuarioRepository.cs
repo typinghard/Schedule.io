@@ -7,6 +7,6 @@ namespace Agenda.Domain.Interfaces
 {
     public interface IAgendaUsuarioRepository : IRepository<AgendaUsuario>
     {
-        AgendaUsuario ObterPorId(string agendaId, string usuarioId);
+        AgendaUsuario ObterPorAgendaIdEUsuarioId(string agendaId, string usuarioId);
     }
 }

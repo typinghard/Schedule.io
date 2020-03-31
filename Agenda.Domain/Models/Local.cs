@@ -36,7 +36,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
         {
-            if (string.IsNullOrEmpty(identificadorExterno))
+            if (string.IsNullOrEmpty(identificadorExterno) && string.IsNullOrEmpty(identificadorExterno))
             {
                 throw new DomainException("O Identificador do local não pode ser vazio!");
             }
@@ -46,7 +46,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (!descricao.ValidarTamanho(2, 500))
+            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
             {
                 throw new DomainException("A descrição do local deve ter entre 2 e 500 caracteres.");
             }

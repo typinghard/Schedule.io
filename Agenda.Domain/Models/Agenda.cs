@@ -44,7 +44,7 @@ namespace Agenda.Domain.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (!descricao.ValidarTamanho(2, 500))
+            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
             {
                 throw new ScheduleIoException(new List<string>() { "A descrição deve ter entre 2 e 500 caracteres." });
             }

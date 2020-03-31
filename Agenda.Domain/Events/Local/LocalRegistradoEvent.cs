@@ -7,9 +7,9 @@ namespace Agenda.Domain.Events
     {
         public string Id { get; set; }
         public string IdentificadorExterno { get; set; }
-        public string NomeLocal { get; set; }
+        public string Nome { get; set; }
         public string Descricao { get; set; }
-        public bool ReservaLocal { get; set; }
+        public bool Reserva { get; set; }
         public int LotacaoMaxima { get; set; }
 
         public LocalRegistradoEvent(string id, string identificadorExterno, string nomeLocal, string descricao, bool reservaLocal, int lotacaoMaxima)
@@ -17,9 +17,9 @@ namespace Agenda.Domain.Events
             this.Id = id;
             this.AggregateId = id;
             this.IdentificadorExterno = identificadorExterno;
-            this.NomeLocal = nomeLocal;
+            this.Nome = nomeLocal;
             this.Descricao = descricao;
-            this.ReservaLocal = reservaLocal;
+            this.Reserva = reservaLocal;
             this.LotacaoMaxima = lotacaoMaxima;
         }
     }

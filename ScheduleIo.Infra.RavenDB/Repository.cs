@@ -36,8 +36,7 @@ namespace ScheduleIo.Infra.RavenDB
 
         public void ForcarDelecao(string id)
         {
-            throw new NotImplementedException();
-            //_session.Delete(id.ToString());
+            _session.Delete(id.ToString());
         }
 
         public TEntity ObterPorId(string id)
@@ -50,10 +49,12 @@ namespace ScheduleIo.Infra.RavenDB
 
         public IList<TEntity> ObterTodosAtivos()
         {
-            return _session
+            var teste = _session
                  .Query<TEntity>()
-                 .Where(x => !x.Inativo)
+                 .Where(x => x.Inativo == false)
                  .ToList();
+
+            return teste;
         }
 
         public void Remover(TEntity obj)

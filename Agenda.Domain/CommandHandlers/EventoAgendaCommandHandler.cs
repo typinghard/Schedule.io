@@ -72,8 +72,6 @@ namespace Agenda.Domain.CommandHandlers
             if (message.DataLimiteConfirmacao != DateTime.MinValue)
                 eventoAgenda.DefinirDataLimiteConfirmacao(message.DataLimiteConfirmacao.Value);
 
-            /*EventoHandler não está salvando o convite, ele está sendo realiado no convite service*/
-
             if (!message.Local.EhVazio())
                 eventoAgenda.DefinirLocal(message.Local);
 
@@ -166,7 +164,9 @@ namespace Agenda.Domain.CommandHandlers
             EventoAgenda eventoAgenda = _eventoAgendaRepository.ObterPorId(message.Id);
             _eventoAgendaRepository.Remover(eventoAgenda);
 
-            Bus.PublicarEvento(new EventoAgendaRemovidoEvent(eventoAgenda.Id)).Wait();
+            if (Commit())
+                Bus.PublicarEvento(new EventoAgendaRemovidoEvent(eventoAgenda.Id)).Wait();
+
             return Task.FromResult(true);
         }
 

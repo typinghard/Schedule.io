@@ -9,9 +9,9 @@ namespace Agenda.Domain.Commands
     {
         public string Id { get; protected set; }
         public string IdentificadorExterno { get; protected set; }
-        public string NomeLocal { get; protected set; }
+        public string Nome { get; protected set; }
         public string Descricao { get; protected set; }
-        public bool ReservaLocal { get; protected set; }
+        public bool Reserva { get; protected set; }
         public int LotacaoMaxima { get; protected set; }
     }
 }

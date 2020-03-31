@@ -14,7 +14,7 @@ namespace ScheduleIo.Infra.RavenDB
         {
         }
 
-        public AgendaUsuario ObterPorId(string agendaId, string usuarioId)
+        public AgendaUsuario ObterPorAgendaIdEUsuarioId(string agendaId, string usuarioId)
         {
             return Sessao
                  .Query<AgendaUsuario>()

@@ -11,9 +11,9 @@ namespace Agenda.Domain.Commands
         {
             this.Id = id;
             this.IdentificadorExterno = identificadorExterno;
-            this.NomeLocal = NomeLocal;
+            this.Nome = nomeLocal;
             this.Descricao = descricao;
-            this.ReservaLocal = reservaLocal;
+            this.Reserva = reservaLocal;
             this.LotacaoMaxima = lotacaomaxima;
         }
 

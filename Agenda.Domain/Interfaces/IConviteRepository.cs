@@ -7,5 +7,6 @@ namespace Agenda.Domain.Interfaces
 {
     public interface IConviteRepository : IRepository<Convite>
     {
+        IList<Convite> ObterConvitesPorEventoId(string eventoId);
     }
 }

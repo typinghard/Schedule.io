@@ -50,10 +50,12 @@ namespace ScheduleIo.Infra.RavenDB
 
         public IList<TEntity> ObterTodosAtivos()
         {
-            return _session
+            var teste = _session
                  .Query<TEntity>()
-                 .Where(x => !x.Inativo)
+                 .Where(x => x.Inativo == false)
                  .ToList();
+
+            return teste;
         }
 
         public void Remover(TEntity obj)

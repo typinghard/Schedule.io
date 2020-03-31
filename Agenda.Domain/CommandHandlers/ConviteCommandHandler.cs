@@ -45,17 +45,17 @@ namespace Agenda.Domain.CommandHandlers
 
             convite.AtualizarStatusConvite(message.Status);
 
-            if (convite.Permissoes.ConvidaUsuario)
+            if (message.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
             else
                 convite.Permissoes.NaoPodeConvidar();
 
-            if (convite.Permissoes.VeListaDeConvidados)
+            if (message.Permissoes.VeListaDeConvidados)
                 convite.Permissoes.PodeVerListaDeConvidados();
             else
                 convite.Permissoes.NaoPodeVerListaDeConvidados();
 
-            if (convite.Permissoes.ModificaEvento)
+            if (message.Permissoes.ModificaEvento)
                 convite.Permissoes.PodeModificarEvento();
             else
                 convite.Permissoes.NaoPodeModificarEvento();
@@ -89,17 +89,17 @@ namespace Agenda.Domain.CommandHandlers
             convite.DefinirEventoId(message.EventoId);
             convite.AtualizarStatusConvite(message.Status);
 
-            if (convite.Permissoes.ConvidaUsuario)
+            if (message.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
             else
                 convite.Permissoes.NaoPodeConvidar();
 
-            if (convite.Permissoes.VeListaDeConvidados)
+            if (message.Permissoes.VeListaDeConvidados)
                 convite.Permissoes.PodeVerListaDeConvidados();
             else
                 convite.Permissoes.NaoPodeVerListaDeConvidados();
 
-            if (convite.Permissoes.ModificaEvento)
+            if (message.Permissoes.ModificaEvento)
                 convite.Permissoes.PodeModificarEvento();
             else
                 convite.Permissoes.NaoPodeModificarEvento();

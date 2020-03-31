@@ -29,7 +29,8 @@ namespace ScheduleIo.Nuget.Services
 
         public string Gravar(Models.Agenda agenda)
         {
-            agenda.Usuario.Id = _usuarioService.Gravar(agenda.Usuario);
+            if (agenda.Usuario != null)
+                agenda.Usuario.Id = _usuarioService.Gravar(agenda.Usuario);
 
             if (string.IsNullOrEmpty(agenda.Id))
             {
@@ -41,8 +42,9 @@ namespace ScheduleIo.Nuget.Services
                 _bus.EnviarComando(new AtualizarAgendaCommand(agenda.Id, agenda.Titulo, agenda.Descricao, agenda.Publico)).Wait();
             }
 
-            if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.Usuario.Id) == null)
-                _bus.EnviarComando(new RegistrarAgendaUsuarioCommand(agenda.Id, agenda.Usuario.Id)).Wait();
+            if (agenda.Usuario != null)
+                if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.Usuario.Id) == null)
+                    _bus.EnviarComando(new RegistrarAgendaUsuarioCommand(agenda.Id, agenda.Usuario.Id)).Wait();
 
             ValidarComando();
             return agenda.Id;

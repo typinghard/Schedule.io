@@ -41,7 +41,7 @@ namespace Agenda.Domain.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Convite convite = new Convite(message.Id, message.EventoId, message.UsuarioId);
+            Convite convite = new Convite(message.Id, message.EventoId, message.UsuarioId, message.EmailConvidado);
 
             convite.AtualizarStatusConvite(message.Status);
 
@@ -64,7 +64,7 @@ namespace Agenda.Domain.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new ConviteRegistradoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.Status, convite.Permissoes));
+                Bus.PublicarEvento(new ConviteRegistradoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
             }
 
             return Task.FromResult(true);
@@ -86,6 +86,7 @@ namespace Agenda.Domain.CommandHandlers
             }
 
             convite.DefinirUsuarioId(message.UsuarioId);
+            convite.DefinirEmailConvidado(message.EmailConvidado);
             convite.DefinirEventoId(message.EventoId);
             convite.AtualizarStatusConvite(message.Status);
 
@@ -108,7 +109,7 @@ namespace Agenda.Domain.CommandHandlers
             _conviteRepository.Atualizar(convite);
             if (Commit())
             {
-                Bus.PublicarEvento(new ConviteAtualizadoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.Status, convite.Permissoes));
+                Bus.PublicarEvento(new ConviteAtualizadoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
             }
 
             return Task.FromResult(true);

@@ -154,9 +154,9 @@ namespace ScheduleIo.Nuget.Services
             foreach (var convite in convites)
             {
                 if (string.IsNullOrEmpty(convite.Id) || Guid.Parse(convite.Id) == Guid.Empty)
-                    _bus.EnviarComando(new RegistrarConviteCommand(Guid.NewGuid().ToString(), convite.EventoId, convite.UsuarioId, convite.Status, convite.Permissoes));
+                    _bus.EnviarComando(new RegistrarConviteCommand(Guid.NewGuid().ToString(), convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
                 else
-                    _bus.EnviarComando(new AtualizarConviteCommand(convite.Id, convite.EventoId, convite.UsuarioId, convite.Status, convite.Permissoes));
+                    _bus.EnviarComando(new AtualizarConviteCommand(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
             }
 
             ValidarComando();
@@ -194,7 +194,7 @@ namespace ScheduleIo.Nuget.Services
                 if (string.IsNullOrEmpty(conviteVM.Usuario.Id))
                     conviteVM.Usuario.Id = Guid.NewGuid().ToString();
 
-                var convite = new Agenda.Domain.Models.Convite(Guid.Empty.ToString(), evento.Id, conviteVM.Usuario.Id);
+                var convite = new Agenda.Domain.Models.Convite(Guid.Empty.ToString(), evento.Id, conviteVM.Usuario.Id, conviteVM.Usuario.Email);
 
                 if (usuarioAgenda.UsuarioId == conviteVM.Usuario.Id)
                     convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);

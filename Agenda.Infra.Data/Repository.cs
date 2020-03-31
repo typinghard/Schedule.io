@@ -17,7 +17,7 @@ namespace ScheduleIo.Infra.MongoDB
         {
             Db = context;
 
-            if (!Db.Session.IsInTransaction)
+            if (Db.Session?.IsInTransaction == false)
                 Db.Session.StartTransaction();
 
             _collection = Db.Set<TEntity>();

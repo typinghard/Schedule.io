@@ -15,21 +15,19 @@ namespace ScheduleIo.Infra.MongoDB
 
         }
 
+        public IList<EventoAgenda> ObterTodosEventosDaAgenda(string agendaId)
+        {
+            return Db.EventoAgenda
+                .Find(x => x.AgendaId == agendaId)
+                .ToList();
+        }
+
         public IList<EventoAgenda> ObterTodosEventosDoUsuario(string eventoId, string usuarioId)
         {
-            //var agendaUsuario = Db.AgendaUsuario.Find(x => x.AgendaId == agendaId).ToList();
 
-            var eventosAgenda = Db.EventoAgenda.Find(x => x.Id == eventoId).ToList();
-
-            var eventosUsuario = eventosAgenda.Where(x => x.Convites.Any(i => i.UsuarioId == usuarioId)).ToList();
-
-            //var teste = Db.Convite.Find(c => c.UsuarioId == usuarioId && c.EventoId == c.Id).ToList();
-
-            var teste1 = Db.EventoAgenda.Find(x => x.Id == eventoId).ToList().Where(c => c.Convites.Any(i => i.UsuarioId == usuarioId)).ToList();
-
-            //var teste2 = Db.EventoAgenda.Find(x=>x.Id == eventoId).ToList().SelectMany(i=> i.Convites.Where(c => c.UsuarioId == usuarioId).ToList());
-
-            return teste1;
+            return Db.EventoAgenda
+                .Find(x => x.Id == eventoId && x.UsuarioId == usuarioId)
+                .ToList();
 
         }
     }

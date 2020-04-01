@@ -41,6 +41,16 @@ namespace ScheduleIo.Nuget.Services
         }
 
         #region Obter
+        public IEnumerable<Evento> ObterTodos(string agendaId)
+        {
+            var listEventoAgenda = _eventoAgendaRepository.ObterTodosEventosDaAgenda(agendaId);
+
+            if (listEventoAgenda == null)
+                throw new ScheduleIoException(new List<string>() { "Não há eventos nesta agenda!" });
+
+            return MontaEventoVM(listEventoAgenda);
+        }
+
         public Evento Obter(string eventoId)
         {
             var eventoModel = _eventoAgendaRepository.ObterPorId(eventoId);
@@ -86,6 +96,49 @@ namespace ScheduleIo.Nuget.Services
                     Descricao = eventoModel.Tipo.Descricao
                 }
             };
+        }
+
+        private IList<Evento> MontaEventoVM(IList<EventoAgenda> listEventoModel)
+        {
+            var listEventoVM = new List<Evento>();
+            foreach (var eventoModel in listEventoModel)
+            {
+                var convites = _conviteRepository.ObterConvitesPorEventoId(eventoModel.Id);
+                var local = _localService.Obter(eventoModel.Local);
+
+                ValidarComando();
+
+                listEventoVM.Add(new Evento()
+                {
+                    Id = eventoModel.Id,
+                    CriadoAs = eventoModel.CriadoAs,
+                    AtualizadoAs = eventoModel.AtualizadoAs,
+                    AgendaId = eventoModel.AgendaId,
+                    UsuarioId = eventoModel.UsuarioId,
+                    IdentificadorExterno = eventoModel.IdentificadorExterno,
+                    Titulo = eventoModel.Titulo,
+                    Descricao = eventoModel.Descricao,
+                    Convites = MontaConvitesVM(convites),
+                    Local = local,
+                    DataInicio = eventoModel.DataInicio,
+                    DataFinal = eventoModel.DataFinal,
+                    DataLimiteConfirmacao = eventoModel.DataLimiteConfirmacao,
+                    QuantidadeMinimaDeUsuarios = eventoModel.QuantidadeMinimaDeUsuarios,
+                    OcupaUsuario = eventoModel.OcupaUsuario,
+                    Publico = eventoModel.Publico,
+                    Frequencia = eventoModel.Frequencia,
+                    Tipo = new Models.TipoEvento()
+                    {
+                        Id = eventoModel.Tipo.Id,
+                        CriadoAs = eventoModel.Tipo.CriadoAs,
+                        AtualizadoAs = eventoModel.Tipo.AtualizadoAs,
+                        Nome = eventoModel.Tipo.Nome,
+                        Descricao = eventoModel.Tipo.Descricao
+                    }
+                });
+            }
+
+            return listEventoVM;
         }
 
         private Models.Usuario MontaUsuarioVM(Agenda.Domain.Models.Convite conviteModel)

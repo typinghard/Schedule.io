@@ -15,9 +15,20 @@ namespace ScheduleIo.Infra.RavenDB
 
         }
 
+        public IList<EventoAgenda> ObterTodosEventosDaAgenda(string agendaId)
+        {
+            return Sessao
+                 .Query<EventoAgenda>()
+                 .Where(x => x.AgendaId == agendaId)
+                 .ToList();
+        }
+
         public IList<EventoAgenda> ObterTodosEventosDoUsuario(string eventoId, string usuarioId)
         {
-            throw new NotImplementedException();
+            return Sessao
+                 .Query<EventoAgenda>()
+                 .Where(x => x.Id == eventoId && x.UsuarioId == usuarioId)
+                 .ToList();
         }
     }
 }

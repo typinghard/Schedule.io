@@ -7,6 +7,8 @@ namespace Agenda.Domain.Interfaces
     public interface IEventoAgendaRepository : IRepository<EventoAgenda>
     {
         IList<EventoAgenda> ObterTodosEventosDoUsuario(string eventoId, string usuarioId);
-        
+
+        IList<EventoAgenda> ObterTodosEventosDaAgenda(string agendaId);
+
     }
 }

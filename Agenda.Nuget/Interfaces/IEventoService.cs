@@ -14,6 +14,6 @@ namespace ScheduleIo.Nuget.Interfaces
 
         Evento Obter(string eventoId);
 
-        //IEnumerable<Evento> ObterTodos();
+        IEnumerable<Evento> ObterTodos(string agendaId);
     }
 }

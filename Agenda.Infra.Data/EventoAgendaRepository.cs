@@ -15,10 +15,17 @@ namespace ScheduleIo.Infra.MongoDB
 
         }
 
-        public IList<EventoAgenda> ObterTodosEventosDaAgenda(string agendaId)
+        public IList<EventoAgenda> ObterEventosDaAgenda(string agendaId)
         {
             return Db.EventoAgenda
                 .Find(x => x.AgendaId == agendaId)
+                .ToList();
+        }
+
+        public IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        {
+            return Db.EventoAgenda
+                .Find(x => x.AgendaId == agendaId && x.DataInicio >= dataInicio && x.DataFinal <= dataFinal)
                 .ToList();
         }
 

@@ -15,5 +15,7 @@ namespace ScheduleIo.Nuget.Interfaces
         Evento Obter(string eventoId);
 
         IEnumerable<Evento> ObterTodos(string agendaId);
+
+        IEnumerable<Evento> ObterEventosPorPeriodo(string agendaId, DateTime dataInicial, DateTime dataFinal);
     }
 }

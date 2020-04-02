@@ -8,7 +8,9 @@ namespace Agenda.Domain.Interfaces
     {
         IList<EventoAgenda> ObterTodosEventosDoUsuario(string agendaId, string usuarioId);
 
-        IList<EventoAgenda> ObterTodosEventosDaAgenda(string agendaId);
+        IList<EventoAgenda> ObterEventosDaAgenda(string agendaId);
+
+        IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal);
 
     }
 }

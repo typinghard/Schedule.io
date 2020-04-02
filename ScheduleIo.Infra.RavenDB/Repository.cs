@@ -49,12 +49,10 @@ namespace ScheduleIo.Infra.RavenDB
 
         public IList<TEntity> ObterTodosAtivos()
         {
-            var teste = _session
+            return _session
                  .Query<TEntity>()
                  .Where(x => x.Inativo == false)
                  .ToList();
-
-            return teste;
         }
 
         public void Remover(TEntity obj)

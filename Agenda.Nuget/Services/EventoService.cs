@@ -41,12 +41,18 @@ namespace ScheduleIo.Nuget.Services
         }
 
         #region Obter
+
+        public IEnumerable<Evento> ObterEventosPorPeriodo(string agendaId, DateTime dataInicial, DateTime dataFinal)
+        {
+            var listEventoAgenda = _eventoAgendaRepository.ObterEventosPorPeriodo(agendaId, dataInicial, dataFinal);
+
+            return MontaEventoVM(listEventoAgenda);
+        }
+
+
         public IEnumerable<Evento> ObterTodos(string agendaId)
         {
-            var listEventoAgenda = _eventoAgendaRepository.ObterTodosEventosDaAgenda(agendaId);
-
-            if (listEventoAgenda == null)
-                throw new ScheduleIoException(new List<string>() { "Não há eventos nesta agenda!" });
+            var listEventoAgenda = _eventoAgendaRepository.ObterEventosDaAgenda(agendaId);
 
             return MontaEventoVM(listEventoAgenda);
         }
@@ -55,14 +61,14 @@ namespace ScheduleIo.Nuget.Services
         {
             var eventoModel = _eventoAgendaRepository.ObterPorId(eventoId);
 
-            if (eventoModel == null)
-                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
-
             return MontaEventoVM(eventoModel);
         }
 
         private Evento MontaEventoVM(EventoAgenda eventoModel)
         {
+            if (eventoModel == null)
+                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
+
             var convites = _conviteRepository.ObterConvitesPorEventoId(eventoModel.Id);
 
             dynamic local = null;
@@ -103,6 +109,9 @@ namespace ScheduleIo.Nuget.Services
 
         private IList<Evento> MontaEventoVM(IList<EventoAgenda> listEventoModel)
         {
+            if (listEventoModel == null)
+                throw new ScheduleIoException(new List<string>() { "Não há eventos nesta agenda!" });
+
             var listEventoVM = new List<Evento>();
             foreach (var eventoModel in listEventoModel)
             {
@@ -356,5 +365,6 @@ namespace ScheduleIo.Nuget.Services
 
             return null;
         }
+
     }
 }

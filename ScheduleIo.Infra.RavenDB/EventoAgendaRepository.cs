@@ -23,11 +23,11 @@ namespace ScheduleIo.Infra.RavenDB
                  .ToList();
         }
 
-        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string eventoId, string usuarioId)
+        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
             return Sessao
                  .Query<EventoAgenda>()
-                 .Where(x => x.Id == eventoId && x.UsuarioId == usuarioId)
+                 .Where(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
                  .ToList();
         }
     }

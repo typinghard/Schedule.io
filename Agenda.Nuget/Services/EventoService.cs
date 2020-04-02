@@ -64,7 +64,10 @@ namespace ScheduleIo.Nuget.Services
         private Evento MontaEventoVM(EventoAgenda eventoModel)
         {
             var convites = _conviteRepository.ObterConvitesPorEventoId(eventoModel.Id);
-            var local = _localService.Obter(eventoModel.Local);
+
+            dynamic local = null;
+            if (eventoModel.LocalId != null)
+                local = _localService.Obter(eventoModel.LocalId);
 
             ValidarComando();
 
@@ -104,7 +107,7 @@ namespace ScheduleIo.Nuget.Services
             foreach (var eventoModel in listEventoModel)
             {
                 var convites = _conviteRepository.ObterConvitesPorEventoId(eventoModel.Id);
-                var local = _localService.Obter(eventoModel.Local);
+                var local = _localService.Obter(eventoModel.LocalId);
 
                 ValidarComando();
 
@@ -143,7 +146,9 @@ namespace ScheduleIo.Nuget.Services
 
         private Models.Usuario MontaUsuarioVM(Agenda.Domain.Models.Convite conviteModel)
         {
-            var usuarioVM = _usuarioService.Obter(conviteModel.UsuarioId);
+            dynamic usuarioVM = null;
+            if (conviteModel.UsuarioId != null)
+                usuarioVM = _usuarioService.Obter(conviteModel.UsuarioId);
 
             if (usuarioVM == null)
                 usuarioVM = new Models.Usuario()

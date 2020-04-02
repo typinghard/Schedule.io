@@ -16,7 +16,7 @@ namespace Agenda.Domain.Commands
         public string Titulo { get; protected set; }
         public string Descricao { get; protected set; }
         public IList<Convite> Convites { get; protected set; }
-        public string Local { get; protected set; }
+        public string LocalId { get; protected set; }
         public DateTime DataInicio { get; protected set; }
         public DateTime? DataFinal { get; protected set; }
         public DateTime? DataLimiteConfirmacao { get; protected set; }

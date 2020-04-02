@@ -11,6 +11,8 @@ namespace Agenda.UI.Web.Controllers
 {
     public class AgendaController : Controller
     {
+        //private static DateTime _DataInicio;
+
         IAgendaService _agendaService;
         IUsuarioService _usuarioService;
         ILocalService _localService;
@@ -33,11 +35,13 @@ namespace Agenda.UI.Web.Controllers
         {
             try
             {
-
-                GravarAgenda();
-                GravarUsuario();
-                GravarLocal();
-                GravarEvento(false);
+                //var evento = _eventoService.Obter("b4e5b559-f79a-437a-afea-9397416cd262");
+                //evento.OcupaUsuario = true;
+                //_eventoService.Gravar(evento);
+                //GravarAgenda();
+                //GravarUsuario();
+                //GravarLocal();
+                //GravarEvento(false);
                 //GravarEvento(true);
                 //GravarEvento(true, true);
                 //ExcluirEvento();
@@ -98,7 +102,7 @@ namespace Agenda.UI.Web.Controllers
 
         private void ExcluirEvento()
         {
-           // var evento = EventoVM(false, null, null, "9bcec73c-1206-4ebd-a761-62e962aaa42c");
+            // var evento = EventoVM(false, null, null, "9bcec73c-1206-4ebd-a761-62e962aaa42c");
             _eventoService.Excluir("9bcec73c-1206-4ebd-a761-62e962aaa42c");
         }
 
@@ -240,6 +244,7 @@ namespace Agenda.UI.Web.Controllers
                         }
                     },
                     Local = LocalVM(true),
+                    //DataInicio = _DataInicio != DateTime.MinValue ? _DataInicio : DateTime.Now,
                     DataInicio = DateTime.Now,
                     DataFinal = DateTime.MinValue,
                     DataLimiteConfirmacao = DateTime.Now,

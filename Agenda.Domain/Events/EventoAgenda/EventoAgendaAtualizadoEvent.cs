@@ -15,7 +15,7 @@ namespace Agenda.Domain.Events
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public IList<Convite> Convites { get; set; }
-        public string Local { get; set; }
+        public string LocalId { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime? DataFinal { get; set; }
         public DateTime? DataLimiteConfirmacao { get; set; }
@@ -36,14 +36,14 @@ namespace Agenda.Domain.Events
             this.Titulo = titulo;
             this.Descricao = descricao;
             this.Convites = convites;
-            this.Local = localId;
+            this.LocalId = localId;
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;
             this.QuantidadeMinimaDeUsuarios = qtdeMaximadeUsuarios;
             this.OcupaUsuario = ocupaUsuario;
             this.Publico = publico;
-            this.Tipo = Tipo;
+            this.Tipo = tipoEvento;
             this.Frequencia = frequencia;
         }
 

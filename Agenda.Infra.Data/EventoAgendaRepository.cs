@@ -22,11 +22,11 @@ namespace ScheduleIo.Infra.MongoDB
                 .ToList();
         }
 
-        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string eventoId, string usuarioId)
+        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
 
             return Db.EventoAgenda
-                .Find(x => x.Id == eventoId && x.UsuarioId == usuarioId)
+                .Find(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
                 .ToList();
 
         }

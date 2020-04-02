@@ -72,8 +72,8 @@ namespace Agenda.Domain.CommandHandlers
             if (message.DataLimiteConfirmacao != DateTime.MinValue)
                 eventoAgenda.DefinirDataLimiteConfirmacao(message.DataLimiteConfirmacao.Value);
 
-            if (!message.Local.EhVazio())
-                eventoAgenda.DefinirLocal(message.Local);
+            if (!message.LocalId.EhVazio())
+                eventoAgenda.DefinirLocal(message.LocalId);
 
             if (message.QuantidadeMinimaDeUsuarios > 0)
                 eventoAgenda.DefinirQuantidadeMinimaDeUsuarios(message.QuantidadeMinimaDeUsuarios);
@@ -91,7 +91,7 @@ namespace Agenda.Domain.CommandHandlers
             {
                 Bus.PublicarEvento(new EventoAgendaRegistradoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.UsuarioId,
                                     eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao,
-                                    (List<Convite>)eventoAgenda.Convites, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal,
+                                    (List<Convite>)eventoAgenda.Convites, eventoAgenda.LocalId, eventoAgenda.DataInicio, eventoAgenda.DataFinal,
                                     eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios,
                                     eventoAgenda.OcupaUsuario, eventoAgenda.Publico, eventoAgenda.Tipo, eventoAgenda.Frequencia));
             }
@@ -120,7 +120,7 @@ namespace Agenda.Domain.CommandHandlers
             eventoAgenda.DefinirIdentificadorExterno(message.IdentificadorExterno);
             eventoAgenda.DefinirDescricao(message.Descricao);
 
-            eventoAgenda.DefinirLocal(message.Local);
+            eventoAgenda.DefinirLocal(message.LocalId);
 
             if (message.DataFinal == DateTime.MinValue)
                 eventoAgenda.DefinirDataInicial(message.DataInicio);
@@ -151,7 +151,7 @@ namespace Agenda.Domain.CommandHandlers
             {
                 Bus.PublicarEvento(new EventoAgendaAtualizadoEvent(eventoAgenda.Id, eventoAgenda.AgendaId, eventoAgenda.UsuarioId,
                                    eventoAgenda.IdentificadorExterno, eventoAgenda.Titulo, eventoAgenda.Descricao,
-                                   (List<Convite>)eventoAgenda.Convites, eventoAgenda.Local, eventoAgenda.DataInicio, eventoAgenda.DataFinal,
+                                   (List<Convite>)eventoAgenda.Convites, eventoAgenda.LocalId, eventoAgenda.DataInicio, eventoAgenda.DataFinal,
                                    eventoAgenda.DataLimiteConfirmacao, eventoAgenda.QuantidadeMinimaDeUsuarios,
                                    eventoAgenda.OcupaUsuario, eventoAgenda.Publico, eventoAgenda.Tipo, eventoAgenda.Frequencia));
             }
@@ -179,63 +179,31 @@ namespace Agenda.Domain.CommandHandlers
         private void Validacoes(EventoAgenda eventoAgenda)
         {
             ValidaQuantidadeDeUsuariosNoLocal(eventoAgenda);
+            ValidaEventosUsuarioOcupadoNoMesmoHorario(eventoAgenda);
         }
 
         private void ValidaQuantidadeDeUsuariosNoLocal(EventoAgenda eventoAgenda)
         {
-            if (string.IsNullOrEmpty(eventoAgenda.Local))
+            if (!string.IsNullOrEmpty(eventoAgenda.LocalId))
             {
-                var local = _localRepository.ObterPorId(eventoAgenda.Local);
+                var local = _localRepository.ObterPorId(eventoAgenda.LocalId);
                 if (local != null && eventoAgenda.QuantidadeMinimaDeUsuarios > local.LotacaoMaxima)
-                {
                     throw new DomainException("A quantidade máxima de usuários não pode ser maior que a lotação máxima do local!");
-                }
             }
 
         }
 
-        //private EventoAgenda ValidaStatusConviteUsuarios(EventoAgenda eventoAgenda, IList<Convite> convites = null)
-        //{
-        //    /* Descrição:
-        //     * - Ao criar um evento com vários usuários, os OUTROS usuários ficaram pendentes de confirmação, porém o usuário que criou já é confirmado
-        //     */
-        //    eventoAgenda.LimparConvites();
-        //    if (convites != null && convites.Count > 0)
-        //    {
-        //        foreach (var novoConvite in convites)
-        //        {
-        //            var convite = new Convite(novoConvite.Id, eventoAgenda.Id, novoConvite.UsuarioId);
-
-        //            if (eventoAgenda.UsuarioId == novoConvite.UsuarioId)
-        //                convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
-        //            else
-        //                convite.AtualizarStatusConvite(EnumStatusConviteEvento.Aguardando_Confirmacao);
-
-        //            //if (eventoAgenda.Convites.Where(x => x.UsuarioId == novoConvite.UsuarioId).Count() == 0)
-        //            eventoAgenda.AdicionarConvite(convite);
-        //        }
-        //    }
-
-        //    return eventoAgenda;
-        //}
-
-        private void ValidaUsuarioOcupadoNoMesmoHorario(string eventoId, Convite convite)
+        private void ValidaEventosUsuarioOcupadoNoMesmoHorario(EventoAgenda eventoAgenda)
         {
-            /* Descrição:
-            *  - Um usuário não pode ter dois eventos marcados como OCUPADO coincidindo horário
-            */
-
-            //usuario
-            var usuario = _usuarioRepository.ObterPorId(convite.UsuarioId);
-
-            //eventos_do_usuario
-            var eventosUsuario = _eventoAgendaRepository.ObterTodosEventosDoUsuario(eventoId, convite.UsuarioId);
-
-            //para cada evento validar se não há eventos no mesmo horário como ocupado
-            var cont = eventosUsuario.Select(x => x.DataInicio == x.DataInicio && x.OcupaUsuario).Count();
-            if (cont > 0)
+            if (eventoAgenda.OcupaUsuario)
             {
-                throw new DomainException("Usuário não pode dois ou mais eventos no mesmo horário marcados como ocupado!");
+                //eventos_do_usuario
+                var eventosUsuario = _eventoAgendaRepository.ObterTodosEventosDoUsuario(eventoAgenda.AgendaId, eventoAgenda.UsuarioId);
+
+                //para cada evento validar se não há eventos no mesmo horário como ocupado
+                var cont = eventosUsuario.Count(x => x.DataInicio == eventoAgenda.DataInicio && x.OcupaUsuario == true);
+                if (cont > 0)
+                    throw new DomainException("Usuário não pode dois ou mais eventos no mesmo horário marcados como ocupado!");
             }
         }
     }

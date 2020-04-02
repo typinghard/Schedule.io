@@ -10,7 +10,7 @@ namespace Agenda.Domain.Commands
     public class RegistrarEventoAgendaCommand : EventoAgendaCommand
     {
         public RegistrarEventoAgendaCommand(string id, string agendaId, string usuarioId,string identificadorExterno, string titulo,
-            string descricao, IList<Convite> convites, string local, DateTime dataInicio, DateTime? dataFinal,
+            string descricao, IList<Convite> convites, string localId, DateTime dataInicio, DateTime? dataFinal,
             DateTime dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario,
             bool eventoPublico, TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
         {
@@ -21,7 +21,7 @@ namespace Agenda.Domain.Commands
             this.Titulo = titulo;
             this.Descricao = descricao;
             this.Convites = convites;
-            this.Local = local;
+            this.LocalId = localId;
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;

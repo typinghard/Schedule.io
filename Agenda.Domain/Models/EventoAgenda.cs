@@ -19,7 +19,7 @@ namespace Agenda.Domain.Models
         public string Descricao { get; private set; }
         public IReadOnlyCollection<Convite> Convites { get { return _convites; } }
         private List<Convite> _convites { get; set; }
-        public string Local { get; private set; }
+        public string LocalId { get; private set; }
         public DateTime DataInicio { get; private set; }
         public DateTime? DataFinal { get; private set; }
         public DateTime? DataLimiteConfirmacao { get; private set; }
@@ -86,16 +86,6 @@ namespace Agenda.Domain.Models
             this.Descricao = descricao;
         }
 
-        //public void AdicionarPessoa(Guid pessoa)
-        //{
-        //    if (pessoa.EhVazio())
-        //    {
-        //        throw new DomainException("Por favor, certifique-se que adicinou uma pessoa.");
-        //    }
-
-        //    Usuarios.Add(pessoa);
-        //}
-
         public void AdicionarConvite(Convite convite)
         {
             convite.NovoConviteEhValido();
@@ -114,7 +104,7 @@ namespace Agenda.Domain.Models
                 throw new DomainException("Por favor, certifique-se que adicionou um local.");
             }
 
-            this.Local = local;
+            this.LocalId = local;
         }
 
         public void DefinirDatas(DateTime dataInicio, DateTime? dataFinal = null)

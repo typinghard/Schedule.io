@@ -25,7 +25,9 @@ namespace ScheduleIo.Infra.MongoDB
         public IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
             return Db.EventoAgenda
-                .Find(x => x.AgendaId == agendaId && x.DataInicio >= dataInicio && x.DataFinal <= dataFinal)
+                .Find(x => x.AgendaId == agendaId 
+                      && x.DataInicio >= dataInicio
+                      && (x.DataFinal == null || x.DataFinal <= dataFinal))
                 .ToList();
         }
 

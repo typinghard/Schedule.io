@@ -46,6 +46,12 @@ namespace Agenda.UI.Web.Controllers
                 //GravarEvento(true, true);
                 //ExcluirEvento();
 
+                //var agendaId = "35fb8c94-a7c7-488f-80db-13312e0b7cf8";
+                //var dataInicio = DateTime.Now.AddDays(-7);
+                //var dataFinal = DateTime.Now;
+
+                //var listEventos = _eventoService.ObterEventosPorPeriodo(agendaId, dataInicio, dataFinal);
+
                 return Content("Funcionou!");
             }
             catch (Agenda.Domain.Core.DomainObjects.ScheduleIoException ex)

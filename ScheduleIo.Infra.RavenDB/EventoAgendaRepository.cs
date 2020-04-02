@@ -27,7 +27,9 @@ namespace ScheduleIo.Infra.RavenDB
         {
             return Sessao
                 .Query<EventoAgenda>()
-                .Where(x => x.AgendaId == agendaId && x.DataInicio >= dataInicio && x.DataFinal <= dataFinal)
+                .Where(x => x.AgendaId == agendaId 
+                       && x.DataInicio >= dataInicio
+                       && (x.DataFinal == null || x.DataFinal <= dataFinal))
                 .ToList();
         }
 

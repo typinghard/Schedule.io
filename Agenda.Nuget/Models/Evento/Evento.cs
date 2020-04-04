@@ -7,7 +7,7 @@ namespace ScheduleIo.Nuget.Models
 {
     public class Evento
     {
-        public string Id { get; internal set; }
+        public string Id { get; set; }
         public DateTime CriadoAs { get; internal set; }
         public DateTime AtualizadoAs { get; internal set; }
         public string AgendaId { get; set; }

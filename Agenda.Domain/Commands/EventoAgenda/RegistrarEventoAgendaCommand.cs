@@ -11,7 +11,7 @@ namespace Agenda.Domain.Commands
     {
         public RegistrarEventoAgendaCommand(string id, string agendaId, string usuarioId,string identificadorExterno, string titulo,
             string descricao, IList<Convite> convites, string localId, DateTime dataInicio, DateTime? dataFinal,
-            DateTime dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario,
+            DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocuparUsuario,
             bool eventoPublico, TipoEvento tipoEvento, EnumFrequencia enumFrequencia)
         {
             this.Id = id;

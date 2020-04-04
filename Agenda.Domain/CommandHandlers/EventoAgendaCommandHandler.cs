@@ -69,7 +69,7 @@ namespace Agenda.Domain.CommandHandlers
             if (message.DataFinal != DateTime.MinValue)
                 eventoAgenda.DefinirDatas(eventoAgenda.DataInicio, message.DataFinal);
 
-            if (message.DataLimiteConfirmacao != DateTime.MinValue)
+            if (message.DataLimiteConfirmacao.HasValue && message.DataLimiteConfirmacao != DateTime.MinValue)
                 eventoAgenda.DefinirDataLimiteConfirmacao(message.DataLimiteConfirmacao.Value);
 
             if (!message.LocalId.EhVazio())
@@ -120,7 +120,8 @@ namespace Agenda.Domain.CommandHandlers
             eventoAgenda.DefinirIdentificadorExterno(message.IdentificadorExterno);
             eventoAgenda.DefinirDescricao(message.Descricao);
 
-            eventoAgenda.DefinirLocal(message.LocalId);
+            if (!string.IsNullOrEmpty(message.LocalId))
+                eventoAgenda.DefinirLocal(message.LocalId);
 
             if (message.DataFinal == DateTime.MinValue)
                 eventoAgenda.DefinirDataInicial(message.DataInicio);

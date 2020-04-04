@@ -18,7 +18,8 @@ namespace ScheduleIo.Infra.MongoDB
         public IList<EventoAgenda> ObterEventosDaAgenda(string agendaId)
         {
             return Db.EventoAgenda
-                .Find(x => x.AgendaId == agendaId)
+                .Find(x => x.AgendaId == agendaId
+                      && !x.Inativo)
                 .ToList();
         }
 
@@ -27,7 +28,8 @@ namespace ScheduleIo.Infra.MongoDB
             return Db.EventoAgenda
                 .Find(x => x.AgendaId == agendaId 
                       && x.DataInicio >= dataInicio
-                      && (x.DataFinal == null || x.DataFinal <= dataFinal))
+                      && (x.DataFinal == null || x.DataFinal <= dataFinal)
+                      && !x.Inativo)
                 .ToList();
         }
 
@@ -35,7 +37,9 @@ namespace ScheduleIo.Infra.MongoDB
         {
 
             return Db.EventoAgenda
-                .Find(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
+                .Find(x => x.AgendaId == agendaId 
+                      && x.UsuarioId == usuarioId
+                      && !x.Inativo)
                 .ToList();
 
         }

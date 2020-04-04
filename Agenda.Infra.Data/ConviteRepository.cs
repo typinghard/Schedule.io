@@ -16,7 +16,8 @@ namespace ScheduleIo.Infra.MongoDB
         public IList<Convite> ObterConvitesPorEventoId(string eventoId)
         {
             return Db.Convite
-                     .Find(x => x.EventoId == eventoId)
+                     .Find(x => x.EventoId == eventoId
+                           && !x.Inativo)
                      .ToList();
         }
     }

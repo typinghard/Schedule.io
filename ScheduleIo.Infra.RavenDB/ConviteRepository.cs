@@ -18,7 +18,8 @@ namespace ScheduleIo.Infra.RavenDB
         {
             return Sessao
                    .Query<Convite>()
-                   .Where(x => x.EventoId == eventoId)
+                   .Where(x => x.EventoId == eventoId
+                          && !x.Inativo)
                    .ToList();
         }
     }

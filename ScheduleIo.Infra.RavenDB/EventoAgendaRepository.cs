@@ -19,7 +19,8 @@ namespace ScheduleIo.Infra.RavenDB
         {
             return Sessao
                  .Query<EventoAgenda>()
-                 .Where(x => x.AgendaId == agendaId)
+                 .Where(x => x.AgendaId == agendaId 
+                        && !x.Inativo)
                  .ToList();
         }
 
@@ -29,7 +30,8 @@ namespace ScheduleIo.Infra.RavenDB
                 .Query<EventoAgenda>()
                 .Where(x => x.AgendaId == agendaId 
                        && x.DataInicio >= dataInicio
-                       && (x.DataFinal == null || x.DataFinal <= dataFinal))
+                       && (x.DataFinal == null || x.DataFinal <= dataFinal)
+                       && !x.Inativo)
                 .ToList();
         }
 
@@ -37,7 +39,9 @@ namespace ScheduleIo.Infra.RavenDB
         {
             return Sessao
                  .Query<EventoAgenda>()
-                 .Where(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
+                 .Where(x => x.AgendaId == agendaId 
+                        && x.UsuarioId == usuarioId
+                        && !x.Inativo)
                  .ToList();
         }
     }

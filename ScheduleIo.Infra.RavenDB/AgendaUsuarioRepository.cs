@@ -18,7 +18,9 @@ namespace ScheduleIo.Infra.RavenDB
         {
             return Sessao
                  .Query<AgendaUsuario>()
-                 .Where(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
+                 .Where(x => x.AgendaId == agendaId
+                        && x.UsuarioId == usuarioId
+                        && !x.Inativo)
                  .FirstOrDefault();
         }
     }

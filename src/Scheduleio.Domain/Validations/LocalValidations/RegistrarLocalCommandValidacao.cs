@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Commands.Local;
+﻿using Schedule.io.Core.Commands.LocalCommands;
 
 namespace Schedule.io.Core.Validations.LocalValidations
 {

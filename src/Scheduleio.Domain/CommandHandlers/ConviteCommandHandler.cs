@@ -2,16 +2,17 @@
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Commands.Convite;
+using Schedule.io.Core.Commands.ConviteCommands;
 using Schedule.io.Core.Core.Communication.Mediator;
 using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Core.Models;
-using Schedule.io.Core.Events.Convite;
-using Schedule.io.Core.Events.EventoAgenda;
+using Schedule.io.Core.Events.ConviteEvents;
+using Schedule.io.Core.Events.EventoAgendaEvents;
 
 namespace Schedule.io.Core.CommandHandlers
 {
@@ -24,9 +25,9 @@ namespace Schedule.io.Core.CommandHandlers
         private readonly IMediatorHandler Bus;
 
         public ConviteCommandHandler(IConviteRepository conviteRepository,
-                                           IUnitOfWork uow,
-                                           IMediatorHandler bus,
-                                           INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
+                                     IUnitOfWork uow,
+                                     IMediatorHandler bus,
+                                     INotificationHandler<DomainNotification> notifications) : base(uow, bus, notifications)
         {
             this._conviteRepository = conviteRepository;
             this.Bus = bus;
@@ -40,22 +41,21 @@ namespace Schedule.io.Core.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Convite convite = new Convite(message.EventoId, message.UsuarioId);
+            Convite convite = new Convite(message.Id, message.EventoId, message.UsuarioId, message.EmailConvidado);
 
-            //if (message.Status != Enums.EnumStatusConviteEvento.Aguardando_Confirmacao)
-            //    convite.AtualizarStatusConvite(message.Status);
+            convite.AtualizarStatusConvite(message.Status);
 
-            if (convite.Permissoes.ConvidaUsuario)
+            if (message.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
             else
                 convite.Permissoes.NaoPodeConvidar();
 
-            if (convite.Permissoes.VeListaDeConvidados)
+            if (message.Permissoes.VeListaDeConvidados)
                 convite.Permissoes.PodeVerListaDeConvidados();
             else
                 convite.Permissoes.NaoPodeVerListaDeConvidados();
 
-            if (convite.Permissoes.ModificaEvento)
+            if (message.Permissoes.ModificaEvento)
                 convite.Permissoes.PodeModificarEvento();
             else
                 convite.Permissoes.NaoPodeModificarEvento();
@@ -64,7 +64,7 @@ namespace Schedule.io.Core.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new ConviteRegistradoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.Status, convite.Permissoes));
+                Bus.PublicarEvento(new ConviteRegistradoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
             }
 
             return Task.FromResult(true);
@@ -85,21 +85,24 @@ namespace Schedule.io.Core.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            convite.DefinirUsuarioId(message.UsuarioId);
-            convite.DefinirEventoId(message.EventoId);
-            //convite.AtualizarStatusConvite(message.Status);
+            if (!string.IsNullOrEmpty(message.UsuarioId))
+                convite.DefinirUsuarioId(message.UsuarioId);
 
-            if (convite.Permissoes.ConvidaUsuario)
+            convite.DefinirEmailConvidado(message.EmailConvidado);
+            convite.DefinirEventoId(message.EventoId);
+            convite.AtualizarStatusConvite(message.Status);
+
+            if (message.Permissoes.ConvidaUsuario)
                 convite.Permissoes.PodeConvidar();
             else
                 convite.Permissoes.NaoPodeConvidar();
 
-            if (convite.Permissoes.VeListaDeConvidados)
+            if (message.Permissoes.VeListaDeConvidados)
                 convite.Permissoes.PodeVerListaDeConvidados();
             else
                 convite.Permissoes.NaoPodeVerListaDeConvidados();
 
-            if (convite.Permissoes.ModificaEvento)
+            if (message.Permissoes.ModificaEvento)
                 convite.Permissoes.PodeModificarEvento();
             else
                 convite.Permissoes.NaoPodeModificarEvento();
@@ -108,7 +111,7 @@ namespace Schedule.io.Core.CommandHandlers
             _conviteRepository.Atualizar(convite);
             if (Commit())
             {
-                Bus.PublicarEvento(new ConviteAtualizadoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.Status, convite.Permissoes));
+                Bus.PublicarEvento(new ConviteAtualizadoEvent(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado, convite.Status, convite.Permissoes));
             }
 
             return Task.FromResult(true);
@@ -119,7 +122,8 @@ namespace Schedule.io.Core.CommandHandlers
             Convite convite = _conviteRepository.ObterPorId(message.Id);
             _conviteRepository.Remover(convite);
 
-            Bus.PublicarEvento(new EventoAgendaRemovidoEvent(convite.Id)).Wait();
+            if (Commit())
+                Bus.PublicarEvento(new EventoAgendaRemovidoEvent(convite.Id)).Wait();
             return Task.FromResult(true);
         }
 
@@ -127,5 +131,7 @@ namespace Schedule.io.Core.CommandHandlers
         {
             _conviteRepository.Dispose();
         }
+
+
     }
 }

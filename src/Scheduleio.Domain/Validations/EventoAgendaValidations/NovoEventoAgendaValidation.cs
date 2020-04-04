@@ -15,6 +15,10 @@ namespace Schedule.io.Core.Validations.EventoAgendaValidations
                 .NotEmpty()
                 .WithMessage("Id da Agenda não pode ser vazio!");
 
+            RuleFor(c => c.UsuarioId)
+                .NotEmpty()
+                .WithMessage("Id do Usuário não pode ser vazio!");
+
             RuleFor(e => e.Titulo)
                 .NotNull()
                 .NotEmpty()
@@ -36,11 +40,11 @@ namespace Schedule.io.Core.Validations.EventoAgendaValidations
                 .WithMessage("Por favor, certifique-se que digitou um Nome para o Tipo do Evento.")
                 .Length(2, 120).WithMessage("O Nome do Tipo do Evento deve ter entre 2 e 120 caracteres.");
 
-            RuleFor(e => e.Tipo.Descricao)
-                .NotNull()
-                .NotEmpty()
-                .WithMessage("Por favor, certifique-se que digitou uma Descrição para o Tipo do Evento.")
-                .Length(2, 500).WithMessage("A Descrição do Tipo do Evento deve ter entre 2 e 500 caracteres.");
+            //RuleFor(e => e.Tipo.Descricao)
+            //    .NotNull()
+            //    .NotEmpty()
+            //    .WithMessage("Por favor, certifique-se que digitou uma Descrição para o Tipo do Evento.")
+            //    .Length(2, 500).WithMessage("A Descrição do Tipo do Evento deve ter entre 2 e 500 caracteres.");
 
             RuleFor(e => e.QuantidadeMinimaDeUsuarios)
               .Must(QuantidadeMinimaDeUsuario)

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using System;
 using Schedule.io.Core.Core.DomainObjects;
 using Schedule.io.Core.Core.Helpers;
 using Schedule.io.Core.Validations.LocalValidations;
@@ -9,15 +10,15 @@ namespace Schedule.io.Core.Models
 {
     public class Local : Entity, IAggregateRoot
     {
-        public string IdentificadorExterno { get; private set; } 
-        public string NomeLocal { get; private set; }
+        public string IdentificadorExterno { get; private set; }
+        public string Nome { get; private set; }
         public string Descricao { get; private set; }
-        public bool ReservaLocal { get; private set; } 
+        public bool Reserva { get; private set; }
         public int LotacaoMaxima { get; private set; }
 
-        public Local(string nomeLocal)
+        public Local(string id, string nomeLocal) : base(id)
         {
-            this.NomeLocal = nomeLocal;
+            this.Nome = nomeLocal;
 
             var resultadoValidacao = this.NovoLocalEhValido();
             if (!resultadoValidacao.IsValid)
@@ -31,12 +32,12 @@ namespace Schedule.io.Core.Models
                 throw new ScheduleIoException("O nome do local deve ter entre 2 e 200 caracteres.");
             }
 
-            this.NomeLocal = nomeLocal;
+            this.Nome = nomeLocal;
         }
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
         {
-            if (string.IsNullOrEmpty(identificadorExterno))
+            if (string.IsNullOrEmpty(identificadorExterno) && string.IsNullOrEmpty(identificadorExterno))
             {
                 throw new ScheduleIoException("O Identificador do local não pode ser vazio!");
             }
@@ -46,7 +47,7 @@ namespace Schedule.io.Core.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (!descricao.ValidarTamanho(2, 500))
+            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
             {
                 throw new ScheduleIoException("A descrição do local deve ter entre 2 e 500 caracteres.");
             }
@@ -55,12 +56,12 @@ namespace Schedule.io.Core.Models
 
         public void ReservarLocal()
         {
-            this.ReservaLocal = true;
+            this.Reserva = true;
         }
 
         public void RemoverReservaLocal()
         {
-            this.ReservaLocal = false;
+            this.Reserva = false;
         }
 
         public void DefinirLotacaoMaxima(int lotacaoMaxima)

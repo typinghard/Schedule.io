@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Commands.Convite;
+﻿using Schedule.io.Core.Commands.ConviteCommands;
 using System;
 using System.Collections.Generic;
 using System.Text;

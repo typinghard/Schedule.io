@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
-
+using Schedule.io;
+using Schedule.io.Infra.RavenDB.Configs;
+using Schedule.io.Models;
 
 namespace Agenda.UI.Web
 {
@@ -30,12 +32,10 @@ namespace Agenda.UI.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            
 
-            //services.AddScheduleIo(new ScheduleIo.Nuget.Models.ScheduleIoConfigurations(
-            //    new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" }, "Schedule.io", @"D:\Área de Trabalho\free.elvis.client.certificate\free.elvis.client.certificate.pfx"),
-            //    false
-            //    ));
+            services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
+            //services.UseScheduleIoRavenDb(new RavenDBConfig());
+
 
         }
 

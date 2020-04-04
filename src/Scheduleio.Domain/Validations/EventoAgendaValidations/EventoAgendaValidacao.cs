@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Schedule.io.Core.Commands.EventoAgenda;
+using Schedule.io.Core.Commands.EventoAgendaCommands;
 
 namespace Schedule.io.Core.Validations.EventoAgendaValidations
 {

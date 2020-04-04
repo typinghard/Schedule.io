@@ -7,9 +7,12 @@ namespace Schedule.io.Interfaces
 {
     public interface ILocalService
     {
-        string Criar(Local local);
-        void Editar(Local local);
-        void Excluir(Local local);
-        void Obter(string localId);
+        string Gravar(Local local);
+
+        bool Excluir(string localId);
+
+        Local Obter(string localId);
+
+        
     }
 }

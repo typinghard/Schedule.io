@@ -13,13 +13,15 @@ namespace Schedule.io.Core.Models
     public class EventoAgenda : Entity, IAggregateRoot
     {
         public string AgendaId { get; private set; }
-        public string IdentificadorExterno { get; set; }
+        public string UsuarioId { get; private set; }
+        public string IdentificadorExterno { get; private set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
-        public IList<string> Pessoas { get; private set; }
-        public string Local { get; private set; }
+        public IReadOnlyCollection<Convite> Convites { get { return _convites; } }
+        private List<Convite> _convites { get; set; }
+        public string LocalId { get; private set; }
         public DateTime DataInicio { get; private set; }
-        public DateTime? DataFinal { get; private set; } // Não obrigatório = padrão data final no mesmo dia.
+        public DateTime? DataFinal { get; private set; }
         public DateTime? DataLimiteConfirmacao { get; private set; }
         public int QuantidadeMinimaDeUsuarios { get; private set; }
         public bool OcupaUsuario { get; private set; }
@@ -27,14 +29,16 @@ namespace Schedule.io.Core.Models
         public TipoEvento Tipo { get; private set; }
         public EnumFrequencia Frequencia { get; private set; }
 
-        public EventoAgenda(string agendaId, string titulo, DateTime dataInicio, TipoEvento tipoEvento)
+        public EventoAgenda(string id, string agendaId, string usuarioId, string titulo, DateTime dataInicio, TipoEvento tipoEvento) : base(id)
         {
             this.AgendaId = agendaId;
+            this.UsuarioId = usuarioId;
             this.Titulo = titulo;
             this.DataInicio = dataInicio;
             this.Tipo = tipoEvento;
             this.Frequencia = EnumFrequencia.Nao_Repete;
-            this.Pessoas = new List<string>();
+
+            this._convites = new List<Convite>();
 
             var resultadoValidacao = this.NovoEventoAgendaEhValido();
             if (!resultadoValidacao.IsValid)
@@ -74,7 +78,7 @@ namespace Schedule.io.Core.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (!descricao.ValidarTamanho(2, 500))
+            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
             {
                 throw new ScheduleIoException("A descrição deve ter entre 2 e 500 caracteres.");
             }
@@ -82,24 +86,25 @@ namespace Schedule.io.Core.Models
             this.Descricao = descricao;
         }
 
-        public void AdicionarPessoa(string pessoaId)
+        public void AdicionarConvite(Convite convite)
         {
-            if (pessoaId.EhVazio())
-            {
-                throw new ScheduleIoException("Por favor, certifique-se que adicinou uma pessoa.");
-            }
-
-            Pessoas.Add(pessoaId);
+            convite.NovoConviteEhValido();
+            _convites.Add(convite);
         }
 
-        public void DefinirLocal(string Local)
+        public void LimparConvites()
         {
-            if (Local.EhVazio())
+            _convites.Clear();
+        }
+
+        public void DefinirLocal(string local)
+        {
+            if (string.IsNullOrEmpty(local))
             {
                 throw new ScheduleIoException("Por favor, certifique-se que adicionou um local.");
             }
 
-            this.Local = Local;
+            this.LocalId = local;
         }
 
         public void DefinirDatas(DateTime dataInicio, DateTime? dataFinal = null)
@@ -193,7 +198,7 @@ namespace Schedule.io.Core.Models
         public string Nome { get; set; }
         public string Descricao { get; set; }
 
-        public TipoEvento(string nome, string descricao)
+        public TipoEvento(string id, string nome, string descricao) : base(id)
         {
             this.Nome = nome;
             this.Descricao = descricao;
@@ -217,7 +222,7 @@ namespace Schedule.io.Core.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (!descricao.ValidarTamanho(2, 500))
+            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
             {
                 throw new ScheduleIoException("A descrição deve ter entre 2 e 500 caracteres.");
             }

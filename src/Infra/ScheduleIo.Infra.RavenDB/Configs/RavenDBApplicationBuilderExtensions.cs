@@ -1,8 +1,9 @@
-﻿using Agenda.Core.Data.EventSourcing;
-using Agenda.Domain.Core.Data.Configurations;
-using Agenda.Domain.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Raven.DependencyInjection;
+using Schedule.io.Core.Core.Data.Configurations;
+using Schedule.io.Core.Core.Data.EventSourcing;
+using Schedule.io.Core.Interfaces;
+using Schedule.io.Infra.RavenDB.EventSourcing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Schedule.io.Infra.RavenDB.Configs
                     })
                 .AddRavenDbSession();
 
-            services.AddScoped<IEventSourcingRepository, EventSourcing.EventSourcingRepository>();
+            services.AddScoped<IEventSourcingRepository, EventSourcingRepository>();
             services.AddScoped<IAgendaRepository, AgendaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();

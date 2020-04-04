@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Commands.Local;
+﻿using Schedule.io.Core.Commands.LocalCommands;
 using System;
 using System.Collections.Generic;
 using System.Text;

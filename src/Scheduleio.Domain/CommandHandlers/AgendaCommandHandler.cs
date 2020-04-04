@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Commands.Agenda;
-using Schedule.io.Core.Events.Agenda;
+using Schedule.io.Core.Commands.AgendaCommands;
+using Schedule.io.Core.Events.AgendaEvents;
 using Schedule.io.Core.Core.Communication.Mediator;
 using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Core.Models;
@@ -39,14 +39,15 @@ namespace Schedule.io.Core.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Models.Agenda agenda = new Models.Agenda(message.Titulo);
-            _agendaRepository.Adicionar(agenda);
+            Agenda agenda = new Agenda(message.Id, message.Titulo);
 
             if (!string.IsNullOrEmpty(message.Descricao))
                 agenda.DefinirDescricao(message.Descricao);
 
             if (message.Publico)
                 agenda.TornarAgendaPublica();
+
+            _agendaRepository.Adicionar(agenda);
 
             if (Commit())
             {
@@ -95,7 +96,11 @@ namespace Schedule.io.Core.CommandHandlers
             Agenda agenda = _agendaRepository.ObterPorId(message.Id);
             _agendaRepository.Remover(agenda);
 
-            Bus.PublicarEvento(new AgendaRemovidaEvent(agenda.Id)).Wait();
+            if (Commit())
+            {
+                Bus.PublicarEvento(new AgendaRemovidaEvent(agenda.Id)).Wait();
+            }
+
             return Task.FromResult(true);
         }
 

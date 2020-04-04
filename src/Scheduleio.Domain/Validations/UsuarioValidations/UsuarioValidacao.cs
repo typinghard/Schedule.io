@@ -3,7 +3,7 @@ using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Schedule.io.Core.Commands.Usuario;
+using Schedule.io.Core.Commands.UsuarioCommands;
 
 namespace Schedule.io.Core.Validations.UsuarioValidations
 {

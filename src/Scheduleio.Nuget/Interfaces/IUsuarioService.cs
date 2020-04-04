@@ -7,9 +7,10 @@ namespace Schedule.io.Interfaces
 {
     public interface IUsuarioService
     {
-        string Criar(Usuario usuario);
-        void Editar(Usuario usuario);
-        void Excluir(Usuario usuario);
-        void Obter(string usuarioId);
+        string Gravar(Usuario usuario);
+
+        bool Excluir(string usuarioId);
+
+        Usuario Obter(string usuarioId);
     }
 }

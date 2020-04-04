@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Schedule.io.Core.Commands.Usuario;
+using Schedule.io.Core.Commands.UsuarioCommands;
 using Schedule.io.Core.Interfaces;
 using Schedule.io.Core.Core.Communication.Mediator;
 using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Core.Models;
-using Schedule.io.Core.Events.Usuario;
+using Schedule.io.Core.Events.UsuarioEvents;
 
 namespace Schedule.io.Core.CommandHandlers
 {
@@ -39,7 +39,7 @@ namespace Schedule.io.Core.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Usuario usuario = new Usuario(message.UsuarioEmail);
+            Usuario usuario = new Usuario(message.Id, message.UsuarioEmail);
             _usuarioRepository.Adicionar(usuario);
 
             if (Commit())

@@ -10,4 +10,8 @@
     <PackageReference Include="Schedule.io.Core" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Scheduleio.Domain\Schedule.io.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,5 @@
 ﻿using Schedule.io.Core.Commands;
-using Schedule.io.Core.Commands.EventoAgenda;
+using Schedule.io.Core.Commands.EventoAgendaCommands;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,5 +1,5 @@
-﻿using Agenda.Domain.Core.Data.Configurations;
-using Agenda.Domain.Core.Data.Configurations.Enums;
+﻿using Schedule.io.Core.Core.Data.Configurations;
+using Schedule.io.Core.Core.Data.Configurations.Enums;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;

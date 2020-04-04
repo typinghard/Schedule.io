@@ -1,7 +1,6 @@
-﻿using Agenda.Core.Data;
-using Agenda.Domain.Core.DomainObjects;
-using Agenda.Domain.Interfaces;
-using Raven.Client.Documents.Session;
+﻿using Raven.Client.Documents.Session;
+using Schedule.io.Core.Core.Data;
+using Schedule.io.Core.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,24 +36,23 @@ namespace Schedule.io.Infra.RavenDB
 
         public void ForcarDelecao(string id)
         {
-            throw new NotImplementedException();
-            //_session.Delete(id.ToString());
+            _session.Delete(id.ToString());
         }
 
         public TEntity ObterPorId(string id)
         {
-            return _session.Advanced.RawQuery<TEntity>(
-            "from " + DocumentName + " " +
-            "where Id == $Id")
-                .AddParameter("Id", id.ToString())
-                .FirstOrDefault();
+            return _session
+                 .Query<TEntity>()
+                 .Where(x => x.Id == id)
+                 .FirstOrDefault();
         }
 
         public IList<TEntity> ObterTodosAtivos()
         {
-            return _session.Advanced.RawQuery<TEntity>(
-            "from " + DocumentName + " " +
-            "where Inativo == false").ToList();
+            return _session
+                 .Query<TEntity>()
+                 .Where(x => x.Inativo == false)
+                 .ToList();
         }
 
         public void Remover(TEntity obj)
@@ -71,7 +69,7 @@ namespace Schedule.io.Infra.RavenDB
                 _session.SaveChanges();
                 return 1;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return 0;
             }

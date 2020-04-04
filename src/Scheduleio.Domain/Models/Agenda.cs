@@ -1,4 +1,5 @@
 ﻿using FluentValidation.Results;
+using System;
 using Schedule.io.Core.Core.DomainObjects;
 using Schedule.io.Core.Core.Helpers;
 using Schedule.io.Core.Validations.AgendaValidations;
@@ -16,7 +17,7 @@ namespace Schedule.io.Core.Models
 
         public bool Publico { get; private set; }
 
-        public Agenda(string titulo)
+        public Agenda(string id, string titulo) : base(id)
         {
             Titulo = titulo;
 
@@ -43,7 +44,7 @@ namespace Schedule.io.Core.Models
 
         public void DefinirDescricao(string descricao)
         {
-            if (!descricao.ValidarTamanho(2, 500))
+            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
             {
                 throw new ScheduleIoException(new List<string>() { "A descrição deve ter entre 2 e 500 caracteres." });
             }

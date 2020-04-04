@@ -1,11 +1,10 @@
-﻿using Agenda.Core.Data.EventSourcing;
-using Agenda.Domain.Core.Data.EventSourcing;
-using Agenda.Domain.Core.Messages;
-using Raven.Client.Documents;
+﻿using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Schedule.io.Core.Core.Data.EventSourcing;
+using Schedule.io.Core.Core.Messages;
 
 namespace Schedule.io.Infra.RavenDB.EventSourcing
 {

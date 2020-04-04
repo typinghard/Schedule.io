@@ -1,6 +1,6 @@
-﻿using Agenda.Domain.Interfaces;
-using Agenda.Domain.Models;
-using Raven.Client.Documents.Session;
+﻿using Raven.Client.Documents.Session;
+using Schedule.io.Core.Interfaces;
+using Schedule.io.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

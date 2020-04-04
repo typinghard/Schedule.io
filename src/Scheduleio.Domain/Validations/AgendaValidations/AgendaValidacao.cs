@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Schedule.io.Core.Commands.Agenda;
+using Schedule.io.Core.Commands.AgendaCommands;
 using System;
 using System.Collections.Generic;
 using System.Text;

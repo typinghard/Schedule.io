@@ -1,4 +1,5 @@
-﻿using Schedule.io.Core.Interfaces;
+﻿using MongoDB.Driver;
+using Schedule.io.Core.Interfaces;
 using Schedule.io.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,12 @@ namespace Schedule.io.Infra.Data.MongoDB
     {
         public AgendaUsuarioRepository(AgendaContext context) : base(context)
         {
+        }
+        public AgendaUsuario ObterPorAgendaIdEUsuarioId(string agendaId, string usuarioId)
+        {
+            return Db.AgendaUsuario.Find(x => x.AgendaId == agendaId
+                                         && x.UsuarioId == usuarioId
+                                         && !x.Inativo).FirstOrDefault();
         }
     }
 }

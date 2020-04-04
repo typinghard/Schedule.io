@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Schedule.io.Core.Commands.Local;
+using Schedule.io.Core.Commands.LocalCommands;
 using System;
 
 namespace Schedule.io.Core.Validations.LocalValidations

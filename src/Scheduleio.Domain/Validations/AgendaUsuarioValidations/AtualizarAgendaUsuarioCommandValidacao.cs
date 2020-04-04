@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Commands.AgendaUsuario;
+﻿using Schedule.io.Core.Commands.AgendaUsuarioCommands;
 using System;
 using System.Collections.Generic;
 using System.Text;

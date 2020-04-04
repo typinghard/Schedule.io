@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using System;
-using Schedule.io.Core.Commands.Convite;
+using Schedule.io.Core.Commands.ConviteCommands;
 
 namespace Schedule.io.Core.Validations.ConviteValidations
 {

@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Schedule.io.Core.Commands.AgendaUsuario;
+using Schedule.io.Core.Commands.AgendaUsuarioCommands;
 using Schedule.io.Core.Core.Communication.Mediator;
 using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
-using Schedule.io.Core.Events.AgendaUsuario;
+using Schedule.io.Core.Events.AgendaUsuarioEvents;
 using Schedule.io.Core.Interfaces;
 using Schedule.io.Core.Models;
 using System;
@@ -38,12 +38,12 @@ namespace Schedule.io.Core.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            AgendaUsuario agendaUsuario = new AgendaUsuario(message.AgendaId, message.UsuarioId);
+            AgendaUsuario agendaUsuario = new AgendaUsuario(Guid.NewGuid().ToString(), message.AgendaId, message.UsuarioId);
             _agendaUsuarioRepository.Adicionar(agendaUsuario);
 
             if (Commit())
             {
-                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId/*, agendaUsuario.Permissoes*/));
+                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId, agendaUsuario.Permissoes));
             }
 
             return Task.FromResult(true);
@@ -67,11 +67,11 @@ namespace Schedule.io.Core.CommandHandlers
             _agendaUsuarioRepository.Remover(agendaUsuario);
             Bus.PublicarEvento(new AgendaUsuarioRemovidoEvent(agendaUsuario.Id)).Wait();
 
-            AgendaUsuario novoAgendaUsuario = new AgendaUsuario(message.AgendaId, message.UsuarioId);
+            AgendaUsuario novoAgendaUsuario = new AgendaUsuario(message.Id, message.AgendaId, message.UsuarioId);
             _agendaUsuarioRepository.Adicionar(novoAgendaUsuario);
             if (Commit())
             {
-                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId/*, agendaUsuario.Permissoes*/));
+                Bus.PublicarEvento(new AgendaUsuarioRegistradoEvent(agendaUsuario.Id, agendaUsuario.AgendaId, agendaUsuario.UsuarioId, agendaUsuario.Permissoes));
             }
 
             return Task.FromResult(true);

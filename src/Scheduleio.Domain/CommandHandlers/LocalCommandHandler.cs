@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Schedule.io.Core.Commands.Local;
+using Schedule.io.Core.Commands.LocalCommands;
 using Schedule.io.Core.Interfaces;
 using Schedule.io.Core.Core.Communication.Mediator;
 using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Core.Models;
-using Schedule.io.Core.Events.Local;
+using Schedule.io.Core.Events.LocalEvents;
 
 namespace Schedule.io.Core.CommandHandlers
 {
@@ -38,7 +38,7 @@ namespace Schedule.io.Core.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            Local local = new Local(message.NomeLocal);
+            Local local = new Local(message.Id, message.Nome);
 
             if (!string.IsNullOrEmpty(message.IdentificadorExterno))
                 local.DefinirIdentificadorExterno(message.IdentificadorExterno);
@@ -46,7 +46,7 @@ namespace Schedule.io.Core.CommandHandlers
             if (!string.IsNullOrEmpty(message.Descricao))
                 local.DefinirDescricao(message.Descricao);
 
-            if (message.ReservaLocal)
+            if (message.Reserva)
                 local.ReservarLocal();
             else
                 local.RemoverReservaLocal();
@@ -58,7 +58,7 @@ namespace Schedule.io.Core.CommandHandlers
 
             if (Commit())
             {
-                Bus.PublicarEvento(new LocalRegistradoEvent(local.Id, local.IdentificadorExterno, local.NomeLocal, local.Descricao, local.ReservaLocal, local.LotacaoMaxima));
+                Bus.PublicarEvento(new LocalRegistradoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
             }
 
             return Task.FromResult(true);
@@ -79,7 +79,7 @@ namespace Schedule.io.Core.CommandHandlers
                 return Task.FromResult(false);
             }
 
-            local.DefinirNomeLocal(message.NomeLocal);
+            local.DefinirNomeLocal(message.Nome);
 
             if (!string.IsNullOrEmpty(message.IdentificadorExterno))
                 local.DefinirIdentificadorExterno(message.IdentificadorExterno);
@@ -87,7 +87,7 @@ namespace Schedule.io.Core.CommandHandlers
             if (!string.IsNullOrEmpty(message.Descricao))
                 local.DefinirDescricao(message.Descricao);
 
-            if (message.ReservaLocal)
+            if (message.Reserva)
                 local.ReservarLocal();
             else
                 local.RemoverReservaLocal();
@@ -97,7 +97,7 @@ namespace Schedule.io.Core.CommandHandlers
             _localRepository.Atualizar(local);
             if (Commit())
             {
-                Bus.PublicarEvento(new LocalAtualizadoEvent(local.Id, local.IdentificadorExterno, local.NomeLocal, local.Descricao, local.ReservaLocal, local.LotacaoMaxima));
+                Bus.PublicarEvento(new LocalAtualizadoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
             }
 
             return Task.FromResult(true);
@@ -108,7 +108,8 @@ namespace Schedule.io.Core.CommandHandlers
             Local local = _localRepository.ObterPorId(message.Id);
             _localRepository.Remover(local);
 
-            Bus.PublicarEvento(new LocalRemovidoEvent(local.Id)).Wait();
+            if (Commit())
+                Bus.PublicarEvento(new LocalRemovidoEvent(local.Id)).Wait();
             return Task.FromResult(true);
         }
 

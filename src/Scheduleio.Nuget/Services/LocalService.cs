@@ -1,4 +1,10 @@
-﻿using Schedule.io.Interfaces;
+﻿using MediatR;
+using Schedule.io.Core.Commands.LocalCommands;
+using Schedule.io.Core.Core.Communication.Mediator;
+using Schedule.io.Core.Core.DomainObjects;
+using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
+using Schedule.io.Core.Interfaces;
+using Schedule.io.Interfaces;
 using Schedule.io.Models;
 using System;
 using System.Collections.Generic;
@@ -6,26 +12,64 @@ using System.Text;
 
 namespace Schedule.io.Services
 {
-    internal class LocalService : ILocalService
+    internal class LocalService : ServiceBase, ILocalService
     {
-        public string Criar(Local local)
+        private readonly ILocalRepository _localRepository;
+        private readonly IMediatorHandler _bus;
+
+        public LocalService(ILocalRepository localRepository,
+            IMediatorHandler bus,
+            INotificationHandler<DomainNotification> notifications) : base(notifications)
         {
-            throw new NotImplementedException();
+            _localRepository = localRepository;
+            _bus = bus;
         }
 
-        public void Editar(Local local)
+        public string Gravar(Local local)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(local.Id))
+            {
+                local.Id = Guid.NewGuid().ToString();
+                _bus.EnviarComando(new RegistrarLocalCommand(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao,
+                                                             local.Reserva, local.LotacaoMaxima)).Wait();
+            }
+            else
+                _bus.EnviarComando(new AtualizarLocalCommand(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao,
+                                                         local.Reserva, local.LotacaoMaxima)).Wait();
+
+            ValidarComando();
+            return local.Id;
         }
 
-        public void Excluir(Local local)
+
+        public bool Excluir(string localId)
         {
-            throw new NotImplementedException();
+            _bus.EnviarComando(new RemoverLocalCommand(localId)).Wait();
+            ValidarComando();
+            return true;
         }
 
-        public void Obter(string localId)
+        public Local Obter(string localId)
         {
-            throw new NotImplementedException();
+            var local = _localRepository.ObterPorId(localId);
+
+            if (local == null)
+                throw new ScheduleIoException(new List<string>() { "Local não encontrado!" });
+
+            ValidarComando();
+
+            return new Local()
+            {
+                Id = local.Id,
+                CriadoAs = local.CriadoAs,
+                AtualizadoAs = local.AtualizadoAs,
+                IdentificadorExterno = local.IdentificadorExterno,
+                Nome = local.Nome,
+                Descricao = local.Descricao,
+                LotacaoMaxima = local.LotacaoMaxima,
+                Reserva = local.Reserva
+            };
+
         }
     }
 }

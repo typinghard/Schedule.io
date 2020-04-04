@@ -13,7 +13,7 @@ namespace Schedule.io.Core.Models
     {
         public string Email { get; private set; }
 
-        public Usuario(string email)
+        public Usuario(string id, string email) : base(id)
         {
             this.Email = email;
 

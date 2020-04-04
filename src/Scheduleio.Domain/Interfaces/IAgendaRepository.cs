@@ -8,5 +8,6 @@ namespace Schedule.io.Core.Interfaces
 {
     public interface IAgendaRepository : IRepository<Agenda>
     {
+        Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId);
     }
 }

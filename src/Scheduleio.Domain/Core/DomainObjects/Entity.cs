@@ -10,9 +10,9 @@ namespace Schedule.io.Core.Core.DomainObjects
 
         public bool Inativo { get; protected set; }
 
-        public Entity()
+        public Entity(string id)
         {
-            Id = Guid.NewGuid().ToString();
+            Id = id;
         }
 
         public void Inativar()

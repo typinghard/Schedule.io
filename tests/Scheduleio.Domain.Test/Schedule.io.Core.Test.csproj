@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Testes Unitários\Models\AgendaTest.cs" />
+    <Compile Remove="Testes Unitários\Models\AgendaUsuarioTest.cs" />
+    <Compile Remove="Testes Unitários\Models\ConviteTest.cs" />
+    <Compile Remove="Testes Unitários\Models\EventoAgendaTest.cs" />
+    <Compile Remove="Testes Unitários\Models\LocalTest.cs" />
+    <Compile Remove="Testes Unitários\Models\UsuarioTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Bogus" Version="29.0.1" />
     <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.2" />
@@ -31,6 +40,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Scheduleio.Domain\Schedule.io.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Testes Unitários\Models\" />
   </ItemGroup>
 
 </Project>

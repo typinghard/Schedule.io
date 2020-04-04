@@ -1,11 +1,11 @@
-﻿using Agenda.Core.Data;
-using Agenda.Domain.Core.DomainObjects;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using Schedule.io.Core.Core.Data;
+using Schedule.io.Core.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ScheduleIo.Infra.MongoDB
+namespace Schedule.io.Infra.Data.MongoDB
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {

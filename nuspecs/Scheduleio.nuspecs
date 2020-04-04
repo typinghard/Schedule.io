@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Scheduleio</id>
+    <version>1.0.11</version>
+    <title>Schedule.io</title>
+    <authors>Elvis Souza | Diego Galante</authors>
+    <owners>Elvis Souza | Diego Galante</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Aplicação para auxílio no desenvolvimento de uma agenda.</description>
+    <dependencies>
+      <dependency id="MongoDB.Driver" version="2.10.1" />
+      <dependency id="RavenDB.Client" version="4.2.101" />
+      <dependency id="RavenDB.DependencyInjection" version="3.1.0" />
+      <dependency id="MediatR" version="8.0.1" />
+    </dependencies>
+  </metadata>
+</package>

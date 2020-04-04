@@ -1,16 +1,15 @@
-﻿using Agenda.Domain.Core.DomainObjects;
-using Agenda.Domain.Models;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Agenda.Core.Data.EventSourcing;
-using ScheduleIo.Infra.MongoDB.Configs;
-using Agenda.Domain.Core.Data.Configurations;
-using Agenda.Domain.Core.Data.Configurations.Enums;
+using Schedule.io.Infra.Data.MongoDB.Configs;
+using Schedule.io.Core.Models;
+using Schedule.io.Core.Core.Data.EventSourcing;
+using Schedule.io.Core.Core.DomainObjects;
+using Schedule.io.Core.Core.Data.Configurations;
 
-namespace ScheduleIo.Infra.MongoDB
+namespace Schedule.io.Infra.Data.MongoDB
 {
     public class AgendaContext : IDisposable
     {
@@ -56,7 +55,7 @@ namespace ScheduleIo.Infra.MongoDB
                 });
         }
 
-        internal IMongoCollection<Agenda.Domain.Models.Agenda> Agenda { get { return _database.GetCollection<Agenda.Domain.Models.Agenda>(typeof(Agenda.Domain.Models.Agenda).Name.ToLower()); } }
+        internal IMongoCollection<Agenda> Agenda { get { return _database.GetCollection<Agenda>(typeof(Agenda).Name.ToLower()); } }
         internal IMongoCollection<Usuario> Usuario { get { return _database.GetCollection<Usuario>(typeof(Usuario).Name.ToLower()); } }
         internal IMongoCollection<AgendaUsuario> AgendaUsuario { get { return _database.GetCollection<AgendaUsuario>(typeof(AgendaUsuario).Name.ToLower()); } }
         internal IMongoCollection<EventoAgenda> EventoAgenda { get { return _database.GetCollection<EventoAgenda>(typeof(EventoAgenda).Name.ToLower()); } }

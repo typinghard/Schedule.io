@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28C2BC5E-7B54-49EF-BE6B-0DB31513653C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{A3619F2A-A0FD-4922-AE17-D8221CD13B2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{9DC00D4B-45EF-45FE-8BC4-23CDBB9A2068}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspecs", "nuspecs", "{C17C2947-9E62-4D69-8C7C-FE82D99B2CC1}"
+	ProjectSection(SolutionItems) = preProject
+		nuspecs\Scheduleio.MongoDB.nuspecs = nuspecs\Scheduleio.MongoDB.nuspecs
+		nuspecs\Scheduleio.nuspecs = nuspecs\Scheduleio.nuspecs
+		nuspecs\Scheduleio.RavenDB.nuspecs = nuspecs\Scheduleio.RavenDB.nuspecs
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScheduleIo.UI.MVC", "presentation\Scheduleio.UI.MVC\ScheduleIo.UI.MVC.csproj", "{2884973B-40C7-4C8E-AD38-BD9C9D36D136}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Infra.Data.MongoDB", "src\Infra\Scheduleio.Infra.Data.MongoDB\Schedule.io.Infra.Data.MongoDB.csproj", "{5A82D02C-EFBA-4C81-814D-94F296243858}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Infra.RavenDB", "src\Infra\ScheduleIo.Infra.RavenDB\Schedule.io.Infra.RavenDB.csproj", "{AC48CD32-BAC2-454F-8A62-A246B055A3C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Core", "src\Scheduleio.Domain\Schedule.io.Core.csproj", "{3AFD96D6-3E02-4DC6-AF99-574111366411}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io", "src\Scheduleio.Nuget\Schedule.io.csproj", "{DE8DA554-511C-4B02-9555-931FDB57A561}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9B74BBBA-0E30-4101-94C9-9BE9C58943E1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Core.Test", "tests\Scheduleio.Domain.Test\Schedule.io.Core.Test.csproj", "{036948BE-3DC8-4E7B-B28C-238253FD3CCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2884973B-40C7-4C8E-AD38-BD9C9D36D136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2884973B-40C7-4C8E-AD38-BD9C9D36D136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2884973B-40C7-4C8E-AD38-BD9C9D36D136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2884973B-40C7-4C8E-AD38-BD9C9D36D136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A82D02C-EFBA-4C81-814D-94F296243858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A82D02C-EFBA-4C81-814D-94F296243858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A82D02C-EFBA-4C81-814D-94F296243858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A82D02C-EFBA-4C81-814D-94F296243858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC48CD32-BAC2-454F-8A62-A246B055A3C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC48CD32-BAC2-454F-8A62-A246B055A3C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC48CD32-BAC2-454F-8A62-A246B055A3C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC48CD32-BAC2-454F-8A62-A246B055A3C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFD96D6-3E02-4DC6-AF99-574111366411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFD96D6-3E02-4DC6-AF99-574111366411}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFD96D6-3E02-4DC6-AF99-574111366411}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFD96D6-3E02-4DC6-AF99-574111366411}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE8DA554-511C-4B02-9555-931FDB57A561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE8DA554-511C-4B02-9555-931FDB57A561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE8DA554-511C-4B02-9555-931FDB57A561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE8DA554-511C-4B02-9555-931FDB57A561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{036948BE-3DC8-4E7B-B28C-238253FD3CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{036948BE-3DC8-4E7B-B28C-238253FD3CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{036948BE-3DC8-4E7B-B28C-238253FD3CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{036948BE-3DC8-4E7B-B28C-238253FD3CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A3619F2A-A0FD-4922-AE17-D8221CD13B2E} = {28C2BC5E-7B54-49EF-BE6B-0DB31513653C}
+		{2884973B-40C7-4C8E-AD38-BD9C9D36D136} = {9DC00D4B-45EF-45FE-8BC4-23CDBB9A2068}
+		{5A82D02C-EFBA-4C81-814D-94F296243858} = {A3619F2A-A0FD-4922-AE17-D8221CD13B2E}
+		{AC48CD32-BAC2-454F-8A62-A246B055A3C8} = {A3619F2A-A0FD-4922-AE17-D8221CD13B2E}
+		{3AFD96D6-3E02-4DC6-AF99-574111366411} = {28C2BC5E-7B54-49EF-BE6B-0DB31513653C}
+		{DE8DA554-511C-4B02-9555-931FDB57A561} = {28C2BC5E-7B54-49EF-BE6B-0DB31513653C}
+		{036948BE-3DC8-4E7B-B28C-238253FD3CCF} = {9B74BBBA-0E30-4101-94C9-9BE9C58943E1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C308AC2-EACD-400F-A790-F593582B1BA1}
+	EndGlobalSection
+EndGlobal

@@ -1,10 +1,10 @@
-﻿using Agenda.Domain.Core.Data.Configurations;
-using Agenda.Domain.Core.Data.Configurations.Enums;
+﻿using Schedule.io.Core.Core.Data.Configurations;
+using Schedule.io.Core.Core.Data.Configurations.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ScheduleIo.Infra.MongoDB.Configs
+namespace Schedule.io.Infra.Data.MongoDB.Configs
 {
     public class MongoDBConfig : IDataBaseConfig
     {

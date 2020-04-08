@@ -7,6 +7,7 @@ namespace Schedule.io.Core.Core.Data.Configurations.Enums
     public enum EDataBaseType
     {
         MONGODB,
-        RAVENDB
+        RAVENDB,
+        SQLSERVERDB
     }
 }

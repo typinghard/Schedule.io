@@ -10,7 +10,7 @@ namespace Schedule.io
     {
         public static IServiceCollection AddScheduleIo(this IServiceCollection services, ScheduleIoConfigurations scheduleIoConfigurations)
         {
-            var assembly = AppDomain.CurrentDomain.Load("Agenda.Domain");
+            var assembly = AppDomain.CurrentDomain.Load("Schedule.io");
             services.AddMediatR(assembly);
 
             SetConfigurations(scheduleIoConfigurations);

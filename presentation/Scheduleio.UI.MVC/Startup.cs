@@ -11,8 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using Schedule.io;
-using Schedule.io.Infra.RavenDB.Configs;
+//using Schedule.io.Infra.RavenDB.Configs;
 using Schedule.io.Models;
+using Schedule.io.Infra.Data.SqlServerDB.Configs;
 
 namespace Agenda.UI.Web
 {
@@ -33,9 +34,11 @@ namespace Agenda.UI.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
-            services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
+            //services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
             //services.UseScheduleIoRavenDb(new RavenDBConfig());
 
+            services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
+            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig("abc"));
 
         }
 

@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9B74BBBA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Core.Test", "tests\Scheduleio.Domain.Test\Schedule.io.Core.Test.csproj", "{036948BE-3DC8-4E7B-B28C-238253FD3CCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schedule.io.Infra.Data.SqlServerDB", "src\Infra\Schedule.io.Infra.Data.SqlServerDB\Schedule.io.Infra.Data.SqlServerDB.csproj", "{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{036948BE-3DC8-4E7B-B28C-238253FD3CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{036948BE-3DC8-4E7B-B28C-238253FD3CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{036948BE-3DC8-4E7B-B28C-238253FD3CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{3AFD96D6-3E02-4DC6-AF99-574111366411} = {28C2BC5E-7B54-49EF-BE6B-0DB31513653C}
 		{DE8DA554-511C-4B02-9555-931FDB57A561} = {28C2BC5E-7B54-49EF-BE6B-0DB31513653C}
 		{036948BE-3DC8-4E7B-B28C-238253FD3CCF} = {9B74BBBA-0E30-4101-94C9-9BE9C58943E1}
+		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240} = {A3619F2A-A0FD-4922-AE17-D8221CD13B2E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C308AC2-EACD-400F-A790-F593582B1BA1}

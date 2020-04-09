@@ -38,7 +38,7 @@ namespace Agenda.UI.Web
             //services.UseScheduleIoRavenDb(new RavenDBConfig());
 
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
-            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig("abc"));
+            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"]));
 
         }
 

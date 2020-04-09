@@ -53,6 +53,13 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             base.OnModelCreating(modelBuilder);
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).ConnectionsString);
+
+            base.OnConfiguring(optionsBuilder);
+        }
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

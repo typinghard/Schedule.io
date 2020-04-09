@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
 {
-    public class AgendaUsuarioMappgin : IEntityTypeConfiguration<AgendaUsuario>
+    public class AgendaUsuarioMapping : IEntityTypeConfiguration<AgendaUsuario>
     {
         public void Configure(EntityTypeBuilder<AgendaUsuario> builder)
         {
@@ -29,6 +29,11 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Property(c => c.UsuarioId)
                 .IsRequired()
                 .HasColumnType("varchar(200)");
+
+            builder.OwnsOne(c => c.Permissoes, cm =>
+            {
+
+            });
 
             builder.ToTable("AgendaUsuario");
         }

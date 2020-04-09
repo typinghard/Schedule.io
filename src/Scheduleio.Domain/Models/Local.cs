@@ -25,6 +25,11 @@ namespace Schedule.io.Core.Models
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
+        public Local() : base(Guid.NewGuid().ToString())
+        {
+
+        }
+
         public void DefinirNomeLocal(string nomeLocal)
         {
             if (!nomeLocal.ValidarTamanho(2, 200))

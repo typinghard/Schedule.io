@@ -26,6 +26,11 @@ namespace Schedule.io.Core.Models
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
+        public Agenda() : base(Guid.NewGuid().ToString())
+        {
+
+        }
+
         public void DefinirTitulo(string titulo)
         {
             if (string.IsNullOrEmpty(titulo))

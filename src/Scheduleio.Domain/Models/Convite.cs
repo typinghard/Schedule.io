@@ -31,6 +31,11 @@ namespace Schedule.io.Core.Models
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
+        public Convite() : base(Guid.NewGuid().ToString())
+        {
+
+        }
+
         public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())

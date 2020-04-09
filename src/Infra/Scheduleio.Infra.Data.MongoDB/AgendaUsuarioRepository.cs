@@ -12,7 +12,7 @@ namespace Schedule.io.Infra.Data.MongoDB
         public AgendaUsuarioRepository(AgendaContext context) : base(context)
         {
         }
-        public AgendaUsuario ObterPorAgendaIdEUsuarioId(string agendaId, string usuarioId)
+        public AgendaUsuario ObterAgendaDoUsuario(string agendaId, string usuarioId)
         {
             return Db.AgendaUsuario.Find(x => x.AgendaId == agendaId
                                          && x.UsuarioId == usuarioId

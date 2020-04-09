@@ -11,7 +11,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
     {
         public void Configure(EntityTypeBuilder<EventoAgenda> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(c => c.Id);
 
             builder.Property(c => c.CriadoAs)
                 .IsRequired();
@@ -36,8 +36,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
 
             builder.Property(c => c.Descricao)
                 .HasColumnType("varchar(500)");
-            
-            /*convites*/
 
             builder.Property(c => c.LocalId)
                 .HasColumnType("varchar(200)");

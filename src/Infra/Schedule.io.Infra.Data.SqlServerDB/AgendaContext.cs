@@ -14,23 +14,26 @@ namespace Schedule.io.Infra.Data.SqlServerDB
     {
         public AgendaContext(DbContextOptions<AgendaContext> options) : base(options)
         {
-            var sqlDbConfig = (SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig;
-            Database.GetDbConnection().ConnectionString = sqlDbConfig.ConnectionsString;
-            Database.BeginTransaction();
+            Database.OpenConnection();
         }
 
         public int SalvarAlteracoes()
         {
-            try
+            using (var transaction = Database.BeginTransaction())
             {
-                Database.CommitTransaction();
-                return 1;
+                try
+                {
+                    SaveChanges();
+                    transaction.Commit();
+                    return 1;
+                }
+                catch(Exception ex)
+                {
+                    transaction.Rollback();
+                    return 0;
+                }
             }
-            catch
-            {
-                Database.RollbackTransaction();
-                return 0;
-            }
+
         }
 
         public DbSet<Agenda> Agenda { get; set; }
@@ -44,7 +47,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AgendaContext).Assembly);
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

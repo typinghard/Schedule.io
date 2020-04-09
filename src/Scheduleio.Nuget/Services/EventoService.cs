@@ -175,6 +175,10 @@ namespace Schedule.io.Services
                 return new List<Models.Convite>();
 
             var listConvitesVm = new List<Models.Convite>();
+
+            if (convitesModel.Any(x => x.Permissoes == null))
+                return new List<Models.Convite>();
+
             foreach (var conviteModel in convitesModel)
             {
                 var conviteVm = new Models.Convite()
@@ -302,7 +306,7 @@ namespace Schedule.io.Services
             if (evento.Convites == null || evento.Convites.Count == 0)
                 return new List<Core.Models.Convite>();
 
-            var usuarioAgenda = _agendaUsuarioRepository.ObterPorAgendaIdEUsuarioId(evento.AgendaId, evento.UsuarioId);
+            var usuarioAgenda = _agendaUsuarioRepository.ObterAgendaDoUsuario(evento.AgendaId, evento.UsuarioId);
 
             if (usuarioAgenda == null)
                 throw new ScheduleIoException(new List<string>() { "Agenda do usuário não encontrada!" });
@@ -318,6 +322,9 @@ namespace Schedule.io.Services
 
                 if (string.IsNullOrEmpty(conviteVM.Id))
                     conviteVM.Id = Guid.Empty.ToString();
+
+                if (string.IsNullOrEmpty(conviteVM.Usuario.Id))
+                    conviteVM.Usuario.Id = Guid.Empty.ToString();
 
                 var convite = new Core.Models.Convite(conviteVM.Id, evento.Id, conviteVM.Usuario.Id, conviteVM.Usuario.Email);
 

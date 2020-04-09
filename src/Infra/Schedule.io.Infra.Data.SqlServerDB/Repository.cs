@@ -21,14 +21,18 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         protected readonly IConfiguration _configuration;
         protected string _connectionString;
         protected string _table;
+        protected string _atributosBase;
+        protected string _inativoFalse;
 
         protected Repository(AgendaContext db)
         {
             Db = db;
             DbSet = db.Set<TEntity>();
-            var sqlDbConfig = (SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig;
-            _connectionString = sqlDbConfig.ConnectionsString;
+            _connectionString = Db.Database.GetDbConnection().ConnectionString;
             _table = typeof(TEntity).ToString().Split(".").Last();
+
+            _atributosBase = "Id, CriadoAs, AtualizadoAs, Inativo ";
+            _inativoFalse = $"Inativo = 0";
         }
 
         public void Adicionar(TEntity obj)
@@ -101,6 +105,17 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public void ForcarDelecao(string id)
         {
             throw new NotImplementedException();
+        }
+
+
+        protected string FormataDataSql(DateTime data, bool inicio = false)
+        {
+            var dataFormatada = new DateTime();
+
+            if (inicio) dataFormatada = new DateTime(data.Year, data.Month, data.Day, 0, 0, 0);
+            else dataFormatada = new DateTime(data.Year, data.Month, data.Day, 23, 59, 59);
+
+            return dataFormatada.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
     }

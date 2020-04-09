@@ -31,11 +31,6 @@ namespace Schedule.io.Core.Models
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
-        public Convite() : base(Guid.NewGuid().ToString())
-        {
-
-        }
-
         public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())
@@ -79,9 +74,10 @@ namespace Schedule.io.Core.Models
 
     public class PermissoesConvite
     {
-        public bool ModificaEvento { get; private set; } 
-        public bool ConvidaUsuario { get; private set; } 
-        public bool VeListaDeConvidados { get; private set; } 
+        public bool ModificaEvento { get; set; }
+        public bool ConvidaUsuario { get; set; }
+        public bool VeListaDeConvidados { get; set; }
+
 
         public void PodeModificarEvento()
         {

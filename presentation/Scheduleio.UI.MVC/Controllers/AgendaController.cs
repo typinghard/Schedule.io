@@ -13,6 +13,7 @@ namespace Agenda.UI.Web.Controllers
 {
     public class AgendaController : Controller
     {
+        private static string _agendaId;
         //private static DateTime _DataInicio;
 
         IAgendaService _agendaService;
@@ -40,7 +41,7 @@ namespace Agenda.UI.Web.Controllers
                 //var evento = _eventoService.Obter("b4e5b559-f79a-437a-afea-9397416cd262");
                 //evento.OcupaUsuario = true;
                 //_eventoService.Gravar(evento);
-                //GravarAgenda();
+                //GravarAgenda(true, true);
                 //GravarUsuario();
                 //GravarLocal();
                 //GravarEvento(false);
@@ -48,7 +49,7 @@ namespace Agenda.UI.Web.Controllers
                 //GravarEvento(true, true);
                 //ExcluirEvento();
 
-                //var agendaId = "35fb8c94-a7c7-488f-80db-13312e0b7cf8";
+                //var agendaId = _agendaId;
                 //var dataInicio = DateTime.Now.AddDays(-7);
                 //var dataFinal = DateTime.Now;
 
@@ -65,10 +66,13 @@ namespace Agenda.UI.Web.Controllers
             }
         }
 
-        private void GravarAgenda(bool novo = false)
+        private void GravarAgenda(bool novo = false, bool gravarEventoNaSequencia = false)
         {
             var agenda = AgendaVM(novo);
-            _agendaService.Gravar(agenda);
+            _agendaId = _agendaService.Gravar(agenda);
+
+            if (gravarEventoNaSequencia)
+                _eventoService.Gravar(EventoVM(true, agenda, agenda.Usuario));
         }
 
         private void GravarUsuario(bool novo = false)
@@ -92,7 +96,7 @@ namespace Agenda.UI.Web.Controllers
                 var agenda = new Schedule.io.Models.Agenda();
                 if (usarAgendaExistente)
                 {
-                    agenda = AgendaVM(false, "35fb8c94-a7c7-488f-80db-13312e0b7cf8");
+                    agenda = AgendaVM(false, "907d786c-a40c-459c-bf3d-b14289bd10b6");
                 }
                 else
                 {
@@ -120,7 +124,7 @@ namespace Agenda.UI.Web.Controllers
             {
                 return new Schedule.io.Models.Agenda()
                 {
-                    Titulo = "Agenda da Limpeza",
+                    Titulo = "Agenda da Riqueza",
                     Descricao = "",
                     Publico = false,
                     Usuario = UsuarioVM(true)
@@ -133,7 +137,7 @@ namespace Agenda.UI.Web.Controllers
                 {
                     agenda1 = _agendaService.Obter(agendaId);
                     if (agenda1.Usuario == null)
-                        agenda1.Usuario = _usuarioService.Obter("adfada26-37c9-44f0-8d64-fb774d9b9c83");
+                        agenda1.Usuario = _usuarioService.Obter("095981b2-2095-4dd4-8de7-7d78af0c0cc9");
                 }
                 else
                 {

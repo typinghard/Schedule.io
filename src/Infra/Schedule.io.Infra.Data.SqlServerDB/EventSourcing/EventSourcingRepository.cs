@@ -25,7 +25,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.EventSourcing
             _agendaContext = agendaContext;
             setCollectionName();
             setConnectAndCollection();
-            _connectionString = ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).ConnectionsString;
+            _connectionString = _agendaContext.Database.GetDbConnection().ConnectionString;
         }
 
         #region internal

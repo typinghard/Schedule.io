@@ -11,7 +11,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
     {
         public void Configure(EntityTypeBuilder<Convite> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(c => c.Id);
 
             builder.Property(c => c.CriadoAs)
                 .IsRequired();
@@ -38,18 +38,21 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                 .IsRequired()
                 .HasColumnType("int");
 
-            builder.OwnsOne(c => c.Permissoes, cm =>
+            builder.OwnsOne(c => c.Permissoes, per =>
             {
-                cm.Property(c => c.ModificaEvento)
+                per.Property(c => c.ModificaEvento)
                     .HasColumnName("ModificaEvento")
+                    .IsRequired()
                     .HasColumnType("bit");
 
-                cm.Property(c => c.ConvidaUsuario)
+                per.Property(c => c.ConvidaUsuario)
                     .HasColumnName("ConvidaUsuario")
+                    .IsRequired()
                     .HasColumnType("bit");
 
-                cm.Property(c => c.VeListaDeConvidados)
+                per.Property(c => c.VeListaDeConvidados)
                     .HasColumnName("VeListaDeConvidados")
+                    .IsRequired()
                     .HasColumnType("bit");
             });
 

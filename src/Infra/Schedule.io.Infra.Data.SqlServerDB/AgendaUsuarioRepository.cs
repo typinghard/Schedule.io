@@ -13,12 +13,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public AgendaUsuarioRepository(AgendaContext context) : base(context)
         {
         }
-        public AgendaUsuario ObterPorAgendaIdEUsuarioId(string agendaId, string usuarioId)
+        public AgendaUsuario ObterAgendaDoUsuario(string agendaId, string usuarioId)
         {
-            return DbSet.AsNoTracking()
-                .FirstOrDefault(x=>x.AgendaId == agendaId
-                                && x.UsuarioId == usuarioId
-                                && !x.Inativo);
+            return Obter(@$"
+                             SELECT {_atributosBase}, 
+                                    AgendaId, UsuarioId 
+                             FROM {_table}  
+                             WHERE AgendaId = '{agendaId}'
+                             and UsuarioId = '{usuarioId}'
+                             and {_inativoFalse}
+            ");
         }
     }
 }

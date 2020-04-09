@@ -47,7 +47,7 @@ namespace Schedule.io.Core.Models
 
         public EventoAgenda() : base(Guid.NewGuid().ToString())
         {
-
+            Tipo = new TipoEvento();
         }
 
         public void DefinirAgenda(string agendaId)
@@ -147,7 +147,7 @@ namespace Schedule.io.Core.Models
                 throw new ScheduleIoException("Por favor, certifique-se que informou uma data limite.");
             }
 
-            if (dataLimiteConfirmacao < this.DataInicio)
+            if (dataLimiteConfirmacao != DateTime.MinValue && dataLimiteConfirmacao < this.DataInicio)
             {
                 throw new ScheduleIoException("Por certifique-se de que a data limite é maior que a data inicio do evento.");
             }
@@ -207,6 +207,12 @@ namespace Schedule.io.Core.Models
         {
             this.Nome = nome;
             this.Descricao = descricao;
+        }
+
+        /*Para o EF*/
+        public TipoEvento() : base("")
+        {
+
         }
 
         public void DefinirNome(string nome)

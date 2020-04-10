@@ -2,12 +2,12 @@
 using Schedule.io.Core.Core.Data.Configurations;
 using Schedule.io.Core.Core.Data.EventSourcing;
 using Schedule.io.Core.Interfaces;
-using Schedule.io.Infra.Data.MongoDB.EventSourcing;
+using Schedule.io.Infra.MongoDB.EventSourcing;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.MongoDB.Configs
+namespace Schedule.io.Infra.MongoDB.Configs
 {
     public static class MongoDBApplicationBuilderExtensions
     {

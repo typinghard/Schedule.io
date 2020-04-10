@@ -9,6 +9,7 @@ using Schedule.io.Core.Commands.LocalCommands;
 using Schedule.io.Core.Commands.UsuarioCommands;
 using Schedule.io.Core.Core.Communication.Mediator;
 using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
+using Schedule.io.Core.Events.AgendaEvents;
 using Schedule.io.Interfaces;
 using Schedule.io.Services;
 

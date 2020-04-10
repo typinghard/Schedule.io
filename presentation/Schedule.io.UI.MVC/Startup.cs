@@ -14,6 +14,8 @@ using Schedule.io;
 //using Schedule.io.Infra.RavenDB.Configs;
 using Schedule.io.Models;
 using Schedule.io.Infra.Data.SqlServerDB.Configs;
+using MediatR;
+using Schedule.io.Core.Commands.AgendaCommands;
 
 namespace Agenda.UI.Web
 {
@@ -34,11 +36,12 @@ namespace Agenda.UI.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
-            //services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
-            //services.UseScheduleIoRavenDb(new RavenDBConfig());
+            //services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
+            //                                                "Schedule.io",
+            //                                                @"D:\Área de Trabalho\free.elvis.client.certificate\free.elvis.client.certificate.pfx"));
 
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
-            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"]));
+            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"], ""));
 
         }
 

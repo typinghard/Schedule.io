@@ -3,13 +3,13 @@ using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Schedule.io.Infra.Data.MongoDB.Configs;
 using Schedule.io.Core.Models;
 using Schedule.io.Core.Core.Data.EventSourcing;
 using Schedule.io.Core.Core.DomainObjects;
 using Schedule.io.Core.Core.Data.Configurations;
+using Schedule.io.Infra.MongoDB.Configs;
 
-namespace Schedule.io.Infra.Data.MongoDB
+namespace Schedule.io.Infra.MongoDB
 {
     public class AgendaContext : IDisposable
     {

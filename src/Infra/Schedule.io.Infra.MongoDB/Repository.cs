@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Schedule.io.Infra.Data.MongoDB
+namespace Schedule.io.Infra.MongoDB
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {

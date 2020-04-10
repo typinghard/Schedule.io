@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.MongoDB
+namespace Schedule.io.Infra.MongoDB
 {
     public class EventoAgendaRepository : Repository<EventoAgenda>, IEventoAgendaRepository
     {

@@ -6,20 +6,28 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Agenda.UI.Web.Models;
+using Schedule.io.Interfaces;
 
 namespace Agenda.UI.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IScheduleIo _scheduleIo;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IScheduleIo scheduleIo)
         {
             _logger = logger;
+            _scheduleIo = scheduleIo;
         }
 
         public IActionResult Index()
         {
+            _scheduleIo.Agendas().Gravar(new Schedule.io.Models.Agenda()
+            {
+                Titulo = "DINHEIROOO"
+            });
+
             return View();
         }
 

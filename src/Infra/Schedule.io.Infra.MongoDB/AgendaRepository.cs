@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.MongoDB
+namespace Schedule.io.Infra.MongoDB
 {
     public class AgendaRepository : Repository<Agenda>, IAgendaRepository
     {

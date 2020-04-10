@@ -39,10 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Scheduleio.Domain\Schedule.io.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Testes Unitários\Models\" />
   </ItemGroup>
 

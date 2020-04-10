@@ -13,6 +13,8 @@ using AutoMapper;
 using Schedule.io;
 using Schedule.io.Infra.RavenDB.Configs;
 using Schedule.io.Models;
+using MediatR;
+using Schedule.io.Core.Commands.AgendaCommands;
 
 namespace Agenda.UI.Web
 {
@@ -33,8 +35,12 @@ namespace Agenda.UI.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 
+            //services.AddMediatR(typeof(AtualizarAgendaCommand));
+            //services.AddMediatR(typeof(Startup));
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
-            //services.UseScheduleIoRavenDb(new RavenDBConfig());
+            services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
+                                                            "Schedule.io",
+                                                            @"D:\Área de Trabalho\free.elvis.client.certificate\free.elvis.client.certificate.pfx"));
 
 
         }

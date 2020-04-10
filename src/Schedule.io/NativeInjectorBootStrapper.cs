@@ -1,7 +1,15 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Schedule.io.Core.CommandHandlers;
+using Schedule.io.Core.Commands.AgendaCommands;
+using Schedule.io.Core.Commands.AgendaUsuarioCommands;
+using Schedule.io.Core.Commands.ConviteCommands;
+using Schedule.io.Core.Commands.EventoAgendaCommands;
+using Schedule.io.Core.Commands.LocalCommands;
+using Schedule.io.Core.Commands.UsuarioCommands;
 using Schedule.io.Core.Core.Communication.Mediator;
 using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
+using Schedule.io.Core.Events.AgendaEvents;
 using Schedule.io.Interfaces;
 using Schedule.io.Services;
 
@@ -25,29 +33,6 @@ namespace Schedule.io
 
             /* ASSIM COMO NO CONDOMINIO_SERVICE, NÃO DEVE SER NECESSÁRIO ADICIONAR EVENTO OU COMANDOS */
             //Domain - Events
-            //services.AddScoped<INotificationHandler<AgendaRegistradaEvent>, AgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaAtualizadaEvent>, AgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaRemovidaEvent>, AgendaEventHandler>();
-
-            //services.AddScoped<INotificationHandler<UsuarioRegistradoEvent>, UsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<UsuarioAtualizadoEvent>, UsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<UsuarioRemovidoEvent>, UsuarioEventHandler>();
-
-            //services.AddScoped<INotificationHandler<AgendaUsuarioRegistradoEvent>, AgendaUsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaUsuarioAtualizadoEvent>, AgendaUsuarioEventHandler>();
-            //services.AddScoped<INotificationHandler<AgendaUsuarioRemovidoEvent>, AgendaUsuarioEventHandler>();
-
-            //services.AddScoped<INotificationHandler<EventoAgendaRegistradoEvent>, EventoAgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<EventoAgendaAtualizadoEvent>, EventoAgendaEventHandler>();
-            //services.AddScoped<INotificationHandler<EventoAgendaRemovidoEvent>, EventoAgendaEventHandler>();
-
-            //services.AddScoped<INotificationHandler<ConviteRegistradoEvent>, ConviteEventHandler>();
-            //services.AddScoped<INotificationHandler<ConviteAtualizadoEvent>, ConviteEventHandler>();
-            //services.AddScoped<INotificationHandler<ConviteRemovidoEvent>, ConviteEventHandler>();
-
-            //services.AddScoped<INotificationHandler<LocalRegistradoEvent>, LocalEventHandler>();
-            //services.AddScoped<INotificationHandler<LocalAtualizadoEvent>, LocalEventHandler>();
-            //services.AddScoped<INotificationHandler<LocalRemovidoEvent>, LocalEventHandler>();
 
             //// Domain - Commands
             //services.AddScoped<IRequestHandler<RegistrarAgendaCommand, bool>, AgendaCommandHandler>();

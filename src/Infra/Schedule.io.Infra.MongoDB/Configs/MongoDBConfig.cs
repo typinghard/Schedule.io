@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.MongoDB.Configs
+namespace Schedule.io.Infra.MongoDB.Configs
 {
     public class MongoDBConfig : IDataBaseConfig
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.MongoDB
+namespace Schedule.io.Infra.MongoDB
 {
     public abstract class MongoMap<TEntity> where TEntity : class
     {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 
-namespace Schedule.io.Infra.Data.MongoDB.EventSourcing
+namespace Schedule.io.Infra.MongoDB.EventSourcing
 {
     public class EventSourcingRepository : IEventSourcingRepository
     {

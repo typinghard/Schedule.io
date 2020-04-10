@@ -21,7 +21,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         protected readonly IConfiguration _configuration;
         protected string _connectionString;
         protected string _table;
-        protected string _atributosBase;
         protected string _inativoFalse;
 
         protected Repository(AgendaContext db)
@@ -31,8 +30,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             _connectionString = Db.Database.GetDbConnection().ConnectionString;
             _table = typeof(TEntity).ToString().Split(".").Last();
 
-            _atributosBase = "Id, CriadoAs, AtualizadoAs, Inativo ";
-            _inativoFalse = $"Inativo = 0";
+            _inativoFalse = $"Inativo = {0}";
         }
 
         public void Adicionar(TEntity obj)
@@ -43,12 +41,12 @@ namespace Schedule.io.Infra.Data.SqlServerDB
 
         public IList<TEntity> ObterTodosAtivos()
         {
-            return ObterLista($"SELECT * FROM {_table} WHERE Inativo = {false}").ToList();
+            return ObterLista($"SELECT * FROM {_table} WHERE Inativo = {0}").ToList();
         }
 
         public TEntity ObterPorId(string id)
         {
-            return Obter($"SELECT * FROM {_table} WHERE Id = '{id}'");
+            return Obter($"SELECT * FROM {_table} WHERE Id = '{id}' and Inativo = {0}");
         }
         public void Remover(TEntity obj)
         {

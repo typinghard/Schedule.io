@@ -157,7 +157,7 @@ namespace Schedule.io.Services
         private Models.Usuario MontaUsuarioVM(Core.Models.Convite conviteModel)
         {
             dynamic usuarioVM = null;
-            if (conviteModel.UsuarioId != null)
+            if (!string.IsNullOrEmpty(conviteModel.UsuarioId) && conviteModel.UsuarioId != Guid.Empty.ToString())
                 usuarioVM = _usuarioService.Obter(conviteModel.UsuarioId);
 
             if (usuarioVM == null)
@@ -322,9 +322,6 @@ namespace Schedule.io.Services
 
                 if (string.IsNullOrEmpty(conviteVM.Id))
                     conviteVM.Id = Guid.Empty.ToString();
-
-                if (string.IsNullOrEmpty(conviteVM.Usuario.Id))
-                    conviteVM.Usuario.Id = Guid.Empty.ToString();
 
                 var convite = new Core.Models.Convite(conviteVM.Id, evento.Id, conviteVM.Usuario.Id, conviteVM.Usuario.Email);
 

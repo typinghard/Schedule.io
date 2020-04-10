@@ -15,6 +15,10 @@ namespace Schedule.io.Core.Core.DomainObjects
             Id = id;
         }
 
+        protected Entity()
+        {
+
+        }
         public void Inativar()
         {
             DefinirDataAtualizacao();

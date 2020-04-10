@@ -41,7 +41,7 @@ namespace Agenda.UI.Web.Controllers
                 //var evento = _eventoService.Obter("b4e5b559-f79a-437a-afea-9397416cd262");
                 //evento.OcupaUsuario = true;
                 //_eventoService.Gravar(evento);
-                //GravarAgenda(true, true);
+                GravarAgenda(true, true);
                 //GravarUsuario();
                 //GravarLocal();
                 //GravarEvento(false);
@@ -49,11 +49,14 @@ namespace Agenda.UI.Web.Controllers
                 //GravarEvento(true, true);
                 //ExcluirEvento();
 
-                //var agendaId = _agendaId;
-                //var dataInicio = DateTime.Now.AddDays(-7);
-                //var dataFinal = DateTime.Now;
+                if (string.IsNullOrEmpty(_agendaId))
+                    _agendaId = _agendaService.ObterTodas().LastOrDefault().Id;
 
-                //var listEventos = _eventoService.ObterEventosPorPeriodo(agendaId, dataInicio, dataFinal);
+                var agendaId = _agendaId;
+                var dataInicio = DateTime.Now.AddDays(-7);
+                var dataFinal = DateTime.Now;
+
+                var listEventos = _eventoService.ObterEventosPorPeriodo(agendaId, dataInicio, dataFinal);
 
                 return Content("Funcionou!");
             }

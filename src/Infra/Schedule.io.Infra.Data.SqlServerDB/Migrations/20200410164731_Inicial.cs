@@ -131,7 +131,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     AtualizadoAs = table.Column<DateTime>(nullable: false),
                     Inativo = table.Column<bool>(nullable: false),
                     EventoId = table.Column<string>(type: "varchar(200)", nullable: false),
-                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: true),
                     EmailConvidado = table.Column<string>(type: "varchar(200)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ModificaEvento = table.Column<bool>(type: "bit", nullable: true),

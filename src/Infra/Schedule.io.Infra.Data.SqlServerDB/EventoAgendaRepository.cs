@@ -38,18 +38,18 @@ namespace Schedule.io.Infra.Data.SqlServerDB
 
         public IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
-            //return ObterLista(@$"
-            //                     SELECT {_atributosBase},
-            //                            AgendaId, UsuarioId, IdentificadorExterno, Titulo, Descricao,
-            //                            LocalId, DataInicio, DataFinal, DataLimiteConfirmacao, QuantidadeMinimaDeUsuarios,
-            //                            OcupaUsuario, Publico,  Frequencia,
-            //                            Nome as 'Tipo_Nome', Descricao as 'Tipo_Descricao'
-            //                     FROM {_table}  
-            //                     WHERE
-            //                     AgendaId = '{agendaId}'
-            //                     and DataInicio between '{FormataDataSql(dataInicio, true)}'and '{FormataDataSql(dataFinal)}'
-            //                     and {_inativoFalse}
-            //");
+            return ObterLista(@$"
+                                 SELECT {_atributosBase},
+                                        AgendaId, UsuarioId, IdentificadorExterno, Titulo, Descricao,
+                                        LocalId, DataInicio, DataFinal, DataLimiteConfirmacao, QuantidadeMinimaDeUsuarios,
+                                        OcupaUsuario, Publico,  Frequencia,
+                                        Nome as 'Tipo_Nome', Descricao as 'Tipo_Descricao'
+                                 FROM {_table}  
+                                 WHERE
+                                 AgendaId = '{agendaId}'
+                                 and DataInicio between '{FormataDataSql(dataInicio, true)}'and '{FormataDataSql(dataFinal)}'
+                                 and {_inativoFalse}
+            ");
 
             return Db.EventoAgenda
                 .AsNoTracking()

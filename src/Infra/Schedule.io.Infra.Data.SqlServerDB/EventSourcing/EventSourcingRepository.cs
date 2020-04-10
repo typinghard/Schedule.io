@@ -31,7 +31,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.EventSourcing
         #region internal
         internal void setCollectionName()
         {
-            _tableName = "storedevent_scheduleio";
+            _tableName = "scheduleio.storedevents";
         }
         internal void setConnectAndCollection()
         {

@@ -15,9 +15,9 @@ namespace Schedule.io.Core.Validations.ConviteValidations
                 .NotEmpty()
                 .WithMessage("EventoId não informado!");
 
-            RuleFor(e => e.UsuarioId)
-                .NotEmpty()
-                .WithMessage("UsuarioId não informado!");
+            //RuleFor(e => e.UsuarioId)
+            //    .NotEmpty()
+            //    .WithMessage("UsuarioId não informado!");
 
             RuleFor(e => e.Status)
                 .NotNull()

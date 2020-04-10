@@ -27,7 +27,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                 .HasColumnType("varchar(200)");
 
             builder.Property(c => c.UsuarioId)
-                .IsRequired()
                 .HasColumnType("varchar(200)");
 
             builder.Property(c => c.EmailConvidado)

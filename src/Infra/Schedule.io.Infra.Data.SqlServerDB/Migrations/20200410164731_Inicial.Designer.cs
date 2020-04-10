@@ -10,7 +10,7 @@ using Schedule.io.Infra.Data.SqlServerDB;
 namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20200409205516_Inicial")]
+    [Migration("20200410164731_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,7 +128,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UsuarioId")
-                        .IsRequired()
                         .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");

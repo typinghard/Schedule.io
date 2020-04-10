@@ -126,7 +126,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UsuarioId")
-                        .IsRequired()
                         .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");

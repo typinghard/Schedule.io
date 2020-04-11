@@ -16,7 +16,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.EventSourcing
     public class EventSourcingRepository : IEventSourcingRepository
     {
         protected AgendaContext _agendaContext { get; private set; }
-        protected DbSet<StoredEvent> _collection { get; private set; }
+        protected DbSet<StoredEvent> _table { get; private set; }
         protected string _tableName { get; private set; }
         protected string _connectionString { get; private set; }
 
@@ -31,11 +31,11 @@ namespace Schedule.io.Infra.Data.SqlServerDB.EventSourcing
         #region internal
         internal void setCollectionName()
         {
-            _tableName = "scheduleio.storedevents";
+            _tableName = typeof(StoredEvent).Name;
         }
         internal void setConnectAndCollection()
         {
-            _collection = _agendaContext.StoredEvents;
+            _table = _agendaContext.StoredEvents;
         }
         #endregion
 
@@ -47,7 +47,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.EventSourcing
         public void SalvarEvento<TEvent>(TEvent evento) where TEvent : Event
         {
             if (EventSourcingConfigurationHelper.Use)
-                _collection.Add(EventSourcingConfigurationHelper.FormatarEvento(evento));
+                _table.Add(EventSourcingConfigurationHelper.FormatarEvento(evento));
         }
 
 

@@ -2,6 +2,7 @@
 
 namespace Schedule.io.Core.Core.Data.EventSourcing
 {
+
     public class StoredEvent
     {
         public StoredEvent(string id, string aggregatedId, string tipo, DateTime dataOcorrencia, string dados)

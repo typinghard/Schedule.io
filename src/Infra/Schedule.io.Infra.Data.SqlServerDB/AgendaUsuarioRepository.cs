@@ -15,16 +15,13 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         }
         public AgendaUsuario ObterAgendaDoUsuario(string agendaId, string usuarioId)
         {
-            //return Obter(@$"
-            //                 SELECT {_atributosBase}, 
-            //                        AgendaId, UsuarioId 
-            //                 FROM {_table}  
-            //                 WHERE AgendaId = '{agendaId}'
-            //                 and UsuarioId = '{usuarioId}'
-            //                 and {_inativoFalse}
-            //");
-
-            return null;
+            return Obter(@$"
+                             SELECT * 
+                             FROM {_table}  
+                             WHERE AgendaId = '{agendaId}'
+                             and UsuarioId = '{usuarioId}'
+                             and {_inativoFalse}
+            ");
         }
     }
 }

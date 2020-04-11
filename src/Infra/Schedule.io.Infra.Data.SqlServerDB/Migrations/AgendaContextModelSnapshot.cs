@@ -38,7 +38,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StoredEvents");
+                    b.ToTable("StoredEvent","nuget");
                 });
 
             modelBuilder.Entity("Schedule.io.Core.Models.Agenda", b =>

@@ -10,7 +10,7 @@ using Schedule.io.Infra.Data.SqlServerDB;
 namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20200410164731_Inicial")]
+    [Migration("20200411123424_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StoredEvents");
+                    b.ToTable("StoredEvent","nuget");
                 });
 
             modelBuilder.Entity("Schedule.io.Core.Models.Agenda", b =>

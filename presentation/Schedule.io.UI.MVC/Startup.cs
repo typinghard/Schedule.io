@@ -38,10 +38,10 @@ namespace Agenda.UI.Web
 
             //services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
             //                                                "Schedule.io",
-            //                                                @"D:\Área de Trabalho\free.elvis.client.certificate\free.elvis.client.certificate.pfx"));
+            //                                                Configuration["HavenDB_Northwind:CertificadePath"]));
 
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
-            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"], ""));
+            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"], "nuget"));
 
         }
 

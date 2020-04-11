@@ -104,17 +104,5 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         {
             throw new NotImplementedException();
         }
-
-
-        protected string FormataDataSql(DateTime data, bool inicio = false)
-        {
-            var dataFormatada = new DateTime();
-
-            if (inicio) dataFormatada = new DateTime(data.Year, data.Month, data.Day, 0, 0, 0);
-            else dataFormatada = new DateTime(data.Year, data.Month, data.Day, 23, 59, 59);
-
-            return dataFormatada.ToString("dd/MM/yyyy HH:mm:ss");
-        }
-
     }
 }

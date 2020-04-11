@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Schedule.io.Core.Interfaces;
 using Schedule.io.Core.Models;
+using Schedule.io.Infra.Data.SqlServerDB.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -17,71 +20,84 @@ namespace Schedule.io.Infra.Data.SqlServerDB
 
         public IList<EventoAgenda> ObterEventosDaAgenda(string agendaId)
         {
-            //return ObterLista(@$"
-            //                     SELECT {_atributosBase},
-            //                            AgendaId, UsuarioId, IdentificadorExterno, Titulo, Descricao,
-            //                            LocalId, DataInicio, DataFinal, DataLimiteConfirmacao, QuantidadeMinimaDeUsuarios,
-            //                            OcupaUsuario, Publico,  Frequencia,
-            //                            Nome as 'Tipo_Nome', Descricao as 'Tipo_Descricao'
-            //                     FROM {_table}  
-            //                     WHERE
-            //                     AgendaId = '{agendaId}'
-            //                     and {_inativoFalse}
-            //");
 
-            return Db.EventoAgenda
-                .AsNoTracking()
-                .Where(x => x.AgendaId == agendaId
-                      && !x.Inativo)
-                .ToList();
+            var tipo_split = "tipo_split";
+            var query = @$"
+                                 SELECT *,
+                                        Id as {tipo_split}, Nome, Descricao
+                                 FROM {_table}  
+                                 WHERE
+                                 AgendaId = '{agendaId}'
+                                 and {_inativoFalse}
+            ";
+
+            return DapperEventoAgenda(query, tipo_split);
         }
 
         public IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
-            //return ObterLista(@$"
-            //                     SELECT {_atributosBase},
-            //                            AgendaId, UsuarioId, IdentificadorExterno, Titulo, Descricao,
-            //                            LocalId, DataInicio, DataFinal, DataLimiteConfirmacao, QuantidadeMinimaDeUsuarios,
-            //                            OcupaUsuario, Publico,  Frequencia,
-            //                            Nome as 'Tipo_Nome', Descricao as 'Tipo_Descricao'
-            //                     FROM {_table}  
-            //                     WHERE
-            //                     AgendaId = '{agendaId}'
-            //                     and DataInicio between '{FormataDataSql(dataInicio, true)}'and '{FormataDataSql(dataFinal)}'
-            //                     and {_inativoFalse}
-            //");
+            var tipo_split = "tipo_split";
+            var query = @$"
+                                 SELECT *,
+                                        Id as {tipo_split}, Nome, Descricao
+                                 FROM {_table}  
+                                 WHERE
+                                 AgendaId = '{agendaId}'
+                                 and DataInicio between '{dataInicio.FormataDataSql(true)}'and '{dataFinal.FormataDataSql()}'
+                                 and {_inativoFalse}
+            ";
 
-            return Db.EventoAgenda
-                .AsNoTracking()
-                .Where(x => x.AgendaId == agendaId
-                      && x.DataInicio >= dataInicio
-                      && (x.DataFinal == null || x.DataFinal <= dataFinal)
-                      && !x.Inativo)
-                .ToList();
+            return DapperEventoAgenda(query, tipo_split);
 
         }
 
         public IList<EventoAgenda> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
-            //return ObterLista(@$"
-            //                     SELECT {_atributosBase},
-            //                            AgendaId, UsuarioId, IdentificadorExterno, Titulo, Descricao,
-            //                            LocalId, DataInicio, DataFinal, DataLimiteConfirmacao, QuantidadeMinimaDeUsuarios,
-            //                            OcupaUsuario, Publico,  Frequencia,
-            //                            Nome as 'Tipo_Nome', Descricao as 'Tipo_Descricao'
-            //                     FROM {_table}  
-            //                     WHERE
-            //                     AgendaId = '{agendaId}'
-            //                     and UsuarioId = '{usuarioId}'
-            //                     and {_inativoFalse}
-            //");
-            return Db.EventoAgenda
-                .AsNoTracking()
-                .Where(x => x.AgendaId == agendaId
-                      && x.UsuarioId == usuarioId
-                      && !x.Inativo)
-                .ToList();
+            var tipo_split = "tipo_split";
+            var query = @$"
+                                 SELECT *,
+                                        Id as {tipo_split}, Nome, Descricao
+                                 FROM {_table}  
+                                 WHERE
+                                 AgendaId = '{agendaId}'
+                                 and UsuarioId = '{usuarioId}'
+                                 and {_inativoFalse}
+            ";
 
+
+            return DapperEventoAgenda(query, tipo_split);
+
+        }
+
+        private IList<EventoAgenda> DapperEventoAgenda(string query, string split)
+        {
+            var eventos = new List<EventoAgenda>();
+            using (var con = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    con.Query<EventoAgenda, TipoEvento, EventoAgenda>(
+                        query,
+                        (eventoAgenda, tipoEvento) =>
+                        {
+                            eventos.Add(eventoAgenda);
+                            eventos.Last().AtribuirTipo(tipoEvento);
+                            return eventoAgenda;
+                        },
+                        splitOn: split);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+
+            return eventos;
         }
     }
 }

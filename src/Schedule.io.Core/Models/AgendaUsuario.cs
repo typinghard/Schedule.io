@@ -62,6 +62,6 @@ namespace Schedule.io.Core.Models
 
     public class PermissoesAgenda
     {
-        //fazer 
     }
+        //fazer 
 }

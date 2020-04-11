@@ -190,6 +190,11 @@ namespace Schedule.io.Core.Models
             this.Frequencia = frequencia;
         }
 
+        public void AtribuirTipo(TipoEvento tipo)
+        {
+            this.Tipo = tipo;
+        }
+
 
         public ValidationResult NovoEventoAgendaEhValido()
         {
@@ -198,7 +203,7 @@ namespace Schedule.io.Core.Models
     }
 
 
-    public class TipoEvento : Entity
+    public class TipoEvento : Entity, IAggregateRoot
     {
         public string Nome { get; set; }
         public string Descricao { get; set; }

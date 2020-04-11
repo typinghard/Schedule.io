@@ -7,6 +7,9 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "nuget");
+
             migrationBuilder.CreateTable(
                 name: "Agenda",
                 columns: table => new
@@ -93,21 +96,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StoredEvents",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    AggregatedId = table.Column<string>(nullable: true),
-                    Tipo = table.Column<string>(nullable: true),
-                    DataOcorrencia = table.Column<DateTime>(nullable: false),
-                    Dados = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StoredEvents", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Usuario",
                 columns: table => new
                 {
@@ -120,6 +108,22 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuario", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StoredEvent",
+                schema: "nuget",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AggregatedId = table.Column<string>(nullable: true),
+                    Tipo = table.Column<string>(nullable: true),
+                    DataOcorrencia = table.Column<DateTime>(nullable: false),
+                    Dados = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StoredEvent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,10 +175,11 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 name: "Local");
 
             migrationBuilder.DropTable(
-                name: "StoredEvents");
+                name: "Usuario");
 
             migrationBuilder.DropTable(
-                name: "Usuario");
+                name: "StoredEvent",
+                schema: "nuget");
 
             migrationBuilder.DropTable(
                 name: "EventoAgenda");

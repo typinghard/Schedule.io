@@ -27,7 +27,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                     transaction.Commit();
                     return 1;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     transaction.Rollback();
                     return 0;
@@ -47,6 +47,9 @@ namespace Schedule.io.Infra.Data.SqlServerDB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<StoredEvent>()
+            //    .ToTable(typeof(StoredEvent).Name, ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AgendaContext).Assembly);
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

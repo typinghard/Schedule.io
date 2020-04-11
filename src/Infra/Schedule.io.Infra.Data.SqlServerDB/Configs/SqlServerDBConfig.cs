@@ -8,7 +8,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Configs
 {
     public class SqlServerDBConfig : IDataBaseConfig
     {
-        public SqlServerDBConfig(string connectionsString, string schemaName)
+        public SqlServerDBConfig(string connectionsString, string schemaName = "scheduleio")
         {
             ConnectionsString = connectionsString;
             SchemaName = schemaName;

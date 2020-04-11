@@ -8,7 +8,7 @@ using Schedule.io.Core.Core.DomainObjects;
 using Schedule.io.Core.Models;
 using Schedule.io.Core.Enums;
 
-namespace Schedule.io.Core.Test.Testes_Unitários.Models
+namespace Schedule.io.Test.Testes_Unitários.Models
 {
     public class ConviteTest
     {

@@ -64,7 +64,7 @@ namespace Schedule.io.Services
             return true;
         }
 
-        public Models.Agenda Obter(string agendaId)
+        public Agenda Obter(string agendaId)
         {
             var agenda = _agendaRepository.ObterPorId(agendaId);
 

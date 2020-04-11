@@ -15,14 +15,11 @@ namespace Schedule.io.Services
     internal class UsuarioService : ServiceBase, IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IMediatorHandler _bus;
-
         public UsuarioService(IUsuarioRepository usuarioRepository,
                               IMediatorHandler bus,
-                              INotificationHandler<DomainNotification> notifications) : base(notifications)
+                              INotificationHandler<DomainNotification> notifications) : base(bus, notifications)
         {
             _usuarioRepository = usuarioRepository;
-            _bus = bus;
         }
 
         public string Gravar(Usuario usuario)

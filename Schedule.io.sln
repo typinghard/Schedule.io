@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspecs", "nuspecs", "{C17C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9B74BBBA-0E30-4101-94C9-9BE9C58943E1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Core.Test", "tests\Scheduleio.Domain.Test\Schedule.io.Core.Test.csproj", "{036948BE-3DC8-4E7B-B28C-238253FD3CCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Test", "tests\Scheduleio.Domain.Test\Schedule.io.Test.csproj", "{036948BE-3DC8-4E7B-B28C-238253FD3CCF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Infra.RavenDB", "src\Infra\Schedule.io.Infra.RavenDB\Schedule.io.Infra.RavenDB.csproj", "{3961C44D-4017-498F-9089-ADFD98D502EC}"
 EndProject

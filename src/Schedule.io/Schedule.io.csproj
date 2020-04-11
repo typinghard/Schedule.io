@@ -15,4 +15,8 @@
     <PackageReference Include="Schedule.io.Core" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Services\Interfaces\" />
+  </ItemGroup>
+
 </Project>

@@ -17,17 +17,21 @@ namespace Schedule.io.Infra.MongoDB
 
         public void AdicionarConvite(Convite convite)
         {
-            throw new NotImplementedException();
+            Db.Convite.InsertOne(Db.Session, convite);
+            SalvarAlteracoes();
         }
 
-        public void ExcluirConvite(string eventoId, string emailConvidado)
+        public void ExcluirConvite(Convite convite)
         {
-            throw new NotImplementedException();
+            Db.Convite.DeleteOne(c => c.EventoId == convite.EventoId && c.EmailConvidado == convite.EmailConvidado);
+            SalvarAlteracoes();
         }
 
         public IList<Convite> ListarConvites(string eventoId)
         {
-            throw new NotImplementedException();
+            return Db.Convite
+                     .Find(x => x.EventoId == eventoId)
+                     .ToList();
         }
 
         public IList<Evento> ListarEventosDaAgenda(string agendaId)

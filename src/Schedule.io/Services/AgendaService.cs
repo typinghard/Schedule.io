@@ -30,16 +30,14 @@ namespace Schedule.io.Services
             _agendaRepository = agendaRepository;
         }
 
-        public string Gravar(Agenda agenda)
+        public Agenda Gravar(Agenda agenda)
         {
             VerificaUsuario(agenda);
 
-            if (string.IsNullOrEmpty(agenda.Id))
-                RegistrarAgenda(agenda);
+            if (string.IsNullOrEmpty(agenda.Id) || !VerificaSeAgendaExiste(agenda))
+                return RegistrarAgenda(agenda);
             else
-                AtualizarAgenda(agenda);
-
-            return agenda.Id;
+                return AtualizarAgenda(agenda);
         }
 
         public Agenda Obter(string agendaId)
@@ -91,12 +89,20 @@ namespace Schedule.io.Services
                 throw new ScheduleIoException(new List<string>() { "Usuário não encontrado!" });
         }
 
+        private bool VerificaSeAgendaExiste(Agenda agenda)
+        {
+            return _agendaRepository.VerificaSeAgendaExiste(agenda.Id);
+        }
+
         private Agenda RegistrarAgenda(Agenda agenda)
         {
-            var novaAgenda = new Agenda(Guid.NewGuid().ToString(), agenda.Titulo);
-            novaAgenda.DefinirDataCriacao();
-            novaAgenda.DefinirDataAtualizacao();
-            novaAgenda.DefinirUsuarioIdCriador(agenda.UsuarioIdCriador);
+            var novaAgenda = new Agenda("9999999", agenda.UsuarioIdCriador, agenda.Titulo);
+
+            if (string.IsNullOrEmpty(agenda.Id) || Guid.Parse(agenda.Id) == Guid.Empty)
+                novaAgenda.DefinirId(Guid.NewGuid().ToString());
+            else
+                novaAgenda.DefinirId(agenda.Id);
+
             novaAgenda.DefinirDescricao(agenda.Descricao);
 
             if (agenda.Publico)
@@ -113,14 +119,14 @@ namespace Schedule.io.Services
 
             ValidarComando();
 
-            return novaAgenda;
+            agenda = novaAgenda;
+
+            return agenda;
         }
 
         private Agenda AtualizarAgenda(Agenda agenda)
         {
             var agendaAtualizar = _agendaRepository.Obter(agenda.Id);
-
-            agendaAtualizar.DefinirDataAtualizacao();
             agendaAtualizar.DefinirTitulo(agenda.Titulo);
             agendaAtualizar.DefinirDescricao(agenda.Descricao);
             //agenda.DefinirUsuarioIdCriador(agendaAtualizar.UsuarioIdCriador);

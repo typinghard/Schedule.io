@@ -19,17 +19,24 @@ namespace Schedule.io.Infra.RavenDB
 
         public void AdicionarConvite(Convite convite)
         {
-            throw new NotImplementedException();
+            var sessaoConvite = (IDocumentSession)convite;
+            sessaoConvite.Store(convite);
+            sessaoConvite.SaveChanges();
         }
 
-        public void ExcluirConvite(string eventoId, string emailConvidado)
+        public void ExcluirConvite(Convite convite)
         {
-            throw new NotImplementedException();
+            var sessaoConvite = (IDocumentSession)convite;
+            sessaoConvite.Delete(convite);
+            sessaoConvite.SaveChanges();
         }
 
         public IList<Convite> ListarConvites(string eventoId)
         {
-            throw new NotImplementedException();
+            return Sessao
+                 .Query<Convite>()
+                 .Where(x => x.EventoId == eventoId)
+                 .ToList();
         }
 
         public IList<Evento> ListarEventosDaAgenda(string agendaId)
@@ -44,7 +51,7 @@ namespace Schedule.io.Infra.RavenDB
         {
             return Sessao
                 .Query<Evento>()
-                .Where(x => x.AgendaId == agendaId 
+                .Where(x => x.AgendaId == agendaId
                        && x.DataInicio >= dataInicio
                        && (x.DataFinal == null || x.DataFinal <= dataFinal))
                 .ToList();
@@ -54,7 +61,7 @@ namespace Schedule.io.Infra.RavenDB
         {
             return Sessao
                  .Query<Evento>()
-                 .Where(x => x.AgendaId == agendaId 
+                 .Where(x => x.AgendaId == agendaId
                         && x.UsuarioIdCriador == usuarioId)
                  .ToList();
         }

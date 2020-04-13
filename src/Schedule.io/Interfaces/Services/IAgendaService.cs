@@ -13,7 +13,7 @@ namespace Schedule.io.Interfaces.Services
         /// </summary>
         /// <param name="agenda"></param>
         /// <returns></returns>
-        string Gravar(Agenda agenda);
+        Agenda Gravar(Agenda agenda);
 
         /// <summary>
         /// Retorna a agenda pelo id.
@@ -33,7 +33,7 @@ namespace Schedule.io.Interfaces.Services
         /// </summary>
         /// <param name="usuarioId"></param>
         /// <returns></returns>
-        IEnumerable<Agenda> Listar(string agendaId);
+        IEnumerable<Agenda> Listar(string usuarioId);
 
         /// <summary>
         /// Remove permanentemente a agenda!

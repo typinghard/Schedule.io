@@ -67,8 +67,6 @@ namespace Schedule.io.Services
         private TipoEvento RegistrarTipoEvento(TipoEvento tipoEvento)
         {
             var novoTipoEvento = new TipoEvento(Guid.NewGuid().ToString(), tipoEvento.Nome, tipoEvento.Descricao);
-            novoTipoEvento.DefinirDataCriacao();
-            novoTipoEvento.DefinirDataAtualizacao();
 
             _tipoEventoRepository.Adicionar(novoTipoEvento);
 
@@ -83,7 +81,6 @@ namespace Schedule.io.Services
         private TipoEvento AtualizarTipoEvento(TipoEvento tipoEvento)
         {
             var atualizarTipoEvento = _tipoEventoRepository.Obter(tipoEvento.Id);
-            atualizarTipoEvento.DefinirDataAtualizacao();
             atualizarTipoEvento.DefinirNome(tipoEvento.Nome);
             atualizarTipoEvento.DefinirDescricao(tipoEvento.Descricao);
 

@@ -68,8 +68,6 @@ namespace Schedule.io.Services
         private Local RegistrarLocal(Local local)
         {
             var novoLocal = new Local(Guid.NewGuid().ToString(), local.Nome);
-            novoLocal.DefinirDataCriacao();
-            novoLocal.DefinirDataAtualizacao();
             novoLocal.DefinirDescricao(local.Descricao);
             novoLocal.DefinirIdentificadorExterno(local.IdentificadorExterno);
             novoLocal.DefinirLotacaoMaxima(local.LotacaoMaxima);
@@ -90,7 +88,6 @@ namespace Schedule.io.Services
         private Local AtualizarLocal(Local local)
         {
             var atualizarLocal = _localRepository.Obter(local.Id);
-            atualizarLocal.DefinirDataAtualizacao();
             atualizarLocal.DefinirDescricao(local.Descricao);
             atualizarLocal.DefinirIdentificadorExterno(local.IdentificadorExterno);
             atualizarLocal.DefinirLotacaoMaxima(local.LotacaoMaxima);

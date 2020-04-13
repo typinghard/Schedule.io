@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Agenda.UI.Web
+namespace Schedule.io.UI.Web
 {
     public class Program
     {

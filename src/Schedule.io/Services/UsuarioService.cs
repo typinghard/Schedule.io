@@ -69,8 +69,6 @@ namespace Schedule.io.Services
         private Usuario RegistrarUsuario(Usuario usuario)
         {
             var novoUsuario = new Usuario(Guid.NewGuid().ToString(), usuario.Email);
-            novoUsuario.DefinirDataCriacao();
-            novoUsuario.DefinirDataAtualizacao();
 
             _usuarioRepository.Adicionar(novoUsuario);
 
@@ -85,8 +83,6 @@ namespace Schedule.io.Services
         private Usuario AtualizarUsuario(Usuario usuario)
         {
             var atualizarUsuario = RecuperaUsuarioEValida(usuario.Id);
-
-            atualizarUsuario.DefinirDataAtualizacao();
             atualizarUsuario.DefinirEmail(usuario.Email);
 
             _usuarioRepository.Atualizar(atualizarUsuario);

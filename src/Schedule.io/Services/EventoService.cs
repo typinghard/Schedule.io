@@ -100,8 +100,6 @@ namespace Schedule.io.Services
         private Evento RegistrarEvento(Evento evento)
         {
             var novoEvento = new Evento(Guid.NewGuid().ToString(), evento.AgendaId, evento.UsuarioIdCriador, evento.Titulo, evento.DataInicio, evento.IdTipoEvento);
-            novoEvento.DefinirDataCriacao();
-            novoEvento.DefinirDataAtualizacao();
 
             novoEvento.DefinirIdentificadorExterno(evento.IdentificadorExterno);
             novoEvento.DefinirDescricao(evento.Descricao);
@@ -140,7 +138,6 @@ namespace Schedule.io.Services
         private Evento AtualizarEvento(Evento evento)
         {
             var atualizarEvento = RecuperaEventoEValida(evento.Id);
-            atualizarEvento.DefinirDataAtualizacao();
             atualizarEvento.DefinirTipoEvento(evento.IdTipoEvento);
             atualizarEvento.DefinirIdentificadorExterno(evento.IdentificadorExterno);
             atualizarEvento.DefinirTitulo(evento.Titulo);
@@ -202,7 +199,7 @@ namespace Schedule.io.Services
             var listConvites = _eventoAgendaRepository.ListarConvites(evento.Id);
 
             foreach (var convite in listConvites)
-                _eventoAgendaRepository.ExcluirConvite(convite.EventoId, convite.EmailConvidado);
+                _eventoAgendaRepository.ExcluirConvite(convite);
         }
 
         private Evento RecuperaEventoEValida(string eventoId)

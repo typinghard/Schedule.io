@@ -15,14 +15,17 @@ namespace Schedule.io.Infra.MongoDB
         {
         }
 
-        public AgendaUsuario Gravar(AgendaUsuario obj)
+        public void Gravar(AgendaUsuario obj)
         {
-            throw new NotImplementedException();
+            Db.AgendaUsuario.InsertOne(Db.Session, obj);
+            SalvarAlteracoes();
         }
 
         public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
         {
-            throw new NotImplementedException();
+            return Db.Agenda
+                .Find(c => c.UsuarioIdCriador == usuarioId)
+                .ToList();
         }
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)

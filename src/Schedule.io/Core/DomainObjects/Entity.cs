@@ -13,6 +13,15 @@ namespace Schedule.io.Core.DomainObjects
             Id = id;
         }
 
+        protected internal void DefinirId(string id)
+        {
+            if (string.IsNullOrEmpty(Id))
+                throw new ScheduleIoException("Id já existente!");
+
+            if (string.IsNullOrEmpty(id) || Guid.Parse(id) == Guid.Empty)
+                Id = id;
+        }
+
         public void DefinirDataCriacao()
         {
             if (CriadoAs != DateTime.MinValue)

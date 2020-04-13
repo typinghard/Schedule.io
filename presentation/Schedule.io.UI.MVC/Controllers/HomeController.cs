@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Agenda.UI.Web.Models;
+using Schedule.io.UI.Web.Models;
 using Schedule.io.Interfaces;
 using Schedule.io.Interfaces.Services;
 
-namespace Agenda.UI.Web.Controllers
+namespace Schedule.io.UI.Web.Controllers
 {
     public class HomeController : Controller
     {

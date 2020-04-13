@@ -20,6 +20,7 @@ namespace Schedule.io.Infra.RavenDB
         public void Adicionar(TEntity obj)
         {
             obj.DefinirDataCriacao();
+            obj.DefinirDataAtualizacao();
             _session.Store(obj);
         }
 

@@ -15,6 +15,6 @@ namespace Schedule.io.Interfaces.Repositories
 
         void AdicionarConvite(Convite convite);
         IList<Convite> ListarConvites(string eventoId);
-        void ExcluirConvite(string eventoId, string emailConvidado);
+        void ExcluirConvite(Convite convite);
     }
 }

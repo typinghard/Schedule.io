@@ -16,7 +16,7 @@ using Schedule.io.Models;
 using MediatR;
 using Schedule.io.Configs;
 
-namespace Agenda.UI.Web
+namespace Schedule.io.UI.Web
 {
     public class Startup
     {
@@ -37,8 +37,9 @@ namespace Agenda.UI.Web
             services.AddMediatR(typeof(Startup));
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
             services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
-                                                            "Schedule.io",
-                                                            Configuration[""]));
+                                                            Configuration["HavenDB_Northwind:Database"],
+                                                            Configuration["HavenDB_Northwind:CertificadePath"]
+                                                            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

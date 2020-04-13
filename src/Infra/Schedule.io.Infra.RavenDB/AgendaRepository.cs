@@ -16,14 +16,18 @@ namespace Schedule.io.Infra.RavenDB
         {
         }
 
-        public AgendaUsuario Gravar(AgendaUsuario obj)
+        public void Gravar(AgendaUsuario agendaUsuario)
         {
-            throw new NotImplementedException();
+            _session.Store(agendaUsuario);
+            _session.SaveChanges();
         }
 
         public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
         {
-            throw new NotImplementedException();
+            return Sessao
+                   .Query<Agenda>()
+                   .Where(x => x.UsuarioIdCriador == usuarioId)
+                   .ToList();
         }
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
@@ -40,6 +44,14 @@ namespace Schedule.io.Infra.RavenDB
                 .Query<Agenda>()
                 .Where(x => x.Id == agendaId)
                 .FirstOrDefault();
+        }
+
+        public bool VerificaSeAgendaExiste(string agendaId)
+        {
+            return Sessao
+                .Query<Agenda>()
+                .Where(x => x.Id == agendaId)
+                .FirstOrDefault() == null ? false : true;
         }
     }
 }

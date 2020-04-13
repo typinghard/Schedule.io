@@ -11,8 +11,10 @@ namespace Schedule.io.Interfaces.Repositories
     {
         Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId);
 
-        AgendaUsuario Gravar(AgendaUsuario obj);
+        void Gravar(AgendaUsuario agendaUsuario);
 
         IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId);
+
+        bool VerificaSeAgendaExiste(string agendaId);
     }
 }

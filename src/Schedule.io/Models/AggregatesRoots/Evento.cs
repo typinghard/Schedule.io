@@ -1,14 +1,12 @@
 ﻿using FluentValidation.Results;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
-using Schedule.io.Core.Enums;
-using Schedule.io.Core.Models.AggregatesRoots;
-using Schedule.io.Core.Models.ValueObjects;
-using Schedule.io.Core.Validations.EventoAgendaValidations;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
+using Schedule.io.Enums;
+using Schedule.io.Models.ValueObjects;
+using Schedule.io.Validations.EventoAgendaValidations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Models.AggregatesRoots
 {
@@ -42,7 +40,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
             this._convites = new List<Convite>();
 
-            var resultadoValidacao = this.NovoEventoAgendaEhValido();
+            var resultadoValidacao = this.EventoAgendaEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -188,9 +186,9 @@ namespace Schedule.io.Models.AggregatesRoots
         }
 
 
-        public ValidationResult NovoEventoAgendaEhValido()
+        public ValidationResult EventoAgendaEhValido()
         {
-            return new NovoEventoAgendaValidation().Validate(this);
+            return new EventoAgendaValidation().Validate(this);
         }
     }
     

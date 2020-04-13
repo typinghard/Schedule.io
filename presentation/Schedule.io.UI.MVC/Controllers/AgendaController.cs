@@ -4,7 +4,7 @@
 //using System.Threading.Tasks;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.AspNetCore.Mvc;
-//using Schedule.io.Core.Core.DomainObjects;
+//using Schedule.io.Core.DomainObjects;
 //using Schedule.io.Interfaces;
 //using ScheduleIo.Nuget.Models;
 

@@ -1,13 +1,12 @@
-﻿using Schedule.io.Models;
+﻿using Schedule.io.Models.AggregatesRoots;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Schedule.io.Interfaces.Services
 {
     public interface IEventoService
     {
-        string Gravar(Core.Models.EventoAgenda evento);
+        string Gravar(Evento evento);
         void Excluir(string eventoId);
         Evento Obter(string eventoId);
         IEnumerable<Evento> Listar(string agendaId);

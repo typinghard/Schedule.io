@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Core.Messages;
+﻿using Schedule.io.Core.Messages;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

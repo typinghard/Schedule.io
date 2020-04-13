@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Interfaces;
+﻿using Schedule.io.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;

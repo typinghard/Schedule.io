@@ -1,5 +1,5 @@
-﻿using Schedule.io.Core.Core.Data.Configurations;
-using Schedule.io.Core.Core.Data.Configurations.Enums;
+﻿using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Core.Data.Configurations.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;

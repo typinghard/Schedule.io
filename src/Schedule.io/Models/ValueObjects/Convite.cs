@@ -1,8 +1,8 @@
 ﻿using FluentValidation.Results;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
-using Schedule.io.Core.Enums;
-using Schedule.io.Core.Validations.ConviteValidations;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
+using Schedule.io.Enums;
+using Schedule.io.Validations.AgendaValidations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

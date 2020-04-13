@@ -1,9 +1,5 @@
-﻿using Schedule.io.Core.Core.Data.Configurations;
-using Schedule.io.Core.Core.Data.Configurations.Enums;
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Core.Data.Configurations.Enums;
 
 namespace Schedule.io.Infra.RavenDB.Configs
 {

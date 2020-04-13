@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Schedule.io.Core.Commands.LocalCommands;
-using Schedule.io.Core.Core.Communication.Mediator;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
-using Schedule.io.Core.Interfaces;
+using Schedule.io.Core.Communication.Mediator;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Messages.CommonMessages.Notifications;
+using Schedule.io.Interfaces.Services;
 using Schedule.io.Interfaces;
 using Schedule.io.Models;
 using System;
@@ -51,7 +51,7 @@ namespace Schedule.io.Services
 
         public Local Obter(string localId)
         {
-            var local = _localRepository.ObterPorId(localId);
+            var local = _localRepository.Obter(localId);
 
             if (local == null)
                 throw new ScheduleIoException(new List<string>() { "Local não encontrado!" });

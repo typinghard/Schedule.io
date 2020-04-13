@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Schedule.io.Core.Commands.AgendaCommands;
-using Schedule.io.Core.Core.Data.EventSourcing;
+using Schedule.io.Core.Data.EventSourcing;
 using Schedule.io.Models;
 using System;
 

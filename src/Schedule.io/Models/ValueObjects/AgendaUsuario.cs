@@ -1,8 +1,4 @@
 ﻿using FluentValidation.Results;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
-using Schedule.io.Core.Models.ValueObjects;
-using Schedule.io.Core.Validations.AgendaUsuarioValidations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

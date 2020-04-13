@@ -1,21 +1,20 @@
 ﻿using MongoDB.Driver;
-using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Models;
+using Schedule.io.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Schedule.io.Models.AggregatesRoots;
 
 namespace Schedule.io.Infra.MongoDB
 {
-    public class EventoAgendaRepository : Repository<EventoAgenda>, IEventoAgendaRepository
+    public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
     {
         public EventoAgendaRepository(AgendaContext context) : base(context)
         {
 
         }
 
-        public IList<EventoAgenda> ObterEventosDaAgenda(string agendaId)
+        public IList<Evento> ObterEventosDaAgenda(string agendaId)
         {
             return Db.EventoAgenda
                 .Find(x => x.AgendaId == agendaId
@@ -23,7 +22,7 @@ namespace Schedule.io.Infra.MongoDB
                 .ToList();
         }
 
-        public IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
             return Db.EventoAgenda
                 .Find(x => x.AgendaId == agendaId
@@ -33,7 +32,7 @@ namespace Schedule.io.Infra.MongoDB
                 .ToList();
         }
 
-        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
 
             return Db.EventoAgenda

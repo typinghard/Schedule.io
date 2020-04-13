@@ -1,5 +1,4 @@
-﻿using Schedule.io.Core.Core.DomainObjects;
-using System;
+﻿using System;
 
 namespace Schedule.io.Core.DomainObjects
 {
@@ -17,7 +16,7 @@ namespace Schedule.io.Core.DomainObjects
         public void DefinirDataCriacao()
         {
             if (CriadoAs != DateTime.MinValue)
-                throw new ScheduleIoException("PENSAAAAAAAAAR");
+                throw new ScheduleIoException("Não é possível atribuir uma nova data de criação!");
 
             CriadoAs = AtualizadoAs = DateTime.Now;
         }

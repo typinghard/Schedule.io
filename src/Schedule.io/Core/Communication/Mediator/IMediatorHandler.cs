@@ -1,6 +1,6 @@
-﻿using Schedule.io.Core.Core.Messages;
-using Schedule.io.Core.Core.Messages.CommonMessages.DomainEvents;
-using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
+﻿using Schedule.io.Core.Messages;
+using Schedule.io.Core.Messages.CommonMessages.DomainEvents;
+using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using System.Threading.Tasks;
 
 namespace Schedule.io.Core.Communication.Mediator

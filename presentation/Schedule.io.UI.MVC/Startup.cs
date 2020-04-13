@@ -14,7 +14,7 @@ using Schedule.io;
 using Schedule.io.Infra.RavenDB.Configs;
 using Schedule.io.Models;
 using MediatR;
-using Schedule.io.Core.Commands.AgendaCommands;
+using Schedule.io.Configs;
 
 namespace Agenda.UI.Web
 {
@@ -34,15 +34,11 @@ namespace Agenda.UI.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-
-            //services.AddMediatR(typeof(AtualizarAgendaCommand));
-            //services.AddMediatR(typeof(Startup));
+            services.AddMediatR(typeof(Startup));
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
             services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
                                                             "Schedule.io",
-                                                            @"D:\Área de Trabalho\free.elvis.client.certificate\free.elvis.client.certificate.pfx"));
-
-
+                                                            Configuration[""]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

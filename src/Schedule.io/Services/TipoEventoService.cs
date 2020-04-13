@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Schedule.io.Core.Core.Communication.Mediator;
-using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
+using Schedule.io.Core.Communication.Mediator;
+using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Schedule.io.Core.Core.Data.Configurations;
-using Schedule.io.Core.Core.Data.EventSourcing;
-using Schedule.io.Core.Interfaces;
+using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Core.Data.EventSourcing;
+using Schedule.io.Interfaces.Services;
 using Schedule.io.Infra.MongoDB.EventSourcing;
 using System;
 using System.Collections.Generic;

@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using System;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
-using Schedule.io.Core.Validations.LocalValidations;
 using System.Linq;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
+using Schedule.io.Validations.LocalValidations;
 
 namespace Schedule.io.Models.AggregatesRoots
 {
@@ -20,7 +20,7 @@ namespace Schedule.io.Models.AggregatesRoots
         {
             this.Nome = nomeLocal;
 
-            var resultadoValidacao = this.NovoLocalEhValido();
+            var resultadoValidacao = this.LocalEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -74,9 +74,9 @@ namespace Schedule.io.Models.AggregatesRoots
             this.LotacaoMaxima = lotacaoMaxima;
         }
 
-        public ValidationResult NovoLocalEhValido()
+        public ValidationResult LocalEhValido()
         {
-            return new NovoLocalValidation().Validate(this);
+            return new LocalValidation().Validate(this);
         }
 
     }

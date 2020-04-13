@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Core.DomainObjects;
+﻿using Schedule.io.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,8 @@ namespace Schedule.io.Core.Data
         TEntity Obter(string id);
         IList<TEntity> Listar();
         void Atualizar(TEntity obj);
-        void Remover(TEntity obj);
+        void Inativar(TEntity obj);
+        void Excluir(TEntity obj);
         int SalvarAlteracoes();
     }
 }

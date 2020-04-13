@@ -12,7 +12,7 @@ namespace Schedule.io.Models.ValueObjects
 {
     public class AgendaUsuario
     {
-        public string AgendaId { get; protected set; }
+        public string Agenda { get; protected set; }
         public string UsuarioId { get; protected set; }
         public PermissoesAgenda Permissoes { get; protected set; }
 

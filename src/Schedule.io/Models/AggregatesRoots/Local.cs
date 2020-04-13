@@ -1,9 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using Schedule.io.Core.DomainObjects;
 using System;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
-using Schedule.io.Core.Validations.LocalValidations;
 using System.Linq;
 
 namespace Schedule.io.Models.AggregatesRoots

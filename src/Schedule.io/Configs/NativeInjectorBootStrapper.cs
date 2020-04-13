@@ -1,16 +1,9 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Schedule.io.Core.CommandHandlers;
-using Schedule.io.Core.Commands.AgendaCommands;
-using Schedule.io.Core.Commands.AgendaUsuarioCommands;
-using Schedule.io.Core.Commands.ConviteCommands;
-using Schedule.io.Core.Commands.EventoAgendaCommands;
-using Schedule.io.Core.Commands.LocalCommands;
-using Schedule.io.Core.Commands.UsuarioCommands;
-using Schedule.io.Core.Core.Communication.Mediator;
-using Schedule.io.Core.Core.Messages.CommonMessages.Notifications;
-using Schedule.io.Core.Events.AgendaEvents;
+using Schedule.io.Core.Communication.Mediator;
+using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Interfaces;
+using Schedule.io.Interfaces.Services;
 using Schedule.io.Services;
 
 namespace Schedule.io.Configs

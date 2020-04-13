@@ -1,13 +1,10 @@
-﻿using FluentValidation.Results;
-using System;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
-using Schedule.io.Core.Validations.AgendaValidations;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Schedule.io.Core.Models;
-using Schedule.io.Core.Models.ValueObjects;
-using Schedule.io.Core.Models.Entities;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
+using Schedule.io.Validations.AgendaValidations;
 
 namespace Schedule.io.Models.AggregatesRoots
 {

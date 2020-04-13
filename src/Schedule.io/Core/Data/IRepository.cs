@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Core.DomainObjects;
+﻿using Schedule.io.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;

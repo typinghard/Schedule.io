@@ -1,5 +1,5 @@
 ﻿using Raven.Client.Documents.Session;
-using Schedule.io.Core.Interfaces;
+using Schedule.io.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Text;

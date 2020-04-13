@@ -1,5 +1,5 @@
-﻿using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
+﻿using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;

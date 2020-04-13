@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Documents.Session;
-using Schedule.io.Core.Core.Data;
-using Schedule.io.Core.Core.DomainObjects;
+using Schedule.io.Core.Data;
+using Schedule.io.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +10,9 @@ namespace Schedule.io.Infra.RavenDB
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {
         protected readonly IDocumentSession _session;
-        private readonly string DocumentName;
 
         public Repository(IDocumentSession session)
         {
-            DocumentName = typeof(TEntity).Name.ToLower();
             _session = session;
         }
         public void Adicionar(TEntity obj)
@@ -29,17 +27,7 @@ namespace Schedule.io.Infra.RavenDB
             _session.Store(obj);
         }
 
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-
-        public void ForcarDelecao(string id)
-        {
-            _session.Delete(id.ToString());
-        }
-
-        public TEntity ObterPorId(string id)
+        public TEntity Obter(string id)
         {
             return _session
                  .Query<TEntity>()
@@ -47,18 +35,16 @@ namespace Schedule.io.Infra.RavenDB
                  .FirstOrDefault();
         }
 
-        public IList<TEntity> ObterTodosAtivos()
+        public IList<TEntity> Listar()
         {
             return _session
                  .Query<TEntity>()
-                 .Where(x => x.Inativo == false)
                  .ToList();
         }
 
         public void Remover(TEntity obj)
         {
-            obj.Inativar();
-            _session.Store(obj);
+            _session.Delete(obj);
         }
 
         protected IDocumentSession Sessao { get { return _session; } }
@@ -73,6 +59,11 @@ namespace Schedule.io.Infra.RavenDB
             {
                 return 0;
             }
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

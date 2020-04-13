@@ -11,8 +11,6 @@ namespace Schedule.io.Models.AggregatesRoots
 {
     public class TipoEvento : Entity, IAggregateRoot
     {
-        /**FAZER O VALIDATION PRA ELE*/
-
         public string Nome { get; set; }
         public string Descricao { get; set; }
 

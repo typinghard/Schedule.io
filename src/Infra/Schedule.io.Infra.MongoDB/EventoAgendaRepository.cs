@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 
 namespace Schedule.io.Infra.MongoDB
 {
@@ -14,31 +15,44 @@ namespace Schedule.io.Infra.MongoDB
 
         }
 
-        public IList<Evento> ObterEventosDaAgenda(string agendaId)
+        public void AdicionarConvite(Convite convite)
         {
-            return Db.EventoAgenda
-                .Find(x => x.AgendaId == agendaId
-                      && !x.Inativo)
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirConvite(string eventoId, string emailConvidado)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Convite> ListarConvites(string eventoId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Evento> ListarEventosDaAgenda(string agendaId)
+        {
+            return Db.Evento
+                .Find(x => x.AgendaId == agendaId)
                 .ToList();
         }
 
-        public IList<Evento> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
-            return Db.EventoAgenda
+            return Db.Evento
                 .Find(x => x.AgendaId == agendaId
                       && x.DataInicio >= dataInicio
                       && (x.DataFinal == null || x.DataFinal <= dataFinal)
-                      && !x.Inativo)
+                     )
                 .ToList();
         }
 
-        public IList<Evento> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
 
-            return Db.EventoAgenda
+            return Db.Evento
                 .Find(x => x.AgendaId == agendaId
-                      && x.UsuarioId == usuarioId
-                      && !x.Inativo)
+                      && x.UsuarioIdCriador == usuarioId)
                 .ToList();
 
         }

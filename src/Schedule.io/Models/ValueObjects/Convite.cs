@@ -18,7 +18,7 @@ namespace Schedule.io.Models.ValueObjects
         public EnumStatusConviteEvento Status { get; private set; }
         public PermissoesConvite Permissoes { get; private set; }
 
-        public Convite(string id, string eventoId, string usuarioId, string emailConvidado) 
+        public Convite(string eventoId, string usuarioId, string emailConvidado) 
         {
             EventoId = eventoId;
             UsuarioId = usuarioId;

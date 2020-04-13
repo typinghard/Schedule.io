@@ -7,16 +7,11 @@ namespace Schedule.io.Interfaces.Services
     public interface IEventoService
     {
         string Gravar(Evento evento);
-        void Excluir(string eventoId);
         Evento Obter(string eventoId);
         IEnumerable<Evento> Listar(string agendaId);
+        IEnumerable<Evento> Listar(string agendaId, string usuarioId);
         IEnumerable<Evento> Listar(string agendaId, DateTime dataInicial, DateTime dataFinal);
+        void Excluir(string eventoId);
     }
 }
 
-
-/*
- Obter -> é um
- Listar -> Vários (slcccc)
-
-     */

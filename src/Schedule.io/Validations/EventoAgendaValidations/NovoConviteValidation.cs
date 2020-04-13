@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Schedule.io.Validations.AgendaValidations
 {
-    public class NovoConviteValidation : EntityValidation<Convite>
+    public class NovoConviteValidation : AbstractValidator<Convite>
     {
         public NovoConviteValidation()
         {

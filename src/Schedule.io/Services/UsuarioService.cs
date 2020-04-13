@@ -27,34 +27,13 @@ namespace Schedule.io.Services
 
         public string Gravar(Usuario usuario)
         {
-            Usuario gravarUsuario;
             if (string.IsNullOrEmpty(usuario.Id))
-            {
-                gravarUsuario = new Usuario(Guid.NewGuid().ToString(), usuario.Email);
-                gravarUsuario.DefinirDataCriacao();
-            }
+                RegistrarUsuario(usuario);
             else
-                gravarUsuario = new Usuario(usuario.Id, usuario.Email);
-
-            gravarUsuario.DefinirDataAtualizacao();
-
-            if (string.IsNullOrEmpty(usuario.Id))
-                _usuarioRepository.Adicionar(usuario);
-            else
-                _usuarioRepository.Atualizar(usuario);
-
-            if (Commit())
-                if (string.IsNullOrEmpty(usuario.Id))
-                    _bus.PublicarEvento(new UsuarioRegistradoEvent(usuario.Id, usuario.Email)).Wait();
-                else
-                    _bus.PublicarEvento(new UsuarioAtualizadoEvent(usuario.Id, usuario.Email)).Wait();
-
-            ValidarComando();
+                AtualizarUsuario(usuario);
 
             return usuario.Id;
         }
-
-
 
         public Usuario Obter(string usuarioId)
         {
@@ -86,6 +65,40 @@ namespace Schedule.io.Services
             ValidarComando();
         }
 
+        #region Privados
+        private Usuario RegistrarUsuario(Usuario usuario)
+        {
+            var novoUsuario = new Usuario(Guid.NewGuid().ToString(), usuario.Email);
+            novoUsuario.DefinirDataCriacao();
+            novoUsuario.DefinirDataAtualizacao();
+
+            _usuarioRepository.Adicionar(novoUsuario);
+
+            if (Commit())
+                _bus.PublicarEvento(new UsuarioRegistradoEvent(novoUsuario.Id, novoUsuario.Email));
+
+            ValidarComando();
+
+            return novoUsuario;
+        }
+
+        private Usuario AtualizarUsuario(Usuario usuario)
+        {
+            var atualizarUsuario = RecuperaUsuarioEValida(usuario.Id);
+
+            atualizarUsuario.DefinirDataAtualizacao();
+            atualizarUsuario.DefinirEmail(usuario.Email);
+
+            _usuarioRepository.Atualizar(atualizarUsuario);
+
+            if (Commit())
+                _bus.PublicarEvento(new UsuarioAtualizadoEvent(atualizarUsuario.Id, atualizarUsuario.Email));
+
+            ValidarComando();
+
+            return atualizarUsuario;
+        }
+
         private Usuario RecuperaUsuarioEValida(string usuarioId)
         {
             var usuario = _usuarioRepository.Obter(usuarioId);
@@ -94,6 +107,7 @@ namespace Schedule.io.Services
                 throw new ScheduleIoException(new List<string>() { "Usuario não encontrado!" });
 
             return usuario;
-        }
+        } 
+        #endregion
     }
 }

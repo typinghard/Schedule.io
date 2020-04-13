@@ -13,11 +13,11 @@ namespace Schedule.io.Validations.EventoAgendaValidations
         {
             RuleFor(c => c.AgendaId)
                 .NotEmpty()
-                .WithMessage("Id da Agenda não pode ser vazio!");
+                .WithMessage("Id da Agenda não informado!");
 
             RuleFor(c => c.UsuarioIdCriador)
                 .NotEmpty()
-                .WithMessage("Id do Usuário não pode ser vazio!");
+                .WithMessage("Id do Usuario dono da agenda não informado!");
 
             RuleFor(e => e.Titulo)
                 .NotNull()

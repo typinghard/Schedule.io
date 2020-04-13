@@ -14,6 +14,7 @@ namespace Schedule.io.Models.AggregatesRoots
     {
         public string AgendaId { get; private set; }
         public string UsuarioIdCriador { get; private set; }
+        public string IdTipoEvento { get; private set; }
         public string IdentificadorExterno { get; private set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
@@ -26,7 +27,6 @@ namespace Schedule.io.Models.AggregatesRoots
         public int QuantidadeMinimaDeUsuarios { get; private set; }
         public bool OcupaUsuario { get; private set; }
         public bool Publico { get; private set; }
-        public string IdTipoEvento { get; private set; }
         public EnumFrequencia Frequencia { get; private set; }
 
         public Evento(string id, string agendaId, string usuarioIdCriador, string titulo, DateTime dataInicio, string idTipoEvento) : base(id)
@@ -57,6 +57,9 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirIdentificadorExterno(string idExterno)
         {
+            if (string.IsNullOrEmpty(idExterno))
+                idExterno = null;
+
             this.IdentificadorExterno = idExterno;
         }
 
@@ -97,14 +100,20 @@ namespace Schedule.io.Models.AggregatesRoots
             _convites.Clear();
         }
 
-        public void DefinirLocal(string local)
+        public void DefinirLocal(string localId)
         {
-            if (string.IsNullOrEmpty(local))
-            {
-                throw new ScheduleIoException("Por favor, certifique-se que adicionou um local.");
-            }
+            if (string.IsNullOrEmpty(localId))
+                localId = null;
 
-            this.LocalId = local;
+            this.LocalId = localId;
+        }
+
+        public void DefinirTipoEvento(string tipoEventoId)
+        {
+            if (string.IsNullOrEmpty(tipoEventoId))
+                IdTipoEvento = null;
+
+            this.IdTipoEvento = tipoEventoId;
         }
 
         public void DefinirDatas(DateTime dataInicio, DateTime? dataFinal = null)
@@ -135,14 +144,14 @@ namespace Schedule.io.Models.AggregatesRoots
         }
 
 
-        public void DefinirDataLimiteConfirmacao(DateTime dataLimiteConfirmacao)
+        public void DefinirDataLimiteConfirmacao(DateTime? dataLimiteConfirmacao)
         {
-            if (dataLimiteConfirmacao == DateTime.MinValue)
-            {
-                throw new ScheduleIoException("Por favor, certifique-se que informou uma data limite.");
-            }
+            //if (dataLimiteConfirmacao == DateTime.MinValue)
+            //{
+            //    throw new ScheduleIoException("Por favor, certifique-se que informou uma data limite.");
+            //}
 
-            if (dataLimiteConfirmacao < this.DataInicio)
+            if (dataLimiteConfirmacao.HasValue && dataLimiteConfirmacao < this.DataInicio)
             {
                 throw new ScheduleIoException("Por certifique-se de que a data limite é maior que a data inicio do evento.");
             }
@@ -153,9 +162,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public void DefinirQuantidadeMinimaDeUsuarios(int quantidadeMinimaDeUsuarios)
         {
             if (quantidadeMinimaDeUsuarios < 0)
-            {
                 throw new ScheduleIoException("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.");
-            }
 
             this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
         }
@@ -191,7 +198,7 @@ namespace Schedule.io.Models.AggregatesRoots
             return new EventoAgendaValidation().Validate(this);
         }
     }
-    
+
 
 }
 

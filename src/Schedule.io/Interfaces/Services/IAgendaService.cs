@@ -33,7 +33,7 @@ namespace Schedule.io.Interfaces.Services
         /// </summary>
         /// <param name="usuarioId"></param>
         /// <returns></returns>
-        IEnumerable<Agenda> Listar(string usuarioId);
+        IEnumerable<Agenda> Listar(string agendaId);
 
         /// <summary>
         /// Remove permanentemente a agenda!

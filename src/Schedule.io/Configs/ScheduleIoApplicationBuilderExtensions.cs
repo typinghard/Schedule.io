@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Schedule.io.Core.Commands.AgendaCommands;
 using Schedule.io.Core.Data.EventSourcing;
 using Schedule.io.Models;
 using System;
@@ -11,7 +10,7 @@ namespace Schedule.io.Configs
     {
         public static IServiceCollection AddScheduleIo(this IServiceCollection services, ScheduleIoConfigurations scheduleIoConfigurations)
         {
-            var assembly = AppDomain.CurrentDomain.Load("Schedule.io.Core");
+            var assembly = AppDomain.CurrentDomain.Load("Schedule.io");
             services.AddMediatR(assembly);
 
             SetConfigurations(scheduleIoConfigurations);

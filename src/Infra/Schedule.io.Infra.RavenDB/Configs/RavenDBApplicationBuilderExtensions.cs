@@ -31,7 +31,7 @@ namespace Schedule.io.Infra.RavenDB.Configs
             services.AddScoped<IEventSourcingRepository, EventSourcingRepository>();
             services.AddScoped<IAgendaRepository, AgendaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();
+            //services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
             //services.AddScoped<IConviteRepository, ConviteRepository>();
             services.AddScoped<ILocalRepository, LocalRepository>();

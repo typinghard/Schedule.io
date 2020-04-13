@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentValidation.Results;
-using System.Text;
-using System.Linq;
-using FluentValidation;
-
+﻿using FluentValidation.Results;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Validations.UsuarioValidations;
+using System.Linq;
 
 namespace Schedule.io.Models.AggregatesRoots
 {

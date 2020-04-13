@@ -30,7 +30,6 @@ namespace Schedule.io.Services
             _agendaRepository = agendaRepository;
         }
 
-        #region Gravar
         public string Gravar(Agenda agenda)
         {
             VerificaUsuario(agenda);
@@ -43,6 +42,46 @@ namespace Schedule.io.Services
             return agenda.Id;
         }
 
+        public Agenda Obter(string agendaId)
+        {
+            var agenda = RecuperaAgendaEValida(agendaId);
+
+            ValidarComando();
+
+            return agenda;
+        }
+
+        public IEnumerable<Agenda> Listar()
+        {
+            var agendas = _agendaRepository.Listar();
+            foreach (var agenda in agendas)
+            {
+                yield return agenda;
+            }
+        }
+
+        public IEnumerable<Agenda> Listar(string usuarioId)
+        {
+            var agendas = _agendaRepository.ListarAgendasPorUsuarioId(usuarioId);
+            foreach (var agenda in agendas)
+            {
+                yield return agenda;
+            }
+        }
+
+        public void Excluir(string agendaId)
+        {
+            var agenda = RecuperaAgendaEValida(agendaId);
+
+            _agendaRepository.Excluir(agenda);
+
+            if (Commit())
+                _bus.PublicarEvento(new AgendaRemovidaEvent(agenda.Id)).Wait();
+
+            ValidarComando();
+        }
+
+        #region Privados
         private void VerificaUsuario(Agenda agenda)
         {
             if (string.IsNullOrEmpty(agenda.UsuarioIdCriador))
@@ -105,54 +144,8 @@ namespace Schedule.io.Services
 
         private void RegistrarAgendaUsuario(Agenda agenda)
         {
-            VerificaUsuario(agenda);
-
             if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.UsuarioIdCriador) == null)
                 _agendaRepository.Gravar(new AgendaUsuario(agenda.Id, agenda.UsuarioIdCriador));
-
-        }
-
-        #endregion
-
-        #region Consultas
-        public Agenda Obter(string agendaId)
-        {
-            var agenda = RecuperaAgendaEValida(agendaId);
-
-            ValidarComando();
-
-            return agenda;
-        }
-
-        public IEnumerable<Agenda> Listar()
-        {
-            var agendas = _agendaRepository.Listar();
-            foreach (var agenda in agendas)
-            {
-                yield return agenda;
-            }
-        }
-
-        public IEnumerable<Agenda> Listar(string usuarioId)
-        {
-            var agendas = _agendaRepository.ListarAgendasPorUsuarioId(usuarioId);
-            foreach (var agenda in agendas)
-            {
-                yield return agenda;
-            }
-        }
-        #endregion
-
-        public void Excluir(string agendaId)
-        {
-            var agenda = RecuperaAgendaEValida(agendaId);
-
-            _agendaRepository.Excluir(agenda);
-
-            if (Commit())
-                _bus.PublicarEvento(new AgendaRemovidaEvent(agenda.Id)).Wait();
-
-            ValidarComando();
         }
 
         private Agenda RecuperaAgendaEValida(string agendaId)
@@ -164,5 +157,6 @@ namespace Schedule.io.Services
 
             return agenda;
         }
+        #endregion
     }
 }

@@ -1,390 +1,218 @@
-﻿//using Schedule.io.Interfaces.Services;
-//using Schedule.io.Interfaces;
-//using Schedule.io.Models;
-//using System;
-//using System.Collections.Generic;
-//using System.Text;
-//using System.Linq;
-//using Schedule.io.Models.AggregatesRoots;
-//using Schedule.io.Core.Communication.Mediator;
-//using MediatR;
-//using Schedule.io.Core.Messages.CommonMessages.Notifications;
-//using Schedule.io.Core.DomainObjects;
-//using Schedule.io.Enums;
-//using Schedule.io.Interfaces.Repositories;
-//using Schedule.io.Models.ValueObjects;
-
-//namespace Schedule.io.Services
-//{
-//    internal class EventoService : ServiceBase, IEventoService
-//    {
-//        private readonly IUsuarioService _usuarioService;
-//        private readonly ILocalService _localService;
-//        private readonly IEventoAgendaRepository _eventoAgendaRepository;
-//        private readonly IAgendaUsuarioRepository _agendaUsuarioRepository;
-//        //private readonly IConviteRepository _conviteRepository;
-//        private readonly IMediatorHandler _bus;
-
-//        public EventoService(ILocalService localService,
-//                             IUsuarioService usuarioService,
-//                             IEventoAgendaRepository eventoAgendaRepository,
-//                             IAgendaUsuarioRepository agendaUsuarioRepository,
-//                             // IConviteRepository conviteRepository,
-//                             IMediatorHandler bus,
-//                             IUnitOfWork uow,
-//                             INotificationHandler<DomainNotification> notifications) : base(bus, uow, notifications)
-//        {
-//            _bus = bus;
-//            _localService = localService;
-//            _usuarioService = usuarioService;
-//            _eventoAgendaRepository = eventoAgendaRepository;
-//            _agendaUsuarioRepository = agendaUsuarioRepository;
-//            //_conviteRepository = conviteRepository;
-//        }
-
-//        #region Obter
-
-//        public IEnumerable<Evento> ObterEventosPorPeriodo(string agendaId, DateTime dataInicial, DateTime dataFinal)
-//        {
-//            var listEventoAgenda = _eventoAgendaRepository.ObterEventosPorPeriodo(agendaId, dataInicial, dataFinal);
-
-//            return MontaEventoVM(listEventoAgenda);
-//        }
-
-
-//        public IEnumerable<Evento> ObterTodos(string agendaId)
-//        {
-//            var listEventoAgenda = _eventoAgendaRepository.ObterEventosDaAgenda(agendaId);
-
-//            return MontaEventoVM(listEventoAgenda);
-//        }
-
-//        public Evento Obter(string eventoId)
-//        {
-//            var eventoModel = _eventoAgendaRepository.Obter(eventoId);
-
-//            return MontaEventoVM(eventoModel);
-//        }
-
-//        private Evento MontaEventoVM(EventoAgenda eventoModel)
-//        {
-//            if (eventoModel == null)
-//                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
-
-//            var convites = _conviteRepository.ObterConvitesPorEventoId(eventoModel.Id);
-
-//            dynamic local = null;
-//            if (eventoModel.LocalId != null)
-//                local = _localService.Obter(eventoModel.LocalId);
-
-//            ValidarComando();
-
-//            return new Evento()
-//            {
-//                Id = eventoModel.Id,
-//                CriadoAs = eventoModel.CriadoAs,
-//                AtualizadoAs = eventoModel.AtualizadoAs,
-//                AgendaId = eventoModel.AgendaId,
-//                UsuarioId = eventoModel.UsuarioId,
-//                IdentificadorExterno = eventoModel.IdentificadorExterno,
-//                Titulo = eventoModel.Titulo,
-//                Descricao = eventoModel.Descricao,
-//                Convites = MontaConvitesVM(convites),
-//                Local = local,
-//                DataInicio = eventoModel.DataInicio,
-//                DataFinal = eventoModel.DataFinal,
-//                DataLimiteConfirmacao = eventoModel.DataLimiteConfirmacao,
-//                QuantidadeMinimaDeUsuarios = eventoModel.QuantidadeMinimaDeUsuarios,
-//                OcupaUsuario = eventoModel.OcupaUsuario,
-//                Publico = eventoModel.Publico,
-//                Frequencia = eventoModel.Frequencia,
-//                Tipo = new Models.TipoEvento()
-//                {
-//                    Id = eventoModel.Tipo.Id,
-//                    CriadoAs = eventoModel.Tipo.CriadoAs,
-//                    AtualizadoAs = eventoModel.Tipo.AtualizadoAs,
-//                    Nome = eventoModel.Tipo.Nome,
-//                    Descricao = eventoModel.Tipo.Descricao
-//                }
-//            };
-//        }
-
-//        private IList<Evento> MontaEventoVM(IList<EventoAgenda> listEventoModel)
-//        {
-//            if (listEventoModel == null)
-//                throw new ScheduleIoException(new List<string>() { "Não há eventos nesta agenda!" });
-
-//            var listEventoVM = new List<Evento>();
-//            foreach (var eventoModel in listEventoModel)
-//            {
-//                var convites = _conviteRepository.ObterConvitesPorEventoId(eventoModel.Id);
-//                var local = _localService.Obter(eventoModel.LocalId);
-
-//                ValidarComando();
-
-//                listEventoVM.Add(new Evento()
-//                {
-//                    Id = eventoModel.Id,
-//                    CriadoAs = eventoModel.CriadoAs,
-//                    AtualizadoAs = eventoModel.AtualizadoAs,
-//                    AgendaId = eventoModel.AgendaId,
-//                    UsuarioId = eventoModel.UsuarioId,
-//                    IdentificadorExterno = eventoModel.IdentificadorExterno,
-//                    Titulo = eventoModel.Titulo,
-//                    Descricao = eventoModel.Descricao,
-//                    Convites = MontaConvitesVM(convites),
-//                    Local = local,
-//                    DataInicio = eventoModel.DataInicio,
-//                    DataFinal = eventoModel.DataFinal,
-//                    DataLimiteConfirmacao = eventoModel.DataLimiteConfirmacao,
-//                    QuantidadeMinimaDeUsuarios = eventoModel.QuantidadeMinimaDeUsuarios,
-//                    OcupaUsuario = eventoModel.OcupaUsuario,
-//                    Publico = eventoModel.Publico,
-//                    Frequencia = eventoModel.Frequencia,
-//                    Tipo = new Models.TipoEvento()
-//                    {
-//                        Id = eventoModel.Tipo.Id,
-//                        CriadoAs = eventoModel.Tipo.CriadoAs,
-//                        AtualizadoAs = eventoModel.Tipo.AtualizadoAs,
-//                        Nome = eventoModel.Tipo.Nome,
-//                        Descricao = eventoModel.Tipo.Descricao
-//                    }
-//                });
-//            }
-
-//            return listEventoVM;
-//        }
-
-//        private Models.Usuario MontaUsuarioVM(Convite conviteModel)
-//        {
-//            dynamic usuarioVM = null;
-//            if (conviteModel.UsuarioId != null)
-//                usuarioVM = _usuarioService.Obter(conviteModel.UsuarioId);
-
-//            if (usuarioVM == null)
-//                usuarioVM = new Models.Usuario()
-//                {
-//                    Email = conviteModel.EmailConvidado
-//                };
-
-//            return usuarioVM;
-//        }
-
-//        private List<Models.Convite> MontaConvitesVM(IList<Convite> convitesModel)
-//        {
-//            if (convitesModel == null || convitesModel.Count == 0)
-//                return new List<Models.Convite>();
-
-//            var listConvitesVm = new List<Models.Convite>();
-//            foreach (var conviteModel in convitesModel)
-//            {
-//                var conviteVm = new Models.Convite()
-//                {
-//                    Id = conviteModel.Id,
-//                    EventoId = conviteModel.EventoId,
-//                    Usuario = MontaUsuarioVM(conviteModel),
-//                    Permissoes = new Models.PermissoesConvite()
-//                    {
-//                        ModificaEvento = conviteModel.Permissoes.ModificaEvento,
-//                        ConvidaUsuario = conviteModel.Permissoes.ConvidaUsuario,
-//                        VeListaDeConvidados = conviteModel.Permissoes.VeListaDeConvidados
-//                    }
-//                };
-
-//                listConvitesVm.Add(conviteVm);
-//            }
-
-//            return listConvitesVm;
-//        }
-//        #endregion
-
-//        #region Gravar
-//        public string Gravar(Evento evento)
-//        {
-//            if (string.IsNullOrEmpty(evento.AgendaId))
-//                throw new ScheduleIoException(new List<string>() { "Agenda não informado!" });
-
-//            if (string.IsNullOrEmpty(evento.UsuarioId))
-//                throw new ScheduleIoException(new List<string>() { "Usuario não informado!" });
-
-//            if (evento.Local != null)
-//                evento.Local.Id = _localService.Gravar(evento.Local);
-
-//            if (string.IsNullOrEmpty(evento.Id))
-//                evento.Id = RegistrarEvento(evento);
-//            else
-//                evento.Id = AtualizarEvento(evento);
-
-//            if (evento.Convites != null && evento.Convites.Count > 0)
-//                GravarConvite(evento);
-
-//            ValidarComando();
-//            return evento.Id;
-//        }
-
-//        private string RegistrarEvento(Evento evento)
-//        {
-//            evento.Id = Guid.NewGuid().ToString();
-//            var listConvites = MontaConviteDomainModel(evento);
-
-//            _bus.EnviarComando(new RegistrarEventoAgendaCommand(evento.Id, evento.AgendaId, evento.UsuarioId, evento.IdentificadorExterno, evento.Titulo,
-//                evento.Descricao, listConvites, evento.Local != null ? evento.Local.Id : string.Empty, evento.DataInicio, evento.DataFinal,
-//                evento.DataLimiteConfirmacao, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
-//                evento.Publico,
-//                new TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
-//                evento.Frequencia)).Wait();
-
-//            return evento.Id;
-//        }
-
-//        private string AtualizarEvento(Evento evento)
-//        {
-//            var listConvites = MontaConviteDomainModel(evento);
-
-//            _bus.EnviarComando(new AtualizarEventoAgendaCommand(evento.Id, evento.AgendaId, evento.UsuarioId, evento.IdentificadorExterno, evento.Titulo,
-//                    evento.Descricao, listConvites, evento.Local != null ? evento.Local.Id : string.Empty, evento.DataInicio, evento.DataFinal,
-//                    evento.DataLimiteConfirmacao, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario,
-//                    evento.Publico,
-//                    new TipoEvento(string.Empty, evento.Tipo.Nome, evento.Tipo.Descricao),
-//                    evento.Frequencia)).Wait();
-
-//            return evento.Id;
-//        }
-
-//        private void GravarConvite(Evento evento)
-//        {
-//            var listConvites = MontaConviteDomainModel(evento);
-//            foreach (var convite in listConvites)
-//            {
-//                if (string.IsNullOrEmpty(convite.Id) || Guid.Parse(convite.Id) == Guid.Empty)
-//                    _bus.EnviarComando(new RegistrarConviteCommand(Guid.NewGuid().ToString(), convite.EventoId, convite.UsuarioId,
-//                                                                   convite.EmailConvidado, convite.Status, convite.Permissoes));
-//                else
-//                    _bus.EnviarComando(new AtualizarConviteCommand(convite.Id, convite.EventoId, convite.UsuarioId, convite.EmailConvidado,
-//                                                                   convite.Status, convite.Permissoes));
-//            }
-
-//            ValidarComando();
-//        }
-//        #endregion Gravar
-
-//        #region Excluir
-//        public bool Excluir(string eventoId)
-//        {
-//            var evento = Obter(eventoId);
-
-//            if (evento == null)
-//                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
-
-//            RemoverLocal(evento.Local);
-//            RemoverConvites(evento);
-
-//            ValidarComando();
-//            _bus.EnviarComando(new RemoverEventoAgendaCommand(eventoId)).Wait();
-//            return true;
-//        }
-
-//        private void RemoverLocal(Models.Local local)
-//        {
-//            if (local != null)
-//                _localService.Excluir(local.Id);
-//        }
-
-//        private void RemoverConvites(Evento evento)
-//        {
-//            var listConvitesDomain = MontaConviteDomainModel(evento);
-//            foreach (var convite in listConvitesDomain)
-//                _bus.EnviarComando(new RemoverConviteCommand(convite.Id)).Wait();
-//        }
-//        #endregion Excluir
-
-//        private List<Convite> MontaConviteDomainModel(Evento evento)
-//        {
-//            if (evento.Convites == null || evento.Convites.Count == 0)
-//                return new List<Convite>();
-
-//            var usuarioAgenda = _agendaUsuarioRepository.ObterPorAgendaIdEUsuarioId(evento.AgendaId, evento.UsuarioId);
-
-//            if (usuarioAgenda == null)
-//                throw new ScheduleIoException(new List<string>() { "Agenda do usuário não encontrada!" });
-
-//            var listConvites = new List<Convite>();
-
-//            var conviteDono = MontaConviteDonoEvento(evento);
-//            if (conviteDono != null)
-//                evento.Convites.Add(conviteDono);
-
-//            foreach (var conviteVM in evento.Convites)
-//            {
-
-//                if (string.IsNullOrEmpty(conviteVM.Id))
-//                    conviteVM.Id = Guid.Empty.ToString();
-
-//                var convite = new Convite(conviteVM.Id, evento.Id, conviteVM.Usuario.Id, conviteVM.Usuario.Email);
-
-//                if (usuarioAgenda.UsuarioId == conviteVM.Usuario.Id)
-//                    convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
-//                else
-//                    convite.AtualizarStatusConvite(EnumStatusConviteEvento.Aguardando_Confirmacao);
-
-//                if (conviteVM.Permissoes.ConvidaUsuario)
-//                    convite.Permissoes.PodeConvidar();
-//                else
-//                    convite.Permissoes.NaoPodeConvidar();
-
-//                if (conviteVM.Permissoes.ModificaEvento)
-//                    convite.Permissoes.PodeModificarEvento();
-//                else
-//                    convite.Permissoes.NaoPodeModificarEvento();
-
-//                if (conviteVM.Permissoes.VeListaDeConvidados)
-//                    convite.Permissoes.PodeVerListaDeConvidados();
-//                else
-//                    convite.Permissoes.NaoPodeModificarEvento();
-
-//                listConvites.Add(convite);
-//            }
-
-
-//            return listConvites;
-//        }
-
-//        private Convite MontaConviteDonoEvento(Evento evento)
-//        {
-//            if (evento.Convites.Where(x => x.Usuario.Id == evento.UsuarioId).Count() == 0)
-//            {
-//                var usuario = _usuarioService.Obter(evento.UsuarioId);
-//                return new Models.Convite()
-//                {
-//                    EventoId = evento.Id,
-//                    Usuario = usuario,
-//                    Status = EnumStatusConviteEvento.Sim,
-//                    Permissoes = new Models.PermissoesConvite()
-//                    {
-//                        Id = Guid.NewGuid().ToString(),
-//                        ConvidaUsuario = true,
-//                        ModificaEvento = true,
-//                        VeListaDeConvidados = true
-//                    }
-//                };
-//            }
-
-//            return null;
-//        }
-
-//        void IEventoService.Excluir(string eventoId)
-//        {
-//            throw new NotImplementedException();
-//        }
-
-//        public IEnumerable<Evento> Listar(string agendaId)
-//        {
-//            throw new NotImplementedException();
-//        }
-
-//        public IEnumerable<Evento> Listar(string agendaId, DateTime dataInicial, DateTime dataFinal)
-//        {
-//            throw new NotImplementedException();
-//        }
-//    }
-//}
+﻿using Schedule.io.Interfaces.Services;
+using Schedule.io.Interfaces;
+using Schedule.io.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Core.Communication.Mediator;
+using MediatR;
+using Schedule.io.Core.Messages.CommonMessages.Notifications;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Enums;
+using Schedule.io.Interfaces.Repositories;
+using Schedule.io.Models.ValueObjects;
+using Schedule.io.Events.EventoAgendaEvents;
+
+namespace Schedule.io.Services
+{
+    internal class EventoService : ServiceBase, IEventoService
+    {
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly ILocalRepository _localRepository;
+        private readonly IEventoAgendaRepository _eventoAgendaRepository;
+
+        public EventoService(IUsuarioRepository usuarioRepository,
+                             ILocalRepository localRepository,
+                             IEventoAgendaRepository eventoAgendaRepository,
+                             IMediatorHandler bus,
+                             IUnitOfWork uow,
+                             INotificationHandler<DomainNotification> notifications) : base(bus, uow, notifications)
+        {
+            _usuarioRepository = usuarioRepository;
+            _localRepository = localRepository;
+            _eventoAgendaRepository = eventoAgendaRepository;
+        }
+
+       
+        public string Gravar(Evento evento)
+        {
+            if (string.IsNullOrEmpty(evento.Id))
+                RegistrarEvento(evento);
+            else
+                AtualizarEvento(evento);
+
+            ValidarComando();
+            return evento.Id;
+        }
+
+        public Evento Obter(string eventoId)
+        {
+            var evento = RecuperaEventoEValida(eventoId);
+
+            ValidarComando();
+
+            return evento;
+        }
+
+        public IEnumerable<Evento> Listar(string agendaId)
+        {
+            var eventos = _eventoAgendaRepository.ListarEventosDaAgenda(agendaId);
+            foreach (var evento in eventos)
+            {
+                yield return evento;
+            }
+        }
+
+        public IEnumerable<Evento> Listar(string agendaId, string usuarioId)
+        {
+            var eventos = _eventoAgendaRepository.ListarTodosEventosDoUsuario(agendaId, usuarioId);
+            foreach (var evento in eventos)
+            {
+                yield return evento;
+            }
+        }
+
+        public IEnumerable<Evento> Listar(string agendaId, DateTime dataInicial, DateTime dataFinal)
+        {
+            var eventos = _eventoAgendaRepository.ListarEventosPorPeriodo(agendaId, dataInicial, dataFinal);
+            foreach (var evento in eventos)
+            {
+                yield return evento;
+            }
+        }
+
+        public void Excluir(string eventoId)
+        {
+            var evento = RecuperaEventoEValida(eventoId);
+
+            ExcluirConvites(evento);
+
+            _eventoAgendaRepository.Excluir(evento);
+
+            if (Commit())
+                _bus.PublicarEvento(new EventoAgendaRemovidoEvent(evento.Id));
+
+            ValidarComando();
+        }
+
+        private Evento RegistrarEvento(Evento evento)
+        {
+            var novoEvento = new Evento(Guid.NewGuid().ToString(), evento.AgendaId, evento.UsuarioIdCriador, evento.Titulo, evento.DataInicio, evento.IdTipoEvento);
+            novoEvento.DefinirDataCriacao();
+            novoEvento.DefinirDataAtualizacao();
+
+            novoEvento.DefinirIdentificadorExterno(evento.IdentificadorExterno);
+            novoEvento.DefinirDescricao(evento.Descricao);
+            novoEvento.DefinirLocal(evento.LocalId);
+            novoEvento.DefinirDatas(evento.DataInicio, evento.DataFinal);
+            novoEvento.DefinirDataLimiteConfirmacao(evento.DataLimiteConfirmacao.GetValueOrDefault());
+            novoEvento.DefinirQuantidadeMinimaDeUsuarios(evento.QuantidadeMinimaDeUsuarios);
+            novoEvento.DefinirFrequencia(evento.Frequencia);
+
+            foreach (var convite in evento.Convites)
+                novoEvento.AdicionarConvite(convite);
+
+            if (evento.OcupaUsuario)
+                novoEvento.OcuparUsuario();
+
+            if (evento.Publico)
+                novoEvento.TornarEventoPublico();
+
+            _eventoAgendaRepository.Adicionar(novoEvento);
+
+            if (Commit())
+            {
+                _bus.PublicarEvento(new EventoRegistradoEvent(novoEvento.Id, novoEvento.AgendaId, novoEvento.UsuarioIdCriador, novoEvento.IdentificadorExterno, novoEvento.Titulo,
+                                    novoEvento.Descricao, novoEvento.Convites, novoEvento.LocalId, novoEvento.DataInicio, novoEvento.DataFinal,
+                                    novoEvento.DataLimiteConfirmacao, novoEvento.QuantidadeMinimaDeUsuarios, novoEvento.OcupaUsuario, novoEvento.Publico,
+                                    novoEvento.IdTipoEvento, novoEvento.Frequencia));
+
+                GravarConvites(novoEvento);
+            }
+
+            ValidarComando();
+
+            return novoEvento;
+        }
+
+        private Evento AtualizarEvento(Evento evento)
+        {
+            var atualizarEvento = RecuperaEventoEValida(evento.Id);
+            atualizarEvento.DefinirDataAtualizacao();
+            atualizarEvento.DefinirTipoEvento(evento.IdTipoEvento);
+            atualizarEvento.DefinirIdentificadorExterno(evento.IdentificadorExterno);
+            atualizarEvento.DefinirTitulo(evento.Titulo);
+            atualizarEvento.DefinirDescricao(evento.Descricao);
+            atualizarEvento.DefinirLocal(evento.LocalId);
+            atualizarEvento.DefinirDatas(evento.DataInicio, evento.DataFinal.GetValueOrDefault());
+            atualizarEvento.DefinirDataLimiteConfirmacao(evento.DataLimiteConfirmacao.GetValueOrDefault());
+            atualizarEvento.DefinirQuantidadeMinimaDeUsuarios(evento.QuantidadeMinimaDeUsuarios);
+            atualizarEvento.DefinirFrequencia(evento.Frequencia);
+
+            ExcluirConvites(atualizarEvento);
+            atualizarEvento.LimparConvites();
+            foreach (var convite in evento.Convites)
+                atualizarEvento.AdicionarConvite(convite);
+
+            if (evento.OcupaUsuario)
+                atualizarEvento.OcuparUsuario();
+            else
+                atualizarEvento.DesocuparUsuario();
+
+            if (evento.Publico)
+                atualizarEvento.TornarEventoPublico();
+            else
+                atualizarEvento.TornarEventoPrivado();
+
+            _eventoAgendaRepository.Atualizar(atualizarEvento);
+
+            if (Commit())
+            {
+                _bus.PublicarEvento(new EventoAtualizadoEvent(atualizarEvento.Id, atualizarEvento.AgendaId, atualizarEvento.UsuarioIdCriador, atualizarEvento.IdentificadorExterno, atualizarEvento.Titulo,
+                                    atualizarEvento.Descricao, atualizarEvento.Convites, atualizarEvento.LocalId, atualizarEvento.DataInicio, atualizarEvento.DataFinal,
+                                    atualizarEvento.DataLimiteConfirmacao, atualizarEvento.QuantidadeMinimaDeUsuarios, atualizarEvento.OcupaUsuario, atualizarEvento.Publico,
+                                    atualizarEvento.IdTipoEvento, atualizarEvento.Frequencia));
+
+                GravarConvites(evento);
+            }
+
+            ValidarComando();
+
+            return atualizarEvento;
+        }
+
+        private void GravarConvites(Evento evento)
+        {
+            if (evento.Convites.Count == 0)
+                return;
+
+            ExcluirConvites(evento);
+
+            foreach (var convite in evento.Convites)
+                _eventoAgendaRepository.AdicionarConvite(convite);
+        }
+
+        private void ExcluirConvites(Evento evento)
+        {
+            if (evento.Convites.Count == 0)
+                return;
+
+            var listConvites = _eventoAgendaRepository.ListarConvites(evento.Id);
+
+            foreach (var convite in listConvites)
+                _eventoAgendaRepository.ExcluirConvite(convite.EventoId, convite.EmailConvidado);
+        }
+
+        private Evento RecuperaEventoEValida(string eventoId)
+        {
+            var evento = _eventoAgendaRepository.Obter(eventoId);
+
+            if (evento == null)
+                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
+
+            return evento;
+        }
+    }
+}

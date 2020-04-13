@@ -37,11 +37,6 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
         {
-            if (string.IsNullOrEmpty(identificadorExterno) && string.IsNullOrEmpty(identificadorExterno))
-            {
-                throw new ScheduleIoException("O Identificador do local não pode ser vazio!");
-            }
-
             this.IdentificadorExterno = identificadorExterno;
         }
 

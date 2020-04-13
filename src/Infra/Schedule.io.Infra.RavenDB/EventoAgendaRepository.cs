@@ -2,6 +2,7 @@
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Interfaces.Services;
 using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,22 @@ namespace Schedule.io.Infra.RavenDB
 
         }
 
-        public IList<Evento> ObterEventosDaAgenda(string agendaId)
+        public void AdicionarConvite(Convite convite)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirConvite(string eventoId, string emailConvidado)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Convite> ListarConvites(string eventoId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Evento> ListarEventosDaAgenda(string agendaId)
         {
             return Sessao
                  .Query<Evento>()
@@ -24,7 +40,7 @@ namespace Schedule.io.Infra.RavenDB
                  .ToList();
         }
 
-        public IList<Evento> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
             return Sessao
                 .Query<Evento>()
@@ -34,7 +50,7 @@ namespace Schedule.io.Infra.RavenDB
                 .ToList();
         }
 
-        public IList<Evento> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
             return Sessao
                  .Query<Evento>()

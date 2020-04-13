@@ -1,13 +1,14 @@
 ﻿using Schedule.io.Core.Messages;
 using Schedule.io.Enums;
 using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 
 
 namespace Schedule.io.Events.EventoAgendaEvents
 {
-    public class EventoAgendaRegistradoEvent : Event
+    public class EventoRegistradoEvent : Event
     {
         public string Id { get; set; }
         public string AgendaId { get; set; }
@@ -15,7 +16,7 @@ namespace Schedule.io.Events.EventoAgendaEvents
         public string IdentificadorExterno { get; set; }
         public string Titulo { get; set; }
         public string Descricao { get; set; }
-        public IList<Convite> Convites { get; set; }
+        public IEnumerable<Convite> Convites { get; set; }
         public string LocalId { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime? DataFinal { get; set; }
@@ -23,12 +24,12 @@ namespace Schedule.io.Events.EventoAgendaEvents
         public int QuantidadeMinimaDeUsuarios { get; set; }
         public bool OcupaUsuario { get; set; }
         public bool Publico { get; set; }
-        public TipoEvento Tipo { get; set; }
+        public string TipoEventoId { get; set; }
         public EnumFrequencia Frequencia { get; set; }
 
 
-        public EventoAgendaRegistradoEvent(string id, string agendaId, string usuarioId, string identificadorExterno, string titulo, string descricao, IList<Convite> convites, string localId, DateTime dataInicio, DateTime? dataFinal,
-            DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocupaUsuario, bool publico, TipoEvento tipoEvento, EnumFrequencia frequencia)
+        public EventoRegistradoEvent(string id, string agendaId, string usuarioId, string identificadorExterno, string titulo, string descricao, IEnumerable<Convite> convites, string localId, DateTime dataInicio, DateTime? dataFinal,
+            DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocupaUsuario, bool publico, string tipoEventoId, EnumFrequencia frequencia)
         {
             this.Id = id;
             this.AggregateId = id;
@@ -45,7 +46,7 @@ namespace Schedule.io.Events.EventoAgendaEvents
             this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
             this.OcupaUsuario = ocupaUsuario;
             this.Publico = publico;
-            this.Tipo = tipoEvento;
+            this.TipoEventoId = tipoEventoId;
             this.Frequencia = frequencia;
         }
     }

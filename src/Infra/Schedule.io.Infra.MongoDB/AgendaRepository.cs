@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Interfaces.Repositories;
+using Schedule.io.Models.ValueObjects;
 
 namespace Schedule.io.Infra.MongoDB
 {
@@ -12,6 +13,16 @@ namespace Schedule.io.Infra.MongoDB
     {
         public AgendaRepository(AgendaContext context) : base(context)
         {
+        }
+
+        public AgendaUsuario Gravar(AgendaUsuario obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
+        {
+            throw new NotImplementedException();
         }
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)

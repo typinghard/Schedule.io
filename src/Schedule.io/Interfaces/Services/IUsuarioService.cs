@@ -8,7 +8,7 @@ namespace Schedule.io.Interfaces.Services
 {
     public interface IUsuarioService
     {
-        string Gravar(Usuario usuario);
+        void Gravar(Usuario usuario);
         Usuario Obter(string usuarioId);
         IEnumerable<Usuario> Listar();
         void Excluir(string usuarioId);

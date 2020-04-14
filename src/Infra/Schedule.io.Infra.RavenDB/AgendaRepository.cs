@@ -32,7 +32,7 @@ namespace Schedule.io.Infra.RavenDB
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
             return Sessao.Query<Agenda>()
-                .Where(a => a.Usuarios.Any(y => y.UsuarioId == usuarioId)
+                .Where(a => a.AgendasUsuarios.Any(y => y.UsuarioId == usuarioId)
                          && a.Id == agendaId)
                 .FirstOrDefault();
         }

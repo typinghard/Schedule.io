@@ -6,7 +6,7 @@ namespace Schedule.io.Interfaces.Services
 {
     public interface IEventoService
     {
-        string Gravar(Evento evento);
+        void Gravar(Evento evento);
         Evento Obter(string eventoId);
         IEnumerable<Evento> Listar(string agendaId);
         IEnumerable<Evento> Listar(string agendaId, string usuarioId);

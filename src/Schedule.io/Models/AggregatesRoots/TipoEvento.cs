@@ -14,7 +14,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public string Nome { get; set; }
         public string Descricao { get; set; }
 
-        public TipoEvento(string id, string nome, string descricao) : base(id)
+        public TipoEvento(string nome, string descricao)
         {
             this.Nome = nome;
             this.Descricao = descricao;
@@ -22,6 +22,11 @@ namespace Schedule.io.Models.AggregatesRoots
             var resultadoValidacao = this.TipoEventoEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private TipoEvento()
+        {
+
         }
 
         public void DefinirNome(string nome)

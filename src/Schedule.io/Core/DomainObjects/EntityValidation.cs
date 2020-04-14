@@ -9,6 +9,7 @@ namespace Schedule.io.Core.DomainObjects
         {
             RuleFor(c => c.Id)
                 .NotEmpty()
+                .NotEqual(Guid.Empty.ToString())
                 .WithMessage("Id não informado");
 
             RuleFor(c => c.CriadoAs)

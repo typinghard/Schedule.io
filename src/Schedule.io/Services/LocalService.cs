@@ -23,24 +23,20 @@ namespace Schedule.io.Services
             _localRepository = localRepository;
         }
 
-        public string Gravar(Local local)
+        public void Gravar(Local local)
         {
-            if (string.IsNullOrEmpty(local.Id))
-                RegistrarLocal(local);
+            var localQuery = _localRepository.Obter(local.Id);
+            if (localQuery == null)
+                Registrar(local);
             else
-                AtualizarLocal(local);
+                Atualizar(local);
 
             ValidarComando();
-            return local.Id;
         }
 
         public Local Obter(string localId)
         {
-            var local = RecuperaLocalEValida(localId);
-
-            ValidarComando();
-
-            return local;
+            return _localRepository.Obter(localId);
         }
 
         public IEnumerable<Local> Listar()
@@ -54,7 +50,12 @@ namespace Schedule.io.Services
 
         public void Excluir(string localId)
         {
-            var local = RecuperaLocalEValida(localId);
+            var local = _localRepository.Obter(localId);
+            if (local == null)
+            {
+                _bus.PublicarNotificacao(new DomainNotification("", "Local não encontrado!"));
+                ValidarComando();
+            }
 
             _localRepository.Excluir(local);
 
@@ -65,57 +66,25 @@ namespace Schedule.io.Services
         }
 
         #region Privados
-        private Local RegistrarLocal(Local local)
+        private void Registrar(Local local)
         {
-            var novoLocal = new Local(Guid.NewGuid().ToString(), local.Nome);
-            novoLocal.DefinirDescricao(local.Descricao);
-            novoLocal.DefinirIdentificadorExterno(local.IdentificadorExterno);
-            novoLocal.DefinirLotacaoMaxima(local.LotacaoMaxima);
-
-            if (local.Reserva)
-                novoLocal.ReservarLocal();
-
-            _localRepository.Adicionar(novoLocal);
+            _localRepository.Adicionar(local);
 
             if (Commit())
-                _bus.PublicarEvento(new LocalRegistradoEvent(novoLocal.Id, novoLocal.IdentificadorExterno, novoLocal.Nome, novoLocal.Descricao, novoLocal.Reserva, novoLocal.LotacaoMaxima));
+                _bus.PublicarEvento(new LocalRegistradoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
 
             ValidarComando();
-
-            return novoLocal;
         }
 
-        private Local AtualizarLocal(Local local)
+        private void Atualizar(Local local)
         {
-            var atualizarLocal = _localRepository.Obter(local.Id);
-            atualizarLocal.DefinirDescricao(local.Descricao);
-            atualizarLocal.DefinirIdentificadorExterno(local.IdentificadorExterno);
-            atualizarLocal.DefinirLotacaoMaxima(local.LotacaoMaxima);
-
-            if (local.Reserva)
-                atualizarLocal.ReservarLocal();
-            else
-                atualizarLocal.RemoverReservaLocal();
-
-            _localRepository.Atualizar(atualizarLocal);
+            _localRepository.Atualizar(local);
 
             if (Commit())
-                _bus.PublicarEvento(new LocalAtualizadoEvent(atualizarLocal.Id, atualizarLocal.IdentificadorExterno, atualizarLocal.Nome, atualizarLocal.Descricao, atualizarLocal.Reserva, atualizarLocal.LotacaoMaxima));
+                _bus.PublicarEvento(new LocalAtualizadoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
 
             ValidarComando();
-
-            return atualizarLocal;
         }
-
-        private Local RecuperaLocalEValida(string localId)
-        {
-            var local = _localRepository.Obter(localId);
-
-            if (local == null)
-                throw new ScheduleIoException(new List<string>() { "Local não encontrado!" });
-
-            return local;
-        } 
         #endregion
     }
 }

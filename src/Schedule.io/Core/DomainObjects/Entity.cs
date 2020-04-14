@@ -8,18 +8,10 @@ namespace Schedule.io.Core.DomainObjects
         public DateTime CriadoAs { get; protected set; }
         public DateTime AtualizadoAs { get; protected set; }
 
-        public Entity(string id)
-        {
-            Id = id;
-        }
 
-        protected internal void DefinirId(string id)
+        protected Entity()
         {
-            if (string.IsNullOrEmpty(Id))
-                throw new ScheduleIoException("Id já existente!");
-
-            if (string.IsNullOrEmpty(id) || Guid.Parse(id) == Guid.Empty)
-                Id = id;
+            Id = Guid.NewGuid().ToString();
         }
 
         public void DefinirDataCriacao()

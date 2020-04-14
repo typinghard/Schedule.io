@@ -15,19 +15,25 @@ namespace Schedule.io.Models.AggregatesRoots
         public string Descricao { get; private set; }
         public bool Publico { get; private set; }
         public string UsuarioIdCriador { get; private set; }
-        public IReadOnlyCollection<AgendaUsuario> Usuarios { get { return _usuarios; } }
-        private List<AgendaUsuario> _usuarios;
+        public IReadOnlyCollection<AgendaUsuario> AgendasUsuarios { get { return _agendasUsuarios; } }
+        private List<AgendaUsuario> _agendasUsuarios;
         public IReadOnlyCollection<string> Eventos { get { return _eventos; } }
         private List<string> _eventos;
 
-        public Agenda(string id, string idUsuarioDono, string titulo) : base(id)
+        public Agenda(string idUsuarioDono, string titulo)
         {
             UsuarioIdCriador = idUsuarioDono;
             Titulo = titulo;
+            _agendasUsuarios = new List<AgendaUsuario>();
 
             var resultadoValidacao = this.AgendaEhValida();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private Agenda()
+        {
+
         }
 
         public void DefinirTitulo(string titulo)
@@ -74,6 +80,17 @@ namespace Schedule.io.Models.AggregatesRoots
         public void TornarAgendaPrivado()
         {
             this.Publico = false;
+        }
+
+        public void AdicionarAgendaDoUsuario(AgendaUsuario agendaUsuario)
+        {
+            agendaUsuario.AgendaUsuarioEhValido();
+            _agendasUsuarios.Add(agendaUsuario);
+        }
+
+        public void LimparAgendasDoUsuario()
+        {
+            _agendasUsuarios.Clear();
         }
 
         private ValidationResult AgendaEhValida()

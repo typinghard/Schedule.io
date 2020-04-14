@@ -29,7 +29,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public bool Publico { get; private set; }
         public EnumFrequencia Frequencia { get; private set; }
 
-        public Evento(string id, string agendaId, string usuarioIdCriador, string titulo, DateTime dataInicio, string idTipoEvento) : base(id)
+        public Evento(string agendaId, string usuarioIdCriador, string titulo, DateTime dataInicio, string idTipoEvento) 
         {
             this.AgendaId = agendaId;
             this.UsuarioIdCriador = usuarioIdCriador;
@@ -43,6 +43,11 @@ namespace Schedule.io.Models.AggregatesRoots
             var resultadoValidacao = this.EventoAgendaEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private Evento()
+        {
+
         }
 
         public void DefinirAgenda(string agendaId)

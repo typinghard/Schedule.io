@@ -16,12 +16,6 @@ namespace Schedule.io.Infra.MongoDB
         {
         }
 
-        public void Gravar(AgendaUsuario obj)
-        {
-            Db.AgendaUsuario.InsertOne(Db.Session, obj);
-            SalvarAlteracoes();
-        }
-
         public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
         {
             return Db.Agenda
@@ -31,7 +25,7 @@ namespace Schedule.io.Infra.MongoDB
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
-            return Db.Agenda.Find(a => a.Usuarios.Any(u => u.UsuarioId == usuarioId) && a.Id == agendaId).FirstOrDefault();
+            return Db.Agenda.Find(a => a.AgendasUsuarios.Any(u => u.UsuarioId == usuarioId) && a.Id == agendaId).FirstOrDefault();
         }
 
         public bool VerificaSeAgendaExiste(string agendaId)

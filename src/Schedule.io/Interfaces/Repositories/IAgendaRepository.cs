@@ -12,5 +12,7 @@ namespace Schedule.io.Interfaces.Repositories
         Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId);
 
         IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId);
+
+        bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario);
     }
 }

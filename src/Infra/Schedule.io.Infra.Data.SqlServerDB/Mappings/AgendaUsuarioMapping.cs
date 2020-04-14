@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Schedule.io.Models.ValueObjects;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
 {
@@ -16,10 +17,12 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(200)");
 
-            builder.OwnsOne(c => c.Permissoes, cm =>
-            {
+            //builder.OwnsOne(c => c.Permissoes, cm =>
+            //{
 
-            });
+            //});
+
+            builder.HasKey(c => new { c.AgendaId, c.UsuarioId });
 
             builder.ToTable("AgendaUsuario");
         }

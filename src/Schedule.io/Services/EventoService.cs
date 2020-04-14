@@ -19,19 +19,13 @@ namespace Schedule.io.Services
 {
     internal class EventoService : ServiceBase, IEventoService
     {
-        private readonly IUsuarioRepository _usuarioRepository;
-        private readonly ILocalRepository _localRepository;
         private readonly IEventoAgendaRepository _eventoAgendaRepository;
 
-        public EventoService(IUsuarioRepository usuarioRepository,
-                             ILocalRepository localRepository,
-                             IEventoAgendaRepository eventoAgendaRepository,
+        public EventoService(IEventoAgendaRepository eventoAgendaRepository,
                              IMediatorHandler bus,
                              IUnitOfWork uow,
                              INotificationHandler<DomainNotification> notifications) : base(bus, uow, notifications)
         {
-            _usuarioRepository = usuarioRepository;
-            _localRepository = localRepository;
             _eventoAgendaRepository = eventoAgendaRepository;
         }
 
@@ -106,8 +100,6 @@ namespace Schedule.io.Services
                                     evento.Descricao, evento.Convites, evento.LocalId, evento.DataInicio, evento.DataFinal,
                                     evento.DataLimiteConfirmacao, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario, evento.Publico,
                                     evento.IdTipoEvento, evento.Frequencia));
-
-               // GravarConvites(evento);
             }
 
             ValidarComando();
@@ -128,28 +120,6 @@ namespace Schedule.io.Services
             }
 
             ValidarComando();
-        }
-
-        private void GravarConvites(Evento evento)
-        {
-            if (evento.Convites.Count == 0)
-                return;
-
-            //ExcluirConvites(evento);
-
-            foreach (var convite in evento.Convites)
-                _eventoAgendaRepository.AdicionarConvite(convite);
-        }
-
-        private void ExcluirConvites(Evento evento)
-        {
-            if (evento.Convites.Count == 0)
-                _bus.PublicarNotificacao(new DomainNotification("", "Não há convites no evento!"));
-
-            var listConvites = _eventoAgendaRepository.ListarConvites(evento.Id);
-
-            foreach (var convite in listConvites)
-                _eventoAgendaRepository.ExcluirConvite(convite);
         }
     }
 }

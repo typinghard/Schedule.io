@@ -10,7 +10,7 @@ using Schedule.io.Infra.Data.SqlServerDB;
 namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    [Migration("20200411123424_Inicial")]
+    [Migration("20200414174214_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Schedule.io.Core.Core.Data.EventSourcing.StoredEvent", b =>
+            modelBuilder.Entity("Schedule.io.Core.Data.EventSourcing.StoredEvent", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -40,10 +40,10 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StoredEvent","nuget");
+                    b.ToTable("StoredEvents");
                 });
 
-            modelBuilder.Entity("Schedule.io.Core.Models.Agenda", b =>
+            modelBuilder.Entity("Schedule.io.Models.AggregatesRoots.Agenda", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -57,9 +57,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("varchar(500)");
 
-                    b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("Publico")
                         .HasColumnType("bit");
 
@@ -67,77 +64,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
+                    b.Property<string>("UsuarioIdCriador")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Agenda");
                 });
 
-            modelBuilder.Entity("Schedule.io.Core.Models.AgendaUsuario", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AgendaId")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<DateTime>("AtualizadoAs")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CriadoAs")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UsuarioId")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AgendaUsuario");
-                });
-
-            modelBuilder.Entity("Schedule.io.Core.Models.Convite", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("AtualizadoAs")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CriadoAs")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmailConvidado")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<string>("EventoAgendaId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("EventoId")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
-                    b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventoAgendaId");
-
-                    b.ToTable("Convite");
-                });
-
-            modelBuilder.Entity("Schedule.io.Core.Models.EventoAgenda", b =>
+            modelBuilder.Entity("Schedule.io.Models.AggregatesRoots.Evento", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -162,17 +98,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Descricao")
-                        .HasColumnName("EventoAgenda_Descricao")
                         .HasColumnType("varchar(500)");
 
                     b.Property<int>("Frequencia")
                         .HasColumnType("int");
 
-                    b.Property<string>("IdentificadorExterno")
+                    b.Property<string>("IdTipoEvento")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
+                    b.Property<string>("IdentificadorExterno")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LocalId")
                         .HasColumnType("varchar(200)");
@@ -190,16 +125,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(150)");
 
-                    b.Property<string>("UsuarioId")
+                    b.Property<string>("UsuarioIdCriador")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("EventoAgenda");
+                    b.ToTable("Evento");
                 });
 
-            modelBuilder.Entity("Schedule.io.Core.Models.Local", b =>
+            modelBuilder.Entity("Schedule.io.Models.AggregatesRoots.Local", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -216,9 +151,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     b.Property<string>("IdentificadorExterno")
                         .HasColumnType("varchar(200)");
 
-                    b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
-
                     b.Property<int>("LotacaoMaxima")
                         .HasColumnType("int");
 
@@ -234,7 +166,30 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     b.ToTable("Local");
                 });
 
-            modelBuilder.Entity("Schedule.io.Core.Models.Usuario", b =>
+            modelBuilder.Entity("Schedule.io.Models.AggregatesRoots.TipoEvento", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("AtualizadoAs")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CriadoAs")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("varchar(120)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoEvento");
+                });
+
+            modelBuilder.Entity("Schedule.io.Models.AggregatesRoots.Usuario", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -249,40 +204,67 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(200)");
 
-                    b.Property<bool>("Inativo")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
                 });
 
-            modelBuilder.Entity("Schedule.io.Core.Models.AgendaUsuario", b =>
+            modelBuilder.Entity("Schedule.io.Models.ValueObjects.AgendaUsuario", b =>
                 {
-                    b.OwnsOne("Schedule.io.Core.Models.PermissoesAgenda", "Permissoes", b1 =>
-                        {
-                            b1.Property<string>("AgendaUsuarioId")
-                                .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("varchar(200)");
 
-                            b1.HasKey("AgendaUsuarioId");
+                    b.Property<string>("AgendaId")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("UsuarioId");
+
+                    b.ToTable("AgendaUsuario");
+                });
+
+            modelBuilder.Entity("Schedule.io.Models.ValueObjects.Convite", b =>
+                {
+                    b.Property<string>("EventoId")
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("EmailConvidado")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("EventoId");
+
+                    b.ToTable("Convite");
+                });
+
+            modelBuilder.Entity("Schedule.io.Models.ValueObjects.AgendaUsuario", b =>
+                {
+                    b.OwnsOne("Schedule.io.Models.ValueObjects.PermissoesAgenda", "Permissoes", b1 =>
+                        {
+                            b1.Property<string>("AgendaUsuarioUsuarioId")
+                                .HasColumnType("varchar(200)");
+
+                            b1.HasKey("AgendaUsuarioUsuarioId");
 
                             b1.ToTable("AgendaUsuario");
 
                             b1.WithOwner()
-                                .HasForeignKey("AgendaUsuarioId");
+                                .HasForeignKey("AgendaUsuarioUsuarioId");
                         });
                 });
 
-            modelBuilder.Entity("Schedule.io.Core.Models.Convite", b =>
+            modelBuilder.Entity("Schedule.io.Models.ValueObjects.Convite", b =>
                 {
-                    b.HasOne("Schedule.io.Core.Models.EventoAgenda", null)
-                        .WithMany("Convites")
-                        .HasForeignKey("EventoAgendaId");
-
-                    b.OwnsOne("Schedule.io.Core.Models.PermissoesConvite", "Permissoes", b1 =>
+                    b.OwnsOne("Schedule.io.Models.ValueObjects.PermissoesConvite", "Permissoes", b1 =>
                         {
-                            b1.Property<string>("ConviteId")
-                                .HasColumnType("nvarchar(450)");
+                            b1.Property<string>("ConviteEventoId")
+                                .HasColumnType("varchar(200)");
 
                             b1.Property<bool>("ConvidaUsuario")
                                 .HasColumnName("ConvidaUsuario")
@@ -296,48 +278,12 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                                 .HasColumnName("VeListaDeConvidados")
                                 .HasColumnType("bit");
 
-                            b1.HasKey("ConviteId");
+                            b1.HasKey("ConviteEventoId");
 
                             b1.ToTable("Convite");
 
                             b1.WithOwner()
-                                .HasForeignKey("ConviteId");
-                        });
-                });
-
-            modelBuilder.Entity("Schedule.io.Core.Models.EventoAgenda", b =>
-                {
-                    b.OwnsOne("Schedule.io.Core.Models.TipoEvento", "Tipo", b1 =>
-                        {
-                            b1.Property<string>("EventoAgendaId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<DateTime>("AtualizadoAs")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("CriadoAs")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("Descricao")
-                                .HasColumnName("Descricao")
-                                .HasColumnType("varchar(500)");
-
-                            b1.Property<string>("Id")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<bool>("Inativo")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Nome")
-                                .HasColumnName("Nome")
-                                .HasColumnType("varchar(120)");
-
-                            b1.HasKey("EventoAgendaId");
-
-                            b1.ToTable("EventoAgenda");
-
-                            b1.WithOwner()
-                                .HasForeignKey("EventoAgendaId");
+                                .HasForeignKey("ConviteEventoId");
                         });
                 });
 #pragma warning restore 612, 618

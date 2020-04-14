@@ -27,18 +27,18 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             _table = typeof(TEntity).ToString().Split(".").Last();
         }
 
-        public void Adicionar(TEntity obj)
+        public virtual void Adicionar(TEntity obj)
         {
             obj.DefinirDataCriacao();
             DbSet.Add(obj);
         }
 
-        public IList<TEntity> Listar()
+        public virtual IList<TEntity> Listar()
         {
             return ObterLista($"SELECT * FROM {_table} ").ToList();
         }
 
-        public void Atualizar(TEntity obj)
+        public virtual void Atualizar(TEntity obj)
         {
             obj.DefinirDataAtualizacao();
             DbSet.Update(obj);
@@ -49,7 +49,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             return Db.SaveChanges();
         }
 
-        public IList<TEntity> ObterLista(string query)
+        public virtual IList<TEntity> ObterLista(string query)
         {
             var list = new List<TEntity>();
 
@@ -73,9 +73,14 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             }
         }
 
-        public TEntity Obter(string query)
+        public virtual TEntity Obter(string query)
         {
             return ObterLista(query).FirstOrDefault();
+        }
+
+        public virtual void Excluir(TEntity obj)
+        {
+            DbSet.Remove(obj);
         }
 
         public void Dispose()
@@ -84,16 +89,9 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             GC.SuppressFinalize(this);
         }
 
-
         public void Inativar(TEntity obj)
         {
-            obj.DefinirDataAtualizacao();
-            DbSet.Update(obj);
-        }
-
-        public void Excluir(TEntity obj)
-        {
-            DbSet.Remove(obj);
+            throw new NotImplementedException();
         }
     }
 }

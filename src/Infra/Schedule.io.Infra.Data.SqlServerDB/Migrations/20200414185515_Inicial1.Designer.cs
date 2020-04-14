@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Schedule.io.Infra.Data.SqlServerDB;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    partial class AgendaContextModelSnapshot : ModelSnapshot
+    [Migration("20200414185515_Inicial1")]
+    partial class Inicial1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,12 +212,17 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
             modelBuilder.Entity("Schedule.io.Models.ValueObjects.AgendaUsuario", b =>
                 {
                     b.Property<string>("AgendaId")
+                        .IsRequired()
                         .HasColumnType("varchar(200)");
+
+                    b.Property<int?>("PermissoesAgendaUsuarioTempId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UsuarioId")
+                        .IsRequired()
                         .HasColumnType("varchar(200)");
 
-                    b.HasKey("AgendaId", "UsuarioId");
+                    b.HasIndex("PermissoesAgendaUsuarioTempId");
 
                     b.ToTable("AgendaUsuario");
                 });
@@ -244,6 +251,18 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     b.ToTable("Convite");
                 });
 
+            modelBuilder.Entity("Schedule.io.Models.ValueObjects.PermissoesAgenda", b =>
+                {
+                    b.Property<int>("AgendaUsuarioTempId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("AgendaUsuarioTempId");
+
+                    b.ToTable("PermissoesAgenda");
+                });
+
             modelBuilder.Entity("Schedule.io.Models.ValueObjects.PermissoesConvite", b =>
                 {
                     b.Property<int>("ConviteTempId")
@@ -266,6 +285,13 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     b.HasKey("ConviteTempId");
 
                     b.ToTable("PermissoesConvite");
+                });
+
+            modelBuilder.Entity("Schedule.io.Models.ValueObjects.AgendaUsuario", b =>
+                {
+                    b.HasOne("Schedule.io.Models.ValueObjects.PermissoesAgenda", "Permissoes")
+                        .WithMany()
+                        .HasForeignKey("PermissoesAgendaUsuarioTempId");
                 });
 
             modelBuilder.Entity("Schedule.io.Models.ValueObjects.Convite", b =>

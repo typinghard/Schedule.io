@@ -36,5 +36,10 @@ namespace Schedule.io.Infra.MongoDB
         {
             throw new NotImplementedException();
         }
+
+        public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

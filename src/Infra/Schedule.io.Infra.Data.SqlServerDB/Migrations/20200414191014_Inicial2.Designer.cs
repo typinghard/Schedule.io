@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Schedule.io.Infra.Data.SqlServerDB;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 {
     [DbContext(typeof(AgendaContext))]
-    partial class AgendaContextModelSnapshot : ModelSnapshot
+    [Migration("20200414191014_Inicial2")]
+    partial class Inicial2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,9 +215,10 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<string>("UsuarioId")
+                        .IsRequired()
                         .HasColumnType("varchar(200)");
 
-                    b.HasKey("AgendaId", "UsuarioId");
+                    b.HasKey("AgendaId");
 
                     b.ToTable("AgendaUsuario");
                 });
@@ -266,6 +269,22 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     b.HasKey("ConviteTempId");
 
                     b.ToTable("PermissoesConvite");
+                });
+
+            modelBuilder.Entity("Schedule.io.Models.ValueObjects.AgendaUsuario", b =>
+                {
+                    b.OwnsOne("Schedule.io.Models.ValueObjects.PermissoesAgenda", "Permissoes", b1 =>
+                        {
+                            b1.Property<string>("AgendaUsuarioAgendaId")
+                                .HasColumnType("varchar(200)");
+
+                            b1.HasKey("AgendaUsuarioAgendaId");
+
+                            b1.ToTable("AgendaUsuario");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AgendaUsuarioAgendaId");
+                        });
                 });
 
             modelBuilder.Entity("Schedule.io.Models.ValueObjects.Convite", b =>

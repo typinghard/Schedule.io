@@ -51,23 +51,13 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Property(c => c.Publico)
                 .HasColumnType("bit");
 
-
-            //builder.OwnsOne(c => c.Tipo, cm =>
-            //{
-            //    cm.Property(c => c.Nome)
-            //        .HasColumnName("Nome")
-            //        .HasColumnType("varchar(120)");
-
-            //    cm.Property(c => c.Descricao)
-            //        .HasColumnName("Descricao")
-            //        .HasColumnType("varchar(500)");
-            //});
-
-
             builder.Property(c => c.Frequencia)
                 .HasColumnType("int");
 
-            builder.ToTable("EventoAgenda");
+
+            builder.Ignore(c => c.Convites);
+
+            builder.ToTable("Evento");
         }
     }
 }

@@ -13,5 +13,14 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         {
             throw new System.NotImplementedException();
         }
+
+        public override Usuario Obter(string usuarioId)
+        {
+            var query = $@"SELECT * 
+                           FROM Usuario
+                           WHERE Id = '{usuarioId}'";
+
+            return base.Obter(query);
+        }
     }
 }

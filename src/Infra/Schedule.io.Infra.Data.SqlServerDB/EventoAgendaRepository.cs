@@ -10,21 +10,38 @@ using System.Linq;
 
 namespace Schedule.io.Infra.Data.SqlServerDB
 {
-    public class EventoRepository : Repository<Evento>, IEventoAgendaRepository
+    public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
     {
-        public EventoRepository(AgendaContext context) : base(context)
+        private readonly string convite_split = "convite_split";
+        private readonly string permissoesConvite_split = "permissoesConvite_split";
+        public EventoAgendaRepository(AgendaContext context) : base(context)
         {
 
         }
 
-        public void AdicionarConvite(Convite convite)
+        public override Evento Obter(string eventoId)
         {
-            throw new NotImplementedException();
+            var query = $@"SELECT e.*,
+	                              Id as {convite_split}, c.EventoId, c.UsuarioId, c.EmailConvidado, c.Status,
+	                              Id as {permissoesConvite_split}, pc.ModificaEvento, pc.ConvidaUsuario, pc.VeListaDeConvidados
+                           FROM Evento e
+                           INNER JOIN Convite c on e.Id = c.EventoId
+                           INNER JOIN PermissoesConvite pc on c.PermissoesConviteTempId = pc.ConviteTempId
+                           WHERE Id = '{eventoId}'";
+
+            return DapperEvento(query, string.Concat(convite_split, ",", permissoesConvite_split)).FirstOrDefault();   
         }
 
-        public void ExcluirConvite(Convite convite)
+        public override void Adicionar(Evento obj)
         {
-            throw new NotImplementedException();
+            base.Adicionar(obj);
+            Db.Convite.AddRange(obj.Convites);
+        }
+
+        public override void Excluir(Evento obj)
+        {
+            base.Excluir(obj);
+            Db.Convite.RemoveRange(obj.Convites);
         }
 
         public IList<Convite> ListarConvites(string eventoId)
@@ -92,9 +109,9 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                 try
                 {
                     con.Open();
-                    con.Query<Evento, TipoEvento, Evento>(
+                    con.Query<Evento, Convite, PermissoesConvite, Evento>(
                         query,
-                        (Evento, tipoEvento) =>
+                        (Evento, convite, permissoesConvite) =>
                         {
                             eventos.Add(Evento);
                             //eventos.Last().AtribuirTipo(tipoEvento);

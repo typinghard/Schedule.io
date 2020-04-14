@@ -4,9 +4,6 @@ using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Core.Data.EventSourcing;
 using Schedule.io.Infra.Data.SqlServerDB.EventSourcing;
 using Schedule.io.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Configs
 {
@@ -24,6 +21,8 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Configs
             services.AddScoped<IAgendaRepository, AgendaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ILocalRepository, LocalRepository>();
+            services.AddScoped<ITipoEventoRepository, TipoEventoRepository>();
+            services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
             services.AddScoped<IUnitOfWork, UoW.UnitOfWork>();
         }
     }

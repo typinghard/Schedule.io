@@ -25,6 +25,7 @@ namespace Schedule.io.Models.AggregatesRoots
             UsuarioIdCriador = idUsuarioDono;
             Titulo = titulo;
             _agendasUsuarios = new List<AgendaUsuario>();
+            _eventos = new List<string>();
 
             var resultadoValidacao = this.AgendaEhValida();
             if (!resultadoValidacao.IsValid)
@@ -33,7 +34,8 @@ namespace Schedule.io.Models.AggregatesRoots
 
         private Agenda()
         {
-
+            _agendasUsuarios = new List<AgendaUsuario>();
+            _eventos = new List<string>();
         }
 
         public void DefinirTitulo(string titulo)

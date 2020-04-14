@@ -29,13 +29,12 @@ namespace Schedule.io.Models.AggregatesRoots
         public bool Publico { get; private set; }
         public EnumFrequencia Frequencia { get; private set; }
 
-        public Evento(string agendaId, string usuarioIdCriador, string titulo, DateTime dataInicio, string idTipoEvento) 
+        public Evento(string agendaId, string usuarioIdCriador, string titulo, DateTime dataInicio)
         {
             this.AgendaId = agendaId;
             this.UsuarioIdCriador = usuarioIdCriador;
             this.Titulo = titulo;
             this.DataInicio = dataInicio;
-            this.IdTipoEvento = idTipoEvento;
             this.Frequencia = EnumFrequencia.Nao_Repete;
 
             this._convites = new List<Convite>();
@@ -96,7 +95,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void AdicionarConvite(Convite convite)
         {
-            convite.NovoConviteEhValido();
+            convite.ConviteEhValido();
             _convites.Add(convite);
         }
 
@@ -148,6 +147,20 @@ namespace Schedule.io.Models.AggregatesRoots
             this.DataFinal = DateTime.MinValue;
         }
 
+        public void DefinirDataFinal(DateTime? dataFinal)
+        {
+            if (DataInicio == DateTime.MinValue)
+            {
+                throw new ScheduleIoException("Por favor, escolha a data e hora inicial do evento.");
+            }
+
+            if (dataFinal.HasValue && dataFinal < DataInicio)
+            {
+                throw new ScheduleIoException("Por certifique-se de que a data inicial é maior que a data final do evento.");
+            }
+
+            DataFinal = dataFinal.GetValueOrDefault();
+        }
 
         public void DefinirDataLimiteConfirmacao(DateTime? dataLimiteConfirmacao)
         {

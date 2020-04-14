@@ -5,14 +5,15 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Configs
 {
     public class SqlServerDBConfig : IDataBaseConfig
     {
-        public SqlServerDBConfig(string connectionsString, string schemaName = "scheduleio")
+        /*,string schemaName = "scheduleio"*/
+        public SqlServerDBConfig(string connectionsString)
         {
             ConnectionsString = connectionsString;
-            SchemaName = schemaName;
+            //SchemaName = schemaName;
         }
 
         public string ConnectionsString { get; private set; }
-        public string SchemaName { get; private set; }
+        //public string SchemaName { get; private set; }
 
         public EDataBaseType GetDataBaseType()
         {

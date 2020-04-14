@@ -34,20 +34,8 @@ namespace Schedule.io.Validations.EventoAgendaValidations
                 .NotNull()
                 .WithMessage("{PropertyName} não pode ser nula!");
 
-            //RuleFor(e => e.IdTipoEvento)
-            //    .NotNull()
-            //    .NotEmpty()
-            //    .WithMessage("Por favor, certifique-se que digitou um Nome para o Tipo do Evento.")
-            //    .Length(2, 120).WithMessage("O Nome do Tipo do Evento deve ter entre 2 e 120 caracteres.");
-
-            //RuleFor(e => e.Tipo.Descricao)
-            //    .NotNull()
-            //    .NotEmpty()
-            //    .WithMessage("Por favor, certifique-se que digitou uma Descrição para o Tipo do Evento.")
-            //    .Length(2, 500).WithMessage("A Descrição do Tipo do Evento deve ter entre 2 e 500 caracteres.");
-
             RuleFor(e => e.QuantidadeMinimaDeUsuarios)
-              .GreaterThan(0)
+              .GreaterThanOrEqualTo(0)
               .WithMessage("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.");
 
             RuleFor(e => e.OcupaUsuario)

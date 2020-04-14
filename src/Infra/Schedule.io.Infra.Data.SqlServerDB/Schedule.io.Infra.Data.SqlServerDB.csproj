@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Schedule.io.Core\Schedule.io.Core.csproj" />
     <ProjectReference Include="..\..\Schedule.io\Schedule.io.csproj" />
   </ItemGroup>
 

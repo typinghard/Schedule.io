@@ -40,17 +40,14 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public DbSet<Agenda> Agenda { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<AgendaUsuario> AgendaUsuario { get; set; }
+        public DbSet<TipoEvento> TipoEvento { get; set; }
         public DbSet<Evento> Evento { get; set; }
         public DbSet<Convite> Convite { get; set; }
         public DbSet<Local> Local { get; set; }
-
         public DbSet<StoredEvent> StoredEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<StoredEvent>()
-            //    .ToTable(typeof(StoredEvent).Name, ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);
-
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AgendaContext).Assembly);
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -64,11 +61,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             optionsBuilder.UseSqlServer(((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).ConnectionsString);
 
             base.OnConfiguring(optionsBuilder);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

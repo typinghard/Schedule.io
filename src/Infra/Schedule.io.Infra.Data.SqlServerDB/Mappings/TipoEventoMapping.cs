@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Schedule.io.Models.AggregatesRoots;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
 {
-    public class AgendaMapping : IEntityTypeConfiguration<Agenda>
+    public class TipoEventoMapping : IEntityTypeConfiguration<TipoEvento>
     {
-        public void Configure(EntityTypeBuilder<Agenda> builder)
+        public void Configure(EntityTypeBuilder<TipoEvento> builder)
         {
             builder.HasKey(x => x.Id);
 
@@ -16,23 +19,14 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Property(c => c.AtualizadoAs)
                 .IsRequired();
 
-            builder.Property(c => c.UsuarioIdCriador)
-                .IsRequired();
-
-            builder.Property(c => c.Titulo)
+            builder.Property(c => c.Nome)
                 .IsRequired()
-                .HasColumnType("varchar(150)");
+                .HasColumnType("varchar(120)");
 
             builder.Property(c => c.Descricao)
                 .HasColumnType("varchar(500)");
 
-            builder.Property(c => c.Publico)
-                .HasColumnType("bit");
-
-            builder.Ignore(c => c.AgendasUsuarios);
-            builder.Ignore(c => c.Eventos);
-
-            builder.ToTable("Agenda");
+            builder.ToTable("TipoEvento");
         }
     }
 }

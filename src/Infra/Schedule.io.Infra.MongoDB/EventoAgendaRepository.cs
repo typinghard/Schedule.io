@@ -15,18 +15,6 @@ namespace Schedule.io.Infra.MongoDB
 
         }
 
-        public void AdicionarConvite(Convite convite)
-        {
-            Db.Convite.InsertOne(Db.Session, convite);
-            SalvarAlteracoes();
-        }
-
-        public void ExcluirConvite(Convite convite)
-        {
-            Db.Convite.DeleteOne(c => c.EventoId == convite.EventoId && c.EmailConvidado == convite.EmailConvidado);
-            SalvarAlteracoes();
-        }
-
         public IList<Convite> ListarConvites(string eventoId)
         {
             return Db.Convite

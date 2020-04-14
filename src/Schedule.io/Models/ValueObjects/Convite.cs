@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Schedule.io.Models.ValueObjects
 {
-    public class Convite 
+    public class Convite
     {
         public string EventoId { get; private set; }
         public string UsuarioId { get; private set; }
@@ -18,7 +18,7 @@ namespace Schedule.io.Models.ValueObjects
         public EnumStatusConviteEvento Status { get; private set; }
         public PermissoesConvite Permissoes { get; private set; }
 
-        public Convite(string eventoId, string usuarioId, string emailConvidado) 
+        public Convite(string eventoId, string emailConvidado, string usuarioId = null)
         {
             EventoId = eventoId;
             UsuarioId = usuarioId;
@@ -26,11 +26,15 @@ namespace Schedule.io.Models.ValueObjects
             Status = EnumStatusConviteEvento.Aguardando_Confirmacao;
             Permissoes = new PermissoesConvite();
 
-            var resultadoValidacao = this.NovoConviteEhValido();
+            var resultadoValidacao = this.ConviteEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
+        private Convite()
+        {
+
+        }
         public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())
@@ -66,7 +70,7 @@ namespace Schedule.io.Models.ValueObjects
             Status = status;
         }
 
-        public ValidationResult NovoConviteEhValido()
+        public ValidationResult ConviteEhValido()
         {
             return new NovoConviteValidation().Validate(this);
         }

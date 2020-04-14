@@ -13,17 +13,22 @@ namespace Schedule.io.Models.ValueObjects
     {
         public string AgendaId { get; protected set; }
         public string UsuarioId { get; protected set; }
-        public PermissoesAgenda Permissoes { get; protected set; }
+        //public PermissoesAgenda Permissoes { get; protected set; }
 
         public AgendaUsuario(string agendaId, string usuarioId) 
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;
-            Permissoes = new PermissoesAgenda();
+            //Permissoes = new PermissoesAgenda();
 
             var resultadoValidacao = this.AgendaUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private AgendaUsuario()
+        {
+           // Permissoes = new PermissoesAgenda();
         }
 
         public void DefinirUsuarioId(string usuarioId)

@@ -15,9 +15,12 @@ namespace Schedule.io.Validations.AgendaValidations
                 .NotEmpty()
                 .WithMessage("{PropertyName} não informado!");
 
-            RuleFor(e => e.UsuarioId)
+            RuleFor(e => e.EmailConvidado)
                 .NotEmpty()
-                .WithMessage("{PropertyName} não informado!");
+                .NotNull()
+                .WithMessage("E-mail do convite não informado!")
+                .EmailAddress()
+                .WithMessage("E-mail do convite inválido!");
 
             RuleFor(e => e.Status)
                 .NotNull()

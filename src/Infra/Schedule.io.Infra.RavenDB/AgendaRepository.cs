@@ -39,5 +39,10 @@ namespace Schedule.io.Infra.RavenDB
                 .Where(x => x.Id == agendaId)
                 .FirstOrDefault();
         }
+
+        public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

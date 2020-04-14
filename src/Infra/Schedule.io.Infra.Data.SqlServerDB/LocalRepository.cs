@@ -8,5 +8,14 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public LocalRepository(AgendaContext context) : base(context)
         {
         }
+
+        public override Local Obter(string localId)
+        {
+            var query = $@"SELECT * 
+                           FROM Local 
+                           WHERE Id = '{localId}'";
+
+            return base.Obter(query);
+        }
     }
 }

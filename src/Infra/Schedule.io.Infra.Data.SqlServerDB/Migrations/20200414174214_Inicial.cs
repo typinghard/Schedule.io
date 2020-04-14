@@ -7,9 +7,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "nuget");
-
             migrationBuilder.CreateTable(
                 name: "Agenda",
                 columns: table => new
@@ -17,10 +14,10 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     Id = table.Column<string>(nullable: false),
                     CriadoAs = table.Column<DateTime>(nullable: false),
                     AtualizadoAs = table.Column<DateTime>(nullable: false),
-                    Inativo = table.Column<bool>(nullable: false),
                     Titulo = table.Column<string>(type: "varchar(150)", nullable: false),
                     Descricao = table.Column<string>(type: "varchar(500)", nullable: true),
-                    Publico = table.Column<bool>(type: "bit", nullable: false)
+                    Publico = table.Column<bool>(type: "bit", nullable: false),
+                    UsuarioIdCriador = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,31 +28,44 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 name: "AgendaUsuario",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    CriadoAs = table.Column<DateTime>(nullable: false),
-                    AtualizadoAs = table.Column<DateTime>(nullable: false),
-                    Inativo = table.Column<bool>(nullable: false),
-                    AgendaId = table.Column<string>(type: "varchar(200)", nullable: false),
-                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: false)
+                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: false),
+                    AgendaId = table.Column<string>(type: "varchar(200)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AgendaUsuario", x => x.Id);
+                    table.PrimaryKey("PK_AgendaUsuario", x => x.UsuarioId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventoAgenda",
+                name: "Convite",
+                columns: table => new
+                {
+                    EventoId = table.Column<string>(type: "varchar(200)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: true),
+                    EmailConvidado = table.Column<string>(type: "varchar(200)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ModificaEvento = table.Column<bool>(type: "bit", nullable: true),
+                    ConvidaUsuario = table.Column<bool>(type: "bit", nullable: true),
+                    VeListaDeConvidados = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Convite", x => x.EventoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Evento",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     CriadoAs = table.Column<DateTime>(nullable: false),
                     AtualizadoAs = table.Column<DateTime>(nullable: false),
-                    Inativo = table.Column<bool>(nullable: false),
                     AgendaId = table.Column<string>(type: "varchar(200)", nullable: false),
-                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: false),
+                    UsuarioIdCriador = table.Column<string>(type: "varchar(200)", nullable: false),
+                    IdTipoEvento = table.Column<string>(nullable: true),
                     IdentificadorExterno = table.Column<string>(nullable: true),
                     Titulo = table.Column<string>(type: "varchar(150)", nullable: false),
-                    EventoAgenda_Descricao = table.Column<string>(type: "varchar(500)", nullable: true),
+                    Descricao = table.Column<string>(type: "varchar(500)", nullable: true),
                     LocalId = table.Column<string>(type: "varchar(200)", nullable: true),
                     DataInicio = table.Column<DateTime>(type: "datetime", nullable: false),
                     DataFinal = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -63,17 +73,11 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     QuantidadeMinimaDeUsuarios = table.Column<int>(type: "int", nullable: false),
                     OcupaUsuario = table.Column<bool>(nullable: false),
                     Publico = table.Column<bool>(type: "bit", nullable: false),
-                    Tipo_Id = table.Column<string>(nullable: true),
-                    Tipo_CriadoAs = table.Column<DateTime>(nullable: true),
-                    Tipo_AtualizadoAs = table.Column<DateTime>(nullable: true),
-                    Tipo_Inativo = table.Column<bool>(nullable: true),
-                    Nome = table.Column<string>(type: "varchar(120)", nullable: true),
-                    Descricao = table.Column<string>(type: "varchar(500)", nullable: true),
                     Frequencia = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventoAgenda", x => x.Id);
+                    table.PrimaryKey("PK_Evento", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,7 +87,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                     Id = table.Column<string>(nullable: false),
                     CriadoAs = table.Column<DateTime>(nullable: false),
                     AtualizadoAs = table.Column<DateTime>(nullable: false),
-                    Inativo = table.Column<bool>(nullable: false),
                     IdentificadorExterno = table.Column<string>(type: "varchar(200)", nullable: true),
                     Nome = table.Column<string>(type: "varchar(200)", nullable: false),
                     Descricao = table.Column<string>(type: "varchar(500)", nullable: true),
@@ -96,23 +99,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuario",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    CriadoAs = table.Column<DateTime>(nullable: false),
-                    AtualizadoAs = table.Column<DateTime>(nullable: false),
-                    Inativo = table.Column<bool>(nullable: false),
-                    Email = table.Column<string>(type: "varchar(200)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Usuario", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StoredEvent",
-                schema: "nuget",
+                name: "StoredEvents",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
@@ -123,41 +110,37 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StoredEvent", x => x.Id);
+                    table.PrimaryKey("PK_StoredEvents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Convite",
+                name: "TipoEvento",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     CriadoAs = table.Column<DateTime>(nullable: false),
                     AtualizadoAs = table.Column<DateTime>(nullable: false),
-                    Inativo = table.Column<bool>(nullable: false),
-                    EventoId = table.Column<string>(type: "varchar(200)", nullable: false),
-                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: true),
-                    EmailConvidado = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    ModificaEvento = table.Column<bool>(type: "bit", nullable: true),
-                    ConvidaUsuario = table.Column<bool>(type: "bit", nullable: true),
-                    VeListaDeConvidados = table.Column<bool>(type: "bit", nullable: true),
-                    EventoAgendaId = table.Column<string>(nullable: true)
+                    Nome = table.Column<string>(type: "varchar(120)", nullable: false),
+                    Descricao = table.Column<string>(type: "varchar(500)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Convite", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Convite_EventoAgenda_EventoAgendaId",
-                        column: x => x.EventoAgendaId,
-                        principalTable: "EventoAgenda",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_TipoEvento", x => x.Id);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Convite_EventoAgendaId",
-                table: "Convite",
-                column: "EventoAgendaId");
+            migrationBuilder.CreateTable(
+                name: "Usuario",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CriadoAs = table.Column<DateTime>(nullable: false),
+                    AtualizadoAs = table.Column<DateTime>(nullable: false),
+                    Email = table.Column<string>(type: "varchar(200)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuario", x => x.Id);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -172,17 +155,19 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 name: "Convite");
 
             migrationBuilder.DropTable(
+                name: "Evento");
+
+            migrationBuilder.DropTable(
                 name: "Local");
 
             migrationBuilder.DropTable(
+                name: "StoredEvents");
+
+            migrationBuilder.DropTable(
+                name: "TipoEvento");
+
+            migrationBuilder.DropTable(
                 name: "Usuario");
-
-            migrationBuilder.DropTable(
-                name: "StoredEvent",
-                schema: "nuget");
-
-            migrationBuilder.DropTable(
-                name: "EventoAgenda");
         }
     }
 }

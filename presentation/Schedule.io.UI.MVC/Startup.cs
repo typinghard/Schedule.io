@@ -42,11 +42,8 @@ namespace Schedule.io.UI.Web
             //                                                Configuration["RavenDB_Northwind:CertificadePath"]
             //                                                ));
 
-
-
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
-            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"], "nuget"));
-
+            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB_Equinox:ConnectionString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -41,7 +41,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                     .HasColumnType("bit");
             });
 
-
+            builder.HasNoKey();
             builder.ToTable("Convite");
         }
     }

@@ -8,6 +8,7 @@ using Schedule.io.Core.DomainObjects;
 using Schedule.io.Interfaces;
 using Schedule.io.Interfaces.Services;
 using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 
 namespace Schedule.io.UI.Web.Controllers
 {
@@ -19,16 +20,19 @@ namespace Schedule.io.UI.Web.Controllers
         IUsuarioService _usuarioService;
         ILocalService _localService;
         IEventoService _eventoService;
+        ITipoEventoService _tipoEventoService;
 
         public AgendaController(IAgendaService agendaService,
                                 IUsuarioService usuarioService,
                                 ILocalService localService,
-                                IEventoService eventoService)
+                                IEventoService eventoService,
+                                ITipoEventoService tipoEventoService)
         {
             _agendaService = agendaService;
             _usuarioService = usuarioService;
             _localService = localService;
             _eventoService = eventoService;
+            _tipoEventoService = tipoEventoService;
         }
 
 
@@ -37,7 +41,14 @@ namespace Schedule.io.UI.Web.Controllers
         {
             try
             {
-                var usuario = _usuarioService.Obter("adfada26-37c9-44f0-8d64-fb774d9b9c83");
+
+                //var usuario = new Usuario("nuss_donoagendaSqlServer@email.com");
+
+                //_usuarioService.Gravar(usuario);
+                var usuario = _usuarioService.Obter("c094155a-8dd9-4782-be55-07afa044b970");
+                var agenda = _agendaService.Obter("5bab7987-ee17-4b3e-a1ef-25517c3023f6");
+
+                //var usuario = _usuarioService.Obter("adfada26-37c9-44f0-8d64-fb774d9b9c83");
                 //var agenda = _agendaService.Obter("35fb8c94-a7c7-488f-80db-13312e0b7cf8");
 
                 //var eventos1 = _eventoService.Listar(agenda.Id);
@@ -55,14 +66,40 @@ namespace Schedule.io.UI.Web.Controllers
 
                 //_agendaService.Gravar(novaAgenda);
 
+                //var novaAgenda2 = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA2");
+                //agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(novaAgenda2.Id, usuario.Id);
+                //novaAgenda2.AdicionarAgendaDoUsuario(agendaUsuario);
+                //_agendaService.Gravar(novaAgenda2);
+
+                //_agendaService.Excluir(agenda.Id);
+
                 //var agendaExitente = _agendaService.Obter(novaAgenda.Id);
 
                 //agendaExitente.DefinirTitulo(agendaExitente.Titulo + " - ATUALIZADA!");
                 //agendaExitente.AdicionarAgendaDoUsuario(agendaUsuario);
                 //_agendaService.Gravar(agendaExitente);
 
-                var lista = _agendaService.Listar(usuario.Id);
+                //var lista = _agendaService.Listar(usuario.Id).ToList();
 
+                var tipoEvento = _tipoEventoService.Obter("b2854a98-b8b1-4c1b-8088-83a36e0482d0");
+
+                //var tipoEvento = new TipoEvento("TIPO TESTE", "descricao teste");
+                //_tipoEventoService.Gravar(tipoEvento);
+
+                //var evento = new Evento(agenda.Id, usuario.Id, "EVENTO SQL SERVER", DateTime.Now.AddDays(2), tipoEvento.Id);
+                //evento.DefinirDatas(DateTime.Now.AddDays(2), DateTime.Now.AddDays(2));
+
+                //_eventoService.Gravar(evento);
+
+                //var evento1 = new Evento(agenda.Id, usuario.Id, "EVENTO SQL SERVER", DateTime.Now.AddDays(3));
+                //evento1.DefinirDataFinal(DateTime.Now.AddDays(3));
+
+                //evento1.AdicionarConvite(new io.Models.ValueObjects.Convite(evento1.Id, usuario.Email, usuario.Id));
+                //evento1.AdicionarConvite(new Convite(evento1.Id, "emailconvidado@email.com", null));
+
+                //_eventoService.Gravar(evento1);
+
+                //var evento2 = _eventoService.Obter("");
 
                 return Content("Funcionou!");
             }

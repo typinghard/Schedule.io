@@ -28,23 +28,20 @@ namespace Schedule.io.Services
             _agendaRepository = agendaRepository;
         }
 
-        public Agenda Gravar(Agenda agenda)
+        public void Gravar(Agenda agenda)
         {
-            VerificaUsuario(agenda);
-
-            if (string.IsNullOrEmpty(agenda.Id) || !VerificaSeAgendaExiste(agenda))
-                return RegistrarAgenda(agenda);
+            var agendaQuery = _agendaRepository.Obter(agenda.Id);
+            if (agendaQuery == null)
+                Registrar(agenda);
             else
-                return AtualizarAgenda(agenda);
+                Atualizar(agenda);
+
+            ValidarComando();
         }
 
         public Agenda Obter(string agendaId)
         {
-            var agenda = RecuperaAgendaEValida(agendaId);
-
-            ValidarComando();
-
-            return agenda;
+            return _agendaRepository.Obter(agendaId);
         }
 
         public IEnumerable<Agenda> Listar()
@@ -67,7 +64,12 @@ namespace Schedule.io.Services
 
         public void Excluir(string agendaId)
         {
-            var agenda = RecuperaAgendaEValida(agendaId);
+            var agenda = _agendaRepository.Obter(agendaId);
+            if (agenda == null)
+            {
+                _bus.PublicarNotificacao(new DomainNotification("", "Agenda não encontrada!"));
+                ValidarComando();
+            }
 
             _agendaRepository.Excluir(agenda);
 
@@ -78,82 +80,31 @@ namespace Schedule.io.Services
         }
 
         #region Privados
-        private void VerificaUsuario(Agenda agenda)
+        private void Registrar(Agenda agenda)
         {
-            if (string.IsNullOrEmpty(agenda.UsuarioIdCriador))
-                throw new ScheduleIoException(new List<string>() { "Id do dono da agenda não informado!" });
-
-            if (!_usuarioRepository.VerificaSeUsuarioExiste(agenda.UsuarioIdCriador))
-                throw new ScheduleIoException(new List<string>() { "Usuário não encontrado!" });
-        }
-
-        private bool VerificaSeAgendaExiste(Agenda agenda)
-        {
-            return _agendaRepository.VerificaSeAgendaExiste(agenda.Id);
-        }
-
-        private Agenda RegistrarAgenda(Agenda agenda)
-        {
-            var novaAgenda = new Agenda(agenda.UsuarioIdCriador, agenda.Titulo);
-            novaAgenda.DefinirDescricao(agenda.Descricao);
-
-            if (agenda.Publico)
-                novaAgenda.TornarAgendaPublica();
-
-            _agendaRepository.Adicionar(novaAgenda);
+            _agendaRepository.Adicionar(agenda);
 
             if (Commit())
-            {
-                _bus.PublicarEvento(new AgendaRegistradaEvent(novaAgenda.Id, novaAgenda.UsuarioIdCriador, novaAgenda.Titulo, novaAgenda.Descricao, novaAgenda.Publico));
-
-                RegistrarAgendaUsuario(novaAgenda);
-            }
+                _bus.PublicarEvento(new AgendaRegistradaEvent(agenda.Id, agenda.UsuarioIdCriador, agenda.Titulo, agenda.Descricao, agenda.Publico));
 
             ValidarComando();
-
-            agenda = novaAgenda;
-
-            return agenda;
         }
 
-        private Agenda AtualizarAgenda(Agenda agenda)
+        private void Atualizar(Agenda agenda)
         {
-            var agendaAtualizar = _agendaRepository.Obter(agenda.Id);
-            agendaAtualizar.DefinirTitulo(agenda.Titulo);
-            agendaAtualizar.DefinirDescricao(agenda.Descricao);
-            //agenda.DefinirUsuarioIdCriador(agendaAtualizar.UsuarioIdCriador);
-
-            if (agenda.Publico)
-                agendaAtualizar.TornarAgendaPublica();
-            else
-                agendaAtualizar.TornarAgendaPrivado();
-
-            _agendaRepository.Atualizar(agendaAtualizar);
+            _agendaRepository.Atualizar(agenda);
 
             if (Commit())
-                _bus.PublicarEvento(new AgendaAtualizadaEvent(agendaAtualizar.Id, agendaAtualizar.UsuarioIdCriador, agendaAtualizar.Titulo, agendaAtualizar.Descricao, agendaAtualizar.Publico));
-
-            RegistrarAgendaUsuario(agendaAtualizar);
+                _bus.PublicarEvento(new AgendaAtualizadaEvent(agenda.Id, agenda.UsuarioIdCriador, agenda.Titulo, agenda.Descricao, agenda.Publico));
 
             ValidarComando();
-
-            return agendaAtualizar;
         }
 
         private void RegistrarAgendaUsuario(Agenda agenda)
         {
+            /*VAI SER REALZIADO NO REPOSITORY*/
             if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.UsuarioIdCriador) == null)
                 _agendaRepository.Gravar(new AgendaUsuario(agenda.Id, agenda.UsuarioIdCriador));
-        }
-
-        private Agenda RecuperaAgendaEValida(string agendaId)
-        {
-            var agenda = _agendaRepository.Obter(agendaId);
-
-            if (agenda == null)
-                throw new ScheduleIoException(new List<string>() { "Agenda não encontrada!" });
-
-            return agenda;
         }
         #endregion
     }

@@ -38,9 +38,10 @@ namespace Schedule.io.UI.Web
             services.AddMediatR(typeof(Startup));
             //services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
             //services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
-            //                                                Configuration["HavenDB_Northwind:Database"],
-            //                                                Configuration["HavenDB_Northwind:CertificadePath"]
+            //                                                Configuration["RavenDB_Northwind:Database"],
+            //                                                Configuration["RavenDB_Northwind:CertificadePath"]
             //                                                ));
+
 
 
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));

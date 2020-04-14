@@ -25,21 +25,20 @@ namespace Schedule.io.Services
             _tipoEventoRepository = tipoEventoRepository;
         }
 
-        public string Gravar(TipoEvento tipoEvento)
+        public void Gravar(TipoEvento tipoEvento)
         {
-            if (string.IsNullOrEmpty(tipoEvento.Id))
-                RegistrarTipoEvento(tipoEvento);
+            var tipoEventoQuery = _tipoEventoRepository.Obter(tipoEvento.Id);
+            if (tipoEventoQuery == null)
+                Registrar(tipoEvento);
             else
-                AtualizarTipoEvento(tipoEvento);
+                Atualizar(tipoEvento);
 
-            return tipoEvento.Id;
+            ValidarComando();
         }
 
         public TipoEvento Obter(string tipoEventoId)
         {
-            var tipoEvento = RecuperaTipoEventoEValida(tipoEventoId);
-            ValidarComando();
-            return tipoEvento;
+            return _tipoEventoRepository.Obter(tipoEventoId);
         }
 
         public IEnumerable<TipoEvento> Listar()
@@ -53,7 +52,12 @@ namespace Schedule.io.Services
 
         public void Excluir(string tipoEventoId)
         {
-            var tipoEvento = RecuperaTipoEventoEValida(tipoEventoId);
+            var tipoEvento = _tipoEventoRepository.Obter(tipoEventoId);
+            if (tipoEvento == null)
+            {
+                _bus.PublicarNotificacao(new DomainNotification("", "Tipo Evento não encontrado!"));
+                ValidarComando();
+            }
 
             _tipoEventoRepository.Excluir(tipoEvento);
 
@@ -64,45 +68,25 @@ namespace Schedule.io.Services
         }
 
         #region Privados
-        private TipoEvento RegistrarTipoEvento(TipoEvento tipoEvento)
+        private void Registrar(TipoEvento tipoEvento)
         {
-            var novoTipoEvento = new TipoEvento(tipoEvento.Nome, tipoEvento.Descricao);
-
-            _tipoEventoRepository.Adicionar(novoTipoEvento);
+            _tipoEventoRepository.Adicionar(tipoEvento);
 
             if (Commit())
-                _bus.PublicarEvento(new TipoEventoRegistradoEvent(novoTipoEvento.Id, novoTipoEvento.Nome, novoTipoEvento.Descricao));
+                _bus.PublicarEvento(new TipoEventoRegistradoEvent(tipoEvento.Id, tipoEvento.Nome, tipoEvento.Descricao));
 
             ValidarComando();
-
-            return novoTipoEvento;
         }
 
-        private TipoEvento AtualizarTipoEvento(TipoEvento tipoEvento)
+        private void Atualizar(TipoEvento tipoEvento)
         {
-            var atualizarTipoEvento = _tipoEventoRepository.Obter(tipoEvento.Id);
-            atualizarTipoEvento.DefinirNome(tipoEvento.Nome);
-            atualizarTipoEvento.DefinirDescricao(tipoEvento.Descricao);
-
-            _tipoEventoRepository.Atualizar(atualizarTipoEvento);
+            _tipoEventoRepository.Atualizar(tipoEvento);
 
             if (Commit())
-                _bus.PublicarEvento(new TipoEventoAtualizadoEvent(atualizarTipoEvento.Id, atualizarTipoEvento.Nome, atualizarTipoEvento.Descricao));
+                _bus.PublicarEvento(new TipoEventoAtualizadoEvent(tipoEvento.Id, tipoEvento.Nome, tipoEvento.Descricao));
 
             ValidarComando();
-
-            return atualizarTipoEvento;
         }
-
-        private TipoEvento RecuperaTipoEventoEValida(string tipoEventoId)
-        {
-            var tipoEvento = _tipoEventoRepository.Obter(tipoEventoId);
-
-            if (tipoEvento == null)
-                throw new ScheduleIoException(new List<string>() { "Tipo Evento não encontrado!" });
-
-            return tipoEvento;
-        } 
         #endregion
     }
 }

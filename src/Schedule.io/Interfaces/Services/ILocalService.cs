@@ -5,7 +5,7 @@ namespace Schedule.io.Interfaces.Services
 {
     public interface ILocalService
     {
-        string Gravar(Local local);
+        void Gravar(Local local);
         Local Obter(string localId);
         IEnumerable<Local> Listar();
         void Excluir(string localId);

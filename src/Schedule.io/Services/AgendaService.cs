@@ -99,13 +99,6 @@ namespace Schedule.io.Services
 
             ValidarComando();
         }
-
-        private void RegistrarAgendaUsuario(Agenda agenda)
-        {
-            /*VAI SER REALZIADO NO REPOSITORY*/
-            if (_agendaRepository.ObterAgendaPorUsuarioId(agenda.Id, agenda.UsuarioIdCriador) == null)
-                _agendaRepository.Gravar(new AgendaUsuario(agenda.Id, agenda.UsuarioIdCriador));
-        }
         #endregion
     }
 }

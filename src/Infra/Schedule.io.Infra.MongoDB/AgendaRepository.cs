@@ -15,12 +15,6 @@ namespace Schedule.io.Infra.MongoDB
         {
         }
 
-        public void Gravar(AgendaUsuario obj)
-        {
-            Db.AgendaUsuario.InsertOne(Db.Session, obj);
-            SalvarAlteracoes();
-        }
-
         public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
         {
             return Db.Agenda

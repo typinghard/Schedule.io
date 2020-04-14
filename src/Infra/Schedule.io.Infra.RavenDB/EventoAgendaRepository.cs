@@ -17,20 +17,6 @@ namespace Schedule.io.Infra.RavenDB
 
         }
 
-        public void AdicionarConvite(Convite convite)
-        {
-            var sessaoConvite = (IDocumentSession)convite;
-            sessaoConvite.Store(convite);
-            sessaoConvite.SaveChanges();
-        }
-
-        public void ExcluirConvite(Convite convite)
-        {
-            var sessaoConvite = (IDocumentSession)convite;
-            sessaoConvite.Delete(convite);
-            sessaoConvite.SaveChanges();
-        }
-
         public IList<Convite> ListarConvites(string eventoId)
         {
             return Sessao

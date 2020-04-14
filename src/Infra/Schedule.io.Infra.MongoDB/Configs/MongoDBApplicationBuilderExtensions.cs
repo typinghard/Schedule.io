@@ -16,13 +16,13 @@ namespace Schedule.io.Infra.MongoDB.Configs
         {
             DataBaseConfigurationHelper.SetDataBaseConfig(mongoDBConfig);
 
-            services.AddScoped<AgendaContext>();
+            services.AddScoped<ScheduleioContext>();
             services.AddScoped<IEventSourcingRepository, EventSourcingRepository>();
+
             services.AddScoped<IAgendaRepository, AgendaRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            //services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
-            //services.AddScoped<IConviteRepository, ConviteRepository>();
+            services.AddScoped<ITipoEventoRepository, TipoEventoRepository>();
             services.AddScoped<ILocalRepository, LocalRepository>();
             services.AddScoped<IUnitOfWork, UoW.UnitOfWork>();
         }

@@ -10,7 +10,7 @@ namespace Schedule.io.Infra.MongoDB
 {
     public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
     {
-        public EventoAgendaRepository(AgendaContext context) : base(context)
+        public EventoAgendaRepository(ScheduleioContext context) : base(context)
         {
 
         }
@@ -18,13 +18,11 @@ namespace Schedule.io.Infra.MongoDB
         public void AdicionarConvite(Convite convite)
         {
             Db.Convite.InsertOne(Db.Session, convite);
-            SalvarAlteracoes();
         }
 
         public void ExcluirConvite(Convite convite)
         {
             Db.Convite.DeleteOne(c => c.EventoId == convite.EventoId && c.EmailConvidado == convite.EmailConvidado);
-            SalvarAlteracoes();
         }
 
         public IList<Convite> ListarConvites(string eventoId)
@@ -46,8 +44,7 @@ namespace Schedule.io.Infra.MongoDB
             return Db.Evento
                 .Find(x => x.AgendaId == agendaId
                       && x.DataInicio >= dataInicio
-                      && (x.DataFinal == null || x.DataFinal <= dataFinal)
-                     )
+                      && (x.DataFinal == null || x.DataFinal <= dataFinal))
                 .ToList();
         }
 

@@ -8,9 +8,9 @@ namespace Schedule.io.Infra.MongoDB.UoW
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AgendaContext _context;
+        private readonly ScheduleioContext _context;
 
-        public UnitOfWork(AgendaContext context)
+        public UnitOfWork(ScheduleioContext context)
         {
             _context = context;
 

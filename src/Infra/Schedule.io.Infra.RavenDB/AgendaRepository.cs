@@ -19,7 +19,6 @@ namespace Schedule.io.Infra.RavenDB
         public void Gravar(AgendaUsuario agendaUsuario)
         {
             _session.Store(agendaUsuario);
-            _session.SaveChanges();
         }
 
         public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
@@ -32,17 +31,9 @@ namespace Schedule.io.Infra.RavenDB
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
-            var agendaUsuario = Sessao
-                 .Query<AgendaUsuario>()
-                 .Where(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
-                 .FirstOrDefault();
-
-            if (agendaUsuario == null)
-                return null;
-
-            return Sessao
-                .Query<Agenda>()
-                .Where(x => x.Id == agendaId)
+            return Sessao.Query<Agenda>()
+                .Where(a => a.Usuarios.Any(y => y.UsuarioId == usuarioId)
+                         && a.Id == agendaId)
                 .FirstOrDefault();
         }
 
@@ -50,8 +41,7 @@ namespace Schedule.io.Infra.RavenDB
         {
             return Sessao
                 .Query<Agenda>()
-                .Where(x => x.Id == agendaId)
-                .FirstOrDefault() == null ? false : true;
+                .Any(x => x.Id == agendaId);
         }
     }
 }

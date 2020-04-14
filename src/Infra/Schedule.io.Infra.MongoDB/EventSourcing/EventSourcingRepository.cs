@@ -11,11 +11,11 @@ namespace Schedule.io.Infra.MongoDB.EventSourcing
 {
     public class EventSourcingRepository : IEventSourcingRepository
     {
-        protected AgendaContext _agendaContext { get; private set; }
+        protected ScheduleioContext _agendaContext { get; private set; }
         protected IMongoCollection<StoredEvent> _collection { get; private set; }
         protected string _collectionName { get; private set; }
 
-        public EventSourcingRepository(AgendaContext agendaContext)
+        public EventSourcingRepository(ScheduleioContext agendaContext)
         {
             _agendaContext = agendaContext;
             setCollectionName();

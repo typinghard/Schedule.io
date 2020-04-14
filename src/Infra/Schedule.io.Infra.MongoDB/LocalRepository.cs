@@ -9,7 +9,7 @@ namespace Schedule.io.Infra.MongoDB
 {
     public class LocalRepository : Repository<Local>, ILocalRepository
     {
-        public LocalRepository(AgendaContext context) : base(context)
+        public LocalRepository(ScheduleioContext context) : base(context)
         {
         }
     }

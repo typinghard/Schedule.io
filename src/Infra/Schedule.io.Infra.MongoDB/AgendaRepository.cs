@@ -6,12 +6,13 @@ using System.Text;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.ValueObjects;
+using System.Linq;
 
 namespace Schedule.io.Infra.MongoDB
 {
     public class AgendaRepository : Repository<Agenda>, IAgendaRepository
     {
-        public AgendaRepository(AgendaContext context) : base(context)
+        public AgendaRepository(ScheduleioContext context) : base(context)
         {
         }
 
@@ -30,12 +31,12 @@ namespace Schedule.io.Infra.MongoDB
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
-            var agendaUsuario = Db.AgendaUsuario.Find(c => c.AgendaId == agendaId && c.UsuarioId == usuarioId).FirstOrDefault();
+            return Db.Agenda.Find(a => a.Usuarios.Any(u => u.UsuarioId == usuarioId) && a.Id == agendaId).FirstOrDefault();
+        }
 
-            if (agendaUsuario == null)
-                return null;
-
-            return Db.Agenda.Find(x => x.Id == agendaUsuario.AgendaId).FirstOrDefault();
+        public bool VerificaSeAgendaExiste(string agendaId)
+        {
+            return Db.Agenda.CountDocuments(a => a.Id == agendaId) > 0;
         }
     }
 }

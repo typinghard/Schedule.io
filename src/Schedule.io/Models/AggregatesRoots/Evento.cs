@@ -197,7 +197,6 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Frequencia = frequencia;
         }
 
-
         public ValidationResult EventoAgendaEhValido()
         {
             return new EventoAgendaValidation().Validate(this);

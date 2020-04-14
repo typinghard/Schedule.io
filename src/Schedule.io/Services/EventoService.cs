@@ -99,7 +99,7 @@ namespace Schedule.io.Services
 
         private Evento RegistrarEvento(Evento evento)
         {
-            var novoEvento = new Evento(Guid.NewGuid().ToString(), evento.AgendaId, evento.UsuarioIdCriador, evento.Titulo, evento.DataInicio, evento.IdTipoEvento);
+            var novoEvento = new Evento(evento.AgendaId, evento.UsuarioIdCriador, evento.Titulo, evento.DataInicio, evento.IdTipoEvento);
 
             novoEvento.DefinirIdentificadorExterno(evento.IdentificadorExterno);
             novoEvento.DefinirDescricao(evento.Descricao);

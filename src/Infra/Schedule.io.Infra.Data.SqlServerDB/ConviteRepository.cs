@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Schedule.io.Core.Interfaces;
 using Schedule.io.Core.Models;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -26,7 +27,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                                     FROM Convite 
                                     WHERE
                                     EventoId = '{eventoId}'
-                                    and {_inativoFalse}";
+                                    ";
 
             using (var con = new SqlConnection(_connectionString))
             {

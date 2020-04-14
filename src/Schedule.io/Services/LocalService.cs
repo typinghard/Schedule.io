@@ -67,7 +67,7 @@ namespace Schedule.io.Services
         #region Privados
         private Local RegistrarLocal(Local local)
         {
-            var novoLocal = new Local(Guid.NewGuid().ToString(), local.Nome);
+            var novoLocal = new Local(local.Nome);
             novoLocal.DefinirDescricao(local.Descricao);
             novoLocal.DefinirIdentificadorExterno(local.IdentificadorExterno);
             novoLocal.DefinirLotacaoMaxima(local.LotacaoMaxima);

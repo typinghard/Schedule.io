@@ -2,19 +2,15 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Schedule.io.Core.Core.Data;
-using Schedule.io.Core.Core.Data.Configurations;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Infra.Data.SqlServerDB.Configs;
+using Schedule.io.Core.Data;
+using Schedule.io.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Schedule.io.Infra.Data.SqlServerDB
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {
         protected readonly AgendaContext Db;
         protected readonly DbSet<TEntity> DbSet;
@@ -29,8 +25,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             DbSet = db.Set<TEntity>();
             _connectionString = Db.Database.GetDbConnection().ConnectionString;
             _table = typeof(TEntity).ToString().Split(".").Last();
-
-            _inativoFalse = $"Inativo = {0}";
         }
 
         public void Adicionar(TEntity obj)
@@ -39,19 +33,9 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             DbSet.Add(obj);
         }
 
-        public IList<TEntity> ObterTodosAtivos()
+        public IList<TEntity> Listar()
         {
-            return ObterLista($"SELECT * FROM {_table} WHERE Inativo = {0}").ToList();
-        }
-
-        public TEntity ObterPorId(string id)
-        {
-            return Obter($"SELECT * FROM {_table} WHERE Id = '{id}' and Inativo = {0}");
-        }
-        public void Remover(TEntity obj)
-        {
-            obj.Inativar();
-            DbSet.Update(obj);
+            return ObterLista($"SELECT * FROM {_table} ").ToList();
         }
 
         public void Atualizar(TEntity obj)
@@ -100,9 +84,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             GC.SuppressFinalize(this);
         }
 
-        public void ForcarDelecao(string id)
+
+        public void Inativar(TEntity obj)
         {
-            throw new NotImplementedException();
+            obj.DefinirDataAtualizacao();
+            DbSet.Update(obj);
+        }
+
+        public void Excluir(TEntity obj)
+        {
+            DbSet.Remove(obj);
         }
     }
 }

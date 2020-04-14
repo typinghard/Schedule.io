@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Schedule.io.Core.Core.Data.Configurations;
-using Schedule.io.Core.Core.Data.EventSourcing;
-using Schedule.io.Core.Models;
+using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Core.Data.EventSourcing;
 using Schedule.io.Infra.Data.SqlServerDB.Configs;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Data.Common;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public DbSet<Agenda> Agenda { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<AgendaUsuario> AgendaUsuario { get; set; }
-        public DbSet<EventoAgenda> EventoAgenda { get; set; }
+        public DbSet<Evento> Evento { get; set; }
         public DbSet<Convite> Convite { get; set; }
         public DbSet<Local> Local { get; set; }
 

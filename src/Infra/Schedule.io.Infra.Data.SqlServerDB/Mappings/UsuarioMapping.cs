@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Schedule.io.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Schedule.io.Models.AggregatesRoots;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
 {
@@ -17,9 +14,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                 .IsRequired();
 
             builder.Property(c => c.AtualizadoAs)
-                .IsRequired();
-
-            builder.Property(c => c.Inativo)
                 .IsRequired();
 
             builder.Property(c => c.Email)

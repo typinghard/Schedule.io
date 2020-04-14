@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Schedule.io.Core.Interfaces;
 using Schedule.io.Core.Models;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                              FROM {_table}  
                              WHERE AgendaId = '{agendaId}'
                              and UsuarioId = '{usuarioId}'
-                             and {_inativoFalse}
+                             
             ");
         }
     }

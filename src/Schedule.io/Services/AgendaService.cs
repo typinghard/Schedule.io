@@ -95,12 +95,6 @@ namespace Schedule.io.Services
         private Agenda RegistrarAgenda(Agenda agenda)
         {
             var novaAgenda = new Agenda(agenda.UsuarioIdCriador, agenda.Titulo);
-
-            if (string.IsNullOrEmpty(agenda.Id) || Guid.Parse(agenda.Id) == Guid.Empty)
-                novaAgenda.DefinirId(Guid.NewGuid().ToString());
-            else
-                novaAgenda.DefinirId(agenda.Id);
-
             novaAgenda.DefinirDescricao(agenda.Descricao);
 
             if (agenda.Publico)

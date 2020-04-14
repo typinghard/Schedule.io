@@ -1,15 +1,11 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Schedule.io.Core.Core.Data.Configurations;
-using Schedule.io.Core.Core.Data.EventSourcing;
-using Schedule.io.Core.Core.Messages;
-using Schedule.io.Infra.Data.SqlServerDB.Configs;
+using Schedule.io.Core.Data.EventSourcing;
+using Schedule.io.Core.Messages;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.EventSourcing
 {

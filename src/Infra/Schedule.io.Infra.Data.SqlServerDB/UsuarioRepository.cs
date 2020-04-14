@@ -1,8 +1,5 @@
-﻿using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Schedule.io.Interfaces.Repositories;
+using Schedule.io.Models.AggregatesRoots;
 
 namespace Schedule.io.Infra.Data.SqlServerDB
 {
@@ -10,6 +7,11 @@ namespace Schedule.io.Infra.Data.SqlServerDB
     {
         public UsuarioRepository(AgendaContext context) : base(context)
         {
+        }
+
+        public bool VerificaSeUsuarioExiste(string usuarioId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

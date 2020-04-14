@@ -1,4 +1,4 @@
-﻿using Schedule.io.Core.Interfaces;
+﻿using Schedule.io.Interfaces.Repositories;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.UoW
 {

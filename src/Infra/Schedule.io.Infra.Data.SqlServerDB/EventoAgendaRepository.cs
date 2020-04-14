@@ -1,24 +1,39 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
-using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Models;
 using Schedule.io.Infra.Data.SqlServerDB.Extensions;
+using Schedule.io.Interfaces.Repositories;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Infra.Data.SqlServerDB
 {
-    public class EventoAgendaRepository : Repository<EventoAgenda>, IEventoAgendaRepository
+    public class EventoRepository : Repository<Evento>, IEventoAgendaRepository
     {
-        public EventoAgendaRepository(AgendaContext context) : base(context)
+        public EventoRepository(AgendaContext context) : base(context)
         {
 
         }
 
-        public IList<EventoAgenda> ObterEventosDaAgenda(string agendaId)
+        public void AdicionarConvite(Convite convite)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirConvite(Convite convite)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Convite> ListarConvites(string eventoId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public IList<Evento> ListarEventosDaAgenda(string agendaId)
         {
 
             var tipo_split = "tipo_split";
@@ -28,13 +43,13 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                                  FROM {_table}  
                                  WHERE
                                  AgendaId = '{agendaId}'
-                                 and {_inativoFalse}
+                                 
             ";
 
-            return DapperEventoAgenda(query, tipo_split);
+            return DapperEvento(query, tipo_split);
         }
 
-        public IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
             var tipo_split = "tipo_split";
             var query = @$"
@@ -44,14 +59,14 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                                  WHERE
                                  AgendaId = '{agendaId}'
                                  and DataInicio between '{dataInicio.FormataDataSql(true)}'and '{dataFinal.FormataDataSql()}'
-                                 and {_inativoFalse}
+                                 
             ";
 
-            return DapperEventoAgenda(query, tipo_split);
+            return DapperEvento(query, tipo_split);
 
         }
 
-        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
             var tipo_split = "tipo_split";
             var query = @$"
@@ -61,29 +76,29 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                                  WHERE
                                  AgendaId = '{agendaId}'
                                  and UsuarioId = '{usuarioId}'
-                                 and {_inativoFalse}
+                                 
             ";
 
 
-            return DapperEventoAgenda(query, tipo_split);
+            return DapperEvento(query, tipo_split);
 
         }
 
-        private IList<EventoAgenda> DapperEventoAgenda(string query, string split)
+        private IList<Evento> DapperEvento(string query, string split)
         {
-            var eventos = new List<EventoAgenda>();
+            var eventos = new List<Evento>();
             using (var con = new SqlConnection(_connectionString))
             {
                 try
                 {
                     con.Open();
-                    con.Query<EventoAgenda, TipoEvento, EventoAgenda>(
+                    con.Query<Evento, TipoEvento, Evento>(
                         query,
-                        (eventoAgenda, tipoEvento) =>
+                        (Evento, tipoEvento) =>
                         {
-                            eventos.Add(eventoAgenda);
-                            eventos.Last().AtribuirTipo(tipoEvento);
-                            return eventoAgenda;
+                            eventos.Add(Evento);
+                            //eventos.Last().AtribuirTipo(tipoEvento);
+                            return Evento;
                         },
                         splitOn: split);
                 }

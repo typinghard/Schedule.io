@@ -66,7 +66,7 @@ namespace Schedule.io.Services
         #region Privados
         private TipoEvento RegistrarTipoEvento(TipoEvento tipoEvento)
         {
-            var novoTipoEvento = new TipoEvento(Guid.NewGuid().ToString(), tipoEvento.Nome, tipoEvento.Descricao);
+            var novoTipoEvento = new TipoEvento(tipoEvento.Nome, tipoEvento.Descricao);
 
             _tipoEventoRepository.Adicionar(novoTipoEvento);
 

@@ -37,5 +37,10 @@ namespace Schedule.io.Infra.MongoDB
 
             return Db.Agenda.Find(x => x.Id == agendaUsuario.AgendaId).FirstOrDefault();
         }
+
+        public bool VerificaSeAgendaExiste(string agendaId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

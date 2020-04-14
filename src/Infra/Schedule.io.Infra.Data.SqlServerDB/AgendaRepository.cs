@@ -1,5 +1,7 @@
-﻿using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Models;
+﻿
+using Schedule.io.Interfaces.Repositories;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +12,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB
     {
         public AgendaRepository(AgendaContext context) : base(context)
         {
+        }
+
+        public void Gravar(AgendaUsuario agendaUsuario)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
+        {
+            throw new NotImplementedException();
         }
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
@@ -24,6 +36,11 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             ");
 
 
+        }
+
+        public bool VerificaSeAgendaExiste(string agendaId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

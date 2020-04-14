@@ -1,15 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Schedule.io.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Schedule.io.Models.AggregatesRoots;
 
 namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
 {
-    public class EventoAgendaMapping : IEntityTypeConfiguration<EventoAgenda>
+    public class EventoAgendaMapping : IEntityTypeConfiguration<Evento>
     {
-        public void Configure(EntityTypeBuilder<EventoAgenda> builder)
+        public void Configure(EntityTypeBuilder<Evento> builder)
         {
             builder.HasKey(c => c.Id);
 
@@ -19,14 +16,12 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Property(c => c.AtualizadoAs)
                 .IsRequired();
 
-            builder.Property(c => c.Inativo)
-                .IsRequired();
 
             builder.Property(c => c.AgendaId)
                 .IsRequired()
                 .HasColumnType("varchar(200)");
 
-            builder.Property(c => c.UsuarioId)
+            builder.Property(c => c.UsuarioIdCriador)
                 .IsRequired()
                 .HasColumnType("varchar(200)");
 
@@ -57,16 +52,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                 .HasColumnType("bit");
 
 
-            builder.OwnsOne(c => c.Tipo, cm =>
-            {
-                cm.Property(c => c.Nome)
-                    .HasColumnName("Nome")
-                    .HasColumnType("varchar(120)");
+            //builder.OwnsOne(c => c.Tipo, cm =>
+            //{
+            //    cm.Property(c => c.Nome)
+            //        .HasColumnName("Nome")
+            //        .HasColumnType("varchar(120)");
 
-                cm.Property(c => c.Descricao)
-                    .HasColumnName("Descricao")
-                    .HasColumnType("varchar(500)");
-            });
+            //    cm.Property(c => c.Descricao)
+            //        .HasColumnName("Descricao")
+            //        .HasColumnType("varchar(500)");
+            //});
 
 
             builder.Property(c => c.Frequencia)

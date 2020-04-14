@@ -21,7 +21,7 @@ namespace Schedule.io.Models.ValueObjects
             UsuarioId = usuarioId;
             Permissoes = new PermissoesAgenda();
 
-            var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
+            var resultadoValidacao = this.AgendaUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -47,7 +47,7 @@ namespace Schedule.io.Models.ValueObjects
             AgendaId = agendaId;
         }
 
-        public ValidationResult NovaAgendaUsuarioEhValido()
+        public ValidationResult AgendaUsuarioEhValido()
         {
             return new AgendaUsuarioValidation().Validate(this);
         }

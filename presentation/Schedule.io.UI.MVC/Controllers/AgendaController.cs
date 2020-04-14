@@ -49,13 +49,17 @@ namespace Schedule.io.UI.Web.Controllers
 
                 //var local = _localService.Listar();
 
-                var novaAgenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
-                _agendaService.Gravar(novaAgenda);
+                //var novaAgenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
+                //var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(novaAgenda.Id, usuario.Id);
+                //novaAgenda.AdicionarAgendaDoUsuario(agendaUsuario);
 
-                var agendaExitente = _agendaService.Obter(novaAgenda.Id);
+                //_agendaService.Gravar(novaAgenda);
 
-                agendaExitente.DefinirTitulo(agendaExitente.Titulo + " - ATUALIZADA!");
-                _agendaService.Gravar(agendaExitente);
+                //var agendaExitente = _agendaService.Obter(novaAgenda.Id);
+
+                //agendaExitente.DefinirTitulo(agendaExitente.Titulo + " - ATUALIZADA!");
+                //agendaExitente.AdicionarAgendaDoUsuario(agendaUsuario);
+                //_agendaService.Gravar(agendaExitente);
 
                 var lista = _agendaService.Listar(usuario.Id);
 

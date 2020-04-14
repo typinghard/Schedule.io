@@ -29,11 +29,11 @@ namespace Schedule.io.Infra.RavenDB.Configs
                 .AddRavenDbSession();
 
             services.AddScoped<IEventSourcingRepository, EventSourcingRepository>();
+
             services.AddScoped<IAgendaRepository, AgendaRepository>();
+            services.AddScoped<ITipoEventoRepository, TipoEventoRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            //services.AddScoped<IAgendaUsuarioRepository, AgendaUsuarioRepository>();
             services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
-            //services.AddScoped<IConviteRepository, ConviteRepository>();
             services.AddScoped<ILocalRepository, LocalRepository>();
             services.AddScoped<IUnitOfWork, UoW.UnitOfWork>();
         }

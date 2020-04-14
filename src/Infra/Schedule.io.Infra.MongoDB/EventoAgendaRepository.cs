@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
+using Schedule.io.Infra.MongoDB.Configs;
 
 namespace Schedule.io.Infra.MongoDB
 {
     public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
     {
-        public EventoAgendaRepository(AgendaContext context) : base(context)
+        public EventoAgendaRepository(ScheduleioContext context) : base(context)
         {
 
         }
@@ -34,8 +35,7 @@ namespace Schedule.io.Infra.MongoDB
             return Db.Evento
                 .Find(x => x.AgendaId == agendaId
                       && x.DataInicio >= dataInicio
-                      && (x.DataFinal == null || x.DataFinal <= dataFinal)
-                     )
+                      && (x.DataFinal == null || x.DataFinal <= dataFinal))
                 .ToList();
         }
 

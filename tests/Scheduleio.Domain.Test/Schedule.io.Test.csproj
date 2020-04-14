@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Testes Unitários\Services\**" />
+    <EmbeddedResource Remove="Testes Unitários\Services\**" />
+    <None Remove="Testes Unitários\Services\**" />
+    <SpecFlowFeatureFiles Remove="Testes Unitários\Services\**" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Testes Unitários\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Testes Unitários\Models\AgendaTest.cs" />
     <Compile Remove="Testes Unitários\Models\AgendaUsuarioTest.cs" />
     <Compile Remove="Testes Unitários\Models\ConviteTest.cs" />
@@ -40,7 +48,6 @@
 
   <ItemGroup>
     <Folder Include="Testes Unitários\Models\" />
-    <Folder Include="Testes Unitários\Services\" />
   </ItemGroup>
 
 </Project>

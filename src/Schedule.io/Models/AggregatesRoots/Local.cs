@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using Schedule.io.Core.DomainObjects;
 using System;
 using System.Linq;
 using Schedule.io.Core.DomainObjects;

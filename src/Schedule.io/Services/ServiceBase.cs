@@ -37,7 +37,7 @@ namespace Schedule.io.Services
             if (_notifications.TemNotificacao()) return false;
             if (_uow.Commit()) return true;
 
-            _bus.PublicarNotificacao(new DomainNotification("Commit", "We had a problem during saving your data."));
+            _bus.PublicarNotificacao(new DomainNotification("", "Houve um problema durante a gravação dos dados."));
             return false;
         }
 

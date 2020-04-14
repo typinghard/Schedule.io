@@ -16,13 +16,18 @@ namespace Schedule.io.Models.AggregatesRoots
         public bool Reserva { get; private set; }
         public int LotacaoMaxima { get; private set; }
 
-        public Local(string id, string nomeLocal) : base(id)
+        public Local(string nomeLocal)
         {
             this.Nome = nomeLocal;
 
             var resultadoValidacao = this.LocalEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private Local()
+        {
+
         }
 
         public void DefinirNomeLocal(string nomeLocal)

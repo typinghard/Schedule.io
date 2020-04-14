@@ -25,23 +25,20 @@ namespace Schedule.io.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public string Gravar(Usuario usuario)
+        public void Gravar(Usuario usuario)
         {
-            if (string.IsNullOrEmpty(usuario.Id))
-                RegistrarUsuario(usuario);
+            var usuarioQuery = _usuarioRepository.Obter(usuario.Id);
+            if (usuarioQuery == null)
+                Registrar(usuario);
             else
-                AtualizarUsuario(usuario);
+                Atualizar(usuario);
 
-            return usuario.Id;
+            ValidarComando();
         }
 
         public Usuario Obter(string usuarioId)
         {
-            var usuario = RecuperaUsuarioEValida(usuarioId);
-
-            ValidarComando();
-
-            return usuario;
+            return _usuarioRepository.Obter(usuarioId);
         }
 
         public IEnumerable<Usuario> Listar()
@@ -55,7 +52,12 @@ namespace Schedule.io.Services
 
         public void Excluir(string usuarioId)
         {
-            var usuario = RecuperaUsuarioEValida(usuarioId);
+            var usuario = _usuarioRepository.Obter(usuarioId);
+            if (usuario == null)
+            {
+                _bus.PublicarNotificacao(new DomainNotification("", "Usuario não encontrado!"));
+                ValidarComando();
+            }
 
             _usuarioRepository.Excluir(usuario);
 
@@ -66,44 +68,21 @@ namespace Schedule.io.Services
         }
 
         #region Privados
-        private Usuario RegistrarUsuario(Usuario usuario)
+        private void Registrar(Usuario usuario)
         {
-            var novoUsuario = new Usuario(Guid.NewGuid().ToString(), usuario.Email);
-
-            _usuarioRepository.Adicionar(novoUsuario);
+            _usuarioRepository.Adicionar(usuario);
 
             if (Commit())
-                _bus.PublicarEvento(new UsuarioRegistradoEvent(novoUsuario.Id, novoUsuario.Email));
-
-            ValidarComando();
-
-            return novoUsuario;
+                _bus.PublicarEvento(new UsuarioRegistradoEvent(usuario.Id, usuario.Email));
         }
 
-        private Usuario AtualizarUsuario(Usuario usuario)
+        private void Atualizar(Usuario usuario)
         {
-            var atualizarUsuario = RecuperaUsuarioEValida(usuario.Id);
-            atualizarUsuario.DefinirEmail(usuario.Email);
-
-            _usuarioRepository.Atualizar(atualizarUsuario);
+            _usuarioRepository.Atualizar(usuario);
 
             if (Commit())
-                _bus.PublicarEvento(new UsuarioAtualizadoEvent(atualizarUsuario.Id, atualizarUsuario.Email));
-
-            ValidarComando();
-
-            return atualizarUsuario;
+                _bus.PublicarEvento(new UsuarioAtualizadoEvent(usuario.Id, usuario.Email));
         }
-
-        private Usuario RecuperaUsuarioEValida(string usuarioId)
-        {
-            var usuario = _usuarioRepository.Obter(usuarioId);
-
-            if (usuario == null)
-                throw new ScheduleIoException(new List<string>() { "Usuario não encontrado!" });
-
-            return usuario;
-        } 
         #endregion
     }
 }

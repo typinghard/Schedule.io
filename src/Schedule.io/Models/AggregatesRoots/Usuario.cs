@@ -9,13 +9,18 @@ namespace Schedule.io.Models.AggregatesRoots
     {
         public string Email { get; private set; }
 
-        public Usuario(string id, string email) : base(id)
+        public Usuario(string email)
         {
             this.Email = email;
 
             var resultadoValidacao = this.UsuarioEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private Usuario()
+        {
+
         }
 
         public void DefinirEmail(string email)

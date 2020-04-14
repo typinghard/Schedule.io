@@ -3,10 +3,8 @@ using Schedule.io.Core.Communication.Mediator;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Events.AgendaEvents;
-using Schedule.io.Interfaces;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Interfaces.Services;
-using Schedule.io.Models;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
 using System;
@@ -96,7 +94,7 @@ namespace Schedule.io.Services
 
         private Agenda RegistrarAgenda(Agenda agenda)
         {
-            var novaAgenda = new Agenda("9999999", agenda.UsuarioIdCriador, agenda.Titulo);
+            var novaAgenda = new Agenda(agenda.UsuarioIdCriador, agenda.Titulo);
 
             if (string.IsNullOrEmpty(agenda.Id) || Guid.Parse(agenda.Id) == Guid.Empty)
                 novaAgenda.DefinirId(Guid.NewGuid().ToString());

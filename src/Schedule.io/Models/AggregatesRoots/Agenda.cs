@@ -20,7 +20,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public IReadOnlyCollection<string> Eventos { get { return _eventos; } }
         private List<string> _eventos;
 
-        public Agenda(string id, string idUsuarioDono, string titulo) : base(id)
+        public Agenda(string idUsuarioDono, string titulo)
         {
             UsuarioIdCriador = idUsuarioDono;
             Titulo = titulo;
@@ -28,6 +28,11 @@ namespace Schedule.io.Models.AggregatesRoots
             var resultadoValidacao = this.AgendaEhValida();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private Agenda()
+        {
+
         }
 
         public void DefinirTitulo(string titulo)

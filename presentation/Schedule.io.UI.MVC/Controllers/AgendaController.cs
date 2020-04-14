@@ -49,30 +49,16 @@ namespace Schedule.io.UI.Web.Controllers
 
                 //var local = _localService.Listar();
 
-                var novaAgenda = new Agenda(Guid.Empty.ToString(), usuario.Id, "AGENDA ARQUITETURA NOVA");
+                var novaAgenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
                 _agendaService.Gravar(novaAgenda);
 
-                novaAgenda.DefinirTitulo(novaAgenda.Titulo + " - ATUALIZADA!");
-                _agendaService.Gravar(novaAgenda);
+                var agendaExitente = _agendaService.Obter(novaAgenda.Id);
+
+                agendaExitente.DefinirTitulo(agendaExitente.Titulo + " - ATUALIZADA!");
+                _agendaService.Gravar(agendaExitente);
 
                 var lista = _agendaService.Listar(usuario.Id);
 
-                //var evento = _eventoService.Obter("b4e5b559-f79a-437a-afea-9397416cd262");
-                //evento.OcupaUsuario = true;
-                //_eventoService.Gravar(evento);
-                //GravarAgenda();
-                //GravarUsuario();
-                //GravarLocal();
-                //GravarEvento(false);
-                //GravarEvento(true);
-                //GravarEvento(true, true);
-                //ExcluirEvento();
-
-                //var agendaId = "35fb8c94-a7c7-488f-80db-13312e0b7cf8";
-                //var dataInicio = DateTime.Now.AddDays(-7);
-                //var dataFinal = DateTime.Now;
-
-                //var listEventos = _eventoService.ObterEventosPorPeriodo(agendaId, dataInicio, dataFinal);
 
                 return Content("Funcionou!");
             }

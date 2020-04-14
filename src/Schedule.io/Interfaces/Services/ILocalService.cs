@@ -1,14 +1,13 @@
-﻿using Schedule.io.Models;
-using System;
+﻿using Schedule.io.Models.AggregatesRoots;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Schedule.io.Interfaces.Services
 {
     public interface ILocalService
     {
-        string Gravar(Core.Models.Local local);
+        string Gravar(Local local);
+        Local Obter(string localId);
+        IEnumerable<Local> Listar();
         void Excluir(string localId);
-        Evento Obter(string localId);
     }
 }

@@ -1,29 +1,29 @@
 ﻿using FluentValidation;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Models;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Models.AggregatesRoots;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Schedule.io.Validations.EventoAgendaValidations
 {
-    public class NovoEventoAgendaValidation : EntityValidation<Evento>
+    public class EventoAgendaValidation : EntityValidation<Evento>
     {
-        public NovoEventoAgendaValidation()
+        public EventoAgendaValidation()
         {
             RuleFor(c => c.AgendaId)
                 .NotEmpty()
-                .WithMessage("Id da Agenda não pode ser vazio!");
+                .WithMessage("Id da Agenda não informado!");
 
-            RuleFor(c => c.UsuarioId)
+            RuleFor(c => c.UsuarioIdCriador)
                 .NotEmpty()
-                .WithMessage("Id do Usuário não pode ser vazio!");
+                .WithMessage("Id do Usuario dono da agenda não informado!");
 
             RuleFor(e => e.Titulo)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("Por favor, certifique-se que digitou um título.")
-                .Length(2, 150).WithMessage("O título deve ter entre 2 e 150 caracteres.");
+                .WithMessage("Por favor, certifique-se que digitou um {PropertyName}.")
+                .Length(2, 150).WithMessage("O título deve ter entre {MinLength} e {MaxLength} caracteres");
 
             RuleFor(e => e.DataInicio)
                 .NotEmpty()
@@ -32,13 +32,13 @@ namespace Schedule.io.Validations.EventoAgendaValidations
 
             RuleFor(e => e.Frequencia)
                 .NotNull()
-                .WithMessage("Frequencia não pode ser nula!");
+                .WithMessage("{PropertyName} não pode ser nula!");
 
-            RuleFor(e => e.Tipo.Nome)
-                .NotNull()
-                .NotEmpty()
-                .WithMessage("Por favor, certifique-se que digitou um Nome para o Tipo do Evento.")
-                .Length(2, 120).WithMessage("O Nome do Tipo do Evento deve ter entre 2 e 120 caracteres.");
+            //RuleFor(e => e.IdTipoEvento)
+            //    .NotNull()
+            //    .NotEmpty()
+            //    .WithMessage("Por favor, certifique-se que digitou um Nome para o Tipo do Evento.")
+            //    .Length(2, 120).WithMessage("O Nome do Tipo do Evento deve ter entre 2 e 120 caracteres.");
 
             //RuleFor(e => e.Tipo.Descricao)
             //    .NotNull()
@@ -47,7 +47,7 @@ namespace Schedule.io.Validations.EventoAgendaValidations
             //    .Length(2, 500).WithMessage("A Descrição do Tipo do Evento deve ter entre 2 e 500 caracteres.");
 
             RuleFor(e => e.QuantidadeMinimaDeUsuarios)
-              .Must(QuantidadeMinimaDeUsuario)
+              .GreaterThan(0)
               .WithMessage("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.");
 
             RuleFor(e => e.OcupaUsuario)
@@ -58,22 +58,5 @@ namespace Schedule.io.Validations.EventoAgendaValidations
                 .NotNull()
                 .WithMessage("Evento Público/Privado não pode ser nulo");
         }
-
-        protected static bool QuantidadeMinimaDeUsuario(int qtdeUsuario)
-        {
-            return qtdeUsuario < 0 ? false : true;
-        }
-
-        protected static bool ValidaPessoas(IList<string> pessoas)
-        {
-            if (pessoas != null && pessoas.Count > 0)
-                foreach (var pessoaId in pessoas)
-                    if (pessoaId.Equals(Guid.Empty))
-                        return false;
-
-
-            return true;
-        }
-
     }
 }

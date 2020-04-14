@@ -10,14 +10,17 @@ namespace Schedule.io.Infra.RavenDB
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, IAggregateRoot
     {
         protected readonly IDocumentSession _session;
+        private readonly string DocumentName;
 
         public Repository(IDocumentSession session)
         {
+            DocumentName = typeof(TEntity).Name.ToLower();
             _session = session;
         }
         public void Adicionar(TEntity obj)
         {
             obj.DefinirDataCriacao();
+            obj.DefinirDataAtualizacao();
             _session.Store(obj);
         }
 
@@ -25,6 +28,16 @@ namespace Schedule.io.Infra.RavenDB
         {
             obj.DefinirDataAtualizacao();
             _session.Store(obj);
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+
+        public void Excluir(TEntity entity)
+        {
+            _session.Delete(entity.Id.ToString());
         }
 
         public TEntity Obter(string id)
@@ -42,9 +55,9 @@ namespace Schedule.io.Infra.RavenDB
                  .ToList();
         }
 
-        public void Remover(TEntity obj)
+        public void Inativar(TEntity obj)
         {
-            _session.Delete(obj);
+            _session.Store(obj);
         }
 
         protected IDocumentSession Sessao { get { return _session; } }
@@ -59,11 +72,6 @@ namespace Schedule.io.Infra.RavenDB
             {
                 return 0;
             }
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

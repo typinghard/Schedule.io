@@ -1,6 +1,7 @@
-﻿using Schedule.io.Core.Core.Messages;
-using Schedule.io.Core.Enums;
-using Schedule.io.Core.Models;
+﻿using Schedule.io.Core.Messages;
+using Schedule.io.Enums;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 
 

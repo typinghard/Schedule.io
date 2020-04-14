@@ -1,8 +1,7 @@
 ﻿using FluentValidation.Results;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Core.Helpers;
-using Schedule.io.Core.Models.ValueObjects;
-using Schedule.io.Core.Validations.AgendaUsuarioValidations;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
+using Schedule.io.Validations.AgendaValidations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +21,9 @@ namespace Schedule.io.Models.ValueObjects
             UsuarioId = usuarioId;
             Permissoes = new PermissoesAgenda();
 
-            //var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
-            //if (!resultadoValidacao.IsValid)
-            //    throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+            var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirUsuarioId(string usuarioId)
@@ -48,9 +47,9 @@ namespace Schedule.io.Models.ValueObjects
             AgendaId = agendaId;
         }
 
-        public bool NovaAgendaUsuarioEhValido()
+        public ValidationResult NovaAgendaUsuarioEhValido()
         {
-            return true;
+            return new AgendaUsuarioValidation().Validate(this);
         }
     }
 }

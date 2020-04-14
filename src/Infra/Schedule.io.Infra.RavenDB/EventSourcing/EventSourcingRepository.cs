@@ -3,8 +3,8 @@ using Raven.Client.Documents.Session;
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Schedule.io.Core.Core.Data.EventSourcing;
-using Schedule.io.Core.Core.Messages;
+using Schedule.io.Core.Data.EventSourcing;
+using Schedule.io.Core.Messages;
 
 namespace Schedule.io.Infra.RavenDB.EventSourcing
 {

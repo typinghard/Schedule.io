@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentValidation.Results;
-using System.Text;
+﻿using FluentValidation.Results;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Validations.UsuarioValidations;
 using System.Linq;
-using Schedule.io.Core.Core.DomainObjects;
-using FluentValidation;
-using Schedule.io.Core.Validations.UsuarioValidations;
 
 namespace Schedule.io.Models.AggregatesRoots
 {
@@ -17,7 +13,7 @@ namespace Schedule.io.Models.AggregatesRoots
         {
             this.Email = email;
 
-            var resultadoValidacao = this.NovoUsuarioEhValido();
+            var resultadoValidacao = this.UsuarioEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -32,9 +28,9 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Email = email.ToLower();
         }
 
-        public ValidationResult NovoUsuarioEhValido()
+        public ValidationResult UsuarioEhValido()
         {
-            return new NovoUsuarioValidation().Validate(this);
+            return new UsuarioValidation().Validate(this);
         }
     }
 }

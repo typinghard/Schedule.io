@@ -1,20 +1,20 @@
 ﻿using FluentValidation;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Models;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Models.AggregatesRoots;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Schedule.io.Validations.AgendaValidations
 {
-    public class NovaAgendaValidation : EntityValidation<Agenda>
+    public class AgendaValidation : EntityValidation<Agenda>
     {
-        public NovaAgendaValidation()
+        public AgendaValidation()
         {
             RuleFor(a => a.Titulo)
                 .NotNull()
                 .NotEmpty()
-                .WithMessage("Título não informado.");
+                .WithMessage("{PropertyName} não informado.");
 
             RuleFor(a => a.Publico)
                 .NotNull()

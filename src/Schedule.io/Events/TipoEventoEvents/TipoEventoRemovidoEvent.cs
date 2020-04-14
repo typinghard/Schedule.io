@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Schedule.io.Events.AgendaUsuarioEvents
+namespace Schedule.io.Events.TipoEventoEvents
 {
-    public class AgendaUsuarioRemovidoEvent : Event
+    public class TipoEventoRemovidoEvent : Event
     {
         public string Id { get; set; }
 
-        public AgendaUsuarioRemovidoEvent(string id)
+        public TipoEventoRemovidoEvent(string id)
         {
             this.Id = id;
             this.AggregateId = id;

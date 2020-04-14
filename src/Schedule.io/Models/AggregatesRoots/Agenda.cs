@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using FluentValidation.Results;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Helpers;
+using Schedule.io.Models.ValueObjects;
 using Schedule.io.Validations.AgendaValidations;
 
 namespace Schedule.io.Models.AggregatesRoots
@@ -19,11 +20,12 @@ namespace Schedule.io.Models.AggregatesRoots
         public IReadOnlyCollection<string> Eventos { get { return _eventos; } }
         private List<string> _eventos;
 
-        public Agenda(string id, string titulo) : base(id)
+        public Agenda(string id, string idUsuarioDono, string titulo) : base(id)
         {
+            UsuarioIdCriador = idUsuarioDono;
             Titulo = titulo;
 
-            var resultadoValidacao = this.NovaAgendaEhValida();
+            var resultadoValidacao = this.AgendaEhValida();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -54,6 +56,16 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Descricao = descricao;
         }
 
+        public void DefinirUsuarioIdCriador(string usuarioId)
+        {
+            if (string.IsNullOrEmpty(usuarioId))
+            {
+                throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um usuarioId." });
+            }
+
+            this.UsuarioIdCriador = usuarioId;
+        }
+
         public void TornarAgendaPublica()
         {
             this.Publico = true;
@@ -64,9 +76,9 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Publico = false;
         }
 
-        private ValidationResult NovaAgendaEhValida()
+        private ValidationResult AgendaEhValida()
         {
-            return new NovaAgendaValidation().Validate(this);
+            return new AgendaValidation().Validate(this);
         }
     }
 }

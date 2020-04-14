@@ -1,6 +1,6 @@
 using System;
 
-namespace Agenda.UI.Web.Models
+namespace Schedule.io.UI.Web.Models
 {
     public class ErrorViewModel
     {

@@ -1,45 +1,62 @@
 ﻿using MongoDB.Driver;
-using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Models;
+using Schedule.io.Interfaces.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 
 namespace Schedule.io.Infra.MongoDB
 {
-    public class EventoAgendaRepository : Repository<EventoAgenda>, IEventoAgendaRepository
+    public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
     {
         public EventoAgendaRepository(AgendaContext context) : base(context)
         {
 
         }
 
-        public IList<EventoAgenda> ObterEventosDaAgenda(string agendaId)
+        public void AdicionarConvite(Convite convite)
         {
-            return Db.EventoAgenda
-                .Find(x => x.AgendaId == agendaId
-                      && !x.Inativo)
+            Db.Convite.InsertOne(Db.Session, convite);
+            SalvarAlteracoes();
+        }
+
+        public void ExcluirConvite(Convite convite)
+        {
+            Db.Convite.DeleteOne(c => c.EventoId == convite.EventoId && c.EmailConvidado == convite.EmailConvidado);
+            SalvarAlteracoes();
+        }
+
+        public IList<Convite> ListarConvites(string eventoId)
+        {
+            return Db.Convite
+                     .Find(x => x.EventoId == eventoId)
+                     .ToList();
+        }
+
+        public IList<Evento> ListarEventosDaAgenda(string agendaId)
+        {
+            return Db.Evento
+                .Find(x => x.AgendaId == agendaId)
                 .ToList();
         }
 
-        public IList<EventoAgenda> ObterEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
-            return Db.EventoAgenda
+            return Db.Evento
                 .Find(x => x.AgendaId == agendaId
                       && x.DataInicio >= dataInicio
                       && (x.DataFinal == null || x.DataFinal <= dataFinal)
-                      && !x.Inativo)
+                     )
                 .ToList();
         }
 
-        public IList<EventoAgenda> ObterTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
 
-            return Db.EventoAgenda
+            return Db.Evento
                 .Find(x => x.AgendaId == agendaId
-                      && x.UsuarioId == usuarioId
-                      && !x.Inativo)
+                      && x.UsuarioIdCriador == usuarioId)
                 .ToList();
 
         }

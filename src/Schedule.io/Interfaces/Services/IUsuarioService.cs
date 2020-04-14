@@ -1,4 +1,5 @@
 ﻿using Schedule.io.Models;
+using Schedule.io.Models.AggregatesRoots;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,8 +8,9 @@ namespace Schedule.io.Interfaces.Services
 {
     public interface IUsuarioService
     {
-        string Gravar(Core.Models.Usuario usuario);
+        string Gravar(Usuario usuario);
+        Usuario Obter(string usuarioId);
+        IEnumerable<Usuario> Listar();
         void Excluir(string usuarioId);
-        Core.Models.Usuario Obter(string usuarioId);
     }
 }

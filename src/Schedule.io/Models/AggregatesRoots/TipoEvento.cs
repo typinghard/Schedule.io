@@ -1,7 +1,10 @@
-﻿using Schedule.io.Core.DomainObjects;
+﻿using FluentValidation.Results;
+using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Helpers;
+using Schedule.io.Validations.TipoEventoValidation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Schedule.io.Models.AggregatesRoots
@@ -15,6 +18,10 @@ namespace Schedule.io.Models.AggregatesRoots
         {
             this.Nome = nome;
             this.Descricao = descricao;
+
+            var resultadoValidacao = this.TipoEventoEhValido();
+            if (!resultadoValidacao.IsValid)
+                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         public void DefinirNome(string nome)
@@ -41,6 +48,11 @@ namespace Schedule.io.Models.AggregatesRoots
             }
 
             this.Descricao = descricao;
+        }
+
+        public ValidationResult TipoEventoEhValido()
+        {
+            return new TipoEventoValidation().Validate(this);
         }
     }
 }

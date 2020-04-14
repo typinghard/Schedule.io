@@ -8,5 +8,6 @@ namespace Schedule.io.Interfaces.Repositories
 {
     public interface ITipoEventoRepository : IRepository<TipoEvento>
     {
+
     }
 }

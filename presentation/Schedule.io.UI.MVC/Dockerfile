@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["Agenda.UI.Web/Agenda.UI.Web.csproj", "Agenda.UI.Web/"]
-RUN dotnet restore "Agenda.UI.Web/Agenda.UI.Web.csproj"
+COPY ["Schedule.io.UI.Web/Schedule.io.UI.Web.csproj", "Schedule.io.UI.Web/"]
+RUN dotnet restore "Schedule.io.UI.Web/Schedule.io.UI.Web.csproj"
 COPY . .
-WORKDIR "/src/Agenda.UI.Web"
-RUN dotnet build "Agenda.UI.Web.csproj" -c Release -o /app/build
+WORKDIR "/src/Schedule.io.UI.Web"
+RUN dotnet build "Schedule.io.UI.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Agenda.UI.Web.csproj" -c Release -o /app/publish
+RUN dotnet publish "Schedule.io.UI.Web.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Agenda.UI.Web.dll"]
+ENTRYPOINT ["dotnet", "Schedule.io.UI.Web.dll"]

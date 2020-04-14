@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Models;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Models.AggregatesRoots;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +8,9 @@ using System.Text.RegularExpressions;
 
 namespace Schedule.io.Validations.UsuarioValidations
 {
-    public class NovoUsuarioValidation : EntityValidation<Usuario>
+    public class UsuarioValidation : EntityValidation<Usuario>
     {
-        public NovoUsuarioValidation()
+        public UsuarioValidation()
         {
             RuleFor(u => u.Email)
                   .NotEmpty()

@@ -1,6 +1,6 @@
-﻿using Raven.Client.Documents.Queries;
-using Raven.Client.Documents.Session;
+﻿using Raven.Client.Documents.Session;
 using Schedule.io.Interfaces.Repositories;
+using Schedule.io.Interfaces.Services;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
 using System;
@@ -16,28 +16,42 @@ namespace Schedule.io.Infra.RavenDB
         {
         }
 
+        public void Gravar(AgendaUsuario agendaUsuario)
+        {
+            _session.Store(agendaUsuario);
+            _session.SaveChanges();
+        }
+
+        public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
+        {
+            return Sessao
+                   .Query<Agenda>()
+                   .Where(x => x.UsuarioIdCriador == usuarioId)
+                   .ToList();
+        }
+
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
+            var agendaUsuario = Sessao
+                 .Query<AgendaUsuario>()
+                 .Where(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
+                 .FirstOrDefault();
 
-            return (
-                from a in Sessao.Query<Agenda>()
-                let u = RavenQuery.Load<AgendaUsuario>(a.Id)
-                where u.UsuarioId == usuarioId
-                select a
-                ).FirstOrDefault();
+            if (agendaUsuario == null)
+                return null;
 
-            //var agendaUsuario = Sessao
-            //     .Query<AgendaUsuario>()
-            //     .Where(x => x.AgendaId == agendaId && x.UsuarioId == usuarioId)
-            //     .FirstOrDefault();
+            return Sessao
+                .Query<Agenda>()
+                .Where(x => x.Id == agendaId)
+                .FirstOrDefault();
+        }
 
-            //if (agendaUsuario == null)
-            //    return null;
-
-            //return Sessao
-            //    .Query<Agenda>()
-            //    .Where(x => x.Id == agendaId)
-            //    .FirstOrDefault();
+        public bool VerificaSeAgendaExiste(string agendaId)
+        {
+            return Sessao
+                .Query<Agenda>()
+                .Where(x => x.Id == agendaId)
+                .FirstOrDefault() == null ? false : true;
         }
     }
 }

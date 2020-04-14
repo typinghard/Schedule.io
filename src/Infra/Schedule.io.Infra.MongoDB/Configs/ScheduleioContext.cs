@@ -10,14 +10,14 @@ using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Infra.MongoDB.Configs;
 using Schedule.io.Models.ValueObjects;
 
-namespace Schedule.io.Infra.MongoDB
+namespace Schedule.io.Infra.MongoDB.Configs
 {
-    public class AgendaContext : IDisposable
+    public class ScheduleioContext : IDisposable
     {
         private readonly MongoClient _mongoClient;
         private readonly IMongoDatabase _database;
         private readonly IClientSessionHandle _session;
-        public AgendaContext()
+        public ScheduleioContext()
         {
             var mongoDbConfig = (MongoDBConfig)DataBaseConfigurationHelper.DataBaseConfig;
             _mongoClient = new MongoClient(mongoDbConfig.ConnectionString);
@@ -28,7 +28,7 @@ namespace Schedule.io.Infra.MongoDB
 
         protected void Map()
         {
-            new AgendaMap();
+            new ScheduleioMap();
         }
 
         public int SalvarAlteracoes()
@@ -64,8 +64,6 @@ namespace Schedule.io.Infra.MongoDB
         internal IMongoCollection<Local> Local { get { return _database.GetCollection<Local>(typeof(Local).Name.ToLower()); } }
 
         public IMongoCollection<StoredEvent> StoredEvents { get { return _database.GetCollection<StoredEvent>(typeof(StoredEvent).Name.ToLower()); } }
-
-
 
         public void Dispose()
         {

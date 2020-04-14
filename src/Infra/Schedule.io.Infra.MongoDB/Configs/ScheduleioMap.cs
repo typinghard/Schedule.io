@@ -1,11 +1,11 @@
 ﻿using MongoDB.Bson.Serialization;
 using Schedule.io.Models.AggregatesRoots;
 
-namespace Schedule.io.Infra.MongoDB
+namespace Schedule.io.Infra.MongoDB.Configs
 {
-    public class AgendaMap : MongoMap<Evento>
+    public class ScheduleioMap : MongoMap<Evento>
     {
-        public AgendaMap()
+        public ScheduleioMap()
         {
             if (!IsClassMapRegistered())
             {

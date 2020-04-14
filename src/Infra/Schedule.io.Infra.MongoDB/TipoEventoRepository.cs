@@ -1,6 +1,5 @@
 ﻿using Schedule.io.Infra.MongoDB.Configs;
 using Schedule.io.Interfaces.Repositories;
-using Schedule.io.Interfaces.Services;
 using Schedule.io.Models.AggregatesRoots;
 using System;
 using System.Collections.Generic;
@@ -8,9 +7,9 @@ using System.Text;
 
 namespace Schedule.io.Infra.MongoDB
 {
-    public class LocalRepository : Repository<Local>, ILocalRepository
+    public class TipoEventoRepository : Repository<TipoEvento>, ITipoEventoRepository
     {
-        public LocalRepository(ScheduleioContext context) : base(context)
+        public TipoEventoRepository(ScheduleioContext context) : base(context)
         {
         }
     }

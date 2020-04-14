@@ -11,7 +11,6 @@ namespace Schedule.io.Core.Data
         TEntity Obter(string id);
         IList<TEntity> Listar();
         void Atualizar(TEntity obj);
-        void Inativar(TEntity obj);
         void Excluir(TEntity obj);
         int SalvarAlteracoes();
     }

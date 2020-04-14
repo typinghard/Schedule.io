@@ -35,25 +35,21 @@ namespace Schedule.io.Services
             _eventoAgendaRepository = eventoAgendaRepository;
         }
 
-       
-        public string Gravar(Evento evento)
+
+        public void Gravar(Evento evento)
         {
-            if (string.IsNullOrEmpty(evento.Id))
-                RegistrarEvento(evento);
+            var eventoQuery = _eventoAgendaRepository.Obter(evento.Id);
+            if (eventoQuery == null)
+                Registrar(evento);
             else
-                AtualizarEvento(evento);
+                Atualizar(evento);
 
             ValidarComando();
-            return evento.Id;
         }
 
         public Evento Obter(string eventoId)
         {
-            var evento = RecuperaEventoEValida(eventoId);
-
-            ValidarComando();
-
-            return evento;
+            return _eventoAgendaRepository.Obter(eventoId);
         }
 
         public IEnumerable<Evento> Listar(string agendaId)
@@ -85,9 +81,12 @@ namespace Schedule.io.Services
 
         public void Excluir(string eventoId)
         {
-            var evento = RecuperaEventoEValida(eventoId);
-
-            ExcluirConvites(evento);
+            var evento = _eventoAgendaRepository.Obter(eventoId);
+            if (evento == null)
+            {
+                _bus.PublicarNotificacao(new DomainNotification("", "Evento não encontrado!"));
+                ValidarComando();
+            }
 
             _eventoAgendaRepository.Excluir(evento);
 
@@ -97,87 +96,38 @@ namespace Schedule.io.Services
             ValidarComando();
         }
 
-        private Evento RegistrarEvento(Evento evento)
+        private void Registrar(Evento evento)
         {
-            var novoEvento = new Evento(Guid.NewGuid().ToString(), evento.AgendaId, evento.UsuarioIdCriador, evento.Titulo, evento.DataInicio, evento.IdTipoEvento);
-
-            novoEvento.DefinirIdentificadorExterno(evento.IdentificadorExterno);
-            novoEvento.DefinirDescricao(evento.Descricao);
-            novoEvento.DefinirLocal(evento.LocalId);
-            novoEvento.DefinirDatas(evento.DataInicio, evento.DataFinal);
-            novoEvento.DefinirDataLimiteConfirmacao(evento.DataLimiteConfirmacao.GetValueOrDefault());
-            novoEvento.DefinirQuantidadeMinimaDeUsuarios(evento.QuantidadeMinimaDeUsuarios);
-            novoEvento.DefinirFrequencia(evento.Frequencia);
-
-            foreach (var convite in evento.Convites)
-                novoEvento.AdicionarConvite(convite);
-
-            if (evento.OcupaUsuario)
-                novoEvento.OcuparUsuario();
-
-            if (evento.Publico)
-                novoEvento.TornarEventoPublico();
-
-            _eventoAgendaRepository.Adicionar(novoEvento);
+            _eventoAgendaRepository.Adicionar(evento);
 
             if (Commit())
             {
-                _bus.PublicarEvento(new EventoRegistradoEvent(novoEvento.Id, novoEvento.AgendaId, novoEvento.UsuarioIdCriador, novoEvento.IdentificadorExterno, novoEvento.Titulo,
-                                    novoEvento.Descricao, novoEvento.Convites, novoEvento.LocalId, novoEvento.DataInicio, novoEvento.DataFinal,
-                                    novoEvento.DataLimiteConfirmacao, novoEvento.QuantidadeMinimaDeUsuarios, novoEvento.OcupaUsuario, novoEvento.Publico,
-                                    novoEvento.IdTipoEvento, novoEvento.Frequencia));
+                _bus.PublicarEvento(new EventoRegistradoEvent(evento.Id, evento.AgendaId, evento.UsuarioIdCriador, evento.IdentificadorExterno, evento.Titulo,
+                                    evento.Descricao, evento.Convites, evento.LocalId, evento.DataInicio, evento.DataFinal,
+                                    evento.DataLimiteConfirmacao, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario, evento.Publico,
+                                    evento.IdTipoEvento, evento.Frequencia));
 
-                GravarConvites(novoEvento);
+               // GravarConvites(evento);
             }
 
             ValidarComando();
-
-            return novoEvento;
         }
 
-        private Evento AtualizarEvento(Evento evento)
+        private void Atualizar(Evento evento)
         {
-            var atualizarEvento = RecuperaEventoEValida(evento.Id);
-            atualizarEvento.DefinirTipoEvento(evento.IdTipoEvento);
-            atualizarEvento.DefinirIdentificadorExterno(evento.IdentificadorExterno);
-            atualizarEvento.DefinirTitulo(evento.Titulo);
-            atualizarEvento.DefinirDescricao(evento.Descricao);
-            atualizarEvento.DefinirLocal(evento.LocalId);
-            atualizarEvento.DefinirDatas(evento.DataInicio, evento.DataFinal.GetValueOrDefault());
-            atualizarEvento.DefinirDataLimiteConfirmacao(evento.DataLimiteConfirmacao.GetValueOrDefault());
-            atualizarEvento.DefinirQuantidadeMinimaDeUsuarios(evento.QuantidadeMinimaDeUsuarios);
-            atualizarEvento.DefinirFrequencia(evento.Frequencia);
-
-            ExcluirConvites(atualizarEvento);
-            atualizarEvento.LimparConvites();
-            foreach (var convite in evento.Convites)
-                atualizarEvento.AdicionarConvite(convite);
-
-            if (evento.OcupaUsuario)
-                atualizarEvento.OcuparUsuario();
-            else
-                atualizarEvento.DesocuparUsuario();
-
-            if (evento.Publico)
-                atualizarEvento.TornarEventoPublico();
-            else
-                atualizarEvento.TornarEventoPrivado();
-
-            _eventoAgendaRepository.Atualizar(atualizarEvento);
+            _eventoAgendaRepository.Atualizar(evento);
 
             if (Commit())
             {
-                _bus.PublicarEvento(new EventoAtualizadoEvent(atualizarEvento.Id, atualizarEvento.AgendaId, atualizarEvento.UsuarioIdCriador, atualizarEvento.IdentificadorExterno, atualizarEvento.Titulo,
-                                    atualizarEvento.Descricao, atualizarEvento.Convites, atualizarEvento.LocalId, atualizarEvento.DataInicio, atualizarEvento.DataFinal,
-                                    atualizarEvento.DataLimiteConfirmacao, atualizarEvento.QuantidadeMinimaDeUsuarios, atualizarEvento.OcupaUsuario, atualizarEvento.Publico,
-                                    atualizarEvento.IdTipoEvento, atualizarEvento.Frequencia));
+                _bus.PublicarEvento(new EventoAtualizadoEvent(evento.Id, evento.AgendaId, evento.UsuarioIdCriador, evento.IdentificadorExterno, evento.Titulo,
+                                    evento.Descricao, evento.Convites, evento.LocalId, evento.DataInicio, evento.DataFinal,
+                                    evento.DataLimiteConfirmacao, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario, evento.Publico,
+                                    evento.IdTipoEvento, evento.Frequencia));
 
-                GravarConvites(evento);
+               // GravarConvites(evento);
             }
 
             ValidarComando();
-
-            return atualizarEvento;
         }
 
         private void GravarConvites(Evento evento)
@@ -185,7 +135,7 @@ namespace Schedule.io.Services
             if (evento.Convites.Count == 0)
                 return;
 
-            ExcluirConvites(evento);
+            //ExcluirConvites(evento);
 
             foreach (var convite in evento.Convites)
                 _eventoAgendaRepository.AdicionarConvite(convite);
@@ -194,22 +144,12 @@ namespace Schedule.io.Services
         private void ExcluirConvites(Evento evento)
         {
             if (evento.Convites.Count == 0)
-                return;
+                _bus.PublicarNotificacao(new DomainNotification("", "Não há convites no evento!"));
 
             var listConvites = _eventoAgendaRepository.ListarConvites(evento.Id);
 
             foreach (var convite in listConvites)
                 _eventoAgendaRepository.ExcluirConvite(convite);
-        }
-
-        private Evento RecuperaEventoEValida(string eventoId)
-        {
-            var evento = _eventoAgendaRepository.Obter(eventoId);
-
-            if (evento == null)
-                throw new ScheduleIoException(new List<string>() { "Evento não encontrado!" });
-
-            return evento;
         }
     }
 }

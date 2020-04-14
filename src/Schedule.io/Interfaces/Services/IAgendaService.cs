@@ -13,7 +13,7 @@ namespace Schedule.io.Interfaces.Services
         /// </summary>
         /// <param name="agenda"></param>
         /// <returns></returns>
-        Agenda Gravar(Agenda agenda);
+        void Gravar(Agenda agenda);
 
         /// <summary>
         /// Retorna a agenda pelo id.

@@ -7,6 +7,7 @@ using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.ValueObjects;
 using System.Linq;
+using Schedule.io.Infra.MongoDB.Configs;
 
 namespace Schedule.io.Infra.MongoDB
 {

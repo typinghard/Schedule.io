@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization;
 using Schedule.io.Models.AggregatesRoots;
 
-namespace Schedule.io.Infra.MongoDB
+namespace Schedule.io.Infra.MongoDB.Configs
 {
     public class ScheduleioMap : MongoMap<Evento>
     {

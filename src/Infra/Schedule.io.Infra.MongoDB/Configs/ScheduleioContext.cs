@@ -10,7 +10,7 @@ using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Infra.MongoDB.Configs;
 using Schedule.io.Models.ValueObjects;
 
-namespace Schedule.io.Infra.MongoDB
+namespace Schedule.io.Infra.MongoDB.Configs
 {
     public class ScheduleioContext : IDisposable
     {

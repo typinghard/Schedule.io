@@ -2,6 +2,7 @@
 using MongoDB.Driver.Linq;
 using Schedule.io.Core.Data.EventSourcing;
 using Schedule.io.Core.Messages;
+using Schedule.io.Infra.MongoDB.Configs;
 using System;
 using System.Collections.Generic;
 using System.Text;

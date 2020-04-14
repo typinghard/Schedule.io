@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using Schedule.io.Core.Data;
 using Schedule.io.Core.DomainObjects;
+using Schedule.io.Infra.MongoDB.Configs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
-using Schedule.io.Core.Core.Data.Configurations;
+using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Infra.RavenDB.Configs;
 using System;
 using System.Collections.Generic;

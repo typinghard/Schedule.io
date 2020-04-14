@@ -5,10 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Agenda.UI.Web.Models;
+using Schedule.io.UI.Web.Models;
 using Schedule.io.Interfaces;
+using Schedule.io.Interfaces.Services;
 
-namespace Agenda.UI.Web.Controllers
+namespace Schedule.io.UI.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -23,11 +24,6 @@ namespace Agenda.UI.Web.Controllers
 
         public IActionResult Index()
         {
-            _scheduleIo.Agendas().Gravar(new Schedule.io.Models.Agenda()
-            {
-                Titulo = "DINHEIROOO"
-            });
-
             return View();
         }
 

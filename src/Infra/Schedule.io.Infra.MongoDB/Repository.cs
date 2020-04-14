@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
-using Schedule.io.Core.Core.Data;
-using Schedule.io.Core.Core.DomainObjects;
+using Schedule.io.Core.Data;
+using Schedule.io.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,20 +24,20 @@ namespace Schedule.io.Infra.MongoDB
             _collection.InsertOne(Db.Session, obj);
         }
 
-        public IList<TEntity> ObterTodosAtivos()
+        public IList<TEntity> Listar()
         {
-            return _collection.Find(t => t.Inativo == false).ToList();
+            //return _collection.
+            throw new NotImplementedException();
         }
 
-        public TEntity ObterPorId(string id)
+        public TEntity Obter(string id)
         {
             return _collection.Find(t => t.Id == id).FirstOrDefault();
         }
 
 
-        public void Remover(TEntity obj)
+        public void Inativar(TEntity obj)
         {
-            obj.Inativar();
             _collection.ReplaceOne(Db.Session, c => c.Id == obj.Id, obj);
         }
 
@@ -57,9 +57,9 @@ namespace Schedule.io.Infra.MongoDB
             GC.SuppressFinalize(this);
         }
 
-        public virtual void ForcarDelecao(string id)
+        public void Excluir(TEntity obj)
         {
-            throw new NotImplementedException();
+            _collection.DeleteOne(c => c.Id == obj.Id);
         }
     }
 }

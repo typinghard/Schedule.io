@@ -15,9 +15,9 @@ using Schedule.io;
 using Schedule.io.Models;
 using Schedule.io.Infra.Data.SqlServerDB.Configs;
 using MediatR;
-using Schedule.io.Core.Commands.AgendaCommands;
+using Schedule.io.Configs;
 
-namespace Agenda.UI.Web
+namespace Schedule.io.UI.Web
 {
     public class Startup
     {
@@ -35,10 +35,13 @@ namespace Agenda.UI.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-
+            services.AddMediatR(typeof(Startup));
+            //services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
             //services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
-            //                                                "Schedule.io",
-            //                                                Configuration["HavenDB_Northwind:CertificadePath"]));
+            //                                                Configuration["HavenDB_Northwind:Database"],
+            //                                                Configuration["HavenDB_Northwind:CertificadePath"]
+            //                                                ));
+
 
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
             services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"], "nuget"));

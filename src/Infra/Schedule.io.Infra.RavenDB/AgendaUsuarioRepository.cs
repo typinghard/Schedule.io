@@ -1,6 +1,7 @@
 ﻿using Raven.Client.Documents.Session;
-using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Models;
+using Schedule.io.Interfaces.Services;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,7 @@ namespace Schedule.io.Infra.RavenDB
             return Sessao
                  .Query<AgendaUsuario>()
                  .Where(x => x.AgendaId == agendaId
-                        && x.UsuarioId == usuarioId
-                        && !x.Inativo)
+                        && x.UsuarioId == usuarioId)
                  .FirstOrDefault();
         }
     }

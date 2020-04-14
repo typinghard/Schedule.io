@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Agenda.UI.Web": {
+    "Schedule.io.UI.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

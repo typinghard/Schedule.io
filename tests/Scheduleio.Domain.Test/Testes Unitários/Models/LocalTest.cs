@@ -4,7 +4,7 @@ using Schedule.io.Core.Models;
 using System.Linq;
 using Xunit;
 
-namespace Schedule.io.Core.Test.Testes_Unitários.Models
+namespace Schedule.io.Test.Testes_Unitários.Models
 {
     public class LocalTest
     {

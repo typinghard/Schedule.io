@@ -4,16 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Schedule.io.Core.Core.DomainObjects;
+using Schedule.io.Core.DomainObjects;
 using Schedule.io.Interfaces;
-using Schedule.io.Models;
-using Schedule.io.Core.Enums;
+using Schedule.io.Interfaces.Services;
+using Schedule.io.Models.AggregatesRoots;
 
-namespace Agenda.UI.Web.Controllers
+namespace Schedule.io.UI.Web.Controllers
 {
     public class AgendaController : Controller
     {
-        private static string _agendaId;
         //private static DateTime _DataInicio;
 
         IAgendaService _agendaService;
@@ -38,25 +37,28 @@ namespace Agenda.UI.Web.Controllers
         {
             try
             {
-                //var evento = _eventoService.Obter("b4e5b559-f79a-437a-afea-9397416cd262");
-                //evento.OcupaUsuario = true;
-                //_eventoService.Gravar(evento);
-                GravarAgenda(true, true);
-                //GravarUsuario();
-                //GravarLocal();
-                //GravarEvento(false);
-                //GravarEvento(true);
-                //GravarEvento(true, true);
-                //ExcluirEvento();
+                var usuario = _usuarioService.Obter("adfada26-37c9-44f0-8d64-fb774d9b9c83");
+                //var agenda = _agendaService.Obter("35fb8c94-a7c7-488f-80db-13312e0b7cf8");
 
-                if (string.IsNullOrEmpty(_agendaId))
-                    _agendaId = _agendaService.ObterTodas().LastOrDefault().Id;
+                //var eventos1 = _eventoService.Listar(agenda.Id);
+                //var eventos2 = _eventoService.Listar(agenda.Id, usuario.Id);
 
-                var agendaId = _agendaId;
-                var dataInicio = DateTime.Now.AddDays(-7);
-                var dataFinal = DateTime.Now;
+                //var dataInicio = DateTime.Now.AddDays(-7);
+                //var dataFinal = DateTime.Now;
+                //var eventos3 = _eventoService.Listar(agenda.Id, dataInicio, dataFinal);
 
-                var listEventos = _eventoService.ObterEventosPorPeriodo(agendaId, dataInicio, dataFinal);
+                //var local = _localService.Listar();
+
+                var novaAgenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
+                _agendaService.Gravar(novaAgenda);
+
+                var agendaExitente = _agendaService.Obter(novaAgenda.Id);
+
+                agendaExitente.DefinirTitulo(agendaExitente.Titulo + " - ATUALIZADA!");
+                _agendaService.Gravar(agendaExitente);
+
+                var lista = _agendaService.Listar(usuario.Id);
+
 
                 return Content("Funcionou!");
             }
@@ -69,258 +71,6 @@ namespace Agenda.UI.Web.Controllers
             }
         }
 
-        private void GravarAgenda(bool novo = false, bool gravarEventoNaSequencia = false)
-        {
-            var agenda = AgendaVM(novo);
-            _agendaId = _agendaService.Gravar(agenda);
-
-            if (gravarEventoNaSequencia)
-                _eventoService.Gravar(EventoVM(true, agenda, agenda.Usuario));
-        }
-
-        private void GravarUsuario(bool novo = false)
-        {
-            var usuario = UsuarioVM(novo);
-            //usuario.Email = "um-novo-usuario@email.com";
-            _usuarioService.Gravar(usuario);
-        }
-
-        private void GravarLocal(bool novo = false)
-        {
-            var local = LocalVM(novo);
-            _localService.Gravar(local);
-        }
-
-        private void GravarEvento(bool novoEvento = false, bool usarAgendaExistente = false)
-        {
-            var evento = new Evento();
-            if (novoEvento)
-            {
-                var agenda = new Schedule.io.Models.Agenda();
-                if (usarAgendaExistente)
-                {
-                    agenda = AgendaVM(false, "907d786c-a40c-459c-bf3d-b14289bd10b6");
-                }
-                else
-                {
-                    agenda = AgendaVM(true);
-                    _agendaService.Gravar(agenda);
-                }
-
-                evento = EventoVM(true, agenda, agenda.Usuario);
-            }
-            else
-                evento = EventoVM(false);
-
-            _eventoService.Gravar(evento);
-        }
-
-        private void ExcluirEvento()
-        {
-            // var evento = EventoVM(false, null, null, "9bcec73c-1206-4ebd-a761-62e962aaa42c");
-            _eventoService.Excluir("9bcec73c-1206-4ebd-a761-62e962aaa42c");
-        }
-
-        private Schedule.io.Models.Agenda AgendaVM(bool novaAgenda, string agendaId = null)
-        {
-            if (novaAgenda)
-            {
-                return new Schedule.io.Models.Agenda()
-                {
-                    Titulo = "Agenda da Riqueza",
-                    Descricao = "",
-                    Publico = false,
-                    Usuario = UsuarioVM(true)
-                };
-            }
-            else
-            {
-                var agenda1 = new Schedule.io.Models.Agenda();
-                if (!string.IsNullOrEmpty(agendaId))
-                {
-                    agenda1 = _agendaService.Obter(agendaId);
-                    if (agenda1.Usuario == null)
-                        agenda1.Usuario = _usuarioService.Obter("095981b2-2095-4dd4-8de7-7d78af0c0cc9");
-                }
-                else
-                {
-                    var listAgendas = _agendaService.ObterTodas();
-                    agenda1 = listAgendas.FirstOrDefault();
-
-                }
-
-                if (agenda1 != null)
-                {
-                    if (!agenda1.Titulo.Contains("Atualizada"))
-                        agenda1.Titulo = agenda1.Titulo + " - Atualizada";
-                    else
-                        agenda1.Titulo = agenda1.Titulo.Split('-')[0].Trim();
-                    agenda1.Publico = !agenda1.Publico;
-
-                    return agenda1;
-                }
-            }
-
-            return null;
-        }
-
-        private Schedule.io.Models.Usuario UsuarioVM(bool donoAgenda, bool usuarioExistente = false, string id = null)
-        {
-            if (usuarioExistente)
-            {
-                if (string.IsNullOrEmpty(id))
-                    id = "d2d7882f-8e4c-45f0-b9b8-bf043470b792";
-
-                var usuario = _usuarioService.Obter(id);
-
-                if (usuario != null)
-                {
-                    if (!usuario.Email.Contains("-"))
-                        usuario.Email = usuario.Email + "-atualizado";
-                    else
-                        usuario.Email = usuario.Email.Split('-')[0].Trim();
-
-                    return usuario;
-                }
-
-                return null;
-            }
-
-            if (donoAgenda)
-                return new Usuario()
-                {
-                    Email = "usuario_donoagenda@mail.com"
-                };
-            else
-            {
-                return new Usuario()
-                {
-                    Email = "usuario_convidado@gmail.com"
-                };
-            }
-        }
-
-        private Local LocalVM(bool novoLocal, string id = null)
-        {
-            if (novoLocal)
-            {
-                return new Local()
-                {
-                    LotacaoMaxima = 3,
-                    Nome = "Casa",
-                };
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(id))
-                    id = "79c6945a-dc71-499f-b247-fd4567f2dd55";
-
-                var local = _localService.Obter(id);
-
-                if (local != null)
-                {
-                    if (!local.Nome.Contains("Atualizado"))
-                        local.Nome = local.Nome + " - Atualizado";
-                    else
-                        local.Nome = local.Nome.Split('-')[0].Trim();
-
-                    local.Reserva = !local.Reserva;
-                    local.LotacaoMaxima++;
-
-                    return local;
-                }
-            }
-
-            return null;
-        }
-
-        private Evento EventoVM(bool novoEvento, Schedule.io.Models.Agenda agenda = null, Usuario usuario = null, string eventoId = null)
-        {
-            if (novoEvento)
-            {
-                return new Evento()
-                {
-                    AgendaId = agenda.Id,
-                    UsuarioId = usuario.Id,
-                    IdentificadorExterno = string.Empty,
-                    Titulo = "Limpar a casa",
-                    Descricao = string.Empty,
-                    Convites = new List<Convite>()
-                    {
-                        new Convite()
-                        {
-                            Usuario = UsuarioVM(false),
-                            Permissoes = new PermissoesConvite()
-                            {
-                                ConvidaUsuario = true,
-                                ModificaEvento = true,
-                                VeListaDeConvidados = true,
-                            }
-                        }
-                    },
-                    Local = LocalVM(true),
-                    //DataInicio = _DataInicio != DateTime.MinValue ? _DataInicio : DateTime.Now,
-                    DataInicio = DateTime.Now,
-                    DataFinal = DateTime.MinValue,
-                    DataLimiteConfirmacao = DateTime.Now,
-                    QuantidadeMinimaDeUsuarios = 2,
-                    OcupaUsuario = false,
-                    Publico = false,
-                    Frequencia = EnumFrequencia.Nao_Repete,
-                    Tipo = new TipoEvento()
-                    {
-                        Nome = "Limpeza",
-                        Descricao = string.Empty
-                    }
-                };
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(eventoId))
-                    eventoId = "26d0dedf-b30c-48d9-aa5e-31e428d71dae";
-
-                var evento = _eventoService.Obter(eventoId);
-
-                evento.Local = LocalVM(false, evento.Local.Id);
-
-                var listConvites = evento.Convites;
-                foreach (var conviteVM in listConvites)
-                {
-                    if (!string.IsNullOrEmpty(conviteVM.Usuario.Id) && evento.UsuarioId == conviteVM.Usuario.Id)
-                    {
-                        conviteVM.Permissoes = new PermissoesConvite()
-                        {
-                            Id = conviteVM.Id,
-                            ConvidaUsuario = true,
-                            ModificaEvento = true,
-                            VeListaDeConvidados = true
-                        };
-                    }
-                    else
-                    {
-                        conviteVM.Permissoes = new PermissoesConvite()
-                        {
-                            Id = conviteVM.Id,
-                            ConvidaUsuario = false,
-                            ModificaEvento = false,
-                            VeListaDeConvidados = true
-                        };
-                    }
-                }
-                evento.Convites = listConvites;
-                evento.DataInicio = evento.DataInicio.AddDays(1);
-                evento.DataLimiteConfirmacao = evento.DataLimiteConfirmacao.Value.AddDays(1);
-                evento.DataFinal = evento.DataInicio;
-
-                if (!evento.Titulo.Contains("Atualizado"))
-                    evento.Titulo = evento.Titulo + " - Atualizado";
-                else
-                    evento.Titulo = evento.Titulo.Split('-')[0].Trim();
-
-
-                return evento;
-            }
-        }
 
         // GET: Agenda/Details/5
         public IActionResult Details(int id)

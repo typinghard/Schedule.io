@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Documents.Session;
-using Schedule.io.Core.Core.Data;
-using Schedule.io.Core.Core.DomainObjects;
+using Schedule.io.Core.Data;
+using Schedule.io.Core.DomainObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,7 @@ namespace Schedule.io.Infra.RavenDB
         public void Adicionar(TEntity obj)
         {
             obj.DefinirDataCriacao();
+            obj.DefinirDataAtualizacao();
             _session.Store(obj);
         }
 
@@ -34,12 +35,12 @@ namespace Schedule.io.Infra.RavenDB
             GC.SuppressFinalize(this);
         }
 
-        public void ForcarDelecao(string id)
+        public void Excluir(TEntity entity)
         {
-            _session.Delete(id.ToString());
+            _session.Delete(entity.Id.ToString());
         }
 
-        public TEntity ObterPorId(string id)
+        public TEntity Obter(string id)
         {
             return _session
                  .Query<TEntity>()
@@ -47,17 +48,15 @@ namespace Schedule.io.Infra.RavenDB
                  .FirstOrDefault();
         }
 
-        public IList<TEntity> ObterTodosAtivos()
+        public IList<TEntity> Listar()
         {
             return _session
                  .Query<TEntity>()
-                 .Where(x => x.Inativo == false)
                  .ToList();
         }
 
-        public void Remover(TEntity obj)
+        public void Inativar(TEntity obj)
         {
-            obj.Inativar();
             _session.Store(obj);
         }
 

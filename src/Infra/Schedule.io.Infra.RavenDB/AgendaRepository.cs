@@ -1,6 +1,8 @@
 ﻿using Raven.Client.Documents.Session;
-using Schedule.io.Core.Interfaces;
-using Schedule.io.Core.Models;
+using Schedule.io.Interfaces.Repositories;
+using Schedule.io.Interfaces.Services;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,20 @@ namespace Schedule.io.Infra.RavenDB
     {
         public AgendaRepository(IDocumentSession session) : base(session)
         {
+        }
+
+        public void Gravar(AgendaUsuario agendaUsuario)
+        {
+            _session.Store(agendaUsuario);
+            _session.SaveChanges();
+        }
+
+        public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
+        {
+            return Sessao
+                   .Query<Agenda>()
+                   .Where(x => x.UsuarioIdCriador == usuarioId)
+                   .ToList();
         }
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
@@ -28,6 +44,14 @@ namespace Schedule.io.Infra.RavenDB
                 .Query<Agenda>()
                 .Where(x => x.Id == agendaId)
                 .FirstOrDefault();
+        }
+
+        public bool VerificaSeAgendaExiste(string agendaId)
+        {
+            return Sessao
+                .Query<Agenda>()
+                .Where(x => x.Id == agendaId)
+                .FirstOrDefault() == null ? false : true;
         }
     }
 }

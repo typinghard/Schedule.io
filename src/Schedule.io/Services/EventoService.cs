@@ -176,7 +176,7 @@ namespace Schedule.io.Services
                 evento.AdicionarConvite(convite);
         }
 
-        private void ValidarEventosOcupadoParaHorariosIguais(Evento evento)
+        private void ValidarEventosOcupadoNoMesmoHorario(Evento evento)
         {
             var listEventos = _eventoAgendaRepository.ListarTodosEventosDoUsuario(evento.AgendaId, evento.UsuarioIdCriador);
 

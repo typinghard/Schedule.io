@@ -12,17 +12,15 @@ namespace Schedule.io.Models.ValueObjects
 {
     public class Convite 
     {
-        public string EventoId { get; private set; }
         public string UsuarioId { get; private set; }
-        public string EmailConvidado { get; private set; }
+        public string EventoId { get; private set; }
         public EnumStatusConviteEvento Status { get; private set; }
         public PermissoesConvite Permissoes { get; private set; }
 
-        public Convite(string eventoId, string usuarioId, string emailConvidado) 
+        public Convite(string eventoId, string usuarioId) 
         {
             EventoId = eventoId;
             UsuarioId = usuarioId;
-            EmailConvidado = emailConvidado;
             Status = EnumStatusConviteEvento.Aguardando_Confirmacao;
             Permissoes = new PermissoesConvite();
 
@@ -39,16 +37,6 @@ namespace Schedule.io.Models.ValueObjects
             }
 
             UsuarioId = usuarioId;
-        }
-
-        public void DefinirEmailConvidado(string emailUsuario)
-        {
-            if (emailUsuario.EhVazio())
-            {
-                throw new ScheduleIoException("Por favor, certifique-se que adicinou um email para o convidado.");
-            }
-
-            EmailConvidado = emailUsuario;
         }
 
         public void DefinirEventoId(string eventoId)

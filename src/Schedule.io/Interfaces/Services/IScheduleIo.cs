@@ -10,5 +10,6 @@ namespace Schedule.io.Interfaces.Services
         IUsuarioService Usuarios();
         ILocalService Locais();
         IAgendaService Agendas();
+        ITipoEventoService TiposDeEvento();
     }
 }

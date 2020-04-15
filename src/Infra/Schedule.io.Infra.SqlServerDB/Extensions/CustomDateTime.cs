@@ -6,8 +6,7 @@ namespace Schedule.io.Infra.SqlServerDB.Extensions
     {
         public static string FormataDataSql(this DateTime data, bool inicio = false)
         {
-            var dataFormatada = DateTime.MinValue;
-
+            DateTime dataFormatada;
             if (inicio) dataFormatada = new DateTime(data.Year, data.Month, data.Day, 0, 0, 0);
             else dataFormatada = new DateTime(data.Year, data.Month, data.Day, 23, 59, 59);
 

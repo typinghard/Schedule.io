@@ -34,11 +34,6 @@ namespace Schedule.io.Infra.MongoDB
             return Db.Agenda.CountDocuments(a => a.Id == agendaId) > 0;
         }
 
-        public bool VerificaSeAgendaExiste(string agendaId)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
         {
             throw new NotImplementedException();

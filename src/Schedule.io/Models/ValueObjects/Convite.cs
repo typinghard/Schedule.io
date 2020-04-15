@@ -31,7 +31,7 @@ namespace Schedule.io.Models.ValueObjects
 
         private Convite()
         {
-
+            Permissoes = new PermissoesConvite();
         }
         public void DefinirUsuarioId(string usuarioId)
         {
@@ -60,7 +60,7 @@ namespace Schedule.io.Models.ValueObjects
 
         public ValidationResult ConviteEhValido()
         {
-            return new NovoConviteValidation().Validate(this);
+            return new ConviteValidation().Validate(this);
         }
     }
 }

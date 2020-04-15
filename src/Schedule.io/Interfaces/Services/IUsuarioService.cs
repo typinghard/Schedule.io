@@ -9,6 +9,7 @@ namespace Schedule.io.Interfaces.Services
     public interface IUsuarioService
     {
         Usuario Gravar(string email);
+        void Gravar(Usuario usuario);
         IEnumerable<Usuario> Gravar(List<string> emails);
         void AtualizarEmail(string usuarioId, string novoEmail);
         Usuario Obter(string usuarioId);

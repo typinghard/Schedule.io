@@ -22,14 +22,12 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public override Evento Obter(string eventoId)
         {
             var query = $@"SELECT e.*,
-	                              Id as {convite_split}, c.EventoId, c.UsuarioId, c.EmailConvidado, c.Status,
-	                              Id as {permissoesConvite_split}, pc.ModificaEvento, pc.ConvidaUsuario, pc.VeListaDeConvidados
+	                              Id as {convite_split}, c.EventoId, c.UsuarioId, c.Status, c.ModificaEvento, c.ConvidaUsuario, c.VeListaDeConvidados
                            FROM Evento e
                            INNER JOIN Convite c on e.Id = c.EventoId
-                           INNER JOIN PermissoesConvite pc on c.PermissoesConviteTempId = pc.ConviteTempId
                            WHERE Id = '{eventoId}'";
 
-            return DapperEvento(query, string.Concat(convite_split, ",", permissoesConvite_split)).FirstOrDefault();   
+            return DapperEvento(query, convite_split).FirstOrDefault();
         }
 
         public override void Adicionar(Evento obj)
@@ -40,8 +38,8 @@ namespace Schedule.io.Infra.Data.SqlServerDB
 
         public override void Excluir(Evento obj)
         {
-            base.Excluir(obj);
             Db.Convite.RemoveRange(obj.Convites);
+            base.Excluir(obj);
         }
 
         public IList<Convite> ListarConvites(string eventoId)
@@ -109,12 +107,12 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                 try
                 {
                     con.Open();
-                    con.Query<Evento, Convite, PermissoesConvite, Evento>(
+                    con.Query<Evento, Convite, Evento>(
                         query,
-                        (Evento, convite, permissoesConvite) =>
+                        (Evento, convite) =>
                         {
                             eventos.Add(Evento);
-                            //eventos.Last().AtribuirTipo(tipoEvento);
+                            eventos.Last().AdicionarConvite(convite);
                             return Evento;
                         },
                         splitOn: split);
@@ -129,7 +127,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                 }
             }
 
-            return eventos;
+            return eventos.ToList();
         }
     }
 }

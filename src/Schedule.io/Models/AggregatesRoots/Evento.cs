@@ -46,7 +46,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         private Evento()
         {
-
+            this._convites = new List<Convite>();
         }
 
         public void DefinirAgenda(string agendaId)

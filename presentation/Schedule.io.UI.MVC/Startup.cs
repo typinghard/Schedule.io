@@ -43,7 +43,7 @@ namespace Schedule.io.UI.Web
             //                                                ));
 
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
-            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB_Equinox:ConnectionString"]));
+            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

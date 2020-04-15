@@ -222,57 +222,49 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
 
             modelBuilder.Entity("Schedule.io.Models.ValueObjects.Convite", b =>
                 {
-                    b.Property<string>("EmailConvidado")
-                        .IsRequired()
-                        .HasColumnType("varchar(200)");
-
                     b.Property<string>("EventoId")
-                        .IsRequired()
                         .HasColumnType("varchar(200)");
-
-                    b.Property<int?>("PermissoesConviteTempId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("UsuarioId")
                         .HasColumnType("varchar(200)");
 
-                    b.HasIndex("PermissoesConviteTempId");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("EventoId", "UsuarioId");
 
                     b.ToTable("Convite");
                 });
 
-            modelBuilder.Entity("Schedule.io.Models.ValueObjects.PermissoesConvite", b =>
-                {
-                    b.Property<int>("ConviteTempId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("ConvidaUsuario")
-                        .HasColumnName("ConvidaUsuario")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ModificaEvento")
-                        .HasColumnName("ModificaEvento")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("VeListaDeConvidados")
-                        .HasColumnName("VeListaDeConvidados")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ConviteTempId");
-
-                    b.ToTable("PermissoesConvite");
-                });
-
             modelBuilder.Entity("Schedule.io.Models.ValueObjects.Convite", b =>
                 {
-                    b.HasOne("Schedule.io.Models.ValueObjects.PermissoesConvite", "Permissoes")
-                        .WithMany()
-                        .HasForeignKey("PermissoesConviteTempId");
+                    b.OwnsOne("Schedule.io.Models.ValueObjects.PermissoesConvite", "Permissoes", b1 =>
+                        {
+                            b1.Property<string>("ConviteEventoId")
+                                .HasColumnType("varchar(200)");
+
+                            b1.Property<string>("ConviteUsuarioId")
+                                .HasColumnType("varchar(200)");
+
+                            b1.Property<bool>("ConvidaUsuario")
+                                .HasColumnName("ConvidaUsuario")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("ModificaEvento")
+                                .HasColumnName("ModificaEvento")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("VeListaDeConvidados")
+                                .HasColumnName("VeListaDeConvidados")
+                                .HasColumnType("bit");
+
+                            b1.HasKey("ConviteEventoId", "ConviteUsuarioId");
+
+                            b1.ToTable("Convite");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ConviteEventoId", "ConviteUsuarioId");
+                        });
                 });
 #pragma warning restore 612, 618
         }

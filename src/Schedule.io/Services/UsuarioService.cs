@@ -25,6 +25,22 @@ namespace Schedule.io.Services
             _usuarioRepository = usuarioRepository;
         }
 
+
+        public Usuario Gravar(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Usuario> Gravar(List<string> emails)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AtualizarEmail(string usuarioId, string novoEmail)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Gravar(Usuario usuario)
         {
             var usuarioQuery = _usuarioRepository.Obter(usuario.Id);

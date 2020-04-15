@@ -50,9 +50,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AgendaContext).Assembly);
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
-
             base.OnModelCreating(modelBuilder);
         }
 

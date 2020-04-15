@@ -15,10 +15,6 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Property(c => c.UsuarioId)
                 .HasColumnType("varchar(200)");
 
-            builder.Property(c => c.EmailConvidado)
-                .IsRequired()
-                .HasColumnType("varchar(200)");
-
             builder.Property(c => c.Status)
                 .IsRequired()
                 .HasColumnType("int");
@@ -41,7 +37,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                     .HasColumnType("bit");
             });
 
-            builder.HasNoKey();
+            builder.HasKey(c => new { c.EventoId, c.UsuarioId });
             builder.ToTable("Convite");
         }
     }

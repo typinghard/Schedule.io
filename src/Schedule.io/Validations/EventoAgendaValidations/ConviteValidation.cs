@@ -7,20 +7,13 @@ using System.Text;
 
 namespace Schedule.io.Validations.AgendaValidations
 {
-    public class NovoConviteValidation : AbstractValidator<Convite>
+    public class ConviteValidation : AbstractValidator<Convite>
     {
-        public NovoConviteValidation()
+        public ConviteValidation()
         {
             RuleFor(e => e.EventoId)
                 .NotEmpty()
                 .WithMessage("{PropertyName} não informado!");
-
-            RuleFor(e => e.EmailConvidado)
-                .NotEmpty()
-                .NotNull()
-                .WithMessage("E-mail do convite não informado!")
-                .EmailAddress()
-                .WithMessage("E-mail do convite inválido!");
 
             RuleFor(e => e.Status)
                 .NotNull()

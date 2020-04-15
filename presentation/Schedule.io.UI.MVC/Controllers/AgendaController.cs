@@ -43,10 +43,20 @@ namespace Schedule.io.UI.Web.Controllers
             {
 
                 //var usuario = new Usuario("nuss_donoagendaSqlServer@email.com");
+                //var usuarioConvidado = new Usuario("usuario_convidado@email.com");
 
                 //_usuarioService.Gravar(usuario);
-                var usuario = _usuarioService.Obter("c094155a-8dd9-4782-be55-07afa044b970");
-                var agenda = _agendaService.Obter("5bab7987-ee17-4b3e-a1ef-25517c3023f6");
+                //_usuarioService.Gravar(usuarioConvidado);
+
+                //var novaAgenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
+                //var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(novaAgenda.Id, usuario.Id);
+                //novaAgenda.AdicionarAgendaDoUsuario(agendaUsuario);
+
+                //_agendaService.Gravar(novaAgenda);
+
+                //var usuario = _usuarioService.Obter("5bb41e04-9308-4e91-b078-81791aa01a59");
+                //var usuarioConvidado = _usuarioService.Obter("95ab5e1c-e896-4945-8495-ceba3a934216");
+                //var agenda = _agendaService.Obter("4ea40102-e229-4d73-a396-a5fd5546149e");
 
                 //var usuario = _usuarioService.Obter("adfada26-37c9-44f0-8d64-fb774d9b9c83");
                 //var agenda = _agendaService.Obter("35fb8c94-a7c7-488f-80db-13312e0b7cf8");
@@ -81,7 +91,7 @@ namespace Schedule.io.UI.Web.Controllers
 
                 //var lista = _agendaService.Listar(usuario.Id).ToList();
 
-                var tipoEvento = _tipoEventoService.Obter("b2854a98-b8b1-4c1b-8088-83a36e0482d0");
+                //var tipoEvento = _tipoEventoService.Obter("b2854a98-b8b1-4c1b-8088-83a36e0482d0");
 
                 //var tipoEvento = new TipoEvento("TIPO TESTE", "descricao teste");
                 //_tipoEventoService.Gravar(tipoEvento);
@@ -91,15 +101,18 @@ namespace Schedule.io.UI.Web.Controllers
 
                 //_eventoService.Gravar(evento);
 
+
                 //var evento1 = new Evento(agenda.Id, usuario.Id, "EVENTO SQL SERVER", DateTime.Now.AddDays(3));
                 //evento1.DefinirDataFinal(DateTime.Now.AddDays(3));
 
-                //evento1.AdicionarConvite(new io.Models.ValueObjects.Convite(evento1.Id, usuario.Email, usuario.Id));
-                //evento1.AdicionarConvite(new Convite(evento1.Id, "emailconvidado@email.com", null));
+                //evento1.AdicionarConvite(new io.Models.ValueObjects.Convite(evento1.Id, usuario.Id));
+                //evento1.AdicionarConvite(new Convite(evento1.Id, usuarioConvidado.Id));
 
                 //_eventoService.Gravar(evento1);
 
-                //var evento2 = _eventoService.Obter("");
+                //var evento2 = _eventoService.Obter("427bbe40-39b7-48f7-a049-85606ef0f49b");
+
+                //_eventoService.Excluir(evento2.Id);
 
                 return Content("Funcionou!");
             }

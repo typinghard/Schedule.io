@@ -28,21 +28,20 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 name: "AgendaUsuario",
                 columns: table => new
                 {
-                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: false),
-                    AgendaId = table.Column<string>(type: "varchar(200)", nullable: false)
+                    AgendaId = table.Column<string>(type: "varchar(200)", nullable: false),
+                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AgendaUsuario", x => x.UsuarioId);
+                    table.PrimaryKey("PK_AgendaUsuario", x => new { x.AgendaId, x.UsuarioId });
                 });
 
             migrationBuilder.CreateTable(
                 name: "Convite",
                 columns: table => new
                 {
+                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: false),
                     EventoId = table.Column<string>(type: "varchar(200)", nullable: false),
-                    UsuarioId = table.Column<string>(type: "varchar(200)", nullable: true),
-                    EmailConvidado = table.Column<string>(type: "varchar(200)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ModificaEvento = table.Column<bool>(type: "bit", nullable: true),
                     ConvidaUsuario = table.Column<bool>(type: "bit", nullable: true),
@@ -50,7 +49,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Convite", x => x.EventoId);
+                    table.PrimaryKey("PK_Convite", x => new { x.EventoId, x.UsuarioId });
                 });
 
             migrationBuilder.CreateTable(

@@ -115,8 +115,6 @@ namespace Schedule.io.Services
                                     evento.Descricao, evento.Convites, evento.LocalId, evento.DataInicio, evento.DataFinal,
                                     evento.DataLimiteConfirmacao, evento.QuantidadeMinimaDeUsuarios, evento.OcupaUsuario, evento.Publico,
                                     evento.IdTipoEvento, evento.Frequencia));
-
-               // GravarConvites(evento);
             }
 
             ValidarComando();

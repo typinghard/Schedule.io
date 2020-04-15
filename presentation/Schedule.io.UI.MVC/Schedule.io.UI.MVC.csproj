@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Infra\Schedule.io.Infra.RavenDB\Schedule.io.Infra.RavenDB.csproj" />
-    <ProjectReference Include="..\..\src\Infra\Schedule.io.Infra.Data.SqlServerDB\Schedule.io.Infra.Data.SqlServerDB.csproj" />
+    <ProjectReference Include="..\..\src\Infra\Schedule.io.Infra.SqlServerDB\Schedule.io.Infra.SqlServerDB.csproj" />
     <ProjectReference Include="..\..\src\Schedule.io\Schedule.io.csproj" />
   </ItemGroup>
 

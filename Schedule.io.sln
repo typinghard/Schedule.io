@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.UI.MVC", "prese
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Infra.MongoDB", "src\Infra\Schedule.io.Infra.MongoDB\Schedule.io.Infra.MongoDB.csproj", "{D0C16708-1B52-4D86-A799-A65F088651F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schedule.io.Infra.Data.SqlServerDB", "src\Infra\Schedule.io.Infra.Data.SqlServerDB\Schedule.io.Infra.Data.SqlServerDB.csproj", "{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Schedule.io.Infra.SqlServerDB", "src\Infra\Schedule.io.Infra.SqlServerDB\Schedule.io.Infra.SqlServerDB.csproj", "{07483470-3F21-4B13-8F0B-6228D38369D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,10 +56,10 @@ Global
 		{D0C16708-1B52-4D86-A799-A65F088651F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0C16708-1B52-4D86-A799-A65F088651F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0C16708-1B52-4D86-A799-A65F088651F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07483470-3F21-4B13-8F0B-6228D38369D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07483470-3F21-4B13-8F0B-6228D38369D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07483470-3F21-4B13-8F0B-6228D38369D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07483470-3F21-4B13-8F0B-6228D38369D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,7 +71,7 @@ Global
 		{8C25F6BE-B812-4B4E-9C14-5C3F664E97AB} = {28C2BC5E-7B54-49EF-BE6B-0DB31513653C}
 		{2D1C654C-7013-45B6-8B89-7F9F3BE5CE19} = {9DC00D4B-45EF-45FE-8BC4-23CDBB9A2068}
 		{D0C16708-1B52-4D86-A799-A65F088651F2} = {A3619F2A-A0FD-4922-AE17-D8221CD13B2E}
-		{E340D177-93A9-4F2F-AF7E-32C0B2BC6240} = {A3619F2A-A0FD-4922-AE17-D8221CD13B2E}
+		{07483470-3F21-4B13-8F0B-6228D38369D3} = {A3619F2A-A0FD-4922-AE17-D8221CD13B2E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5C308AC2-EACD-400F-A790-F593582B1BA1}

@@ -22,10 +22,10 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public override Evento Obter(string eventoId)
         {
             var query = $@"SELECT e.*,
-	                              Id as {convite_split}, c.EventoId, c.UsuarioId, c.Status, c.ModificaEvento, c.ConvidaUsuario, c.VeListaDeConvidados
+	                              Id as {convite_split}, c.*
                            FROM Evento e
-                           INNER JOIN Convite c on e.Id = c.EventoId
-                           WHERE Id = '{eventoId}'";
+                           LEFT JOIN Convite c on e.Id = c.EventoId
+                           WHERE e.Id = '{eventoId}'";
 
             return DapperEvento(query, convite_split).FirstOrDefault();
         }
@@ -34,6 +34,12 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         {
             base.Adicionar(obj);
             Db.Convite.AddRange(obj.Convites);
+        }
+
+        public override void Atualizar(Evento obj)
+        {
+            base.Atualizar(obj);
+            Db.Convite.UpdateRange(obj.Convites);
         }
 
         public override void Excluir(Evento obj)
@@ -109,11 +115,13 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                     con.Open();
                     con.Query<Evento, Convite, Evento>(
                         query,
-                        (Evento, convite) =>
+                        (evento, convite) =>
                         {
-                            eventos.Add(Evento);
+                            if (!eventos.Any(e => e.Id == evento.Id))
+                                eventos.Add(evento);
+
                             eventos.Last().AdicionarConvite(convite);
-                            return Evento;
+                            return evento;
                         },
                         splitOn: split);
                 }

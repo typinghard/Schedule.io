@@ -48,15 +48,41 @@ namespace Schedule.io.UI.Web.Controllers
                 //_usuarioService.Gravar(usuario);
                 //_usuarioService.Gravar(usuarioConvidado);
 
-                //var novaAgenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
-                //var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(novaAgenda.Id, usuario.Id);
-                //novaAgenda.AdicionarAgendaDoUsuario(agendaUsuario);
+                //var agenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
+                //var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(agenda.Id, usuario.Id);
+                //agenda.AdicionarAgendaDoUsuario(agendaUsuario);
 
-                //_agendaService.Gravar(novaAgenda);
+                //_agendaService.Gravar(agenda);
 
-                //var usuario = _usuarioService.Obter("5bb41e04-9308-4e91-b078-81791aa01a59");
-                //var usuarioConvidado = _usuarioService.Obter("95ab5e1c-e896-4945-8495-ceba3a934216");
-                //var agenda = _agendaService.Obter("4ea40102-e229-4d73-a396-a5fd5546149e");
+                //var evento1 = new Evento(agenda.Id, usuario.Id, "EVENTO SQL SERVER", DateTime.Now.AddDays(3));
+                //evento1.DefinirDataFinal(DateTime.Now.AddDays(3));
+
+                //evento1.AdicionarConvite(new io.Models.ValueObjects.Convite(evento1.Id, usuario.Id));
+                //evento1.AdicionarConvite(new Convite(evento1.Id, usuarioConvidado.Id));
+
+                //_eventoService.Gravar(evento1);
+                //--##--
+
+                var usuario = _usuarioService.Obter("4a27288f-431e-4176-88c1-0f690b7d8caf");
+                var usuarioConvidado = _usuarioService.Obter("f885a91b-5549-42be-a5c4-209571b49b05");
+                var agenda = _agendaService.Obter("c1758117-bdf2-4100-91ff-952985cd8f29");
+
+
+                //"0bfc6537-372a-4879-b045-1864376f5251"
+                //"7bb70eb8-d4db-49c4-8441-e9cd74e8c726"
+                var evento = _eventoService.Obter("0bfc6537-372a-4879-b045-1864376f5251");
+                evento.DefinirTitulo(evento.Titulo + " - ATUALIZADO!!!");
+                foreach (var convite in evento.Convites)
+                {
+                    if (convite.UsuarioId == evento.UsuarioIdCriador)
+                    {
+                        convite.AtualizarStatusConvite(Enums.EnumStatusConviteEvento.Sim);
+                        convite.Permissoes.PodeConvidar();
+                        convite.Permissoes.PodeVerListaDeConvidados();
+                        convite.Permissoes.PodeModificarEvento();
+                    }
+                }
+                _eventoService.Gravar(evento);
 
                 //var usuario = _usuarioService.Obter("adfada26-37c9-44f0-8d64-fb774d9b9c83");
                 //var agenda = _agendaService.Obter("35fb8c94-a7c7-488f-80db-13312e0b7cf8");

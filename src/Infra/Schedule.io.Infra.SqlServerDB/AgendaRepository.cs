@@ -25,10 +25,16 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             Db.AgendaUsuario.AddRange(obj.AgendasUsuarios);
         }
 
+        public override void Atualizar(Agenda obj)
+        {
+            base.Atualizar(obj);
+            Db.AgendaUsuario.UpdateRange(obj.AgendasUsuarios);
+        }
+
         public override void Excluir(Agenda obj)
         {
-            base.Excluir(obj);
             Db.AgendaUsuario.RemoveRange(obj.AgendasUsuarios);
+            base.Excluir(obj);
         }
 
         public override Agenda Obter(string agendaId)
@@ -91,11 +97,13 @@ namespace Schedule.io.Infra.Data.SqlServerDB
                     con.Open();
                     con.Query<Agenda, AgendaUsuario, Agenda>(
                         query,
-                        (Agenda, agendaUsuario) =>
+                        (agenda, agendaUsuario) =>
                         {
-                            agendas.Add(Agenda);
+                            if (!agendas.Any(a => a.Id == agenda.Id))
+                                agendas.Add(agenda);
+
                             agendas.Last().AdicionarAgendaDoUsuario(agendaUsuario);
-                            return Agenda;
+                            return agenda;
                         },
                         splitOn: split);
                 }

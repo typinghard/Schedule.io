@@ -13,9 +13,9 @@ using AutoMapper;
 using Schedule.io;
 //using Schedule.io.Infra.RavenDB.Configs;
 using Schedule.io.Models;
-using Schedule.io.Infra.Data.SqlServerDB.Configs;
 using MediatR;
 using Schedule.io.Configs;
+using Schedule.io.Infra.Data.SqlServerDB.Configs;
 
 namespace Schedule.io.UI.Web
 {

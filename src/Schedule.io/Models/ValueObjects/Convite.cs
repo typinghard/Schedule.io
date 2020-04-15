@@ -3,10 +3,7 @@ using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Helpers;
 using Schedule.io.Enums;
 using Schedule.io.Validations.AgendaValidations;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Models.ValueObjects
 {

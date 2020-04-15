@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Schedule.io.Enums
+﻿namespace Schedule.io.Enums
 {
     public enum EnumFrequencia
     {

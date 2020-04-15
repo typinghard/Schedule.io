@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Schedule.io.Interfaces.Repositories
 {
-    public interface IEventoAgendaRepository : IRepository<Evento>
+    public interface IEventoRepository : IRepository<Evento>
     {
         IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId);
         IList<Evento> ListarEventosDaAgenda(string agendaId);

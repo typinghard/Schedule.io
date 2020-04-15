@@ -39,7 +39,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
             this._convites = new List<Convite>();
 
-            var resultadoValidacao = this.EventoAgendaEhValido();
+            var resultadoValidacao = this.EventoEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -210,9 +210,9 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Frequencia = frequencia;
         }
 
-        public ValidationResult EventoAgendaEhValido()
+        public ValidationResult EventoEhValido()
         {
-            return new EventoAgendaValidation().Validate(this);
+            return new EventoValidation().Validate(this);
         }
     }
 

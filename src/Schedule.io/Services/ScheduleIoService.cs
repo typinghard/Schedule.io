@@ -1,8 +1,4 @@
-﻿using Schedule.io.Interfaces;
-using Schedule.io.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Schedule.io.Interfaces.Services;
 
 namespace Schedule.io.Services
 {

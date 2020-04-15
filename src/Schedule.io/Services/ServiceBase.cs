@@ -3,10 +3,7 @@ using Schedule.io.Core.Communication.Mediator;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Services
 {

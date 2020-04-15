@@ -1,7 +1,5 @@
 ﻿using Schedule.io.Core.Messages;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 
 namespace Schedule.io.Core.Data.EventSourcing

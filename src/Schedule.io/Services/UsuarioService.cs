@@ -1,13 +1,9 @@
 ﻿using MediatR;
 using Schedule.io.Core.Communication.Mediator;
-using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Interfaces.Services;
-using Schedule.io.Interfaces;
-using Schedule.io.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Events.UsuarioEvents;

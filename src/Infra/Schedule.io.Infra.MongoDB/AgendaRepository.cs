@@ -1,8 +1,6 @@
 ﻿using MongoDB.Driver;
-using Schedule.io.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.ValueObjects;

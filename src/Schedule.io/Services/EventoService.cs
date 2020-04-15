@@ -1,15 +1,11 @@
 ﻿using Schedule.io.Interfaces.Services;
-using Schedule.io.Interfaces;
-using Schedule.io.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Core.Communication.Mediator;
 using MediatR;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
-using Schedule.io.Core.DomainObjects;
 using Schedule.io.Enums;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.ValueObjects;
@@ -19,23 +15,23 @@ namespace Schedule.io.Services
 {
     internal class EventoService : ServiceBase, IEventoService
     {
-        private readonly IEventoAgendaRepository _eventoAgendaRepository;
+        private readonly IEventoRepository _eventoRepository;
         private readonly ILocalRepository _localRepository;
 
-        public EventoService(IEventoAgendaRepository eventoAgendaRepository,
+        public EventoService(IEventoRepository eventoRepository,
                              ILocalRepository localRepository,
                              IMediatorHandler bus,
                              IUnitOfWork uow,
                              INotificationHandler<DomainNotification> notifications) : base(bus, uow, notifications)
         {
-            _eventoAgendaRepository = eventoAgendaRepository;
+            _eventoRepository = eventoRepository;
             _localRepository = localRepository;
         }
 
 
         public void Gravar(Evento evento)
         {
-            var eventoQuery = _eventoAgendaRepository.Obter(evento.Id);
+            var eventoQuery = _eventoRepository.Obter(evento.Id);
             if (eventoQuery == null)
                 Registrar(evento);
             else
@@ -46,12 +42,12 @@ namespace Schedule.io.Services
 
         public Evento Obter(string eventoId)
         {
-            return _eventoAgendaRepository.Obter(eventoId);
+            return _eventoRepository.Obter(eventoId);
         }
 
         public IEnumerable<Evento> Listar(string agendaId)
         {
-            var eventos = _eventoAgendaRepository.ListarEventosDaAgenda(agendaId);
+            var eventos = _eventoRepository.ListarEventosDaAgenda(agendaId);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -60,7 +56,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId, string usuarioId)
         {
-            var eventos = _eventoAgendaRepository.ListarTodosEventosDoUsuario(agendaId, usuarioId);
+            var eventos = _eventoRepository.ListarTodosEventosDoUsuario(agendaId, usuarioId);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -69,7 +65,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId, DateTime dataInicial, DateTime dataFinal)
         {
-            var eventos = _eventoAgendaRepository.ListarEventosPorPeriodo(agendaId, dataInicial, dataFinal);
+            var eventos = _eventoRepository.ListarEventosPorPeriodo(agendaId, dataInicial, dataFinal);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -78,17 +74,17 @@ namespace Schedule.io.Services
 
         public void Excluir(string eventoId)
         {
-            var evento = _eventoAgendaRepository.Obter(eventoId);
+            var evento = _eventoRepository.Obter(eventoId);
             if (evento == null)
             {
                 _bus.PublicarNotificacao(new DomainNotification("", "Evento não encontrado!"));
                 ValidarComando();
             }
 
-            _eventoAgendaRepository.Excluir(evento);
+            _eventoRepository.Excluir(evento);
 
             if (Commit())
-                _bus.PublicarEvento(new EventoAgendaRemovidoEvent(evento.Id));
+                _bus.PublicarEvento(new EventoRemovidoEvent(evento.Id));
 
             ValidarComando();
         }
@@ -97,7 +93,7 @@ namespace Schedule.io.Services
         {
             Validar(evento);
 
-            _eventoAgendaRepository.Adicionar(evento);
+            _eventoRepository.Adicionar(evento);
 
             if (Commit())
             {
@@ -114,7 +110,7 @@ namespace Schedule.io.Services
         {
             Validar(evento);
 
-            _eventoAgendaRepository.Atualizar(evento);
+            _eventoRepository.Atualizar(evento);
 
             if (Commit())
             {
@@ -130,7 +126,7 @@ namespace Schedule.io.Services
         private void Validar(Evento evento)
         {
             VerificaConviteDonoEvento(evento);
-            ValidarEventosOcupadoParaHorariosIguais(evento);
+            ValidarEventosOcupadoNoMesmoHorario(evento);
             ValidaQuantidadeUsuarioReferenteAoLocal(evento);
         }
 
@@ -178,7 +174,7 @@ namespace Schedule.io.Services
 
         private void ValidarEventosOcupadoNoMesmoHorario(Evento evento)
         {
-            var listEventos = _eventoAgendaRepository.ListarTodosEventosDoUsuario(evento.AgendaId, evento.UsuarioIdCriador);
+            var listEventos = _eventoRepository.ListarTodosEventosDoUsuario(evento.AgendaId, evento.UsuarioIdCriador);
 
             if (!listEventos.Any())
                 return;

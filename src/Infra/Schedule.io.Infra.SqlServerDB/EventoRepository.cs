@@ -10,11 +10,11 @@ using System.Linq;
 
 namespace Schedule.io.Infra.SqlServerDB
 {
-    public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
+    public class EventoRepository : Repository<Evento>, IEventoRepository
     {
         private readonly string convite_split = "convite_split";
 
-        public EventoAgendaRepository(AgendaContext context) : base(context)
+        public EventoRepository(AgendaContext context) : base(context)
         {
 
         }

@@ -1,5 +1,4 @@
 ﻿using Schedule.io.Core.Messages;
-using System;
 
 namespace Schedule.io.Events.LocalEvents
 {

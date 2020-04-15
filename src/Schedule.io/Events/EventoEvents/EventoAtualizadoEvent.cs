@@ -1,14 +1,12 @@
 ﻿using Schedule.io.Core.Messages;
 using Schedule.io.Enums;
-using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 
-
 namespace Schedule.io.Events.EventoAgendaEvents
 {
-    public class EventoRegistradoEvent : Event
+    public class EventoAtualizadoEvent : Event
     {
         public string Id { get; set; }
         public string AgendaId { get; set; }
@@ -27,9 +25,8 @@ namespace Schedule.io.Events.EventoAgendaEvents
         public string TipoEventoId { get; set; }
         public EnumFrequencia Frequencia { get; set; }
 
-
-        public EventoRegistradoEvent(string id, string agendaId, string usuarioId, string identificadorExterno, string titulo, string descricao, IEnumerable<Convite> convites, string localId, DateTime dataInicio, DateTime? dataFinal,
-            DateTime? dataLimiteConfirmacao, int quantidadeMinimaDeUsuarios, bool ocupaUsuario, bool publico, string tipoEventoId, EnumFrequencia frequencia)
+        public EventoAtualizadoEvent(string id, string agendaId, string usuarioId,string identificadorExterno, string titulo, string descricao, IEnumerable<Convite> convites, string localId, DateTime dataInicio, DateTime? dataFinal,
+            DateTime? dataLimiteConfirmacao, int qtdeMaximadeUsuarios, bool ocupaUsuario, bool publico, string tipoEventoId, EnumFrequencia frequencia)
         {
             this.Id = id;
             this.AggregateId = id;
@@ -43,11 +40,12 @@ namespace Schedule.io.Events.EventoAgendaEvents
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;
-            this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
+            this.QuantidadeMinimaDeUsuarios = qtdeMaximadeUsuarios;
             this.OcupaUsuario = ocupaUsuario;
             this.Publico = publico;
             this.TipoEventoId = tipoEventoId;
             this.Frequencia = frequencia;
         }
+
     }
 }

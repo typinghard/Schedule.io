@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Schedule.io.Core.Messages
+﻿namespace Schedule.io.Core.Messages
 {
     public abstract class Message
     {

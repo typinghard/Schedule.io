@@ -6,7 +6,7 @@ using Schedule.io.Models.AggregatesRoots;
 
 namespace Schedule.io.Infra.SqlServerDB.Mappings
 {
-    public class EventoAgendaMapping : IEntityTypeConfiguration<Evento>
+    public class EventoMapping : IEntityTypeConfiguration<Evento>
     {
         public void Configure(EntityTypeBuilder<Evento> builder)
         {

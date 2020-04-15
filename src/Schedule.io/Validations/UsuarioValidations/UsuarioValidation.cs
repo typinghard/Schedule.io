@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Models.AggregatesRoots;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Schedule.io.Validations.UsuarioValidations

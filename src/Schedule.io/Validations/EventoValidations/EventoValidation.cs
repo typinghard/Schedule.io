@@ -2,14 +2,12 @@
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Models.AggregatesRoots;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Schedule.io.Validations.EventoAgendaValidations
 {
-    public class EventoAgendaValidation : EntityValidation<Evento>
+    public class EventoValidation : EntityValidation<Evento>
     {
-        public EventoAgendaValidation()
+        public EventoValidation()
         {
             RuleFor(c => c.AgendaId)
                 .NotEmpty()

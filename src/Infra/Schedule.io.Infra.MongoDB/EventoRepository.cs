@@ -9,9 +9,9 @@ using Schedule.io.Infra.MongoDB.Configs;
 
 namespace Schedule.io.Infra.MongoDB
 {
-    public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
+    public class EventoRepository : Repository<Evento>, IEventoRepository
     {
-        public EventoAgendaRepository(ScheduleioContext context) : base(context)
+        public EventoRepository(ScheduleioContext context) : base(context)
         {
 
         }

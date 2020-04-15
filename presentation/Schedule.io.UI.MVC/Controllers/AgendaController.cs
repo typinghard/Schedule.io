@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Schedule.io.Core.DomainObjects;
-using Schedule.io.Interfaces;
 using Schedule.io.Interfaces.Services;
-using Schedule.io.Models.AggregatesRoots;
-using Schedule.io.Models.ValueObjects;
 
 namespace Schedule.io.UI.Web.Controllers
 {
@@ -16,11 +11,11 @@ namespace Schedule.io.UI.Web.Controllers
     {
         //private static DateTime _DataInicio;
 
-        IAgendaService _agendaService;
-        IUsuarioService _usuarioService;
-        ILocalService _localService;
-        IEventoService _eventoService;
-        ITipoEventoService _tipoEventoService;
+        private readonly IAgendaService _agendaService;
+        private readonly IUsuarioService _usuarioService;
+        private readonly ILocalService _localService;
+        private readonly IEventoService _eventoService;
+        private readonly ITipoEventoService _tipoEventoService;
 
         public AgendaController(IAgendaService agendaService,
                                 IUsuarioService usuarioService,

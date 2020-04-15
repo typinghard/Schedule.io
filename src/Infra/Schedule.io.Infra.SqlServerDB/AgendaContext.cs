@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Core.Data.EventSourcing;
 using Schedule.io.Infra.SqlServerDB.Extensions;
@@ -7,8 +6,6 @@ using Schedule.io.Infra.SqlServerDB.Configs;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
 using System;
-using System.Data.Common;
-using System.Linq;
 
 namespace Schedule.io.Infra.SqlServerDB
 {

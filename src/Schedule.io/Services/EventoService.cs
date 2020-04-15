@@ -129,11 +129,9 @@ namespace Schedule.io.Services
 
         private void Validar(Evento evento)
         {
+            VerificaConviteDonoEvento(evento);
             ValidarEventosOcupadoParaHorariosIguais(evento);
-            ValidarConviteDonoEvento(evento);
             ValidaQuantidadeUsuarioReferenteAoLocal(evento);
-
-            ValidarComando();
         }
 
         private void ValidaQuantidadeUsuarioReferenteAoLocal(Evento evento)
@@ -146,9 +144,11 @@ namespace Schedule.io.Services
                     _bus.PublicarNotificacao(new DomainNotification("Validação Evento", "Quantidade mínima de usuários não pode ser maior que a lotação máxima do local."));
 
             }
+
+            ValidarComando();
         }
 
-        private void ValidarConviteDonoEvento(Evento evento)
+        private void VerificaConviteDonoEvento(Evento evento)
         {
             foreach (var convite in evento.Convites)
             {
@@ -178,14 +178,15 @@ namespace Schedule.io.Services
 
         private void ValidarEventosOcupadoParaHorariosIguais(Evento evento)
         {
-            evento.DefinirDataInicial(new DateTime(2020, 4, 18, 19, 30, 00));
             var listEventos = _eventoAgendaRepository.ListarTodosEventosDoUsuario(evento.AgendaId, evento.UsuarioIdCriador);
 
             if (!listEventos.Any())
                 return;
 
-            if (listEventos.Any(x => x.DataInicio == evento.DataInicio && evento.OcupaUsuario == true))
+            if (listEventos.Any(x => x.DataInicio == evento.DataInicio && (x.OcupaUsuario && evento.OcupaUsuario)))
                 _bus.PublicarNotificacao(new DomainNotification("Validação Evento", "Usuario não pode ter dois ou mais eventos no mesmo horário marcados como ocupado."));
+
+            ValidarComando();
         }
     }
 }

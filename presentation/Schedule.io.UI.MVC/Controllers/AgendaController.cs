@@ -41,6 +41,7 @@ namespace Schedule.io.UI.Web.Controllers
         {
             try
             {
+                var usuario = _usuarioService.Obter("a1b2757d-98ad-41ab-96be-9c25159bf5e2");
 
                 //var usuario = new Usuario("nuss_donoagendaSqlServer@email.com");
                 //var usuarioConvidado = new Usuario("usuario_convidado@email.com");
@@ -48,11 +49,11 @@ namespace Schedule.io.UI.Web.Controllers
                 //_usuarioService.Gravar(usuario);
                 //_usuarioService.Gravar(usuarioConvidado);
 
-                //var agenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
-                //var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(agenda.Id, usuario.Id);
+                var agenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
+                var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(agenda.Id, usuario.Id);
                 //agenda.AdicionarAgendaDoUsuario(agendaUsuario);
 
-                //_agendaService.Gravar(agenda);
+                _agendaService.Gravar(agenda);
 
                 //_agendaService.Excluir("f52d78c0-65bd-460a-8c07-3b42d4234320");
 

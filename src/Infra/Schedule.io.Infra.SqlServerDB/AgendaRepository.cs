@@ -33,8 +33,8 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public override void Excluir(Agenda obj)
         {
-            Db.AgendaUsuario.RemoveRange(obj.AgendasUsuarios);
             base.Excluir(obj);
+            Db.AgendaUsuario.RemoveRange(obj.AgendasUsuarios);
         }
 
         public override Agenda Obter(string agendaId)

@@ -54,6 +54,8 @@ namespace Schedule.io.UI.Web.Controllers
 
                 //_agendaService.Gravar(agenda);
 
+                //_agendaService.Excluir("f52d78c0-65bd-460a-8c07-3b42d4234320");
+
                 //var evento1 = new Evento(agenda.Id, usuario.Id, "EVENTO SQL SERVER", DateTime.Now.AddDays(3));
                 //evento1.DefinirDataFinal(DateTime.Now.AddDays(3));
 

@@ -56,52 +56,48 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public IList<Evento> ListarEventosDaAgenda(string agendaId)
         {
-
-            var tipo_split = "tipo_split";
-            var query = @$"
-                                 SELECT *,
-                                        Id as {tipo_split}, Nome, Descricao
-                                 FROM {_schemaName}.Evento
-                                 WHERE
-                                 AgendaId = '{agendaId}'
+            var query = @$"SELECT e.*,
+	                              Id as {convite_split}, c.*
+                           FROM {_schemaName}.Evento e
+                           LEFT JOIN {_schemaName}.Convite c on e.Id = c.EventoId
+                           WHERE
+                           e.AgendaId = '{agendaId}'
                                  
             ";
 
-            return DapperEvento(query, tipo_split);
+            return DapperEvento(query, convite_split);
         }
 
         public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
-            var tipo_split = "tipo_split";
-            var query = @$"
-                                 SELECT *,
-                                        Id as {tipo_split}, Nome, Descricao
-                                 FROM {_schemaName}.Evento
-                                 WHERE
-                                 AgendaId = '{agendaId}'
-                                 and DataInicio between '{dataInicio.FormataDataSql(true)}'and '{dataFinal.FormataDataSql()}'
+            var query = @$"SELECT e.*,
+	                              Id as {convite_split}, c.*
+                           FROM {_schemaName}.Evento e
+                           LEFT JOIN {_schemaName}.Convite c on e.Id = c.EventoId
+                           WHERE
+                           e.AgendaId = '{agendaId}'
+                           and e.DataInicio between '{dataInicio.FormataDataSql(true)}'and '{dataFinal.FormataDataSql()}'
                                  
             ";
 
-            return DapperEvento(query, tipo_split);
+            return DapperEvento(query, convite_split);
 
         }
 
         public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
-            var tipo_split = "tipo_split";
-            var query = @$"
-                                 SELECT *,
-                                        Id as {tipo_split}, Nome, Descricao
-                                 FROM {_schemaName}.Evento
-                                 WHERE
-                                 AgendaId = '{agendaId}'
-                                 and UsuarioId = '{usuarioId}'
+            var query = @$"SELECT e.*,
+	                              Id as {convite_split}, c.*
+                           FROM {_schemaName}.Evento e
+                           LEFT JOIN {_schemaName}.Convite c on e.Id = c.EventoId
+                           WHERE
+                           e.AgendaId = '{agendaId}'
+                           and e.UsuarioIdCriador = '{usuarioId}'
                                  
             ";
 
 
-            return DapperEvento(query, tipo_split);
+            return DapperEvento(query, convite_split);
 
         }
 

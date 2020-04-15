@@ -41,29 +41,39 @@ namespace Schedule.io.UI.Web.Controllers
         {
             try
             {
-                var usuario = _usuarioService.Obter("a1b2757d-98ad-41ab-96be-9c25159bf5e2");
+                //var usuario = _usuarioService.Obter("a1b2757d-98ad-41ab-96be-9c25159bf5e2");
+                //var usuarioConvidado = _usuarioService.Obter("16332ddf-f82a-4d3d-b787-2a09dff50c2e");
+                //var agenda = _agendaService.Obter("5802c228-aef8-426b-8641-c7507d68ef56");
 
                 //var usuario = new Usuario("nuss_donoagendaSqlServer@email.com");
                 //var usuarioConvidado = new Usuario("usuario_convidado@email.com");
 
-                //_usuarioService.Gravar(usuario);
+                ////_usuarioService.Gravar(usuario);
                 //_usuarioService.Gravar(usuarioConvidado);
 
-                var agenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
-                var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(agenda.Id, usuario.Id);
+                //var agenda = new Agenda(usuario.Id, "AGENDA ARQUITETURA NOVA");
+                //var agendaUsuario = new io.Models.ValueObjects.AgendaUsuario(agenda.Id, usuario.Id);
                 //agenda.AdicionarAgendaDoUsuario(agendaUsuario);
 
-                _agendaService.Gravar(agenda);
+                //_agendaService.Gravar(agenda);
 
                 //_agendaService.Excluir("f52d78c0-65bd-460a-8c07-3b42d4234320");
 
                 //var evento1 = new Evento(agenda.Id, usuario.Id, "EVENTO SQL SERVER", DateTime.Now.AddDays(3));
                 //evento1.DefinirDataFinal(DateTime.Now.AddDays(3));
-
-                //evento1.AdicionarConvite(new io.Models.ValueObjects.Convite(evento1.Id, usuario.Id));
+                //evento1.OcuparUsuario();
+                ////evento1.AdicionarConvite(new io.Models.ValueObjects.Convite(evento1.Id, usuario.Id));
                 //evento1.AdicionarConvite(new Convite(evento1.Id, usuarioConvidado.Id));
 
                 //_eventoService.Gravar(evento1);
+
+                //var evento2 = new Evento(agenda.Id, usuario.Id, "EVENTO SQL SERVER", DateTime.Now.AddDays(3));
+                //evento2.DefinirDataFinal(DateTime.Now.AddDays(3));
+                //evento2.OcuparUsuario();
+                //evento2.AdicionarConvite(new io.Models.ValueObjects.Convite(evento1.Id, usuario.Id));
+                //evento2.AdicionarConvite(new Convite(evento2.Id, usuarioConvidado.Id));
+
+                //_eventoService.Gravar(evento2);
                 //--##--
 
                 //var usuario = _usuarioService.Obter("4a27288f-431e-4176-88c1-0f690b7d8caf");

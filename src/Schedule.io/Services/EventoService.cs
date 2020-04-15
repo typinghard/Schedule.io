@@ -20,13 +20,16 @@ namespace Schedule.io.Services
     internal class EventoService : ServiceBase, IEventoService
     {
         private readonly IEventoAgendaRepository _eventoAgendaRepository;
+        private readonly ILocalRepository _localRepository;
 
         public EventoService(IEventoAgendaRepository eventoAgendaRepository,
+                             ILocalRepository localRepository,
                              IMediatorHandler bus,
                              IUnitOfWork uow,
                              INotificationHandler<DomainNotification> notifications) : base(bus, uow, notifications)
         {
             _eventoAgendaRepository = eventoAgendaRepository;
+            _localRepository = localRepository;
         }
 
 
@@ -92,6 +95,8 @@ namespace Schedule.io.Services
 
         private void Registrar(Evento evento)
         {
+            Validar(evento);
+
             _eventoAgendaRepository.Adicionar(evento);
 
             if (Commit())
@@ -107,6 +112,8 @@ namespace Schedule.io.Services
 
         private void Atualizar(Evento evento)
         {
+            Validar(evento);
+
             _eventoAgendaRepository.Atualizar(evento);
 
             if (Commit())
@@ -118,6 +125,67 @@ namespace Schedule.io.Services
             }
 
             ValidarComando();
+        }
+
+        private void Validar(Evento evento)
+        {
+            ValidarEventosOcupadoParaHorariosIguais(evento);
+            ValidarConviteDonoEvento(evento);
+            ValidaQuantidadeUsuarioReferenteAoLocal(evento);
+
+            ValidarComando();
+        }
+
+        private void ValidaQuantidadeUsuarioReferenteAoLocal(Evento evento)
+        {
+            if (string.IsNullOrEmpty(evento.LocalId) && evento.QuantidadeMinimaDeUsuarios > 0)
+            {
+                var local = _localRepository.Obter(evento.LocalId);
+
+                if (evento.QuantidadeMinimaDeUsuarios > local.LotacaoMaxima)
+                    _bus.PublicarNotificacao(new DomainNotification("Validação Evento", "Quantidade mínima de usuários não pode ser maior que a lotação máxima do local."));
+
+            }
+        }
+
+        private void ValidarConviteDonoEvento(Evento evento)
+        {
+            foreach (var convite in evento.Convites)
+            {
+                if (convite.UsuarioId == evento.UsuarioIdCriador)
+                {
+                    MontaConviteDono(evento, convite);
+                    return;
+                }
+            }
+
+            MontaConviteDono(evento);
+        }
+
+        private void MontaConviteDono(Evento evento, Convite convite = null)
+        {
+            if (convite == null)
+                convite = new Convite(evento.Id, evento.UsuarioIdCriador);
+
+            convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
+            convite.Permissoes.PodeConvidar();
+            convite.Permissoes.PodeModificarEvento();
+            convite.Permissoes.PodeVerListaDeConvidados();
+
+            if (!evento.Convites.Any(x => x.UsuarioId == evento.UsuarioIdCriador))
+                evento.AdicionarConvite(convite);
+        }
+
+        private void ValidarEventosOcupadoParaHorariosIguais(Evento evento)
+        {
+            evento.DefinirDataInicial(new DateTime(2020, 4, 18, 19, 30, 00));
+            var listEventos = _eventoAgendaRepository.ListarTodosEventosDoUsuario(evento.AgendaId, evento.UsuarioIdCriador);
+
+            if (!listEventos.Any())
+                return;
+
+            if (listEventos.Any(x => x.DataInicio == evento.DataInicio && evento.OcupaUsuario == true))
+                _bus.PublicarNotificacao(new DomainNotification("Validação Evento", "Usuario não pode ter dois ou mais eventos no mesmo horário marcados como ocupado."));
         }
     }
 }

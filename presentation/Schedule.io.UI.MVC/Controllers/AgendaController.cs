@@ -63,26 +63,26 @@ namespace Schedule.io.UI.Web.Controllers
                 //_eventoService.Gravar(evento1);
                 //--##--
 
-                var usuario = _usuarioService.Obter("4a27288f-431e-4176-88c1-0f690b7d8caf");
-                var usuarioConvidado = _usuarioService.Obter("f885a91b-5549-42be-a5c4-209571b49b05");
-                var agenda = _agendaService.Obter("c1758117-bdf2-4100-91ff-952985cd8f29");
+                //var usuario = _usuarioService.Obter("4a27288f-431e-4176-88c1-0f690b7d8caf");
+                //var usuarioConvidado = _usuarioService.Obter("f885a91b-5549-42be-a5c4-209571b49b05");
+                //var agenda = _agendaService.Obter("c1758117-bdf2-4100-91ff-952985cd8f29");
 
 
                 //"0bfc6537-372a-4879-b045-1864376f5251"
                 //"7bb70eb8-d4db-49c4-8441-e9cd74e8c726"
-                var evento = _eventoService.Obter("0bfc6537-372a-4879-b045-1864376f5251");
-                evento.DefinirTitulo(evento.Titulo + " - ATUALIZADO!!!");
-                foreach (var convite in evento.Convites)
-                {
-                    if (convite.UsuarioId == evento.UsuarioIdCriador)
-                    {
-                        convite.AtualizarStatusConvite(Enums.EnumStatusConviteEvento.Sim);
-                        convite.Permissoes.PodeConvidar();
-                        convite.Permissoes.PodeVerListaDeConvidados();
-                        convite.Permissoes.PodeModificarEvento();
-                    }
-                }
-                _eventoService.Gravar(evento);
+                //var evento = _eventoService.Obter("0bfc6537-372a-4879-b045-1864376f5251");
+                //evento.DefinirTitulo(evento.Titulo + " - ATUALIZADO!!!");
+                //foreach (var convite in evento.Convites)
+                //{
+                //    if (convite.UsuarioId == evento.UsuarioIdCriador)
+                //    {
+                //        convite.AtualizarStatusConvite(Enums.EnumStatusConviteEvento.Sim);
+                //        convite.Permissoes.PodeConvidar();
+                //        convite.Permissoes.PodeVerListaDeConvidados();
+                //        convite.Permissoes.PodeModificarEvento();
+                //    }
+                //}
+                //_eventoService.Gravar(evento);
 
                 //var usuario = _usuarioService.Obter("adfada26-37c9-44f0-8d64-fb774d9b9c83");
                 //var agenda = _agendaService.Obter("35fb8c94-a7c7-488f-80db-13312e0b7cf8");

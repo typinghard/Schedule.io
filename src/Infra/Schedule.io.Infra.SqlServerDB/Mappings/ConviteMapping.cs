@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Infra.SqlServerDB.Configs;
 using Schedule.io.Models.ValueObjects;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
+namespace Schedule.io.Infra.SqlServerDB.Mappings
 {
     public class ConviteMapping : IEntityTypeConfiguration<Convite>
     {
@@ -38,7 +40,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             });
 
             builder.HasKey(c => new { c.EventoId, c.UsuarioId });
-            builder.ToTable("Convite");
+            builder.ToTable("Convite", ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);
         }
     }
 }

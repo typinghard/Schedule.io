@@ -1,7 +1,7 @@
 ﻿using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.AggregatesRoots;
 
-namespace Schedule.io.Infra.Data.SqlServerDB
+namespace Schedule.io.Infra.SqlServerDB
 {
     public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
@@ -17,7 +17,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public override Usuario Obter(string usuarioId)
         {
             var query = $@"SELECT * 
-                           FROM Usuario
+                           FROM {_schemaName}.Usuario
                            WHERE Id = '{usuarioId}'";
 
             return base.Obter(query);

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Infra.SqlServerDB.Configs;
 using Schedule.io.Models.AggregatesRoots;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
+namespace Schedule.io.Infra.SqlServerDB.Mappings
 {
     public class AgendaMapping : IEntityTypeConfiguration<Agenda>
     {
@@ -32,7 +34,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Ignore(c => c.AgendasUsuarios);
             builder.Ignore(c => c.Eventos);
 
-            builder.ToTable("Agenda");
+            builder.ToTable("Agenda", ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);
         }
     }
 }

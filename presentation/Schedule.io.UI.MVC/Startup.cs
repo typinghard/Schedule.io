@@ -15,7 +15,7 @@ using Schedule.io;
 using Schedule.io.Models;
 using MediatR;
 using Schedule.io.Configs;
-using Schedule.io.Infra.Data.SqlServerDB.Configs;
+using Schedule.io.Infra.SqlServerDB.Configs;
 
 namespace Schedule.io.UI.Web
 {

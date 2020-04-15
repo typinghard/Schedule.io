@@ -1,7 +1,7 @@
 ﻿using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.AggregatesRoots;
 
-namespace Schedule.io.Infra.Data.SqlServerDB
+namespace Schedule.io.Infra.SqlServerDB
 {
     public class LocalRepository : Repository<Local>, ILocalRepository
     {
@@ -12,7 +12,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         public override Local Obter(string localId)
         {
             var query = $@"SELECT * 
-                           FROM Local 
+                           FROM {_schemaName}.Local 
                            WHERE Id = '{localId}'";
 
             return base.Obter(query);

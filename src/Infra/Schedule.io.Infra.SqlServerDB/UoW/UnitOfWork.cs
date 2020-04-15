@@ -1,6 +1,6 @@
 ﻿using Schedule.io.Interfaces.Repositories;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.UoW
+namespace Schedule.io.Infra.SqlServerDB.UoW
 {
     public class UnitOfWork : IUnitOfWork
     {

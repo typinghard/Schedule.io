@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Infra.SqlServerDB.Configs;
 using Schedule.io.Models.AggregatesRoots;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
+namespace Schedule.io.Infra.SqlServerDB.Mappings
 {
     public class TipoEventoMapping : IEntityTypeConfiguration<TipoEvento>
     {
@@ -26,7 +25,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Property(c => c.Descricao)
                 .HasColumnType("varchar(500)");
 
-            builder.ToTable("TipoEvento");
+            builder.ToTable("TipoEvento", ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
+namespace Schedule.io.Infra.SqlServerDB.Migrations
 {
     public partial class Inicial : Migration
     {

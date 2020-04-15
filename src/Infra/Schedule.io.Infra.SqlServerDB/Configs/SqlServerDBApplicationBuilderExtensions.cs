@@ -2,10 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Core.Data.EventSourcing;
-using Schedule.io.Infra.Data.SqlServerDB.EventSourcing;
+using Schedule.io.Infra.SqlServerDB.EventSourcing;
+using Schedule.io.Infra.SqlServerDB.Extensions;
 using Schedule.io.Interfaces.Repositories;
+using System;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Configs
+namespace Schedule.io.Infra.SqlServerDB.Configs
 {
     public static class SqlServerDBApplicationBuilderExtensions
     {

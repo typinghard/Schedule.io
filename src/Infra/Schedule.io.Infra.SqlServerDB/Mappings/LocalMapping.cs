@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Infra.SqlServerDB.Configs;
 using Schedule.io.Models.AggregatesRoots;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
+namespace Schedule.io.Infra.SqlServerDB.Mappings
 {
     public class LocalMapping : IEntityTypeConfiguration<Local>
     {
@@ -32,7 +34,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
             builder.Property(c => c.LotacaoMaxima)
                 .HasColumnType("int");
 
-            builder.ToTable("Local");
+            builder.ToTable("Local", ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);
         }
     }
 }

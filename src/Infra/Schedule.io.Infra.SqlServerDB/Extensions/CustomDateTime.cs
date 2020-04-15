@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Extensions
+namespace Schedule.io.Infra.SqlServerDB.Extensions
 {
     public static class CustomDateTime
     {

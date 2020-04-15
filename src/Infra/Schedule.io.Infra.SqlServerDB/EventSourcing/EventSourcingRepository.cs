@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.EventSourcing
+namespace Schedule.io.Infra.SqlServerDB.EventSourcing
 {
     public class EventSourcingRepository : IEventSourcingRepository
     {

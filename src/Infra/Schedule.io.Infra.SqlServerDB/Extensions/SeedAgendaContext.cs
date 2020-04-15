@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Schedule.io.Infra.SqlServerDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Extensions
+namespace Schedule.io.Infra.SqlServerDB.Extensions
 {
     public static class SeedAgendaContext
     {
-        public static void Seed(IServiceProvider serviceProvider)
+        public static void CriarTabelas(AgendaContext agendaContext)
         {
-            var context = serviceProvider.GetRequiredService<AgendaContext>();
-            context.Database.EnsureCreated();
+            agendaContext.Database.EnsureCreated();
         }
     }
 }

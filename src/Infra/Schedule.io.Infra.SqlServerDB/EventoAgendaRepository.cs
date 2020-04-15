@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Schedule.io.Infra.Data.SqlServerDB.Extensions;
+using Schedule.io.Infra.SqlServerDB.Extensions;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace Schedule.io.Infra.Data.SqlServerDB
+namespace Schedule.io.Infra.SqlServerDB
 {
     public class EventoAgendaRepository : Repository<Evento>, IEventoAgendaRepository
     {
         private readonly string convite_split = "convite_split";
-        private readonly string permissoesConvite_split = "permissoesConvite_split";
+
         public EventoAgendaRepository(AgendaContext context) : base(context)
         {
 
@@ -23,8 +23,8 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         {
             var query = $@"SELECT e.*,
 	                              Id as {convite_split}, c.*
-                           FROM Evento e
-                           LEFT JOIN Convite c on e.Id = c.EventoId
+                           FROM {_schemaName}.Evento e
+                           LEFT JOIN {_schemaName}.Convite c on e.Id = c.EventoId
                            WHERE e.Id = '{eventoId}'";
 
             return DapperEvento(query, convite_split).FirstOrDefault();
@@ -61,7 +61,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             var query = @$"
                                  SELECT *,
                                         Id as {tipo_split}, Nome, Descricao
-                                 FROM {_table}  
+                                 FROM {_schemaName}.Evento
                                  WHERE
                                  AgendaId = '{agendaId}'
                                  
@@ -76,7 +76,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             var query = @$"
                                  SELECT *,
                                         Id as {tipo_split}, Nome, Descricao
-                                 FROM {_table}  
+                                 FROM {_schemaName}.Evento
                                  WHERE
                                  AgendaId = '{agendaId}'
                                  and DataInicio between '{dataInicio.FormataDataSql(true)}'and '{dataFinal.FormataDataSql()}'
@@ -93,7 +93,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             var query = @$"
                                  SELECT *,
                                         Id as {tipo_split}, Nome, Descricao
-                                 FROM {_table}  
+                                 FROM {_schemaName}.Evento
                                  WHERE
                                  AgendaId = '{agendaId}'
                                  and UsuarioId = '{usuarioId}'

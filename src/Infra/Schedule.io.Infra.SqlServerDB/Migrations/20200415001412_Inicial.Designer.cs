@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Schedule.io.Infra.Data.SqlServerDB;
+using Schedule.io.Infra.SqlServerDB;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Migrations
+namespace Schedule.io.Infra.SqlServerDB.Migrations
 {
     [DbContext(typeof(AgendaContext))]
     [Migration("20200415001412_Inicial")]

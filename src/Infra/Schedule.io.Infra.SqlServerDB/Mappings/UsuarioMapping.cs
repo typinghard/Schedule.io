@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Schedule.io.Core.Data.Configurations;
+using Schedule.io.Infra.SqlServerDB.Configs;
 using Schedule.io.Models.AggregatesRoots;
 
-namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
+namespace Schedule.io.Infra.SqlServerDB.Mappings
 {
     public class UsuarioMapping : IEntityTypeConfiguration<Usuario>
     {
@@ -20,7 +22,7 @@ namespace Schedule.io.Infra.Data.SqlServerDB.Mappings
                 .IsRequired()
                 .HasColumnType("varchar(200)");
 
-            builder.ToTable("Usuario");
+            builder.ToTable("Usuario", ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);
         }
     }
 }

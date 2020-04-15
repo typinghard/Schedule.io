@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
-namespace Schedule.io.Infra.Data.SqlServerDB
+namespace Schedule.io.Infra.SqlServerDB
 {
     public class AgendaRepository : Repository<Agenda>, IAgendaRepository
     {
@@ -41,8 +41,8 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         {
             var query = $@"SELECT a.*,
                             Id as {agendaUsuario_split}, au.AgendaId, au.UsuarioId 
-                           FROM Agenda a
-                           INNER JOIN AgendaUsuario au on a.Id = au.AgendaId
+                           FROM {_schemaName}.Agenda a
+                           INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
                            WHERE a.Id = '{agendaId}'";
 
             return DapperAgenda(query, agendaUsuario_split).FirstOrDefault();
@@ -53,8 +53,8 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             var query = @$"
                              SELECT a.*,
                              Id as {agendaUsuario_split}, au.AgendaId, au.UsuarioId 
-                             FROM Agenda a 
-                             INNER JOIN AgendaUsuario au on a.Id = au.AgendaId
+                             FROM {_schemaName}.Agenda a 
+                             INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
                              WHERE
                              au.UsuarioId = '{usuarioId}'
             ";
@@ -67,8 +67,8 @@ namespace Schedule.io.Infra.Data.SqlServerDB
             var query = @$"
                              SELECT a.*,
                              Id as {agendaUsuario_split}, AgendaId, UsuarioId 
-                             FROM Agenda a 
-                             INNER JOIN AgendaUsuario au on a.Id = au.AgendaId
+                             FROM {_schemaName}.Agenda a 
+                             INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
                              WHERE AgendaId = '{agendaId}'
                              and au.UsuarioId = '{usuarioId}'
             ";
@@ -80,8 +80,8 @@ namespace Schedule.io.Infra.Data.SqlServerDB
         {
             return ObterLista(@$"
                              SELECT au.*
-                             FROM Agenda a 
-                             INNER JOIN AgendaUsuario au on a.Id = au.AgendaId
+                             FROM {_schemaName}.Agenda a 
+                             INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
                              WHERE AgendaId = '{agendaUsuario.AgendaId}'
                              and au.UsuarioId = '{agendaUsuario.UsuarioId}'
             ").Any() ? true : false;

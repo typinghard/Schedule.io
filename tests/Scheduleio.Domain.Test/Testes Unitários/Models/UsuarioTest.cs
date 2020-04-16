@@ -1,11 +1,8 @@
 ﻿using Bogus;
 using Xunit;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Models;
+using Schedule.io.Models.AggregatesRoots;
+using Schedule.io.Core.DomainObjects;
 
 namespace Schedule.io.Test.Testes_Unitários.Models
 {
@@ -25,7 +22,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Usuario_NovoaUsuarioEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = usuario.NovoUsuarioEhValido().IsValid;
+            var ehValido = usuario.UsuarioEhValido().IsValid;
 
             //Assert
             Assert.True(ehValido);
@@ -35,7 +32,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Usuario_DefinirUsuarioEmail_UsuarioEmailDeveSerAlterado()
         {
             //Arrange
-            var novoEmail = "abc@teste.com.br";
+            var novoEmail = new Faker().Person.Email.ToLower();
 
             //Act
             usuario.DefinirEmail(novoEmail);
@@ -54,8 +51,8 @@ namespace Schedule.io.Test.Testes_Unitários.Models
             Assert.Equal("Por favor, certifique-se que digitou um e-mail válido.", exception.Message);
         }
 
-        [Fact(DisplayName = "Usuario - NovoUsuarioEhValido - Deve Ser Inválido")]
-        public void Usuario_NovaAgendaEhValida_DeveSerInvalido()
+        [Fact(DisplayName = "Usuario - UsuarioEhValido - Deve Ser Inválido")]
+        public void Usuario_UsuarioEhValido_DeveSerInvalido()
         {
             //Arrange
             var exception = Assert.Throws<ScheduleIoException>(() => new Faker<Usuario>("pt_BR")

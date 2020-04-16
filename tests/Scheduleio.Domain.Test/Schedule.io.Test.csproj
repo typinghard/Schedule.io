@@ -20,7 +20,6 @@
     <Compile Remove="Testes Unitários\Models\ConviteTest.cs" />
     <Compile Remove="Testes Unitários\Models\EventoAgendaTest.cs" />
     <Compile Remove="Testes Unitários\Models\LocalTest.cs" />
-    <Compile Remove="Testes Unitários\Models\UsuarioTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Testes Unitários\Models\" />
+    <ProjectReference Include="..\..\src\Schedule.io\Schedule.io.csproj" />
   </ItemGroup>
 
 </Project>

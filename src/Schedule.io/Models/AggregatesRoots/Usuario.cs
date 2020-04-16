@@ -11,7 +11,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public Usuario(string email)
         {
-            this.Email = email;
+            this.Email = email.ToLower();
 
             var resultadoValidacao = this.UsuarioEhValido();
             if (!resultadoValidacao.IsValid)

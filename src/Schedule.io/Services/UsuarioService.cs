@@ -24,17 +24,43 @@ namespace Schedule.io.Services
 
         public Usuario Gravar(string email)
         {
-            throw new NotImplementedException();
+            var usuario = new Usuario(email);
+            Registrar(usuario);
+            
+            ValidarComando();
+
+            return usuario;
         }
 
         public IEnumerable<Usuario> Gravar(List<string> emails)
         {
-            throw new NotImplementedException();
+            var listUsuarios = new List<Usuario>();
+            foreach (var email in emails)
+            {
+                var usuario = new Usuario(email);
+                Registrar(usuario);
+                
+                ValidarComando();
+                
+                listUsuarios.Add(usuario);
+            }
+
+            return listUsuarios;
         }
 
         public void AtualizarEmail(string usuarioId, string novoEmail)
         {
-            throw new NotImplementedException();
+            var usuario = _usuarioRepository.Obter(usuarioId);
+            if (usuario == null)
+            {
+                _bus.PublicarNotificacao(new DomainNotification("AtualizarEmail", "Usuario não encontrado!"));
+                ValidarComando();
+            }
+
+            usuario.DefinirEmail(novoEmail);
+            Atualizar(usuario);
+
+            ValidarComando();
         }
 
         public void Gravar(Usuario usuario)
@@ -67,7 +93,7 @@ namespace Schedule.io.Services
             var usuario = _usuarioRepository.Obter(usuarioId);
             if (usuario == null)
             {
-                _bus.PublicarNotificacao(new DomainNotification("", "Usuario não encontrado!"));
+                _bus.PublicarNotificacao(new DomainNotification("Excluir", "Usuario não encontrado!"));
                 ValidarComando();
             }
 

@@ -1,6 +1,6 @@
 ﻿using Bogus;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Models;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Models.AggregatesRoots;
 using System.Linq;
 using Xunit;
 
@@ -22,13 +22,13 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Local_DefinirNomeLocal_NomeLocalDeveSerAlterado()
         {
             //Arrange
-            var novoNomeLocal = "Novo nome do local";
+            var novoNomeLocal = new Faker().Random.String(199, 'a', 'z');
 
             //Act
             local.DefinirNomeLocal(novoNomeLocal);
 
             //Assert
-            Assert.Equal(novoNomeLocal, local.NomeLocal);
+            Assert.Equal(novoNomeLocal, local.Nome);
         }
 
         [Fact(DisplayName = "Local - DefinirNomeLocal - Nome Local deve ser inválido pelo tamanho")]
@@ -49,7 +49,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Local_DefinirIdentificadorExterno_IdentificadorExternoDeveSerAlterado()
         {
             //Arrange
-            var novoIdentificadorExterno = "podeserqualquerconvertidoemstring";
+            var novoIdentificadorExterno = new Faker().Random.String(199, 'a', 'z'); ;
 
             //Act
             local.DefinirIdentificadorExterno(novoIdentificadorExterno);
@@ -58,16 +58,29 @@ namespace Schedule.io.Test.Testes_Unitários.Models
             Assert.Equal(novoIdentificadorExterno, local.IdentificadorExterno);
         }
 
-        [Fact(DisplayName = "Local - DefinirIdentificadorExterno - Identificador Externo deve ser inválido")]
-        public void Local_DefinirIdentificadorExterno_IdentificadorExternoDeveSerInvalido()
+        [Fact(DisplayName = "Local - DefinirIdentificadorExterno - Identificador Externo deve ser alterado mesmo vazio")]
+        public void Local_DefinirIdentificadorExterno_IdentificadorExternoDeveSerAlteradoMesmoVazio()
+        {
+            //Arrange
+            var novoIdentificadorExterno = string.Empty;
+
+            //Act
+            local.DefinirIdentificadorExterno(novoIdentificadorExterno);
+
+            //Assert
+            Assert.Equal(novoIdentificadorExterno, local.IdentificadorExterno);
+        }
+
+        [Fact(DisplayName = "Local - DefinirIdentificadorExterno - Identificador Externo deve ser inválido pelo tamanho")]
+        public void Local_DefinirIdentificadorExterno_IdentificadorExternoDeveSerInvalidoPeloTamanho()
         {            //Arrange
-            var novoIdentificadorExternoInvalido = "";
+            var novoIdentificadorExternoInvalido = new Faker().Random.String(1, 'a', 'z');
 
             //Act
             var exception = Assert.Throws<ScheduleIoException>(() => local.DefinirIdentificadorExterno(novoIdentificadorExternoInvalido));
 
             //Assert
-            Assert.Equal("O Identificador do local não pode ser vazio!", exception.Message);
+            Assert.Equal("O Identificador Extorno deve ter entre 2 e 200 caracteres.", exception.Message);
 
         }
 
@@ -76,7 +89,20 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Local_DefinirDescricao_DescricaoDeveSerAlterado()
         {
             //Arrange
-            var novaDescricao = "Nova descrição do local";
+            var novaDescricao = new Faker().Random.String(499, 'a', 'z');
+
+            //Act
+            local.DefinirDescricao(novaDescricao);
+
+            //Assert
+            Assert.Equal(novaDescricao, local.Descricao);
+        }
+
+        [Fact(DisplayName = "Local - DefinirDescricao - Descrição deve ser alterada memso vazio")]
+        public void Local_DefinirDescricao_DescricaoDeveSerAlteradoMesmoVazio()
+        {
+            //Arrange
+            var novaDescricao = string.Empty;
 
             //Act
             local.DefinirDescricao(novaDescricao);
@@ -109,10 +135,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models
             local.ReservarLocal();
 
             //Assert
-            Assert.Equal(localReserva, local.ReservaLocal);
+            Assert.Equal(localReserva, local.Reserva);
         }
 
-        
+
         [Fact(DisplayName = "Local - RemoverReservaLocal - A Reserva Deve Ser Removida")]
         public void Local_RemoverReservaLocal_AReservaDeveSerRemovida()
         {
@@ -123,15 +149,15 @@ namespace Schedule.io.Test.Testes_Unitários.Models
             local.RemoverReservaLocal();
 
             //Assert
-            Assert.Equal(localReserva, local.ReservaLocal);
+            Assert.Equal(localReserva, local.Reserva);
         }
 
-        
+
         [Fact(DisplayName = "Local - DefinirLotacaoMaxima - Deve Ser Valido")]
         public void Local_DefinirLotacaoMaxima_DeveSerValido()
         {
             //Arrange
-            int lotacaoMaxima = 5;
+            int lotacaoMaxima = new Faker().Random.Int(0, 100);
 
             //Act
             local.DefinirLotacaoMaxima(lotacaoMaxima);
@@ -144,7 +170,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Local_DefinirLotacaoMaxima_DeveSerInvalido()
         {
             //Arrange
-            int lotacaoMaxima = -1;
+            int lotacaoMaxima = new Faker().Random.Int(-100, -1);
 
             //Act
             var exception = Assert.Throws<ScheduleIoException>(() => local.DefinirLotacaoMaxima(lotacaoMaxima));
@@ -153,12 +179,12 @@ namespace Schedule.io.Test.Testes_Unitários.Models
             Assert.Equal("Por favor, certifique-se qua a lotação máxima de usuários para o local não é menor que 0.", exception.Message);
         }
 
-        
+
         [Fact(DisplayName = "Local - NovalocalEhValido - Deve Ser Valido")]
         public void Local_NovoLocalEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = local.NovoLocalEhValido().IsValid;
+            var ehValido = local.LocalEhValido().IsValid;
 
             //Assert
             Assert.True(ehValido);

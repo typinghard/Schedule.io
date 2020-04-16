@@ -31,24 +31,25 @@ namespace Schedule.io.Models.AggregatesRoots
         public void DefinirNomeLocal(string nomeLocal)
         {
             if (!nomeLocal.ValidarTamanho(2, 200))
-            {
                 throw new ScheduleIoException("O nome do local deve ter entre 2 e 200 caracteres.");
-            }
 
             this.Nome = nomeLocal;
         }
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
         {
+            if (!string.IsNullOrEmpty(identificadorExterno) && !identificadorExterno.ValidarTamanho(2, 200))
+                throw new ScheduleIoException("O Identificador Extorno deve ter entre 2 e 200 caracteres.");
+
+
             this.IdentificadorExterno = identificadorExterno;
         }
 
         public void DefinirDescricao(string descricao)
         {
             if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
-            {
                 throw new ScheduleIoException("A descrição do local deve ter entre 2 e 500 caracteres.");
-            }
+
             this.Descricao = descricao;
         }
 
@@ -65,9 +66,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public void DefinirLotacaoMaxima(int lotacaoMaxima)
         {
             if (lotacaoMaxima < 0)
-            {
                 throw new ScheduleIoException("Por favor, certifique-se qua a lotação máxima de usuários para o local não é menor que 0.");
-            }
 
             this.LotacaoMaxima = lotacaoMaxima;
         }

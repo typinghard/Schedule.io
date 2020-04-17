@@ -32,7 +32,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Usuario_DefinirUsuarioEmail_UsuarioEmailDeveSerAlterado()
         {
             //Arrange
-            var novoEmail = new Faker().Person.Email.ToLower();
+            var novoEmail = new Faker().Person.Email;
 
             //Act
             usuario.DefinirEmail(novoEmail);
@@ -48,7 +48,20 @@ namespace Schedule.io.Test.Testes_Unitários.Models
             var exception = Assert.Throws<ScheduleIoException>(() => usuario.DefinirEmail(""));
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que digitou um e-mail válido.", exception.Message);
+            Assert.Equal("Por favor, certifique-se que digitou um e-mail.", exception.Message);
+        }
+
+        [Fact(DisplayName = "Usuario - DefinirUsuarioEmail - O E-mail deve ser inválido por estar vazio.")]
+        public void Usuario_DefinirUsuarioEmail_UsuarioEmailDeveSerInvalido()
+        {
+            //Arrange
+            var novoEmail = new Faker().Person.Email + "123";
+
+            //Act
+            var exception = Assert.Throws<ScheduleIoException>(() => usuario.DefinirEmail(novoEmail));
+
+            //Assert
+            Assert.Equal("Por favor, informe um e-mail válido.", exception.Message);
         }
 
         [Fact(DisplayName = "Usuario - UsuarioEhValido - Deve Ser Inválido")]

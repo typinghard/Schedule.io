@@ -263,7 +263,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Evento_DefinirDataLimiteConfirmacao_DataLimiteConfirmacaoDeveSerAlterado()
         {
             //Arrange
-            DateTime dataLimite = DateTime.Now.Date.AddDays(25);
+            DateTime dataLimite = evento.DataInicio.AddDays(5);
 
             //Act
             evento.DefinirDataLimiteConfirmacao(dataLimite);
@@ -302,7 +302,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Evento_DefinirDataLimiteConfirmacao_DataLimiteConfirmacaoDeveSerInvalidaPorSerMenorQueDataInicio()
         {
             //Arrange
-            DateTime dataLimite = DateTime.Now.Date.AddDays(2);
+            DateTime dataLimite = evento.DataInicio.AddDays(-5);
 
             //Act
             var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDataLimiteConfirmacao(dataLimite));

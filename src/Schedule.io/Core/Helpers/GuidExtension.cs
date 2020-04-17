@@ -1,10 +1,12 @@
-﻿namespace Schedule.io.Core.Helpers
+﻿using System;
+
+namespace Schedule.io.Core.Helpers
 {
     public static class GuidExtension
     {
-        public static bool EhVazio(this string guid)
+        public static bool EhVazio(this Guid guid)
         {
-            return string.IsNullOrEmpty(guid);
+            return guid == Guid.Empty;
         }
 
     }

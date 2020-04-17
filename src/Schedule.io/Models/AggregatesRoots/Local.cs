@@ -38,16 +38,15 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
         {
-            if (!string.IsNullOrEmpty(identificadorExterno) && !identificadorExterno.ValidarTamanho(2, 200))
+            if (!identificadorExterno.EhVazio() && !identificadorExterno.ValidarTamanho(2, 200))
                 throw new ScheduleIoException("O Identificador Extorno deve ter entre 2 e 200 caracteres.");
-
 
             this.IdentificadorExterno = identificadorExterno;
         }
 
         public void DefinirDescricao(string descricao)
         {
-            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
+            if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException("A descrição do local deve ter entre 2 e 500 caracteres.");
 
             this.Descricao = descricao;

@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
 using Schedule.io.Validations.UsuarioValidations;
 using System.Linq;
 
@@ -25,10 +26,8 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-            {
+            if (email.EhVazio())
                 throw new ScheduleIoException("Por favor, certifique-se que digitou um e-mail válido.");
-            }
 
             this.Email = email.ToLower();
         }

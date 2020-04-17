@@ -10,6 +10,7 @@ using Schedule.io.Enums;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.ValueObjects;
 using Schedule.io.Events.EventoAgendaEvents;
+using Schedule.io.Core.Helpers;
 
 namespace Schedule.io.Services
 {
@@ -132,7 +133,7 @@ namespace Schedule.io.Services
 
         private void ValidaQuantidadeUsuarioReferenteAoLocal(Evento evento)
         {
-            if (string.IsNullOrEmpty(evento.LocalId) && evento.QuantidadeMinimaDeUsuarios > 0)
+            if (evento.LocalId.EhVazio() && evento.QuantidadeMinimaDeUsuarios > 0)
             {
                 var local = _localRepository.Obter(evento.LocalId);
 

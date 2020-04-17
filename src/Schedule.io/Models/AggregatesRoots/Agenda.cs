@@ -42,7 +42,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirTitulo(string titulo)
         {
-            if (string.IsNullOrEmpty(titulo))
+            if (titulo.EhVazio())
                 throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um título." });
 
             if (!titulo.ValidarTamanho(2, 150))
@@ -53,7 +53,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirDescricao(string descricao)
         {
-            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
+            if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException(new List<string>() { "A descrição deve ter entre 2 e 500 caracteres." });
 
             this.Descricao = descricao;
@@ -61,7 +61,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirUsuarioIdCriador(string usuarioId)
         {
-            if (string.IsNullOrEmpty(usuarioId))
+            if (usuarioId.EhVazio())
                 throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um usuarioId." });
 
             this.UsuarioIdCriador = usuarioId;

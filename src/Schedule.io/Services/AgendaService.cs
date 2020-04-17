@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Schedule.io.Core.Communication.Mediator;
+using Schedule.io.Core.Helpers;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Events.AgendaEvents;
 using Schedule.io.Interfaces.Repositories;
@@ -112,7 +113,7 @@ namespace Schedule.io.Services
 
         private void ValidarUsuarioCriador(Agenda agenda)
         {
-            if (string.IsNullOrEmpty(agenda.UsuarioIdCriador))
+            if (agenda.UsuarioIdCriador.EhVazio())
                 _bus.PublicarNotificacao(new DomainNotification("Validação Agenda", "Usuario dono da agenda não encontrado!"));
         }
 

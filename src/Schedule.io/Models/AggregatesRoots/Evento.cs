@@ -52,43 +52,31 @@ namespace Schedule.io.Models.AggregatesRoots
         public void DefinirAgenda(string agendaId)
         {
             if (agendaId.EhVazio())
-            {
                 throw new ScheduleIoException("Por favor, certifique-se que escolheu uma agenda.");
-            }
 
             this.AgendaId = agendaId;
         }
 
         public void DefinirIdentificadorExterno(string idExterno)
         {
-            if (string.IsNullOrEmpty(idExterno))
-                idExterno = null;
-
             this.IdentificadorExterno = idExterno;
         }
 
         public void DefinirTitulo(string titulo)
         {
-            if (string.IsNullOrEmpty(titulo))
-            {
+            if (titulo.EhVazio())
                 throw new ScheduleIoException("Por favor, certifique-se que digitou um título.");
-            }
 
             if (!titulo.ValidarTamanho(2, 150))
-            {
                 throw new ScheduleIoException("O título deve ter entre 2 e 150 caracteres.");
-
-            }
 
             this.Titulo = titulo;
         }
 
         public void DefinirDescricao(string descricao)
         {
-            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
-            {
+            if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException("A descrição deve ter entre 2 e 500 caracteres.");
-            }
 
             this.Descricao = descricao;
         }
@@ -99,80 +87,42 @@ namespace Schedule.io.Models.AggregatesRoots
             _convites.Add(convite);
         }
 
-        public void LimparConvites()
+        public void RemoverConvite(Convite convite)
         {
-            _convites.Clear();
+            foreach (var c in _convites)
+                if (c.EventoId == convite.EventoId && c.UsuarioId == convite.UsuarioId)
+                {
+                    _convites.Remove(convite);
+                    break;
+                }
         }
 
         public void DefinirLocal(string localId)
         {
-            if (string.IsNullOrEmpty(localId))
-                localId = null;
-
             this.LocalId = localId;
         }
 
         public void DefinirTipoEvento(string tipoEventoId)
         {
-            if (string.IsNullOrEmpty(tipoEventoId))
-                IdTipoEvento = null;
-
             this.IdTipoEvento = tipoEventoId;
         }
 
         public void DefinirDatas(DateTime dataInicio, DateTime? dataFinal = null)
         {
             if (dataInicio == DateTime.MinValue)
-            {
                 throw new ScheduleIoException("Por favor, escolha a data e hora inicial do evento.");
-            }
 
             if (dataFinal.HasValue && dataFinal < dataInicio)
-            {
                 throw new ScheduleIoException("Por certifique-se de que a data inicial é maior que a data final do evento.");
-            }
 
             this.DataInicio = dataInicio;
             this.DataFinal = dataFinal;
         }
 
-        public void DefinirDataInicial(DateTime dataInicio)
-        {
-            if (dataInicio == DateTime.MinValue)
-            {
-                throw new ScheduleIoException("Por favor, escolha a data e hora inicial do evento.");
-            }
-
-            this.DataInicio = dataInicio;
-            this.DataFinal = DateTime.MinValue;
-        }
-
-        public void DefinirDataFinal(DateTime? dataFinal)
-        {
-            if (DataInicio == DateTime.MinValue)
-            {
-                throw new ScheduleIoException("Por favor, escolha a data e hora inicial do evento.");
-            }
-
-            if (dataFinal.HasValue && dataFinal < DataInicio)
-            {
-                throw new ScheduleIoException("Por certifique-se de que a data inicial é maior que a data final do evento.");
-            }
-
-            DataFinal = dataFinal.GetValueOrDefault();
-        }
-
         public void DefinirDataLimiteConfirmacao(DateTime? dataLimiteConfirmacao)
         {
-            //if (dataLimiteConfirmacao == DateTime.MinValue)
-            //{
-            //    throw new ScheduleIoException("Por favor, certifique-se que informou uma data limite.");
-            //}
-
-            if (dataLimiteConfirmacao.HasValue && dataLimiteConfirmacao < this.DataInicio)
-            {
+            if ((dataLimiteConfirmacao.HasValue && dataLimiteConfirmacao.Value != DateTime.MinValue) && dataLimiteConfirmacao < this.DataInicio)
                 throw new ScheduleIoException("Por certifique-se de que a data limite é maior que a data inicio do evento.");
-            }
 
             this.DataLimiteConfirmacao = dataLimiteConfirmacao;
         }

@@ -20,7 +20,7 @@ namespace Schedule.io.Models.ValueObjects
 
             var resultadoValidacao = this.AgendaUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
 
         private AgendaUsuario()

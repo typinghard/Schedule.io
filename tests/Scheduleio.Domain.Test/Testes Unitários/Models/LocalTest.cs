@@ -199,6 +199,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models
                                                                         .Generate(1)
                                                                         .First());
 
+
+            //Act
+            var validacao = exception.Message.Split("##").ToList();
+
             //Assert
             Assert.Equal("Nome do Local não informado.", exception.Message);
         }

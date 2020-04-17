@@ -9,7 +9,11 @@ namespace Schedule.io.Validations.AgendaValidations
         {
             RuleFor(e => e.EventoId)
                 .NotEmpty()
-                .WithMessage("{PropertyName} não informado!");
+                .WithMessage("EventoId não informado!");
+
+            RuleFor(e => e.UsuarioId)
+                .NotEmpty()
+                .WithMessage("UsuarioId não informado!");
 
             RuleFor(e => e.Status)
                 .NotNull()

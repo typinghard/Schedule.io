@@ -3,6 +3,8 @@ using Xunit;
 using System.Linq;
 using System;
 using Schedule.io.Models.ValueObjects;
+using Schedule.io.Core.DomainObjects;
+using Schedule.io.Enums;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
 {
@@ -17,8 +19,6 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
                 .Generate(1)
                 .First();
         }
-
-
 
         [Fact(DisplayName = "Convite - DefinirEventoId - EventoId deve ser alterado.")]
         public void Convite_DefinirEventoId_EventoIdDeveSerAlterado()
@@ -37,7 +37,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         public void Convite_DefinirEventoId_EventoIdDeveSerInvalidoPorSerVazio()
         {
             //Arrange
-            var novoEventoId = "";
+            var novoEventoId = string.Empty;
 
             //Act
             var exception = Assert.Throws<ScheduleIoException>(() => convite.DefinirEventoId(novoEventoId));
@@ -64,7 +64,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         public void Convite_DefinirUsuarioId_UsuarioIdDeveSerInvalidoPorSerVazio()
         {
             //Arrange
-            var novoUsuarioId = "";
+            var novoUsuarioId = string.Empty;
 
             //Act
             var exception = Assert.Throws<ScheduleIoException>(() => convite.DefinirUsuarioId(novoUsuarioId));
@@ -173,7 +173,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         public void Convite_NovoConviteEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = convite.NovoConviteEhValido().IsValid;
+            var ehValido = convite.ConviteEhValido();
 
             //Assert
             Assert.True(ehValido);
@@ -189,7 +189,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
                                                                     .First());
 
             //Act
-            var validacao = exception.Message.Split(',').ToList();
+            var validacao = exception.Message.Split("## ").ToList();
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("EventoId não informado!"));

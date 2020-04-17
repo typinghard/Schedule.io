@@ -7,7 +7,7 @@ using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Enums;
 using Schedule.io.Models.ValueObjects;
 
-namespace Schedule.io.Test.Testes_Unitários.Models
+namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
     public class EventoTest
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Core.DomainObjects;
 
-namespace Schedule.io.Test.Testes_Unitários.Models
+namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
     public class UsuarioTest
     {

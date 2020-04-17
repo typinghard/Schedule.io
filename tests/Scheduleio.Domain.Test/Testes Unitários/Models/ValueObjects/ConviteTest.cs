@@ -2,13 +2,9 @@
 using Xunit;
 using System.Linq;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Models;
-using Schedule.io.Core.Enums;
+using Schedule.io.Models.ValueObjects;
 
-namespace Schedule.io.Test.Testes_Unitários.Models
+namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
 {
     public class ConviteTest
     {

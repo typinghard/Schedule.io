@@ -2,12 +2,10 @@
 using System.Linq;
 using Xunit;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using Schedule.io.Core.Core.DomainObjects;
-using Schedule.io.Core.Models;
+using Schedule.io.Models.ValueObjects;
+using Schedule.io.Core.DomainObjects;
 
-namespace Schedule.io.Test.Testes_Unitários.Models
+namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
 {
     public class AgendaUsuarioTest
     {
@@ -39,7 +37,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void AgendaUsuario_DefinirUsuarioId_UsuarioIdDeveSerInvalidoPorSerVazio()
         {
             //Arrange
-            var novoEventoId = "";
+            var novoEventoId = string.Empty;
 
             //Act
             var exception = Assert.Throws<ScheduleIoException>(() => agendaUsuario.DefinirUsuarioId(novoEventoId));
@@ -66,7 +64,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void AgendaUsuario_DefinirAgendaId_AgendaIdDeveSerInvalidoPorSerVazio()
         {
             //Arrange
-            var novoAgendaId = "";
+            var novoAgendaId = string.Empty;
 
             //Act
             var exception = Assert.Throws<ScheduleIoException>(() => agendaUsuario.DefinirAgendaId(novoAgendaId));
@@ -80,7 +78,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void AgendaUsuario_NovaAgendaUsuarioEhValida_DeveSerValido()
         {
             //Act
-            var ehValido = agendaUsuario.NovaAgendaUsuarioEhValido()/*.IsValid*/;
+            var ehValido = agendaUsuario.AgendaUsuarioEhValido();
 
             //Assert
             Assert.True(ehValido);
@@ -96,11 +94,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models
                                                                                     .First());
 
             //Act
-            var validacao = exception.Message.Split(',').ToList();
+            var validacao = exception.Message.Split("## ").ToList();
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("UsuarioId não informado!"));
-            Assert.Contains(validacao, x => x.Contains("AgendaId não informado!"));
+            Assert.Contains(validacao, x => x.Contains("AgendaId da Agenda do Usuario não informado."));
+            Assert.Contains(validacao, x => x.Contains("UsuarioId da Agenda do Usuario não informado."));
         }
 
     }

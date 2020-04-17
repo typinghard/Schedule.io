@@ -102,7 +102,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void TipoEvento_TipoEventoEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = tipoEvento.TipoEventoEhValido().IsValid;
+            var ehValido = tipoEvento.TipoEventoEhValido();
 
             //Assert
             Assert.True(ehValido);

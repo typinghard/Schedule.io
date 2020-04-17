@@ -18,7 +18,7 @@ namespace Schedule.io.Models.AggregatesRoots
         {
             this.Nome = nomeLocal;
 
-            var resultadoValidacao = this.LocalEhValido();
+            var resultadoValidacao = this.NovoLocalEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -71,7 +71,12 @@ namespace Schedule.io.Models.AggregatesRoots
             this.LotacaoMaxima = lotacaoMaxima;
         }
 
-        public ValidationResult LocalEhValido()
+        public bool LocalEhValido()
+        {
+            return NovoLocalEhValido().IsValid;
+        }
+
+        private ValidationResult NovoLocalEhValido()
         {
             return new LocalValidation().Validate(this);
         }

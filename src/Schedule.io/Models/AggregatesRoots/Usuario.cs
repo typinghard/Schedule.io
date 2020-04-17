@@ -13,7 +13,7 @@ namespace Schedule.io.Models.AggregatesRoots
         {
             this.Email = email.ToLower();
 
-            var resultadoValidacao = this.UsuarioEhValido();
+            var resultadoValidacao = this.NovoUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -33,7 +33,12 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Email = email.ToLower();
         }
 
-        public ValidationResult UsuarioEhValido()
+        public bool UsuarioEhValido()
+        {
+            return NovoUsuarioEhValido().IsValid;
+        }
+
+        private ValidationResult NovoUsuarioEhValido()
         {
             return new UsuarioValidation().Validate(this);
         }

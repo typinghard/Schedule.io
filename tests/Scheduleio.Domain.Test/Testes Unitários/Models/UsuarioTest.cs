@@ -22,7 +22,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Usuario_NovoaUsuarioEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = usuario.UsuarioEhValido().IsValid;
+            var ehValido = usuario.UsuarioEhValido();
 
             //Assert
             Assert.True(ehValido);

@@ -184,7 +184,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models
         public void Local_NovoLocalEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = local.LocalEhValido().IsValid;
+            var ehValido = local.LocalEhValido();
 
             //Assert
             Assert.True(ehValido);

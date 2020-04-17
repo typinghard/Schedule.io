@@ -16,7 +16,7 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Nome = nome;
             this.Descricao = descricao;
 
-            var resultadoValidacao = this.TipoEventoEhValido();
+            var resultadoValidacao = this.NovoTipoEventoEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -44,8 +44,12 @@ namespace Schedule.io.Models.AggregatesRoots
 
             this.Descricao = descricao;
         }
+        public bool TipoEventoEhValido()
+        {
+            return NovoTipoEventoEhValido().IsValid;
+        }
 
-        public ValidationResult TipoEventoEhValido()
+        private ValidationResult NovoTipoEventoEhValido()
         {
             return new TipoEventoValidation().Validate(this);
         }

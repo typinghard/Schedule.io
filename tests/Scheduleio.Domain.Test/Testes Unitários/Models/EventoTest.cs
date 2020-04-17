@@ -259,49 +259,6 @@ namespace Schedule.io.Test.Testes_Unitários.Models
             Assert.Equal(tipoEventoId, evento.IdTipoEvento);
         }
 
-        [Fact(DisplayName = "Evento - DefinirDatas - Datas de Inicio e Final deve ser alterado")]
-        public void Evento_DefinirDatas_DatasInicioEFinalDeveSerAlterado()
-        {
-            //Arrange
-            DateTime dataInicio = DateTime.Now.Date.AddDays(1);
-            DateTime dataFinal = DateTime.Now.Date.AddDays(30);
-
-            //Act
-            evento.DefinirDatas(dataInicio, dataFinal);
-
-            //Assert
-            Assert.Equal(dataInicio, evento.DataInicio);
-            Assert.Equal(dataFinal, evento.DataFinal);
-        }
-
-        [Fact(DisplayName = "Evento - DefinirDatas - Datas Inválidas, data inicial inválida")]
-        public void Evento_DefinirDatas_DatasInicioEFinalDeveSerInvalidoPorDaTaInicialSerInvalida()
-        {
-            //Arrange
-            DateTime dataInicio = DateTime.MinValue;
-            DateTime dataFinal = DateTime.Now.Date.AddDays(30);
-
-            //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal));
-
-            //Assert
-            Assert.Equal("Por favor, escolha a data e hora inicial do evento.", exception.Message);
-        }
-
-        [Fact(DisplayName = "Evento - DefinirDatas - Datas Inválidas, data final maior que dara inicial")]
-        public void Evento_DefinirDatas_DatasInvalidasDataFinalMaiorQueInicial()
-        {
-            //Arrange
-            DateTime dataInicio = DateTime.Now.Date.AddDays(10);
-            DateTime dataFinal = DateTime.Now.Date.AddDays(8);
-
-            //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal));
-
-            //Assert
-            Assert.Equal("Por certifique-se de que a data inicial é maior que a data final do evento.", exception.Message);
-        }
-
         [Fact(DisplayName = "Evento - DefinirDataLimiteConfirmacao - Data Limite Confirmação deve ser alterado")]
         public void Evento_DefinirDataLimiteConfirmacao_DataLimiteConfirmacaoDeveSerAlterado()
         {
@@ -352,6 +309,49 @@ namespace Schedule.io.Test.Testes_Unitários.Models
 
             //Assert
             Assert.Equal("Por certifique-se de que a data limite é maior que a data inicio do evento.", exception.Message);
+        }
+
+        [Fact(DisplayName = "Evento - DefinirDatas - Datas de Inicio e Final deve ser alterado")]
+        public void Evento_DefinirDatas_DatasInicioEFinalDeveSerAlterado()
+        {
+            //Arrange
+            DateTime dataInicio = DateTime.Now.Date.AddDays(1);
+            DateTime dataFinal = DateTime.Now.Date.AddDays(30);
+
+            //Act
+            evento.DefinirDatas(dataInicio, dataFinal);
+
+            //Assert
+            Assert.Equal(dataInicio, evento.DataInicio);
+            Assert.Equal(dataFinal, evento.DataFinal);
+        }
+
+        [Fact(DisplayName = "Evento - DefinirDatas - Datas Inválidas, data inicial inválida")]
+        public void Evento_DefinirDatas_DatasInicioEFinalDeveSerInvalidoPorDaTaInicialSerInvalida()
+        {
+            //Arrange
+            DateTime dataInicio = DateTime.MinValue;
+            DateTime dataFinal = DateTime.Now.Date.AddDays(30);
+
+            //Act
+            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal));
+
+            //Assert
+            Assert.Equal("Por favor, escolha a data e hora inicial do evento.", exception.Message);
+        }
+
+        [Fact(DisplayName = "Evento - DefinirDatas - Datas Inválidas, data final maior que dara inicial")]
+        public void Evento_DefinirDatas_DatasInvalidasDataFinalMaiorQueInicial()
+        {
+            //Arrange
+            DateTime dataInicio = DateTime.Now.Date.AddDays(10);
+            DateTime dataFinal = DateTime.Now.Date.AddDays(8);
+
+            //Act
+            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal));
+
+            //Assert
+            Assert.Equal("Por certifique-se de que a data inicial é maior que a data final do evento.", exception.Message);
         }
 
         [Fact(DisplayName = "Evento - DefinirQuantidadeMinimaDeUsuarios - Quantidade Mínima de Usuários deve ser alterado")]

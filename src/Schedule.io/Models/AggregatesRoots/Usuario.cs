@@ -26,7 +26,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirEmail(string email)
         {
-            email.ToLower();
+            email = email.ToLower();
             if (email.EhVazio())
                 throw new ScheduleIoException("Por favor, certifique-se que digitou um e-mail.");
 

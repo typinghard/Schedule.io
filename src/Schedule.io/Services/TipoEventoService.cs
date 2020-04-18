@@ -1,12 +1,10 @@
 ﻿using MediatR;
 using Schedule.io.Core.Communication.Mediator;
-using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Events.TipoEventoEvents;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Interfaces.Services;
 using Schedule.io.Models.AggregatesRoots;
-using System;
 using System.Collections.Generic;
 
 namespace Schedule.io.Services

@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
 using Schedule.io.Validations.UsuarioValidations;
 using System.Linq;
 
@@ -11,9 +12,9 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public Usuario(string email)
         {
-            this.Email = email;
+            this.Email = email.ToLower();
 
-            var resultadoValidacao = this.UsuarioEhValido();
+            var resultadoValidacao = this.NovoUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -25,15 +26,22 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-            {
-                throw new ScheduleIoException("Por favor, certifique-se que digitou um e-mail válido.");
-            }
+            email = email.ToLower();
+            if (email.EhVazio())
+                throw new ScheduleIoException("Por favor, certifique-se que digitou um e-mail.");
 
-            this.Email = email.ToLower();
+            if (!email.EmailEhValido())
+                throw new ScheduleIoException("Por favor, informe um e-mail válido.");
+
+            this.Email = email;
         }
 
-        public ValidationResult UsuarioEhValido()
+        public bool UsuarioEhValido()
+        {
+            return NovoUsuarioEhValido().IsValid;
+        }
+
+        private ValidationResult NovoUsuarioEhValido()
         {
             return new UsuarioValidation().Validate(this);
         }

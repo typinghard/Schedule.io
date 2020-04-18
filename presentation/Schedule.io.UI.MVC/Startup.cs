@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AutoMapper;
-using Schedule.io;
-using Schedule.io.Infra.RavenDB.Configs;
-using Schedule.io.Models;
+//using Schedule.io.Infra.RavenDB.Configs;
 using MediatR;
 using Schedule.io.Configs;
+using Schedule.io.Infra.SqlServerDB.Configs;
 
 namespace Schedule.io.UI.Web
 {

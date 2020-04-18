@@ -2,10 +2,7 @@
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Helpers;
 using Schedule.io.Validations.AgendaValidations;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Models.ValueObjects
 {
@@ -13,25 +10,28 @@ namespace Schedule.io.Models.ValueObjects
     {
         public string AgendaId { get; protected set; }
         public string UsuarioId { get; protected set; }
-        public PermissoesAgenda Permissoes { get; protected set; }
+        //public PermissoesAgenda Permissoes { get; protected set; }
 
-        public AgendaUsuario(string agendaId, string usuarioId) 
+        public AgendaUsuario(string agendaId, string usuarioId)
         {
             AgendaId = agendaId;
             UsuarioId = usuarioId;
-            Permissoes = new PermissoesAgenda();
+            //Permissoes = new PermissoesAgenda();
 
-            var resultadoValidacao = this.AgendaUsuarioEhValido();
+            var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+        }
+
+        private AgendaUsuario()
+        {
+            // Permissoes = new PermissoesAgenda();
         }
 
         public void DefinirUsuarioId(string usuarioId)
         {
             if (usuarioId.EhVazio())
-            {
                 throw new ScheduleIoException("Por favor, certifique-se que adicinou uma pessoa.");
-            }
 
             UsuarioId = usuarioId;
         }
@@ -40,14 +40,17 @@ namespace Schedule.io.Models.ValueObjects
         public void DefinirAgendaId(string agendaId)
         {
             if (agendaId.EhVazio())
-            {
                 throw new ScheduleIoException("Por favor, certifique-se que adicinou uma agenda.");
-            }
 
             AgendaId = agendaId;
         }
 
-        public ValidationResult AgendaUsuarioEhValido()
+        public bool AgendaUsuarioEhValido()
+        {
+            return NovaAgendaUsuarioEhValido().IsValid;
+        }
+
+        private ValidationResult NovaAgendaUsuarioEhValido()
         {
             return new AgendaUsuarioValidation().Validate(this);
         }

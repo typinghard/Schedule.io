@@ -1,6 +1,5 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using Schedule.io.Core.Data.EventSourcing;

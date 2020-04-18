@@ -1,9 +1,6 @@
 ﻿using FluentValidation;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Models.AggregatesRoots;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Schedule.io.Validations.AgendaValidations
 {
@@ -15,6 +12,11 @@ namespace Schedule.io.Validations.AgendaValidations
                 .NotNull()
                 .NotEmpty()
                 .WithMessage("{PropertyName} não informado.");
+
+            RuleFor(a => a.UsuarioIdCriador)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("UsuarioIdCriador não informado.");
 
             RuleFor(a => a.Publico)
                 .NotNull()

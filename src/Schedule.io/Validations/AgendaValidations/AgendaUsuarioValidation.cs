@@ -1,8 +1,5 @@
 ﻿using FluentValidation;
 using Schedule.io.Models.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Schedule.io.Validations.AgendaValidations
 {
@@ -10,7 +7,15 @@ namespace Schedule.io.Validations.AgendaValidations
     {
         public AgendaUsuarioValidation()
         {
+            RuleFor(a => a.AgendaId)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("AgendaId da Agenda do Usuario não informado.");
 
+            RuleFor(a => a.UsuarioId)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("UsuarioId da Agenda do Usuario não informado.");
         }
     }
 }

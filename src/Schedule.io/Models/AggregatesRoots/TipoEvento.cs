@@ -2,10 +2,7 @@
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Helpers;
 using Schedule.io.Validations.TipoEventoValidation;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Models.AggregatesRoots
 {
@@ -19,7 +16,7 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Nome = nome;
             this.Descricao = descricao;
 
-            var resultadoValidacao = this.TipoEventoEhValido();
+            var resultadoValidacao = this.NovoTipoEventoEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -31,31 +28,28 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirNome(string nome)
         {
-            if (string.IsNullOrEmpty(nome))
-            {
+            if (nome.EhVazio())
                 throw new ScheduleIoException("Por favor, certifique-se que digitou um nome para o tipo do evento.");
-            }
 
             if (!nome.ValidarTamanho(2, 120))
-            {
                 throw new ScheduleIoException("O nome do tipo do evento deve ter entre 2 e 120 caracteres.");
-
-            }
 
             this.Nome = nome;
         }
 
         public void DefinirDescricao(string descricao)
         {
-            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
-            {
+            if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException("A descrição deve ter entre 2 e 500 caracteres.");
-            }
 
             this.Descricao = descricao;
         }
+        public bool TipoEventoEhValido()
+        {
+            return NovoTipoEventoEhValido().IsValid;
+        }
 
-        public ValidationResult TipoEventoEhValido()
+        private ValidationResult NovoTipoEventoEhValido()
         {
             return new TipoEventoValidation().Validate(this);
         }

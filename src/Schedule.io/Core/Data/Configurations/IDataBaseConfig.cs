@@ -1,5 +1,4 @@
-﻿
-using Schedule.io.Core.Data.Configurations.Enums;
+﻿using Schedule.io.Core.Data.Configurations.Enums;
 
 namespace Schedule.io.Core.Data.Configurations
 {

@@ -1,12 +1,10 @@
 ﻿using Raven.Client.Documents.Session;
 using Schedule.io.Interfaces.Repositories;
-using Schedule.io.Interfaces.Services;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Infra.RavenDB
 {
@@ -42,6 +40,11 @@ namespace Schedule.io.Infra.RavenDB
             return Sessao
                 .Query<Agenda>()
                 .Any(x => x.Id == agendaId);
+        }
+
+        public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
+        {
+            throw new NotImplementedException();
         }
     }
 }

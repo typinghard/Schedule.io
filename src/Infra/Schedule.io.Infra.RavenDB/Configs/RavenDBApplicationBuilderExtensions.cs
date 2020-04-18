@@ -2,11 +2,7 @@
 using Raven.DependencyInjection;
 using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Core.Data.EventSourcing;
-using Schedule.io.Interfaces.Services;
 using Schedule.io.Infra.RavenDB.EventSourcing;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Schedule.io.Interfaces.Repositories;
 using Raven.Client.Documents;
 using Schedule.io.Models.AggregatesRoots;
@@ -66,7 +62,7 @@ namespace Schedule.io.Infra.RavenDB.Configs
             services.AddScoped<IAgendaRepository, AgendaRepository>();
             services.AddScoped<ITipoEventoRepository, TipoEventoRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            services.AddScoped<IEventoAgendaRepository, EventoAgendaRepository>();
+            services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<ILocalRepository, LocalRepository>();
             services.AddScoped<IUnitOfWork, UoW.UnitOfWork>();
         }

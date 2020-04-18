@@ -1,7 +1,5 @@
 ﻿using Schedule.io.Core.Messages;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Schedule.io.Core.Data.EventSourcing
 {

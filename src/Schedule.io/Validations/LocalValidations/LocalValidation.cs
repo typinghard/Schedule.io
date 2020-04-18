@@ -18,7 +18,7 @@ namespace Schedule.io.Validations.LocalValidations
                 .WithMessage("{PropertyName} do local não informado.");
 
             RuleFor(l => l.LotacaoMaxima)
-                .GreaterThan(0)
+                .GreaterThanOrEqualTo(0)
                 .WithMessage("{PropertyName} do local não informado.");
         }
     }

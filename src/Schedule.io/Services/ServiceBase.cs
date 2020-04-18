@@ -3,10 +3,7 @@ using Schedule.io.Core.Communication.Mediator;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Schedule.io.Services
 {
@@ -37,7 +34,7 @@ namespace Schedule.io.Services
             if (_notifications.TemNotificacao()) return false;
             if (_uow.Commit()) return true;
 
-            _bus.PublicarNotificacao(new DomainNotification("", "Houve um problema durante a gravação dos dados."));
+            _bus.PublicarNotificacao(new DomainNotification("Commit", "Houve um problema durante a gravação dos dados."));
             return false;
         }
 

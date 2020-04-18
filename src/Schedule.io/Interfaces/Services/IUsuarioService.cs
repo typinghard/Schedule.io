@@ -1,8 +1,5 @@
-﻿using Schedule.io.Models;
-using Schedule.io.Models.AggregatesRoots;
-using System;
+﻿using Schedule.io.Models.AggregatesRoots;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Schedule.io.Interfaces.Services
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using Schedule.io.Core.DomainObjects;
@@ -25,49 +24,45 @@ namespace Schedule.io.Models.AggregatesRoots
             UsuarioIdCriador = idUsuarioDono;
             Titulo = titulo;
             _agendasUsuarios = new List<AgendaUsuario>();
+            _eventos = new List<string>();
 
-            var resultadoValidacao = this.AgendaEhValida();
+            var resultadoValidacao = this.NovaAgendaEhValida();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+
+            var agendaUsuario = new AgendaUsuario(Id, idUsuarioDono);
+            AdicionarAgendaDoUsuario(agendaUsuario);
         }
 
         private Agenda()
         {
-
+            _agendasUsuarios = new List<AgendaUsuario>();
+            _eventos = new List<string>();
         }
 
         public void DefinirTitulo(string titulo)
         {
-            if (string.IsNullOrEmpty(titulo))
-            {
+            if (titulo.EhVazio())
                 throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um título." });
-            }
 
             if (!titulo.ValidarTamanho(2, 150))
-            {
                 throw new ScheduleIoException(new List<string>() { "O título deve ter entre 2 e 150 caracteres." });
-
-            }
 
             this.Titulo = titulo;
         }
 
         public void DefinirDescricao(string descricao)
         {
-            if (!string.IsNullOrEmpty(descricao) && !descricao.ValidarTamanho(2, 500))
-            {
+            if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException(new List<string>() { "A descrição deve ter entre 2 e 500 caracteres." });
-            }
 
             this.Descricao = descricao;
         }
 
         public void DefinirUsuarioIdCriador(string usuarioId)
         {
-            if (string.IsNullOrEmpty(usuarioId))
-            {
+            if (usuarioId.EhVazio())
                 throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um usuarioId." });
-            }
 
             this.UsuarioIdCriador = usuarioId;
         }
@@ -88,12 +83,22 @@ namespace Schedule.io.Models.AggregatesRoots
             _agendasUsuarios.Add(agendaUsuario);
         }
 
-        public void LimparAgendasDoUsuario()
+        public void RemoverAgendasDoUsuario(AgendaUsuario agendaUsuario)
         {
-            _agendasUsuarios.Clear();
+            foreach (var au in _agendasUsuarios)
+                if (au.AgendaId == agendaUsuario.AgendaId && au.UsuarioId == agendaUsuario.UsuarioId)
+                {
+                    _agendasUsuarios.Remove(agendaUsuario);
+                    break;
+                }
         }
 
-        private ValidationResult AgendaEhValida()
+        public bool AgendaEhValida()
+        {
+            return NovaAgendaEhValida().IsValid;
+        }
+
+        private ValidationResult NovaAgendaEhValida()
         {
             return new AgendaValidation().Validate(this);
         }

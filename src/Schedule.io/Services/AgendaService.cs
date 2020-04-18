@@ -1,14 +1,13 @@
 ﻿using MediatR;
 using Schedule.io.Core.Communication.Mediator;
-using Schedule.io.Core.DomainObjects;
+using Schedule.io.Core.Helpers;
 using Schedule.io.Core.Messages.CommonMessages.Notifications;
 using Schedule.io.Events.AgendaEvents;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Interfaces.Services;
 using Schedule.io.Models.AggregatesRoots;
-using Schedule.io.Models.ValueObjects;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Schedule.io.Services
 {
@@ -82,6 +81,8 @@ namespace Schedule.io.Services
         #region Privados
         private void Registrar(Agenda agenda)
         {
+            Validar(agenda);
+
             _agendaRepository.Adicionar(agenda);
 
             if (Commit())
@@ -92,12 +93,34 @@ namespace Schedule.io.Services
 
         private void Atualizar(Agenda agenda)
         {
+            Validar(agenda);
+
             _agendaRepository.Atualizar(agenda);
 
             if (Commit())
                 _bus.PublicarEvento(new AgendaAtualizadaEvent(agenda.Id, agenda.UsuarioIdCriador, agenda.Titulo, agenda.Descricao, agenda.Publico));
 
             ValidarComando();
+        }
+
+        private void Validar(Agenda agenda)
+        {
+            ValidarUsuarioCriador(agenda);
+            ValidarAgendaUsuario(agenda);
+
+            ValidarComando();
+        }
+
+        private void ValidarUsuarioCriador(Agenda agenda)
+        {
+            if (agenda.UsuarioIdCriador.EhVazio())
+                _bus.PublicarNotificacao(new DomainNotification("Validação Agenda", "Usuario dono da agenda não encontrado!"));
+        }
+
+        private void ValidarAgendaUsuario(Agenda agenda)
+        {
+            if (!agenda.AgendasUsuarios.Any())
+                _bus.PublicarNotificacao(new DomainNotification("Validação Agenda", "AgendaUsuario não informado!"));
         }
         #endregion
     }

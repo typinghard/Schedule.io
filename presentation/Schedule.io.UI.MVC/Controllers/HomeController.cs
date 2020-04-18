@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Schedule.io.UI.Web.Models;
-using Schedule.io.Interfaces;
 using Schedule.io.Interfaces.Services;
 
 namespace Schedule.io.UI.Web.Controllers

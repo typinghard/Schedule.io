@@ -13,6 +13,8 @@ namespace Schedule.io.Interfaces.Repositories
         IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal);
 
 
+        /* FALAR COM DIEGO */
+        --
         void AdicionarConvite(Convite convite);
         IList<Convite> ListarConvites(string eventoId);
         void ExcluirConvite(Convite convite);

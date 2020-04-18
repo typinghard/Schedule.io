@@ -36,7 +36,7 @@ namespace Schedule.io.UI.Web
 
             services.AddMediatR(typeof(Startup));
             services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
-            services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { Configuration["RavebDb:Url"] },
+            services.AddScheduleIoRavenDb(new RavenDBConfig(new[] { Configuration["RavebDb:Url"] },
                                                                     Configuration["RavebDb:DataBase"],
                                                                     Configuration["RavebDb:Certificate:FileName"]));
         }

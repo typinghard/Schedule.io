@@ -22,9 +22,6 @@ namespace Schedule.io.Configs
             services.AddScoped<ILocalService, LocalService>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IEventoService, EventoService>();
-
-            //Events
-
         }
     }
 }

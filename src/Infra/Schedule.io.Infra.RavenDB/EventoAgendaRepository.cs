@@ -17,18 +17,15 @@ namespace Schedule.io.Infra.RavenDB
 
         }
 
+        /* PERGUNTAR PRO DIEGO*/
         public void AdicionarConvite(Convite convite)
         {
-            var sessaoConvite = (IDocumentSession)convite;
-            sessaoConvite.Store(convite);
-            sessaoConvite.SaveChanges();
+            Sessao.Store(convite);
         }
 
         public void ExcluirConvite(Convite convite)
         {
-            var sessaoConvite = (IDocumentSession)convite;
-            sessaoConvite.Delete(convite);
-            sessaoConvite.SaveChanges();
+            Sessao.Delete(convite);
         }
 
         public IList<Convite> ListarConvites(string eventoId)

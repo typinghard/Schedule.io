@@ -16,21 +16,14 @@ namespace Schedule.io.Infra.MongoDB
 
         }
 
-        public IList<Convite> ListarConvites(string eventoId)
-        {
-            return Db.Convite
-                     .Find(x => x.EventoId == eventoId)
-                     .ToList();
-        }
-
-        public IList<Evento> ListarEventosDaAgenda(string agendaId)
+        public IList<Evento> Listar(string agendaId)
         {
             return Db.Evento
                 .Find(x => x.AgendaId == agendaId)
                 .ToList();
         }
 
-        public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> Listar(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
             return Db.Evento
                 .Find(x => x.AgendaId == agendaId
@@ -39,7 +32,7 @@ namespace Schedule.io.Infra.MongoDB
                 .ToList();
         }
 
-        public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> Listar(string agendaId, string usuarioId)
         {
 
             return Db.Evento

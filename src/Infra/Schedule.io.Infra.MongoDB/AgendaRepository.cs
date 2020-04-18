@@ -15,26 +15,16 @@ namespace Schedule.io.Infra.MongoDB
         {
         }
 
-        public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
+        public IList<Agenda> Listar(string usuarioId)
         {
             return Db.Agenda
                 .Find(c => c.UsuarioIdCriador == usuarioId)
                 .ToList();
         }
 
-        public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
+        public Agenda Obter(string agendaId, string usuarioId)
         {
             return Db.Agenda.Find(a => a.AgendasUsuarios.Any(u => u.UsuarioId == usuarioId) && a.Id == agendaId).FirstOrDefault();
-        }
-
-        public bool VerificaSeAgendaExiste(string agendaId)
-        {
-            return Db.Agenda.CountDocuments(a => a.Id == agendaId) > 0;
-        }
-
-        public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
-        {
-            throw new NotImplementedException();
         }
     }
 }

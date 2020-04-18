@@ -30,6 +30,11 @@ namespace Schedule.io.Infra.MongoDB
             return _collection.AsQueryable().ToList();
         }
 
+        public bool Existe(string id)
+        {
+            return _collection.Find(t => t.Id == id).Any();
+        }
+
         public TEntity Obter(string id)
         {
             return _collection.Find(t => t.Id == id).FirstOrDefault();
@@ -55,5 +60,7 @@ namespace Schedule.io.Infra.MongoDB
         {
             _collection.DeleteOne(c => c.Id == obj.Id);
         }
+
+        
     }
 }

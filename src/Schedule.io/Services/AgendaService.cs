@@ -54,7 +54,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Agenda> Listar(string usuarioId)
         {
-            var agendas = _agendaRepository.ListarAgendasPorUsuarioId(usuarioId);
+            var agendas = _agendaRepository.Listar(usuarioId);
             foreach (var agenda in agendas)
             {
                 yield return agenda;

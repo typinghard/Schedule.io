@@ -39,20 +39,20 @@ namespace Schedule.io.Infra.SqlServerDB
         {
             var query = $@"SELECT a.*,
                             Id as {agendaUsuario_split}, au.AgendaId, au.UsuarioId 
-                           FROM {_schemaName}.Agenda a
-                           INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
+                           FROM { TabelaAgenda } a
+                           INNER JOIN { TabelaAgendaUsuario } au on a.Id = au.AgendaId
                            WHERE a.Id = '{agendaId}'";
 
             return DapperAgenda(query, agendaUsuario_split).FirstOrDefault();
         }
 
-        public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
+        public IList<Agenda> Listar(string usuarioId)
         {
             var query = @$"
                              SELECT a.*,
                              Id as {agendaUsuario_split}, au.AgendaId, au.UsuarioId 
-                             FROM {_schemaName}.Agenda a 
-                             INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
+                             FROM { TabelaAgenda } a 
+                             INNER JOIN { TabelaAgendaUsuario } au on a.Id = au.AgendaId
                              WHERE
                              au.UsuarioId = '{usuarioId}'
             ";
@@ -60,29 +60,18 @@ namespace Schedule.io.Infra.SqlServerDB
             return DapperAgenda(query, agendaUsuario_split);
         }
 
-        public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
+        public Agenda Obter(string agendaId, string usuarioId)
         {
             var query = @$"
                              SELECT a.*,
                              Id as {agendaUsuario_split}, AgendaId, UsuarioId 
-                             FROM {_schemaName}.Agenda a 
-                             INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
+                             FROM { TabelaAgenda } a 
+                             INNER JOIN { TabelaAgendaUsuario } au on a.Id = au.AgendaId
                              WHERE AgendaId = '{agendaId}'
                              and au.UsuarioId = '{usuarioId}'
             ";
 
             return DapperAgenda(query, agendaUsuario_split).FirstOrDefault();
-        }
-
-        public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
-        {
-            return ObterLista(@$"
-                             SELECT au.*
-                             FROM {_schemaName}.Agenda a 
-                             INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId
-                             WHERE AgendaId = '{agendaUsuario.AgendaId}'
-                             and au.UsuarioId = '{agendaUsuario.UsuarioId}'
-            ").Any() ? true : false;
         }
 
         private IList<Agenda> DapperAgenda(string query, string split)

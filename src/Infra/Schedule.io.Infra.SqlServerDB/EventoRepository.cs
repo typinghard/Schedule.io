@@ -48,13 +48,7 @@ namespace Schedule.io.Infra.SqlServerDB
             base.Excluir(obj);
         }
 
-        public IList<Convite> ListarConvites(string eventoId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public IList<Evento> ListarEventosDaAgenda(string agendaId)
+        public IList<Evento> Listar(string agendaId)
         {
             var query = @$"SELECT e.*,
 	                              Id as {convite_split}, c.*
@@ -68,7 +62,7 @@ namespace Schedule.io.Infra.SqlServerDB
             return DapperEvento(query, convite_split);
         }
 
-        public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> Listar(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
             var query = @$"SELECT e.*,
 	                              Id as {convite_split}, c.*
@@ -84,7 +78,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         }
 
-        public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> Listar(string agendaId, string usuarioId)
         {
             var query = @$"SELECT e.*,
 	                              Id as {convite_split}, c.*

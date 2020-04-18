@@ -48,7 +48,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId)
         {
-            var eventos = _eventoRepository.ListarEventosDaAgenda(agendaId);
+            var eventos = _eventoRepository.Listar(agendaId);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -57,7 +57,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId, string usuarioId)
         {
-            var eventos = _eventoRepository.ListarTodosEventosDoUsuario(agendaId, usuarioId);
+            var eventos = _eventoRepository.Listar(agendaId, usuarioId);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -66,7 +66,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId, DateTime dataInicial, DateTime dataFinal)
         {
-            var eventos = _eventoRepository.ListarEventosPorPeriodo(agendaId, dataInicial, dataFinal);
+            var eventos = _eventoRepository.Listar(agendaId, dataInicial, dataFinal);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -175,7 +175,7 @@ namespace Schedule.io.Services
 
         private void ValidarEventosOcupadoNoMesmoHorario(Evento evento)
         {
-            var listEventos = _eventoRepository.ListarTodosEventosDoUsuario(evento.AgendaId, evento.UsuarioIdCriador);
+            var listEventos = _eventoRepository.Listar(evento.AgendaId, evento.UsuarioIdCriador);
 
             if (!listEventos.Any())
                 return;

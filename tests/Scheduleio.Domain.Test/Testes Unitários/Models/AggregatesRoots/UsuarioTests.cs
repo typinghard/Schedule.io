@@ -48,7 +48,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var validacao = Assert.Throws<ScheduleIoException>(() => usuario.DefinirEmail("")).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um e-mail."));
+            Assert.Contains(validacao, x => x.Contains("Por favor, informe um e-mail válido."));
         }
 
         [Fact(DisplayName = "Usuario - DefinirUsuarioEmail - O E-mail deve ser inválido por estar vazio.")]

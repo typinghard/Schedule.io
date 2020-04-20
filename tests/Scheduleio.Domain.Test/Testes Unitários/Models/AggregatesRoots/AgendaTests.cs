@@ -44,7 +44,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var validacao = Assert.Throws<ScheduleIoException>(() => agenda.DefinirTitulo(novoTituloInvalido)).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um título."));
+            Assert.Contains(validacao, x => x.Contains("O título não pode ser vazio e deve ter entre 2 e 150 caracteres."));
         }
 
         [Fact(DisplayName = "Agenda - DefinirTítulo - Título deve ser inválido pelo tamanho")]
@@ -58,7 +58,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var validacao = Assert.Throws<ScheduleIoException>(() => agenda.DefinirTitulo(novoTitulo)).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("O título deve ter entre 2 e 150 caracteres."));
+            Assert.Contains(validacao, x => x.Contains("O título não pode ser vazio e deve ter entre 2 e 150 caracteres."));
         }
 
         [Fact(DisplayName = "Agenda - DefinirDescricao - Descrição deve ser alterada")]

@@ -42,7 +42,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var validacao = Assert.Throws<ScheduleIoException>(() => tipoEvento.DefinirNome(novoNome)).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um nome para o tipo do evento."));
+            Assert.Contains(validacao, x => x.Contains("O nome do tipo do evento deve ter entre 2 e 120 caracteres."));
         }
 
         [Fact(DisplayName = "TipoEvento - Definir Nome - Nome do Tipo Evento deve ser invalido por ser vazio")]

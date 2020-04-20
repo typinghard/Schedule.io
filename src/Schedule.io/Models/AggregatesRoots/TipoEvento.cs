@@ -28,9 +28,6 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirNome(string nome)
         {
-            if (nome.EhVazio())
-                throw new ScheduleIoException("Por favor, certifique-se que digitou um nome para o tipo do evento.");
-
             if (!nome.ValidarTamanho(2, 120))
                 throw new ScheduleIoException("O nome do tipo do evento deve ter entre 2 e 120 caracteres.");
 

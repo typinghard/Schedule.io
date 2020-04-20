@@ -41,11 +41,8 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirTitulo(string titulo)
         {
-            if (titulo.EhVazio())
-                throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um título." });
-
             if (!titulo.ValidarTamanho(2, 150))
-                throw new ScheduleIoException(new List<string>() { "O título deve ter entre 2 e 150 caracteres." });
+                throw new ScheduleIoException(new List<string>() { "O título não pode ser vazio e deve ter entre 2 e 150 caracteres." });
 
             this.Titulo = titulo;
         }

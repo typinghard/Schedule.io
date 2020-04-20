@@ -8,6 +8,7 @@ namespace Schedule.io.Core.Data
     {
         void Adicionar(TEntity obj);
         TEntity Obter(string id);
+        bool Existe(string id);
         IList<TEntity> Listar();
         void Atualizar(TEntity obj);
         void Excluir(TEntity obj);

@@ -9,11 +9,11 @@ using Schedule.io.Models.ValueObjects;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
-    public class EventoTest
+    public class EventoTests
     {
         private Evento evento;
 
-        public EventoTest()
+        public EventoTests()
         {
             evento = new Faker<Evento>("pt_BR")
                 .CustomInstantiator((f) => new Evento(f.Random.Guid().ToString(),
@@ -45,10 +45,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novaAgendaId = string.Empty;
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirAgenda(novaAgendaId));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirAgenda(novaAgendaId)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que escolheu uma agenda.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que escolheu uma agenda."));
         }
 
 
@@ -99,10 +99,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novoTitulo = string.Empty;
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirTitulo(novoTitulo));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirTitulo(novoTitulo)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que digitou um título.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um título."));
+
         }
 
         [Fact(DisplayName = "Evento - DefinirTitulo - Título deve ser ser invalido pelo tamanho")]
@@ -112,10 +113,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novoTitulo = new Faker().Random.String(151, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirTitulo(novoTitulo));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirTitulo(novoTitulo)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("O título deve ter entre 2 e 150 caracteres.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("O título deve ter entre 2 e 150 caracteres."));
         }
 
         [Fact(DisplayName = "Evento - DefinirDescrição - Descrição deve ser alterado")]
@@ -151,10 +152,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novaDescricao = new Faker().Random.String(501, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDescricao(novaDescricao));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirDescricao(novaDescricao)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("A descrição deve ter entre 2 e 500 caracteres.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("A descrição deve ter entre 2 e 500 caracteres."));
+
         }
 
         [Fact(DisplayName = "Evento - AdicionarConvite - Convite deve ser adicionado")]
@@ -305,10 +307,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             DateTime dataLimite = evento.DataInicio.AddDays(-5);
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDataLimiteConfirmacao(dataLimite));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirDataLimiteConfirmacao(dataLimite)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por certifique-se de que a data limite é maior que a data inicio do evento.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por certifique-se de que a data limite é maior que a data inicio do evento."));
         }
 
         [Fact(DisplayName = "Evento - DefinirDatas - Datas de Inicio e Final deve ser alterado")]
@@ -334,10 +336,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             DateTime dataFinal = DateTime.Now.Date.AddDays(30);
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, escolha a data e hora inicial do evento.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, escolha a data e hora inicial do evento."));
         }
 
         [Fact(DisplayName = "Evento - DefinirDatas - Datas Inválidas, data final maior que dara inicial")]
@@ -348,10 +350,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             DateTime dataFinal = DateTime.Now.Date.AddDays(8);
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirDatas(dataInicio, dataFinal)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por certifique-se de que a data inicial é maior que a data final do evento.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por certifique-se de que a data inicial é maior que a data final do evento."));
         }
 
         [Fact(DisplayName = "Evento - DefinirQuantidadeMinimaDeUsuarios - Quantidade Mínima de Usuários deve ser alterado")]
@@ -374,10 +376,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             int quantidadeMinimaDeUsuarios = new Faker().Random.Int(-1000, -1);
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => evento.DefinirQuantidadeMinimaDeUsuarios(quantidadeMinimaDeUsuarios));
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento.DefinirQuantidadeMinimaDeUsuarios(quantidadeMinimaDeUsuarios)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0."));
         }
 
 
@@ -466,14 +468,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Evento_NovoEventoEhValido_DeveSerInvalido()
         {
 
-            var exception = Assert.Throws<ScheduleIoException>(() => evento = new Faker<Evento>("pt_BR")
+            var validacao = Assert.Throws<ScheduleIoException>(() => evento = new Faker<Evento>("pt_BR")
                                                                                     .CustomInstantiator((f) => new Evento("",
                                                                                     "", "", DateTime.MinValue))
                                                                                     .Generate(1)
-                                                                                    .First());
-
-            //Act
-            var validacao = exception.Message.Split("##").ToList();
+                                                                                    .First()).ScheduleIoMessages;
 
 
             //Assert

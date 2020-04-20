@@ -10,13 +10,5 @@ namespace Schedule.io.Infra.RavenDB
         public UsuarioRepository(IDocumentSession session) : base(session)
         {
         }
-
-        public bool VerificaSeUsuarioExiste(string usuarioId)
-        {
-            return Sessao
-                   .Query<Usuario>()
-                   .Where(x => x.Id == usuarioId)
-                   .FirstOrDefault() == null ? false : true;
-        }
     }
 }

@@ -13,7 +13,6 @@ namespace Schedule.io.Infra.SqlServerDB
     {
         public AgendaContext(DbContextOptions<AgendaContext> options) : base(options)
         {
-            SeedAgendaContext.CriarTabelas(this);
             Database.OpenConnection();
         }
 

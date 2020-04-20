@@ -9,14 +9,5 @@ namespace Schedule.io.Infra.SqlServerDB
         {
 
         }
-
-        public override TipoEvento Obter(string tipoEventoId)
-        {
-            var query = $@"SELECT * 
-                           FROM {_schemaName}.TipoEvento 
-                           WHERE Id = '{tipoEventoId}'";
-
-            return base.Obter(query);
-        }
     }
 }

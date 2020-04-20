@@ -54,7 +54,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Agenda> Listar(string usuarioId)
         {
-            var agendas = _agendaRepository.ListarAgendasPorUsuarioId(usuarioId);
+            var agendas = _agendaRepository.Listar(usuarioId);
             foreach (var agenda in agendas)
             {
                 yield return agenda;
@@ -81,8 +81,6 @@ namespace Schedule.io.Services
         #region Privados
         private void Registrar(Agenda agenda)
         {
-            Validar(agenda);
-
             _agendaRepository.Adicionar(agenda);
 
             if (Commit())
@@ -93,34 +91,12 @@ namespace Schedule.io.Services
 
         private void Atualizar(Agenda agenda)
         {
-            Validar(agenda);
-
             _agendaRepository.Atualizar(agenda);
 
             if (Commit())
                 _bus.PublicarEvento(new AgendaAtualizadaEvent(agenda.Id, agenda.UsuarioIdCriador, agenda.Titulo, agenda.Descricao, agenda.Publico));
 
             ValidarComando();
-        }
-
-        private void Validar(Agenda agenda)
-        {
-            ValidarUsuarioCriador(agenda);
-            ValidarAgendaUsuario(agenda);
-
-            ValidarComando();
-        }
-
-        private void ValidarUsuarioCriador(Agenda agenda)
-        {
-            if (agenda.UsuarioIdCriador.EhVazio())
-                _bus.PublicarNotificacao(new DomainNotification("Validação Agenda", "Usuario dono da agenda não encontrado!"));
-        }
-
-        private void ValidarAgendaUsuario(Agenda agenda)
-        {
-            if (!agenda.AgendasUsuarios.Any())
-                _bus.PublicarNotificacao(new DomainNotification("Validação Agenda", "AgendaUsuario não informado!"));
         }
         #endregion
     }

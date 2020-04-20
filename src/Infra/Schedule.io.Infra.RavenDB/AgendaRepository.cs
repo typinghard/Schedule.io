@@ -19,7 +19,7 @@ namespace Schedule.io.Infra.RavenDB
             _session.Store(agendaUsuario);
         }
 
-        public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
+        public IList<Agenda> Listar(string usuarioId)
         {
             return Sessao
                    .Query<Agenda>()
@@ -27,7 +27,7 @@ namespace Schedule.io.Infra.RavenDB
                    .ToList();
         }
 
-        public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
+        public Agenda Obter(string agendaId, string usuarioId)
         {
             return Sessao.Query<Agenda>()
                 .Where(a => a.AgendasUsuarios.Any(y => y.UsuarioId == usuarioId)
@@ -40,11 +40,6 @@ namespace Schedule.io.Infra.RavenDB
             return Sessao
                 .Query<Agenda>()
                 .Any(x => x.Id == agendaId);
-        }
-
-        public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
-        {
-            throw new NotImplementedException();
         }
     }
 }

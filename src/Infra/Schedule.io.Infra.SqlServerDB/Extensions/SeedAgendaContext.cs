@@ -2,7 +2,7 @@
 {
     public static class SeedAgendaContext
     {
-        public static void CriarTabelas(AgendaContext agendaContext)
+        public static void CriarTabelas(this AgendaContext agendaContext)
         {
             agendaContext.Database.EnsureCreated();
         }

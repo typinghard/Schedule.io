@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
-    public class LocalTest
+    public class LocalTests
     {
         private Local local;
 
-        public LocalTest()
+        public LocalTests()
         {
             local = new Faker<Local>("pt_BR")
                 .CustomInstantiator((f) => new Local(f.Random.String(200, 'a', 'z')))
@@ -38,10 +38,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var nomelocalInvalido = new Faker().Random.String(201, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => local.DefinirNomeLocal(nomelocalInvalido));
+            var validacao = Assert.Throws<ScheduleIoException>(() => local.DefinirNomeLocal(nomelocalInvalido)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("O nome do local deve ter entre 2 e 200 caracteres.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("O nome do local deve ter entre 2 e 200 caracteres."));
+
         }
 
 
@@ -77,10 +78,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novoIdentificadorExternoInvalido = new Faker().Random.String(1, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => local.DefinirIdentificadorExterno(novoIdentificadorExternoInvalido));
+            var validacao = Assert.Throws<ScheduleIoException>(() => local.DefinirIdentificadorExterno(novoIdentificadorExternoInvalido)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("O Identificador Extorno deve ter entre 2 e 200 caracteres.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("O Identificador Extorno deve ter entre 2 e 200 caracteres."));
 
         }
 
@@ -118,10 +119,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novaDescricao = new Faker().Random.String(501, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => local.DefinirDescricao(novaDescricao));
+            var validacao = Assert.Throws<ScheduleIoException>(() => local.DefinirDescricao(novaDescricao)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("A descrição do local deve ter entre 2 e 500 caracteres.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("A descrição do local deve ter entre 2 e 500 caracteres."));
         }
 
 
@@ -173,10 +174,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             int lotacaoMaxima = new Faker().Random.Int(-100, -1);
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => local.DefinirLotacaoMaxima(lotacaoMaxima));
+            var validacao = Assert.Throws<ScheduleIoException>(() => local.DefinirLotacaoMaxima(lotacaoMaxima)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se qua a lotação máxima de usuários para o local não é menor que 0.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se qua a lotação máxima de usuários para o local não é menor que 0."));
         }
 
 
@@ -193,17 +194,14 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Local_NovaLocalEhValido_DeveSerInvalido()
         {
             //Arrange
-            var exception = Assert.Throws<ScheduleIoException>(() => local = new Faker<Local>("pt_BR")
+            var validacao = Assert.Throws<ScheduleIoException>(() => local = new Faker<Local>("pt_BR")
                                                                         .CustomInstantiator((f) => new Local(""))
                                                                         .Generate(1)
-                                                                        .First());
+                                                                        .First()).ScheduleIoMessages;
 
-
-            //Act
-            var validacao = exception.Message.Split("##").ToList();
 
             //Assert
-            Assert.Equal("Nome do Local não informado.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Nome do Local não informado."));
         }
     }
 }

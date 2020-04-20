@@ -48,7 +48,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId)
         {
-            var eventos = _eventoRepository.ListarEventosDaAgenda(agendaId);
+            var eventos = _eventoRepository.Listar(agendaId);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -57,7 +57,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId, string usuarioId)
         {
-            var eventos = _eventoRepository.ListarTodosEventosDoUsuario(agendaId, usuarioId);
+            var eventos = _eventoRepository.Listar(agendaId, usuarioId);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -66,7 +66,7 @@ namespace Schedule.io.Services
 
         public IEnumerable<Evento> Listar(string agendaId, DateTime dataInicial, DateTime dataFinal)
         {
-            var eventos = _eventoRepository.ListarEventosPorPeriodo(agendaId, dataInicial, dataFinal);
+            var eventos = _eventoRepository.Listar(agendaId, dataInicial, dataFinal);
             foreach (var evento in eventos)
             {
                 yield return evento;
@@ -126,7 +126,6 @@ namespace Schedule.io.Services
 
         private void Validar(Evento evento)
         {
-            VerificaConviteDonoEvento(evento);
             ValidarEventosOcupadoNoMesmoHorario(evento);
             ValidaQuantidadeUsuarioReferenteAoLocal(evento);
         }
@@ -145,37 +144,9 @@ namespace Schedule.io.Services
             ValidarComando();
         }
 
-        private void VerificaConviteDonoEvento(Evento evento)
-        {
-            foreach (var convite in evento.Convites)
-            {
-                if (convite.UsuarioId == evento.UsuarioIdCriador)
-                {
-                    MontaConviteDono(evento, convite);
-                    return;
-                }
-            }
-
-            MontaConviteDono(evento);
-        }
-
-        private void MontaConviteDono(Evento evento, Convite convite = null)
-        {
-            if (convite == null)
-                convite = new Convite(evento.Id, evento.UsuarioIdCriador);
-
-            convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
-            convite.Permissoes.PodeConvidar();
-            convite.Permissoes.PodeModificarEvento();
-            convite.Permissoes.PodeVerListaDeConvidados();
-
-            if (!evento.Convites.Any(x => x.UsuarioId == evento.UsuarioIdCriador))
-                evento.AdicionarConvite(convite);
-        }
-
         private void ValidarEventosOcupadoNoMesmoHorario(Evento evento)
         {
-            var listEventos = _eventoRepository.ListarTodosEventosDoUsuario(evento.AgendaId, evento.UsuarioIdCriador);
+            var listEventos = _eventoRepository.Listar(evento.AgendaId, evento.UsuarioIdCriador);
 
             if (!listEventos.Any())
                 return;

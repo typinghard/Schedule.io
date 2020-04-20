@@ -6,11 +6,11 @@ using Schedule.io.Core.DomainObjects;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
-    public class UsuarioTest
+    public class UsuarioTests
     {
         private Usuario usuario;
 
-        public UsuarioTest()
+        public UsuarioTests()
         {
             usuario = new Faker<Usuario>("pt_BR")
                 .CustomInstantiator((f) => new Usuario(f.Person.Email.ToLower()))
@@ -45,10 +45,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Usuario_DefinirUsuarioEmail_UsuarioEmailDeveSerInvalidoVazio()
         {
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => usuario.DefinirEmail(""));
+            var validacao = Assert.Throws<ScheduleIoException>(() => usuario.DefinirEmail("")).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que digitou um e-mail.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um e-mail."));
         }
 
         [Fact(DisplayName = "Usuario - DefinirUsuarioEmail - O E-mail deve ser inválido por estar vazio.")]
@@ -58,23 +58,23 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novoEmail = "fdsa@fdsa.";
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => usuario.DefinirEmail(novoEmail));
+            var validacao = Assert.Throws<ScheduleIoException>(() => usuario.DefinirEmail(novoEmail)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, informe um e-mail válido.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, informe um e-mail válido."));
         }
 
         [Fact(DisplayName = "Usuario - UsuarioEhValido - Deve Ser Inválido")]
         public void Usuario_UsuarioEhValido_DeveSerInvalido()
         {
             //Arrange
-            var exception = Assert.Throws<ScheduleIoException>(() => new Faker<Usuario>("pt_BR")
+            var validacao = Assert.Throws<ScheduleIoException>(() => new Faker<Usuario>("pt_BR")
                                                                 .CustomInstantiator((f) => new Usuario(""))
                                                                 .Generate(1)
-                                                                .First());
+                                                                .First()).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que digitou um e-mail válido.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um e-mail válido."));
         }
     }
 }

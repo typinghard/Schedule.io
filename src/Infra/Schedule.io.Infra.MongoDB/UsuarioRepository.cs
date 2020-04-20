@@ -11,10 +11,5 @@ namespace Schedule.io.Infra.MongoDB
         {
 
         }
-
-        public bool VerificaSeUsuarioExiste(string usuarioId)
-        {
-            return Db.Usuario.CountDocuments(x => x.Id == usuarioId) > 0;
-        }
     }
 }

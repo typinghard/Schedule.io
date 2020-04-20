@@ -28,14 +28,10 @@ namespace Schedule.io.UI.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddMediatR(typeof(Startup));
-            //services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
-            //services.UseScheduleIoRavenDb(new RavenDBConfig(new[] { "https://a.free.elvis.ravendb.cloud" },
-            //                                                Configuration["RavenDB_Northwind:Database"],
-            //                                                Configuration["RavenDB_Northwind:CertificadePath"]
-            //                                                ));
-
-            services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: false));
-            services.UseScheduleIoSqlServerDb(new SqlServerDBConfig(Configuration["SqlServerDB:ConnectionString"]));
+            services.AddScheduleIo(new ScheduleIoConfigurations(useEventSourcing: true));
+            services.AddScheduleIoRavenDb(new RavenDBConfig(new[] { Configuration["RavebDb:Url"] },
+                                                                    Configuration["RavebDb:DataBase"],
+                                                                    Configuration["RavebDb:Certificate:FileName"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

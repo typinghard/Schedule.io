@@ -8,11 +8,11 @@ using System;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
-    public class AgendaTest
+    public class AgendaTests
     {
         private Agenda agenda;
 
-        public AgendaTest()
+        public AgendaTests()
         {
             agenda = new Faker<Agenda>("pt_BR")
                 .CustomInstantiator((f) => new Agenda(f.Random.String(150, 'a', 'z'),
@@ -41,10 +41,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novoTituloInvalido = string.Empty;
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => agenda.DefinirTitulo(novoTituloInvalido));
+            var validacao = Assert.Throws<ScheduleIoException>(() => agenda.DefinirTitulo(novoTituloInvalido)).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains("Por favor, certifique-se que digitou um título.", exception.ScheduleIoMessages);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um título."));
         }
 
         [Fact(DisplayName = "Agenda - DefinirTítulo - Título deve ser inválido pelo tamanho")]
@@ -55,10 +55,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => agenda.DefinirTitulo(novoTitulo));
+            var validacao = Assert.Throws<ScheduleIoException>(() => agenda.DefinirTitulo(novoTitulo)).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains("O título deve ter entre 2 e 150 caracteres.", exception.ScheduleIoMessages);
+            Assert.Contains(validacao, x => x.Contains("O título deve ter entre 2 e 150 caracteres."));
         }
 
         [Fact(DisplayName = "Agenda - DefinirDescricao - Descrição deve ser alterada")]
@@ -94,10 +94,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novaDescricaoInvalida = new Faker().Random.String(501, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => agenda.DefinirDescricao(novaDescricaoInvalida));
+            var validacao = Assert.Throws<ScheduleIoException>(() => agenda.DefinirDescricao(novaDescricaoInvalida)).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains("A descrição deve ter entre 2 e 500 caracteres.", exception.ScheduleIoMessages);
+            Assert.Contains(validacao, x => x.Contains("A descrição deve ter entre 2 e 500 caracteres."));
         }
 
         [Fact(DisplayName = "Agenda - TornarAgendaPublica - Agenda Deve Ser Pública")]
@@ -140,13 +140,12 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Agenda_AdicionarAgendaDoUsuario_AgendaUsuarioDeveSerInvalido()
         {
             //Arrange
-            var exception = Assert.Throws<ScheduleIoException>(() => new Faker<AgendaUsuario>("pt_BR")
+            var validacao = Assert.Throws<ScheduleIoException>(() => new Faker<AgendaUsuario>("pt_BR")
                                                                 .CustomInstantiator((f) => new AgendaUsuario("", ""))
                                                                 .Generate(1)
-                                                                .First());
+                                                                .First()).ScheduleIoMessages;
 
-            //Act
-            var validacao = exception.ScheduleIoMessages;
+
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("AgendaId da Agenda do Usuario não informado."));
@@ -200,13 +199,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Agenda_NovaAgendaEhValida_DeveSerInvalido()
         {
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => agenda = new Faker<Agenda>("pt_BR")
+            var validacao = Assert.Throws<ScheduleIoException>(() => agenda = new Faker<Agenda>("pt_BR")
                                                              .CustomInstantiator((f) => new Agenda("", ""))
                                                              .Generate(1)
-                                                             .First());
-
-            //Act
-            var validacao = exception.ScheduleIoMessages;
+                                                             .First()).ScheduleIoMessages;
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("Titulo não informado."));

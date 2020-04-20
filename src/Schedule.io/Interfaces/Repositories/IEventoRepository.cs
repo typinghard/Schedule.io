@@ -8,10 +8,8 @@ namespace Schedule.io.Interfaces.Repositories
 {
     public interface IEventoRepository : IRepository<Evento>
     {
-        IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId);
-        IList<Evento> ListarEventosDaAgenda(string agendaId);
-        IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal);
-
-        IList<Convite> ListarConvites(string eventoId);
+        IList<Evento> Listar(string agendaId, string usuarioId);
+        IList<Evento> Listar(string agendaId);
+        IList<Evento> Listar(string agendaId, DateTime dataInicio, DateTime dataFinal);
     }
 }

@@ -8,19 +8,5 @@ namespace Schedule.io.Infra.SqlServerDB
         public UsuarioRepository(AgendaContext context) : base(context)
         {
         }
-
-        public bool VerificaSeUsuarioExiste(string usuarioId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override Usuario Obter(string usuarioId)
-        {
-            var query = $@"SELECT * 
-                           FROM {_schemaName}.Usuario
-                           WHERE Id = '{usuarioId}'";
-
-            return base.Obter(query);
-        }
     }
 }

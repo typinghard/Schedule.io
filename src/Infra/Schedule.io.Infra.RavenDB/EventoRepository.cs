@@ -23,7 +23,7 @@ namespace Schedule.io.Infra.RavenDB
                  .ToList();
         }
 
-        public IList<Evento> ListarEventosDaAgenda(string agendaId)
+        public IList<Evento> Listar(string agendaId)
         {
             return Sessao
                  .Query<Evento>()
@@ -31,7 +31,7 @@ namespace Schedule.io.Infra.RavenDB
                  .ToList();
         }
 
-        public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
+        public IList<Evento> Listar(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
             return Sessao
                 .Query<Evento>()
@@ -41,7 +41,7 @@ namespace Schedule.io.Infra.RavenDB
                 .ToList();
         }
 
-        public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
+        public IList<Evento> Listar(string agendaId, string usuarioId)
         {
             return Sessao
                  .Query<Evento>()

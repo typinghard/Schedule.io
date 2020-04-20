@@ -30,8 +30,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
 
-            var agendaUsuario = new AgendaUsuario(Id, idUsuarioDono);
-            AdicionarAgendaDoUsuario(agendaUsuario);
+            MontaAgendaUsuario(this);
         }
 
         private Agenda()
@@ -91,6 +90,15 @@ namespace Schedule.io.Models.AggregatesRoots
         private ValidationResult NovaAgendaEhValida()
         {
             return new AgendaValidation().Validate(this);
+        }
+
+        private void MontaAgendaUsuario(Agenda agenda)
+        {
+            if (agenda.AgendasUsuarios.Any(x=>x.AgendaId == agenda.Id && x.UsuarioId == agenda.UsuarioIdCriador))
+                return;
+
+            var agendaUsuario = new AgendaUsuario(Id, agenda.UsuarioIdCriador);
+            AdicionarAgendaDoUsuario(agendaUsuario);
         }
     }
 }

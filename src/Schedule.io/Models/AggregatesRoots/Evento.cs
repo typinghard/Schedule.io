@@ -42,6 +42,8 @@ namespace Schedule.io.Models.AggregatesRoots
             var resultadoValidacao = this.NovoEventoEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+
+            MontaConviteDono(this);
         }
 
         private Evento()
@@ -163,6 +165,24 @@ namespace Schedule.io.Models.AggregatesRoots
         private ValidationResult NovoEventoEhValido()
         {
             return new EventoValidation().Validate(this);
+        }
+
+        private void MontaConviteDono(Evento evento)
+        {
+            Convite convite = null;
+            if (Convites.Any(x => x.EventoId == evento.Id && x.UsuarioId == evento.UsuarioIdCriador))
+                convite = evento.Convites.FirstOrDefault(x => x.EventoId == evento.Id && x.UsuarioId == evento.UsuarioIdCriador);
+
+            if (convite == null)
+                convite = new Convite(evento.Id, evento.UsuarioIdCriador);
+
+            convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
+            convite.Permissoes.PodeConvidar();
+            convite.Permissoes.PodeModificarEvento();
+            convite.Permissoes.PodeVerListaDeConvidados();
+
+            if (!evento.Convites.Any(x => x.UsuarioId == evento.UsuarioIdCriador))
+                evento.AdicionarConvite(convite);
         }
     }
 

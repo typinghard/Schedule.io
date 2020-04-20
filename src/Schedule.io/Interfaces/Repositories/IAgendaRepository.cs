@@ -7,10 +7,7 @@ namespace Schedule.io.Interfaces.Repositories
 {
     public interface IAgendaRepository : IRepository<Agenda>
     {
-        Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId);
-
-        IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId);
-
-        bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario);
+        Agenda Obter(string agendaId, string usuarioId);
+        IList<Agenda> Listar(string usuarioId);
     }
 }

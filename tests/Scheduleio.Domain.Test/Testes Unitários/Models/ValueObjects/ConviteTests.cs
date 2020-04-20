@@ -8,11 +8,11 @@ using Schedule.io.Enums;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
 {
-    public class ConviteTest
+    public class ConviteTests
     {
         private Convite convite;
 
-        public ConviteTest()
+        public ConviteTests()
         {
             convite = new Faker<Convite>("pt_BR")
                 .CustomInstantiator((f) => new Convite(f.Random.Guid().ToString(), f.Random.Guid().ToString()))
@@ -40,10 +40,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
             var novoEventoId = string.Empty;
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => convite.DefinirEventoId(novoEventoId));
+            var validacao = Assert.Throws<ScheduleIoException>(() => convite.DefinirEventoId(novoEventoId)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que adicinou um evento.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que adicinou um evento."));
         }
 
 
@@ -67,10 +67,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
             var novoUsuarioId = string.Empty;
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => convite.DefinirUsuarioId(novoUsuarioId));
+            var validacao = Assert.Throws<ScheduleIoException>(() => convite.DefinirUsuarioId(novoUsuarioId)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que adicinou uma pessoa.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que adicinou uma pessoa."));
         }
 
 
@@ -183,13 +183,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         public void Convite_NovoConviteEhValido_DeveSerInvalido()
         {
             //Arrange
-            var exception = Assert.Throws<ScheduleIoException>(() => new Faker<Convite>("pt_BR")
+            var validacao = Assert.Throws<ScheduleIoException>(() => new Faker<Convite>("pt_BR")
                                                                     .CustomInstantiator((f) => new Convite("", ""))
                                                                     .Generate(1)
-                                                                    .First());
-
-            //Act
-            var validacao = exception.Message.Split("## ").ToList();
+                                                                    .First()).ScheduleIoMessages;
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("EventoId não informado!"));

@@ -32,6 +32,13 @@ namespace Schedule.io.Infra.RavenDB
             _session.Delete(entity.Id.ToString());
         }
 
+        public bool Existe(string id)
+        {
+            return _session
+                 .Query<TEntity>()
+                 .Any(x => x.Id == id);
+        }
+
         public TEntity Obter(string id)
         {
             return _session
@@ -65,5 +72,7 @@ namespace Schedule.io.Infra.RavenDB
         {
             GC.SuppressFinalize(this);
         }
+
+        
     }
 }

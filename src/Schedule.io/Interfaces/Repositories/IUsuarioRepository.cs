@@ -5,6 +5,5 @@ namespace Schedule.io.Interfaces.Repositories
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {
-        bool VerificaSeUsuarioExiste(string usuarioId);
     }
 }

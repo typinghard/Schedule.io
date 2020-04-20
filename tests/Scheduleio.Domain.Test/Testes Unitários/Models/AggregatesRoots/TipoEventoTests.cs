@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
-    public class TipoEventoTest
+    public class TipoEventoTests
     {
         private TipoEvento tipoEvento;
 
-        public TipoEventoTest()
+        public TipoEventoTests()
         {
             tipoEvento = new Faker<TipoEvento>("pt_BR")
                 .CustomInstantiator((f) => new TipoEvento(f.Random.String(120, 'a', 'z'),
@@ -39,10 +39,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novoNome = string.Empty;
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => tipoEvento.DefinirNome(novoNome));
+            var validacao = Assert.Throws<ScheduleIoException>(() => tipoEvento.DefinirNome(novoNome)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("Por favor, certifique-se que digitou um nome para o tipo do evento.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um nome para o tipo do evento."));
         }
 
         [Fact(DisplayName = "TipoEvento - Definir Nome - Nome do Tipo Evento deve ser invalido por ser vazio")]
@@ -52,10 +52,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novoNome = new Faker().Random.String(1, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => tipoEvento.DefinirNome(novoNome));
+            var validacao = Assert.Throws<ScheduleIoException>(() => tipoEvento.DefinirNome(novoNome)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("O nome do tipo do evento deve ter entre 2 e 120 caracteres.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("O nome do tipo do evento deve ter entre 2 e 120 caracteres."));
         }
 
 
@@ -92,10 +92,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             var novaDescricao = new Faker().Random.String(501, 'a', 'z');
 
             //Act
-            var exception = Assert.Throws<ScheduleIoException>(() => tipoEvento.DefinirDescricao(novaDescricao));
+            var validacao = Assert.Throws<ScheduleIoException>(() => tipoEvento.DefinirDescricao(novaDescricao)).ScheduleIoMessages;
 
             //Assert
-            Assert.Equal("A descrição deve ter entre 2 e 500 caracteres.", exception.Message);
+            Assert.Contains(validacao, x => x.Contains("A descrição deve ter entre 2 e 500 caracteres."));
         }
 
         [Fact(DisplayName = "TipoEvento - TipoEventoEhValido - Deve Ser Valido")]
@@ -112,13 +112,12 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void TipoEvento_TipoEventoEhValido_DeveSerInvalido()
         {
             //Arrange
-            var exception = Assert.Throws<ScheduleIoException>(() => tipoEvento = new Faker<TipoEvento>("pt_BR")
+            var validacao = Assert.Throws<ScheduleIoException>(() => tipoEvento = new Faker<TipoEvento>("pt_BR")
                                                                         .CustomInstantiator((f) => new TipoEvento("", ""))
                                                                         .Generate(1)
-                                                                        .First());
+                                                                        .First()).ScheduleIoMessages;
 
-            var validacao = exception.Message.Split("## ").ToList();
-
+            
             //Assert
             Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um Nome para o Tipo do Evento."));
             Assert.Contains(validacao, x => x.Contains("O Nome do Tipo do Evento deve ter entre 2 e 120 caracteres."));

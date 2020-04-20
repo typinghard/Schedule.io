@@ -6,6 +6,7 @@ using Schedule.io.Core.Data;
 using Schedule.io.Core.Data.Configurations;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Infra.SqlServerDB.Configs;
+using Schedule.io.Infra.SqlServerDB.Statics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,15 +19,26 @@ namespace Schedule.io.Infra.SqlServerDB
         protected readonly DbSet<TEntity> DbSet;
         protected readonly IConfiguration _configuration;
         protected string _connectionString;
-        protected string _table;
-        protected readonly string _schemaName;
+        private string _table;
+        private readonly string _schemaName;
+
+        #region Tabelas
+        protected string TabelaAgenda { get { return string.Concat(_schemaName, ".", Tabelas.Agenda); } }
+        protected string TabelaAgendaUsuario { get { return string.Concat(_schemaName, ".", Tabelas.AgendaUsuario); } }
+        protected string TabelaUsuario { get { return string.Concat(_schemaName, ".", Tabelas.Usuario); } }
+        protected string TabelaLocal { get { return string.Concat(_schemaName, ".", Tabelas.Local); } }
+        protected string TabelaTipoEvento { get { return string.Concat(_schemaName, ".", Tabelas.TipoEvento); } }
+        protected string TabelaEvento { get { return string.Concat(_schemaName, ".", Tabelas.Evento); } }
+        protected string TabelaConvite { get { return string.Concat(_schemaName, ".", Tabelas.Convite); } }
+        protected string TabelaStoredEvents { get { return string.Concat(_schemaName, ".", Tabelas.StoredEvents); } } 
+        #endregion
 
         protected Repository(AgendaContext db)
         {
             Db = db;
             DbSet = db.Set<TEntity>();
             _connectionString = Db.Database.GetDbConnection().ConnectionString;
-            _table = typeof(TEntity).ToString().Split(".").Last();
+            _table = string.Concat(_schemaName, ".", typeof(TEntity).ToString().Split(".").Last());
             _schemaName = ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName;
         }
 
@@ -38,7 +50,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public virtual IList<TEntity> Listar()
         {
-            return ObterLista($"SELECT * FROM {_table} ").ToList();
+            return ObterLista($"SELECT * FROM { _table } ").ToList();
         }
 
         public virtual void Atualizar(TEntity obj)
@@ -76,9 +88,9 @@ namespace Schedule.io.Infra.SqlServerDB
             }
         }
 
-        public virtual TEntity Obter(string query)
+        public virtual TEntity Obter(string id)
         {
-            return ObterLista(query).FirstOrDefault();
+            return ObterLista($"SELECT * FROM { _table } WHERE Id = '{ id }'").FirstOrDefault();
         }
 
         public virtual void Excluir(TEntity obj)
@@ -92,9 +104,24 @@ namespace Schedule.io.Infra.SqlServerDB
             GC.SuppressFinalize(this);
         }
 
-        public void Inativar(TEntity obj)
+        public bool Existe(string id)
         {
-            throw new NotImplementedException();
+            using (var con = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    return con.Query<bool>($"SELECT COUNT(*) FROM { _table } WHERE Id = '{ id }'").FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
         }
     }
 }

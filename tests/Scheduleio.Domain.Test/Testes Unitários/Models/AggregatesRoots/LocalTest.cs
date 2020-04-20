@@ -183,11 +183,10 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         [Fact(DisplayName = "Local - NovalocalEhValido - Deve Ser Valido")]
         public void Local_NovoLocalEhValido_DeveSerValido()
         {
-            //Act
-            var ehValido = local.LocalEhValido();
-
-            //Assert
-            Assert.True(ehValido);
+            local = new Faker<Local>("pt_BR")
+                 .CustomInstantiator((f) => new Local(f.Random.String(200, 'a', 'z')))
+                 .Generate(1)
+                 .First();
         }
 
         [Fact(DisplayName = "Local - NovoLocalEhValidO - Deve Ser Inválido")]

@@ -44,10 +44,6 @@ namespace Schedule.io.Models.AggregatesRoots
 
             this.Descricao = descricao;
         }
-        public bool TipoEventoEhValido()
-        {
-            return NovoTipoEventoEhValido().IsValid;
-        }
 
         private ValidationResult NovoTipoEventoEhValido()
         {

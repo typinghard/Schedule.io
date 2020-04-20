@@ -170,7 +170,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             evento.AdicionarConvite(convite);
 
             //Assert
-            Assert.Contains(evento.Convites, x => x.Equals(convite));
+            Assert.Contains(evento.Convites, x => x.EventoId == convite.EventoId && x.UsuarioId == convite.UsuarioId);
         }
 
         [Fact(DisplayName = "Evento - RemoverConvite - Convite deve ser removido")]
@@ -188,7 +188,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             evento.RemoverConvite(convite);
 
             //Assert
-            Assert.DoesNotContain(evento.Convites, x => x.Equals(convite));
+            Assert.DoesNotContain(evento.Convites, x => x.EventoId == convite.EventoId && x.UsuarioId == convite.UsuarioId);
         }
 
         [Fact(DisplayName = "Evento - RemoverConvite - Remoção do convite deve ser inválido")]
@@ -204,7 +204,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             evento.RemoverConvite(convite);
 
             //Assert
-            Assert.DoesNotContain(evento.Convites, x => x.Equals(convite));
+            Assert.DoesNotContain(evento.Convites, x => x.EventoId == convite.EventoId && x.UsuarioId == convite.UsuarioId);
         }
 
         [Fact(DisplayName = "Evento - DefinirLocal - Local deve ser alterado")]
@@ -453,11 +453,13 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         [Fact(DisplayName = "Evento - Nova Agenda EhValida - Deve Ser Valido")]
         public void Evento_NovoEventoEhValido_DeveSerValido()
         {
-            //Act
-            var ehValido = evento.EventoEhValido();
-
-            //Assert
-            Assert.True(ehValido);
+            evento = new Faker<Evento>("pt_BR")
+                         .CustomInstantiator((f) => new Evento(f.Random.Guid().ToString(),
+                                              f.Random.Guid().ToString(),
+                                              f.Random.String(25, 'a', 'z'),
+                                              f.Date.Soon(30)))
+                         .Generate(1)
+                         .First();
         }
 
         [Fact(DisplayName = "Evento - Nova Agenda EhValida - Deve Ser Inválido")]

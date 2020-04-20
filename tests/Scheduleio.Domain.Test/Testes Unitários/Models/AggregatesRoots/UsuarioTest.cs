@@ -19,13 +19,13 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         }
 
         [Fact(DisplayName = "Usuario - NovoUsuarioEhValido - Deve Ser Valido")]
-        public void Usuario_NovoaUsuarioEhValido_DeveSerValido()
+        public void Usuario_NovoUsuarioEhValido_DeveSerValido()
         {
             //Act
-            var ehValido = usuario.UsuarioEhValido();
-
-            //Assert
-            Assert.True(ehValido);
+            usuario = new Faker<Usuario>("pt_BR")
+                                    .CustomInstantiator((f) => new Usuario(f.Person.Email.ToLower()))
+                                    .Generate(1)
+                                    .First();
         }
 
         [Fact(DisplayName = "Usuario - DefinirUsuarioEmail - O E-mail deve ser alterado.")]
@@ -69,7 +69,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         {
             //Arrange
             var exception = Assert.Throws<ScheduleIoException>(() => new Faker<Usuario>("pt_BR")
-                                                                .CustomInstantiator((f) => new Usuario(f.Person.Email + "123"))
+                                                                .CustomInstantiator((f) => new Usuario(""))
                                                                 .Generate(1)
                                                                 .First());
 

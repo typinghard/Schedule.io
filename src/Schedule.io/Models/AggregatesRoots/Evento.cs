@@ -160,11 +160,6 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Frequencia = frequencia;
         }
 
-        public bool EventoEhValido()
-        {
-            return NovoEventoEhValido().IsValid;
-        }
-
         private ValidationResult NovoEventoEhValido()
         {
             return new EventoValidation().Validate(this);

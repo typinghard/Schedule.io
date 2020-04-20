@@ -85,17 +85,7 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void RemoverAgendasDoUsuario(AgendaUsuario agendaUsuario)
         {
-            foreach (var au in _agendasUsuarios)
-                if (au.AgendaId == agendaUsuario.AgendaId && au.UsuarioId == agendaUsuario.UsuarioId)
-                {
-                    _agendasUsuarios.Remove(agendaUsuario);
-                    break;
-                }
-        }
-
-        public bool AgendaEhValida()
-        {
-            return NovaAgendaEhValida().IsValid;
+            _agendasUsuarios.RemoveAll(x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
         }
 
         private ValidationResult NovaAgendaEhValida()

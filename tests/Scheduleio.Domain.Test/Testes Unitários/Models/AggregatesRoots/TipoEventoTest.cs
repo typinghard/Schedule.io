@@ -101,11 +101,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         [Fact(DisplayName = "TipoEvento - TipoEventoEhValido - Deve Ser Valido")]
         public void TipoEvento_TipoEventoEhValido_DeveSerValido()
         {
-            //Act
-            var ehValido = tipoEvento.TipoEventoEhValido();
-
-            //Assert
-            Assert.True(ehValido);
+            tipoEvento = new Faker<TipoEvento>("pt_BR")
+                 .CustomInstantiator((f) => new TipoEvento(f.Random.String(120, 'a', 'z'),
+                                                           f.Random.String(500, 'a', 'z')))
+                 .Generate(1)
+                 .First();
         }
 
         [Fact(DisplayName = "TipoEvento - TipoEventoEhValido - Deve Ser Inválido")]

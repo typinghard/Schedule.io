@@ -13,6 +13,7 @@ namespace Schedule.io.Core.DomainObjects
 
         public ScheduleIoException(string message) : base(message)
         {
+            ScheduleIoMessages = new List<string>() { message };
         }
     }
 }

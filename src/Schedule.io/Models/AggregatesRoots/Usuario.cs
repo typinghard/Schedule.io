@@ -36,11 +36,6 @@ namespace Schedule.io.Models.AggregatesRoots
             this.Email = email;
         }
 
-        public bool UsuarioEhValido()
-        {
-            return NovoUsuarioEhValido().IsValid;
-        }
-
         private ValidationResult NovoUsuarioEhValido()
         {
             return new UsuarioValidation().Validate(this);

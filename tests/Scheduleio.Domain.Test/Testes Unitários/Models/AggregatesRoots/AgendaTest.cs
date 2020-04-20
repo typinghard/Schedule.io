@@ -4,6 +4,7 @@ using System.Linq;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Core.DomainObjects;
 using Schedule.io.Models.ValueObjects;
+using System;
 
 namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
 {
@@ -132,7 +133,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             agenda.AdicionarAgendaDoUsuario(agendaUsuario);
 
             //Assert
-            Assert.Contains(agenda.AgendasUsuarios, x => x.Equals(agendaUsuario));
+            Assert.Contains(agenda.AgendasUsuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
         }
 
         [Fact(DisplayName = "Agenda - AdicionarAgendaDoUsuario - AgendaUsuario deve ser inválido")]
@@ -145,7 +146,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
                                                                 .First());
 
             //Act
-            var validacao = exception.Message.Split("## ").ToList();
+            var validacao = exception.ScheduleIoMessages;
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("AgendaId da Agenda do Usuario não informado."));
@@ -160,13 +161,14 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
                                         .CustomInstantiator((f) => new AgendaUsuario(f.Random.Guid().ToString(), agenda.UsuarioIdCriador))
                                         .Generate(1)
                                         .First();
+
             agenda.AdicionarAgendaDoUsuario(agendaUsuario);
 
             //Act
             agenda.RemoverAgendasDoUsuario(agendaUsuario);
 
             //Assert
-            Assert.DoesNotContain(agenda.AgendasUsuarios, x => x.Equals(agendaUsuario));
+            Assert.DoesNotContain(agenda.AgendasUsuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
         }
 
         [Fact(DisplayName = "Agenda - AdicionarAgendaDoUsuario - Remoção da AgendaUsuario deve ser inválido")]
@@ -180,18 +182,18 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             agenda.RemoverAgendasDoUsuario(agendaUsuario);
 
             //Assert
-            Assert.DoesNotContain(agenda.AgendasUsuarios, x => x.Equals(agendaUsuario));
+            Assert.DoesNotContain(agenda.AgendasUsuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
         }
 
 
         [Fact(DisplayName = "Agenda - NovaAgendaEhValida - Deve Ser Valido")]
         public void Agenda_NovaAgendaEhValida_DeveSerValido()
         {
-            //Act
-            var ehValido = agenda.AgendaEhValida();
-
-            //Assert
-            Assert.True(ehValido);
+            agenda = new Faker<Agenda>("pt_BR")
+                 .CustomInstantiator((f) => new Agenda(f.Random.String(150, 'a', 'z'),
+                                                       f.Random.String(150, 'a', 'z')))
+                 .Generate(1)
+                 .First();
         }
 
         [Fact(DisplayName = "Agenda - NovaAgendaEhValida - Deve Ser Inválido")]
@@ -204,7 +206,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
                                                              .First());
 
             //Act
-            var validacao = exception.Message.Split("## ").ToList();
+            var validacao = exception.ScheduleIoMessages;
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("Titulo não informado."));

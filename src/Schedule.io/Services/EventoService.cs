@@ -133,7 +133,7 @@ namespace Schedule.io.Services
 
         private void ValidaQuantidadeUsuarioReferenteAoLocal(Evento evento)
         {
-            if (evento.LocalId.EhVazio() && evento.QuantidadeMinimaDeUsuarios > 0)
+            if (!evento.LocalId.EhVazio() && evento.QuantidadeMinimaDeUsuarios > 0)
             {
                 var local = _localRepository.Obter(evento.LocalId);
 

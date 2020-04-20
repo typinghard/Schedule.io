@@ -48,7 +48,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public IList<Agenda> ListarAgendasPorUsuarioId(string usuarioId)
         {
-            var query = @$"
+            var query = $@"
                              SELECT a.*,
                              Id as {agendaUsuario_split}, au.AgendaId, au.UsuarioId 
                              FROM {_schemaName}.Agenda a 
@@ -62,7 +62,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public Agenda ObterAgendaPorUsuarioId(string agendaId, string usuarioId)
         {
-            var query = @$"
+            var query = $@"
                              SELECT a.*,
                              Id as {agendaUsuario_split}, AgendaId, UsuarioId 
                              FROM {_schemaName}.Agenda a 
@@ -76,7 +76,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public bool VerificaSeAgendaUsuarioExiste(AgendaUsuario agendaUsuario)
         {
-            return ObterLista(@$"
+            return ObterLista($@"
                              SELECT au.*
                              FROM {_schemaName}.Agenda a 
                              INNER JOIN {_schemaName}.AgendaUsuario au on a.Id = au.AgendaId

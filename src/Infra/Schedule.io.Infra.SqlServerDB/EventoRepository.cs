@@ -56,7 +56,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public IList<Evento> ListarEventosDaAgenda(string agendaId)
         {
-            var query = @$"SELECT e.*,
+            var query = $@"SELECT e.*,
 	                              Id as {convite_split}, c.*
                            FROM {_schemaName}.Evento e
                            LEFT JOIN {_schemaName}.Convite c on e.Id = c.EventoId
@@ -70,7 +70,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public IList<Evento> ListarEventosPorPeriodo(string agendaId, DateTime dataInicio, DateTime dataFinal)
         {
-            var query = @$"SELECT e.*,
+            var query = $@"SELECT e.*,
 	                              Id as {convite_split}, c.*
                            FROM {_schemaName}.Evento e
                            LEFT JOIN {_schemaName}.Convite c on e.Id = c.EventoId
@@ -86,7 +86,7 @@ namespace Schedule.io.Infra.SqlServerDB
 
         public IList<Evento> ListarTodosEventosDoUsuario(string agendaId, string usuarioId)
         {
-            var query = @$"SELECT e.*,
+            var query = $@"SELECT e.*,
 	                              Id as {convite_split}, c.*
                            FROM {_schemaName}.Evento e
                            LEFT JOIN {_schemaName}.Convite c on e.Id = c.EventoId

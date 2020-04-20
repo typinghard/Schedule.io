@@ -70,11 +70,6 @@ namespace Schedule.io.Models.AggregatesRoots
             this.LotacaoMaxima = lotacaoMaxima;
         }
 
-        public bool LocalEhValido()
-        {
-            return NovoLocalEhValido().IsValid;
-        }
-
         private ValidationResult NovoLocalEhValido()
         {
             return new LocalValidation().Validate(this);

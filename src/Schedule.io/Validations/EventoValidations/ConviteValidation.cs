@@ -7,10 +7,6 @@ namespace Schedule.io.Validations.AgendaValidations
     {
         public ConviteValidation()
         {
-            RuleFor(e => e.EventoId)
-                .NotEmpty()
-                .WithMessage("EventoId não informado!");
-
             RuleFor(e => e.UsuarioId)
                 .NotEmpty()
                 .WithMessage("UsuarioId não informado!");

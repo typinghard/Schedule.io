@@ -14,7 +14,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         public AgendaUsuarioTests()
         {
             agendaUsuario = new Faker<AgendaUsuario>("pt_BR")
-                .CustomInstantiator((f) => new AgendaUsuario(f.Random.Guid().ToString(), f.Random.Guid().ToString()))
+                .CustomInstantiator((f) => new AgendaUsuario(f.Random.Guid().ToString()))
                 .Generate(1)
                 .First();
         }
@@ -54,7 +54,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
             var novoAgendaId = Guid.NewGuid().ToString();
 
             //Act
-            agendaUsuario.DefinirAgendaId(novoAgendaId);
+            agendaUsuario.AssociarAgenda(novoAgendaId);
 
             //Assert
             Assert.Equal(novoAgendaId, agendaUsuario.AgendaId);
@@ -67,7 +67,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
             var novoAgendaId = string.Empty;
 
             //Act
-            var validacao = Assert.Throws<ScheduleIoException>(() => agendaUsuario.DefinirAgendaId(novoAgendaId)).ScheduleIoMessages;
+            var validacao = Assert.Throws<ScheduleIoException>(() => agendaUsuario.AssociarAgenda(novoAgendaId)).ScheduleIoMessages;
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que adicinou uma agenda."));
@@ -89,12 +89,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         {
             //Arrange
             var validacao = Assert.Throws<ScheduleIoException>(() => agendaUsuario = new Faker<AgendaUsuario>("pt_BR")
-                                                                                    .CustomInstantiator((f) => new AgendaUsuario("", ""))
+                                                                                    .CustomInstantiator((f) => new AgendaUsuario(""))
                                                                                     .Generate(1)
                                                                                     .First()).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("AgendaId da Agenda do Usuario não informado."));
             Assert.Contains(validacao, x => x.Contains("UsuarioId da Agenda do Usuario não informado."));
         }
 

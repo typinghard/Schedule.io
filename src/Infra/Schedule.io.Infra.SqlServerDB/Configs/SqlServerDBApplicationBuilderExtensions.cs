@@ -7,14 +7,15 @@ using Schedule.io.Core.Data.EventSourcing;
 using Schedule.io.Infra.SqlServerDB.EventSourcing;
 using Schedule.io.Infra.SqlServerDB.Extensions;
 using Schedule.io.Interfaces.Repositories;
+using System;
 
 namespace Schedule.io.Infra.SqlServerDB.Configs
 {
     public static class SqlServerDBApplicationBuilderExtensions
     {
-        public static void UseScheduleIoSqlServerDb(this IApplicationBuilder app)
+        public static void UseScheduleIoSqlServerDb(this IApplicationBuilder app, IServiceProvider serviceProvider)
         {
-            var context = app.ApplicationServices.GetService<AgendaContext>();
+            var context = serviceProvider.GetService<AgendaContext>();
             context.CriarTabelas();
         }
         public static void AddScheduleioSqlServerDb(this IServiceCollection services, SqlServerDBConfig sqlServerDBConfig)

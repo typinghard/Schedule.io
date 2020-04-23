@@ -20,19 +20,33 @@ namespace Schedule.io.Infra.SqlServerDB
         public override void Adicionar(Agenda obj)
         {
             base.Adicionar(obj);
-            Db.AgendaUsuario.AddRange(obj.AgendasUsuarios);
+            Db.AgendaUsuarios.AddRange(obj.Usuarios);
         }
 
         public override void Atualizar(Agenda obj)
         {
             base.Atualizar(obj);
-            Db.AgendaUsuario.UpdateRange(obj.AgendasUsuarios);
+            SincronizarUsuarios(obj);
+        }
+
+        private void SincronizarUsuarios(Agenda agenda)
+        {
+            var agendaUsuariosNoBanco = Db.AgendaUsuarios.Where(x => x.AgendaId == agenda.Id).ToList();
+            //AgendaUsuario a inserir
+            Db.AgendaUsuarios.AddRange(agenda.Usuarios.Where(x => !agendaUsuariosNoBanco.Any(y => y.AgendaId == x.AgendaId &&
+                                                                                                  y.UsuarioId == x.UsuarioId)));
+            //AgendaUsuario a atualizar
+            Db.AgendaUsuarios.UpdateRange(agenda.Usuarios.Where(x => agendaUsuariosNoBanco.Any(y => y.AgendaId == x.AgendaId &&
+                                                                                                          y.UsuarioId == x.UsuarioId)));
+            //AgendaUsuario a excluir
+            Db.AgendaUsuarios.RemoveRange(agendaUsuariosNoBanco.Where(x => !agenda.Usuarios.Any(y => y.AgendaId == x.AgendaId &&
+                                                                                                           y.UsuarioId == x.UsuarioId)));
         }
 
         public override void Excluir(Agenda obj)
         {
             base.Excluir(obj);
-            Db.AgendaUsuario.RemoveRange(obj.AgendasUsuarios);
+            Db.AgendaUsuarios.RemoveRange(obj.Usuarios);
         }
 
         public override Agenda Obter(string agendaId)
@@ -89,7 +103,7 @@ namespace Schedule.io.Infra.SqlServerDB
                             if (!agendas.Any(a => a.Id == agenda.Id))
                                 agendas.Add(agenda);
 
-                            agendas.Last().AdicionarAgendaDoUsuario(agendaUsuario);
+                            agendas.Last().AdicionarUsuario(agendaUsuario);
                             return agenda;
                         },
                         splitOn: split);

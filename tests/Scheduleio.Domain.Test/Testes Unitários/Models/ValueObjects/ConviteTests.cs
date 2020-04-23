@@ -15,7 +15,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         public ConviteTests()
         {
             convite = new Faker<Convite>("pt_BR")
-                .CustomInstantiator((f) => new Convite(f.Random.Guid().ToString(), f.Random.Guid().ToString()))
+                .CustomInstantiator((f) => new Convite(f.Random.Guid().ToString()))
                 .Generate(1)
                 .First();
         }
@@ -27,7 +27,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
             var novoEventoId = Guid.NewGuid().ToString();
 
             //Act
-            convite.DefinirEventoId(novoEventoId);
+            convite.AssociarEvento(novoEventoId);
 
             //Assert
             Assert.Equal(novoEventoId, convite.EventoId);
@@ -40,7 +40,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
             var novoEventoId = string.Empty;
 
             //Act
-            var validacao = Assert.Throws<ScheduleIoException>(() => convite.DefinirEventoId(novoEventoId)).ScheduleIoMessages;
+            var validacao = Assert.Throws<ScheduleIoException>(() => convite.AssociarEvento(novoEventoId)).ScheduleIoMessages;
 
             //Assert
             Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que adicinou um evento."));
@@ -184,12 +184,11 @@ namespace Schedule.io.Test.Testes_Unitários.Models.ValueObjects
         {
             //Arrange
             var validacao = Assert.Throws<ScheduleIoException>(() => new Faker<Convite>("pt_BR")
-                                                                    .CustomInstantiator((f) => new Convite("", ""))
+                                                                    .CustomInstantiator((f) => new Convite(""))
                                                                     .Generate(1)
                                                                     .First()).ScheduleIoMessages;
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("EventoId não informado!"));
             Assert.Contains(validacao, x => x.Contains("UsuarioId não informado!"));
         }
     }

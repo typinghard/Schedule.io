@@ -125,15 +125,15 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         {
             //Arrange
             var agendaUsuario = new Faker<AgendaUsuario>("pt_BR")
-                                                .CustomInstantiator((f) => new AgendaUsuario(f.Random.Guid().ToString(), agenda.UsuarioIdCriador))
+                                                .CustomInstantiator((f) => new AgendaUsuario(agenda.UsuarioIdCriador))
                                                 .Generate(1)
                                                 .First();
 
             //Act
-            agenda.AdicionarAgendaDoUsuario(agendaUsuario);
+            agenda.AdicionarUsuario(agendaUsuario);
 
             //Assert
-            Assert.Contains(agenda.AgendasUsuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
+            Assert.Contains(agenda.Usuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
         }
 
         [Fact(DisplayName = "Agenda - AdicionarAgendaDoUsuario - AgendaUsuario deve ser inválido")]
@@ -141,14 +141,13 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         {
             //Arrange
             var validacao = Assert.Throws<ScheduleIoException>(() => new Faker<AgendaUsuario>("pt_BR")
-                                                                .CustomInstantiator((f) => new AgendaUsuario("", ""))
+                                                                .CustomInstantiator((f) => new AgendaUsuario(""))
                                                                 .Generate(1)
                                                                 .First()).ScheduleIoMessages;
 
 
 
             //Assert
-            Assert.Contains(validacao, x => x.Contains("AgendaId da Agenda do Usuario não informado."));
             Assert.Contains(validacao, x => x.Contains("UsuarioId da Agenda do Usuario não informado."));
         }
 
@@ -157,31 +156,31 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         public void Agenda_AdicionarAgendaDoUsuario_AgendaUsuarioDeveSerRemovido()
         {
             var agendaUsuario = new Faker<AgendaUsuario>("pt_BR")
-                                        .CustomInstantiator((f) => new AgendaUsuario(f.Random.Guid().ToString(), agenda.UsuarioIdCriador))
+                                        .CustomInstantiator((f) => new AgendaUsuario(agenda.UsuarioIdCriador))
                                         .Generate(1)
                                         .First();
 
-            agenda.AdicionarAgendaDoUsuario(agendaUsuario);
+            agenda.AdicionarUsuario(agendaUsuario);
 
             //Act
-            agenda.RemoverAgendasDoUsuario(agendaUsuario);
+            agenda.RemoverUsuario(agendaUsuario);
 
             //Assert
-            Assert.DoesNotContain(agenda.AgendasUsuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
+            Assert.DoesNotContain(agenda.Usuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
         }
 
         [Fact(DisplayName = "Agenda - AdicionarAgendaDoUsuario - Remoção da AgendaUsuario deve ser inválido")]
         public void Agenda_AdicionarAgendaDoUsuario_RemocaoAgendaUsuarioDeveSerInvalido()
         {
             var agendaUsuario = new Faker<AgendaUsuario>("pt_BR")
-                                        .CustomInstantiator((f) => new AgendaUsuario(f.Random.Guid().ToString(), agenda.UsuarioIdCriador))
+                                        .CustomInstantiator((f) => new AgendaUsuario(agenda.UsuarioIdCriador))
                                         .Generate(1)
                                         .First();
             //Act
-            agenda.RemoverAgendasDoUsuario(agendaUsuario);
+            agenda.RemoverUsuario(agendaUsuario);
 
             //Assert
-            Assert.DoesNotContain(agenda.AgendasUsuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
+            Assert.DoesNotContain(agenda.Usuarios, x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
         }
 
 

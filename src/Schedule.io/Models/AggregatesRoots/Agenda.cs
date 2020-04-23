@@ -14,8 +14,8 @@ namespace Schedule.io.Models.AggregatesRoots
         public string Descricao { get; private set; }
         public bool Publico { get; private set; }
         public string UsuarioIdCriador { get; private set; }
-        public IReadOnlyCollection<AgendaUsuario> AgendasUsuarios { get { return _agendasUsuarios; } }
-        private List<AgendaUsuario> _agendasUsuarios;
+        public IReadOnlyCollection<AgendaUsuario> Usuarios { get { return _usuarios; } }
+        private List<AgendaUsuario> _usuarios;
         public IReadOnlyCollection<string> Eventos { get { return _eventos; } }
         private List<string> _eventos;
 
@@ -23,19 +23,19 @@ namespace Schedule.io.Models.AggregatesRoots
         {
             UsuarioIdCriador = idUsuarioDono;
             Titulo = titulo;
-            _agendasUsuarios = new List<AgendaUsuario>();
+            _usuarios = new List<AgendaUsuario>();
             _eventos = new List<string>();
 
-            var resultadoValidacao = this.NovaAgendaEhValida();
+            var resultadoValidacao = NovaAgendaEhValida();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
 
-            MontaAgendaUsuario(this);
+            AdicionarUsuarioCriador();
         }
 
         private Agenda()
         {
-            _agendasUsuarios = new List<AgendaUsuario>();
+            _usuarios = new List<AgendaUsuario>();
             _eventos = new List<string>();
         }
 
@@ -44,7 +44,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!titulo.ValidarTamanho(2, 150))
                 throw new ScheduleIoException(new List<string>() { "O título não pode ser vazio e deve ter entre 2 e 150 caracteres." });
 
-            this.Titulo = titulo;
+            Titulo = titulo;
         }
 
         public void DefinirDescricao(string descricao)
@@ -52,7 +52,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException(new List<string>() { "A descrição deve ter entre 2 e 500 caracteres." });
 
-            this.Descricao = descricao;
+            Descricao = descricao;
         }
 
         public void DefinirUsuarioIdCriador(string usuarioId)
@@ -60,28 +60,29 @@ namespace Schedule.io.Models.AggregatesRoots
             if (usuarioId.EhVazio())
                 throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um usuarioId." });
 
-            this.UsuarioIdCriador = usuarioId;
+            UsuarioIdCriador = usuarioId;
         }
 
         public void TornarAgendaPublica()
         {
-            this.Publico = true;
+            Publico = true;
         }
 
         public void TornarAgendaPrivado()
         {
-            this.Publico = false;
+            Publico = false;
         }
 
-        public void AdicionarAgendaDoUsuario(AgendaUsuario agendaUsuario)
+        public void AdicionarUsuario(AgendaUsuario usuario)
         {
-            agendaUsuario.AgendaUsuarioEhValido();
-            _agendasUsuarios.Add(agendaUsuario);
+            usuario.AssociarAgenda(Id);
+            usuario.AgendaUsuarioEhValido();
+            _usuarios.Add(usuario);
         }
 
-        public void RemoverAgendasDoUsuario(AgendaUsuario agendaUsuario)
+        public void RemoverUsuario(AgendaUsuario usuario)
         {
-            _agendasUsuarios.RemoveAll(x => x.AgendaId == agendaUsuario.AgendaId && x.UsuarioId == agendaUsuario.UsuarioId);
+            _usuarios.RemoveAll(x => x.UsuarioId == usuario.UsuarioId);
         }
 
         private ValidationResult NovaAgendaEhValida()
@@ -89,13 +90,13 @@ namespace Schedule.io.Models.AggregatesRoots
             return new AgendaValidation().Validate(this);
         }
 
-        private void MontaAgendaUsuario(Agenda agenda)
+        private void AdicionarUsuarioCriador()
         {
-            if (agenda.AgendasUsuarios.Any(x=>x.AgendaId == agenda.Id && x.UsuarioId == agenda.UsuarioIdCriador))
+            if (Usuarios.Any(x => x.UsuarioId == UsuarioIdCriador))
                 return;
 
-            var agendaUsuario = new AgendaUsuario(Id, agenda.UsuarioIdCriador);
-            AdicionarAgendaDoUsuario(agendaUsuario);
+            var agendaUsuario = new AgendaUsuario(UsuarioIdCriador);
+            AdicionarUsuario(agendaUsuario);
         }
     }
 }

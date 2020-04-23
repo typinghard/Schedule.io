@@ -164,7 +164,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         {
             //Arrange
             var convite = new Faker<Convite>("pt_BR")
-                                .CustomInstantiator((f) => new Convite(evento.Id, f.Random.Guid().ToString()))
+                                .CustomInstantiator((f) => new Convite(f.Random.Guid().ToString()))
                                 .Generate(1)
                                 .First();
 
@@ -180,7 +180,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         {
             //Arrange
             var convite = new Faker<Convite>("pt_BR")
-                                .CustomInstantiator((f) => new Convite(evento.Id, f.Random.Guid().ToString()))
+                                .CustomInstantiator((f) => new Convite(f.Random.Guid().ToString()))
                                 .Generate(1)
                                 .First();
 
@@ -198,7 +198,7 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
         {
             //Arrange
             var convite = new Faker<Convite>("pt_BR")
-                                .CustomInstantiator((f) => new Convite(evento.Id, f.Random.Guid().ToString()))
+                                .CustomInstantiator((f) => new Convite(f.Random.Guid().ToString()))
                                 .Generate(1)
                                 .First();
 

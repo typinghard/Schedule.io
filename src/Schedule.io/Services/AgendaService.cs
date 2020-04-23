@@ -85,8 +85,6 @@ namespace Schedule.io.Services
 
             if (Commit())
                 _bus.PublicarEvento(new AgendaRegistradaEvent(agenda.Id, agenda.UsuarioIdCriador, agenda.Titulo, agenda.Descricao, agenda.Publico));
-
-            ValidarComando();
         }
 
         private void Atualizar(Agenda agenda)
@@ -95,8 +93,6 @@ namespace Schedule.io.Services
 
             if (Commit())
                 _bus.PublicarEvento(new AgendaAtualizadaEvent(agenda.Id, agenda.UsuarioIdCriador, agenda.Titulo, agenda.Descricao, agenda.Publico));
-
-            ValidarComando();
         }
         #endregion
     }

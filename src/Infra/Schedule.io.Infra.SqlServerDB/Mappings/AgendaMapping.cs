@@ -31,7 +31,7 @@ namespace Schedule.io.Infra.SqlServerDB.Mappings
             builder.Property(c => c.Publico)
                 .HasColumnType("bit");
 
-            builder.Ignore(c => c.AgendasUsuarios);
+            builder.Ignore(c => c.Usuarios);
             builder.Ignore(c => c.Eventos);
 
             builder.ToTable("Agenda", ((SqlServerDBConfig)DataBaseConfigurationHelper.DataBaseConfig).SchemaName);

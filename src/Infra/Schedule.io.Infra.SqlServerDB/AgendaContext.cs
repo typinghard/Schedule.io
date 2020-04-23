@@ -35,13 +35,13 @@ namespace Schedule.io.Infra.SqlServerDB
 
         }
 
-        public DbSet<Agenda> Agenda { get; set; }
-        public DbSet<Usuario> Usuario { get; set; }
-        public DbSet<AgendaUsuario> AgendaUsuario { get; set; }
-        public DbSet<TipoEvento> TipoEvento { get; set; }
-        public DbSet<Evento> Evento { get; set; }
-        public DbSet<Convite> Convite { get; set; }
-        public DbSet<Local> Local { get; set; }
+        public DbSet<Agenda> Agendas { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<AgendaUsuario> AgendaUsuarios { get; set; }
+        public DbSet<TipoEvento> TiposEvento { get; set; }
+        public DbSet<Evento> Eventos { get; set; }
+        public DbSet<Convite> Convites { get; set; }
+        public DbSet<Local> Locais { get; set; }
         public DbSet<StoredEvent> StoredEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

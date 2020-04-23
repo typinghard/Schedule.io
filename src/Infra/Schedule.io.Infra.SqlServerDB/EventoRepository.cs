@@ -30,21 +30,32 @@ namespace Schedule.io.Infra.SqlServerDB
             return DapperEvento(query, convite_split).FirstOrDefault();
         }
 
+        private void SincronizarConvites(Evento evento)
+        {
+            var convitesNoBanco = Db.Convites.Where(x => x.EventoId == evento.Id).ToList();
+            Db.Convites.AddRange(evento.Convites.Where(x => !convitesNoBanco.Any(y => y.EventoId == x.EventoId &&
+                                                                                      y.UsuarioId == x.UsuarioId)));
+            Db.Convites.UpdateRange(evento.Convites.Where(x => convitesNoBanco.Any(y => y.EventoId == x.EventoId &&
+                                                                                        y.UsuarioId == x.UsuarioId)));
+            Db.Convites.RemoveRange(convitesNoBanco.Where(x => !evento.Convites.Any(y => y.EventoId == x.EventoId &&
+                                                                                         y.UsuarioId == x.UsuarioId)));
+        }
+
         public override void Adicionar(Evento obj)
         {
             base.Adicionar(obj);
-            Db.Convite.AddRange(obj.Convites);
+            Db.Convites.AddRange(obj.Convites);
         }
 
         public override void Atualizar(Evento obj)
         {
             base.Atualizar(obj);
-            Db.Convite.UpdateRange(obj.Convites);
+            SincronizarConvites(obj);
         }
 
         public override void Excluir(Evento obj)
         {
-            Db.Convite.RemoveRange(obj.Convites);
+            Db.Convites.RemoveRange(obj.Convites);
             base.Excluir(obj);
         }
 

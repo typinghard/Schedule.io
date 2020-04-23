@@ -12,13 +12,12 @@ namespace Schedule.io.Models.ValueObjects
         public string UsuarioId { get; protected set; }
         //public PermissoesAgenda Permissoes { get; protected set; }
 
-        public AgendaUsuario(string agendaId, string usuarioId)
+        public AgendaUsuario(string usuarioId)
         {
-            AgendaId = agendaId;
             UsuarioId = usuarioId;
             //Permissoes = new PermissoesAgenda();
 
-            var resultadoValidacao = this.NovaAgendaUsuarioEhValido();
+            var resultadoValidacao = NovaAgendaUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -37,7 +36,7 @@ namespace Schedule.io.Models.ValueObjects
         }
 
 
-        public void DefinirAgendaId(string agendaId)
+        public void AssociarAgenda(string agendaId)
         {
             if (agendaId.EhVazio())
                 throw new ScheduleIoException("Por favor, certifique-se que adicinou uma agenda.");

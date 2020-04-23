@@ -14,14 +14,13 @@ namespace Schedule.io.Models.ValueObjects
         public EnumStatusConviteEvento Status { get; private set; }
         public PermissoesConvite Permissoes { get; private set; }
 
-        public Convite(string eventoId, string usuarioId)
+        public Convite(string usuarioId)
         {
-            EventoId = eventoId;
             UsuarioId = usuarioId;
             Status = EnumStatusConviteEvento.Aguardando_Confirmacao;
             Permissoes = new PermissoesConvite();
 
-            var resultadoValidacao = this.NovoConviteEhValido();
+            var resultadoValidacao = NovoConviteEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
         }
@@ -39,7 +38,7 @@ namespace Schedule.io.Models.ValueObjects
             UsuarioId = usuarioId;
         }
 
-        public void DefinirEventoId(string eventoId)
+        public void AssociarEvento(string eventoId)
         {
             if (eventoId.EhVazio())
                 throw new ScheduleIoException("Por favor, certifique-se que adicinou um evento.");

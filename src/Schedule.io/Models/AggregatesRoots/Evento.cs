@@ -31,24 +31,24 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public Evento(string agendaId, string usuarioIdCriador, string titulo, DateTime dataInicio)
         {
-            this.AgendaId = agendaId;
-            this.UsuarioIdCriador = usuarioIdCriador;
-            this.Titulo = titulo;
-            this.DataInicio = dataInicio;
-            this.Frequencia = EnumFrequencia.Nao_Repete;
+            AgendaId = agendaId;
+            UsuarioIdCriador = usuarioIdCriador;
+            Titulo = titulo;
+            DataInicio = dataInicio;
+            Frequencia = EnumFrequencia.Nao_Repete;
 
-            this._convites = new List<Convite>();
+            _convites = new List<Convite>();
 
-            var resultadoValidacao = this.NovoEventoEhValido();
+            var resultadoValidacao = NovoEventoEhValido();
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
 
-            MontaConviteDono(this);
+            AdicionarConviteDoDono();
         }
 
         private Evento()
         {
-            this._convites = new List<Convite>();
+            _convites = new List<Convite>();
         }
 
         public void DefinirAgenda(string agendaId)
@@ -56,12 +56,12 @@ namespace Schedule.io.Models.AggregatesRoots
             if (agendaId.EhVazio())
                 throw new ScheduleIoException("Por favor, certifique-se que escolheu uma agenda.");
 
-            this.AgendaId = agendaId;
+            AgendaId = agendaId;
         }
 
         public void DefinirIdentificadorExterno(string idExterno)
         {
-            this.IdentificadorExterno = idExterno;
+            IdentificadorExterno = idExterno;
         }
 
         public void DefinirTitulo(string titulo)
@@ -69,7 +69,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!titulo.ValidarTamanho(2, 150))
                 throw new ScheduleIoException("O título não pode ser vazio e deve ter entre 2 e 150 caracteres.");
 
-            this.Titulo = titulo;
+            Titulo = titulo;
         }
 
         public void DefinirDescricao(string descricao)
@@ -77,7 +77,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException("A descrição deve ter entre 2 e 500 caracteres.");
 
-            this.Descricao = descricao;
+            Descricao = descricao;
         }
 
         public void AdicionarConvite(Convite convite)
@@ -98,12 +98,12 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public void DefinirLocal(string localId)
         {
-            this.LocalId = localId;
+            LocalId = localId;
         }
 
         public void DefinirTipoEvento(string tipoEventoId)
         {
-            this.IdTipoEvento = tipoEventoId;
+            IdTipoEvento = tipoEventoId;
         }
 
         public void DefinirDatas(DateTime dataInicio, DateTime? dataFinal = null)
@@ -114,16 +114,16 @@ namespace Schedule.io.Models.AggregatesRoots
             if (dataFinal.HasValue && dataFinal < dataInicio)
                 throw new ScheduleIoException("Por certifique-se de que a data inicial é maior que a data final do evento.");
 
-            this.DataInicio = dataInicio;
-            this.DataFinal = dataFinal;
+            DataInicio = dataInicio;
+            DataFinal = dataFinal;
         }
 
         public void DefinirDataLimiteConfirmacao(DateTime? dataLimiteConfirmacao)
         {
-            if ((dataLimiteConfirmacao.HasValue && dataLimiteConfirmacao.Value != DateTime.MinValue) && dataLimiteConfirmacao < this.DataInicio)
+            if ((dataLimiteConfirmacao.HasValue && dataLimiteConfirmacao.Value != DateTime.MinValue) && dataLimiteConfirmacao < DataInicio)
                 throw new ScheduleIoException("Por certifique-se de que a data limite é maior que a data inicio do evento.");
 
-            this.DataLimiteConfirmacao = dataLimiteConfirmacao;
+            DataLimiteConfirmacao = dataLimiteConfirmacao;
         }
 
         public void DefinirQuantidadeMinimaDeUsuarios(int quantidadeMinimaDeUsuarios)
@@ -131,32 +131,32 @@ namespace Schedule.io.Models.AggregatesRoots
             if (quantidadeMinimaDeUsuarios < 0)
                 throw new ScheduleIoException("Por favor, certifique-se qua a quantidade mínima de usuários para o evento não é menor que 0.");
 
-            this.QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
+            QuantidadeMinimaDeUsuarios = quantidadeMinimaDeUsuarios;
         }
 
         public void OcuparUsuario()
         {
-            this.OcupaUsuario = true;
+            OcupaUsuario = true;
         }
 
         public void DesocuparUsuario()
         {
-            this.OcupaUsuario = false;
+            OcupaUsuario = false;
         }
 
         public void TornarEventoPublico()
         {
-            this.Publico = true;
+            Publico = true;
         }
 
         public void TornarEventoPrivado()
         {
-            this.Publico = false;
+            Publico = false;
         }
 
         public void DefinirFrequencia(EnumFrequencia frequencia)
         {
-            this.Frequencia = frequencia;
+            Frequencia = frequencia;
         }
 
         private ValidationResult NovoEventoEhValido()
@@ -164,22 +164,19 @@ namespace Schedule.io.Models.AggregatesRoots
             return new EventoValidation().Validate(this);
         }
 
-        private void MontaConviteDono(Evento evento)
+        private void AdicionarConviteDoDono()
         {
-            Convite convite = null;
-            if (Convites.Any(x => x.EventoId == evento.Id && x.UsuarioId == evento.UsuarioIdCriador))
-                convite = evento.Convites.FirstOrDefault(x => x.EventoId == evento.Id && x.UsuarioId == evento.UsuarioIdCriador);
-
+            Convite convite = Convites.FirstOrDefault(x => x.UsuarioId == UsuarioIdCriador);
             if (convite == null)
-                convite = new Convite(evento.Id, evento.UsuarioIdCriador);
+                convite = new Convite(UsuarioIdCriador);
 
             convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
             convite.Permissoes.PodeConvidar();
             convite.Permissoes.PodeModificarEvento();
             convite.Permissoes.PodeVerListaDeConvidados();
 
-            if (!evento.Convites.Any(x => x.UsuarioId == evento.UsuarioIdCriador))
-                evento.AdicionarConvite(convite);
+            if (!Convites.Any(x => x.UsuarioId == UsuarioIdCriador))
+                AdicionarConvite(convite);
         }
     }
 

@@ -8,7 +8,7 @@ namespace Schedule.io.Infra.MongoDB.Configs
 {
     public static class MongoDBApplicationBuilderExtensions
     {
-        public static void UseScheduleIoMongoDb(this IServiceCollection services, MongoDBConfig mongoDBConfig)
+        public static void AddScheduleIoMongoDb(this IServiceCollection services, MongoDBConfig mongoDBConfig)
         {
             DataBaseConfigurationHelper.SetDataBaseConfig(mongoDBConfig);
 

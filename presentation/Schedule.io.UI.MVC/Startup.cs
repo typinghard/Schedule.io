@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-//using Schedule.io.Infra.RavenDB.Configs;
 using MediatR;
 using Schedule.io.Configs;
 using Schedule.io.Infra.SqlServerDB.Configs;

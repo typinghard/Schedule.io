@@ -1,6 +1,6 @@
 ﻿using Schedule.io.Core.Messages;
 using System;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Schedule.io.Core.Data.EventSourcing
 {
@@ -20,7 +20,7 @@ namespace Schedule.io.Core.Data.EventSourcing
                 evento.AggregateId,
                 evento.MessageType,
                 evento.Timestamp,
-                JsonSerializer.Serialize(evento));
+                JsonConvert.SerializeObject(evento));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Schedule.io.Core.Data.Configurations;
@@ -11,12 +12,12 @@ namespace Schedule.io.Infra.SqlServerDB.Configs
 {
     public static class SqlServerDBApplicationBuilderExtensions
     {
-        public static void AddScheduleioSqlServerDb(this IApplicationBuilder app)
+        public static void UseScheduleIoSqlServerDb(this IApplicationBuilder app)
         {
             var context = app.ApplicationServices.GetService<AgendaContext>();
             context.CriarTabelas();
         }
-        public static void UseScheduleIoSqlServerDb(this IServiceCollection services, SqlServerDBConfig sqlServerDBConfig)
+        public static void AddScheduleioSqlServerDb(this IServiceCollection services, SqlServerDBConfig sqlServerDBConfig)
         {
             DataBaseConfigurationHelper.SetDataBaseConfig(sqlServerDBConfig);
 

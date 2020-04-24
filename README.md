@@ -4,7 +4,7 @@ Schedule.io é um nuget feito para auxiliar e encurtar o tempo de desenvolviment
  
 O objetivo desse projeto é fazer com que os desenvolvedores não precisem perder tempo ou esforço desenvolvendo funções e regras que qualquer agenda teria que ter, como controle de choque de horários, criação de agendas, eventos e usuários, envio de notificações (em breve), entre outras.
  
-Schedule.io tem suporte a .**Net Core 3.x** e aos banco de dados **MongoDb**, **RavenDb** e **SqlServer**.
+Schedule.io tem suporte a .**Net Core 2.0+** e aos banco de dados **MongoDb**, **RavenDb** e **SqlServer**.
 
 ## Instalação
 > Estamos trabalhando para disponibilizar o Schedule.io no nuget.org.

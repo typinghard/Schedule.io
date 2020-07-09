@@ -70,8 +70,6 @@ namespace Schedule.io.Services
 
             if (Commit())
                 _bus.PublicarEvento(new LocalRegistradoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
-
-            ValidarComando();
         }
 
         private void Atualizar(Local local)
@@ -80,8 +78,6 @@ namespace Schedule.io.Services
 
             if (Commit())
                 _bus.PublicarEvento(new LocalAtualizadoEvent(local.Id, local.IdentificadorExterno, local.Nome, local.Descricao, local.Reserva, local.LotacaoMaxima));
-
-            ValidarComando();
         }
         #endregion
     }

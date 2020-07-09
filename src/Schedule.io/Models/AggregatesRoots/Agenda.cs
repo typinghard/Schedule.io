@@ -14,29 +14,27 @@ namespace Schedule.io.Models.AggregatesRoots
         public string Descricao { get; private set; }
         public bool Publico { get; private set; }
         public string UsuarioIdCriador { get; private set; }
-        public IReadOnlyCollection<AgendaUsuario> Usuarios { get { return _usuarios; } }
-        private List<AgendaUsuario> _usuarios;
-        public IReadOnlyCollection<string> Eventos { get { return _eventos; } }
-        private List<string> _eventos;
+        public List<AgendaUsuario> Usuarios { get; private set; }
+        public List<string> Eventos { get; private set; }
 
         public Agenda(string idUsuarioDono, string titulo)
         {
             UsuarioIdCriador = idUsuarioDono;
             Titulo = titulo;
-            _usuarios = new List<AgendaUsuario>();
-            _eventos = new List<string>();
+            Usuarios = new List<AgendaUsuario>();
+            Eventos = new List<string>();
 
             var resultadoValidacao = NovaAgendaEhValida();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(resultadoValidacao.Errors.Select(x => x.ErrorMessage).ToList());
 
             AdicionarUsuarioCriador();
         }
 
         private Agenda()
         {
-            _usuarios = new List<AgendaUsuario>();
-            _eventos = new List<string>();
+            Usuarios = new List<AgendaUsuario>();
+            Eventos = new List<string>();
         }
 
         public void DefinirTitulo(string titulo)
@@ -77,12 +75,12 @@ namespace Schedule.io.Models.AggregatesRoots
         {
             usuario.AssociarAgenda(Id);
             usuario.AgendaUsuarioEhValido();
-            _usuarios.Add(usuario);
+            Usuarios.Add(usuario);
         }
 
         public void RemoverUsuario(AgendaUsuario usuario)
         {
-            _usuarios.RemoveAll(x => x.UsuarioId == usuario.UsuarioId);
+            Usuarios.RemoveAll(x => x.UsuarioId == usuario.UsuarioId);
         }
 
         private ValidationResult NovaAgendaEhValida()

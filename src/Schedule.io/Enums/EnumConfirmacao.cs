@@ -2,9 +2,9 @@
 {
     public enum EnumStatusConviteEvento
     {
-        Aguardando_Confirmacao,
-        Sim,
-        Nao,
-        Talvez
+        AGUARDANDO_CONFIRMACAO,
+        SIM,
+        NAO,
+        TALVEZ
     }
 }

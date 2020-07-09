@@ -18,8 +18,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public string IdentificadorExterno { get; private set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
-        public IReadOnlyCollection<Convite> Convites { get { return _convites; } }
-        private List<Convite> _convites { get; set; }
+        public List<Convite> Convites { get; private set; }
         public string LocalId { get; private set; }
         public DateTime DataInicio { get; private set; }
         public DateTime? DataFinal { get; private set; }
@@ -35,20 +34,20 @@ namespace Schedule.io.Models.AggregatesRoots
             UsuarioIdCriador = usuarioIdCriador;
             Titulo = titulo;
             DataInicio = dataInicio;
-            Frequencia = EnumFrequencia.Nao_Repete;
+            Frequencia = EnumFrequencia.NAO_REPETE;
 
-            _convites = new List<Convite>();
+            Convites = new List<Convite>();
 
             var resultadoValidacao = NovoEventoEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(resultadoValidacao.Errors.Select(x => x.ErrorMessage).ToList());
 
             AdicionarConviteDoDono();
         }
 
         private Evento()
         {
-            _convites = new List<Convite>();
+            Convites = new List<Convite>();
         }
 
         public void DefinirAgenda(string agendaId)
@@ -83,17 +82,19 @@ namespace Schedule.io.Models.AggregatesRoots
         public void AdicionarConvite(Convite convite)
         {
             convite.ConviteEhValido();
-            _convites.Add(convite);
+            Convites.Add(convite);
         }
 
         public void RemoverConvite(Convite convite)
         {
-            foreach (var c in _convites)
+            foreach (var c in Convites)
+            {
                 if (c.EventoId == convite.EventoId && c.UsuarioId == convite.UsuarioId)
                 {
-                    _convites.Remove(convite);
+                    Convites.Remove(convite);
                     break;
                 }
+            }
         }
 
         public void DefinirLocal(string localId)
@@ -170,7 +171,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (convite == null)
                 convite = new Convite(UsuarioIdCriador);
 
-            convite.AtualizarStatusConvite(EnumStatusConviteEvento.Sim);
+            convite.AtualizarStatusConvite(EnumStatusConviteEvento.SIM);
             convite.Permissoes.PodeConvidar();
             convite.Permissoes.PodeModificarEvento();
             convite.Permissoes.PodeVerListaDeConvidados();

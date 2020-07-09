@@ -4,12 +4,12 @@ namespace Schedule.io.Events.EventoAgendaEvents
 {
     public class EventoRemovidoEvent : Event
     {
-        public string Id { get; set; }
+        public string Id { get; private set; }
 
         public EventoRemovidoEvent(string id)
         {
-            this.Id = id;
-            this.AggregateId = id;
+            Id = id;
+            AggregateId = id;
         }
     }
 }

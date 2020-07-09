@@ -14,16 +14,13 @@ namespace Schedule.io.Services
     internal class AgendaService : ServiceBase, IAgendaService
     {
         private readonly IAgendaRepository _agendaRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
 
         public AgendaService(
             IAgendaRepository agendaRepository,
-            IUsuarioRepository usuarioRepository,
             IMediatorHandler bus,
             IUnitOfWork uow,
             INotificationHandler<DomainNotification> notifications) : base(bus, uow, notifications)
         {
-            _usuarioRepository = usuarioRepository;
             _agendaRepository = agendaRepository;
         }
 

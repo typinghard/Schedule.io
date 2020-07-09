@@ -10,18 +10,15 @@ namespace Schedule.io.Models.AggregatesRoots
     {
         public string Email { get; private set; }
 
+        private Usuario() { }
+
         public Usuario(string email)
         {
-            this.Email = email.ToLower();
+            Email = email.ToLower();
 
-            var resultadoValidacao = this.NovoUsuarioEhValido();
+            var resultadoValidacao = NovoUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
-        }
-
-        private Usuario()
-        {
-
+                throw new ScheduleIoException(resultadoValidacao.Errors.Select(x => x.ErrorMessage).ToList());
         }
 
         public void DefinirEmail(string email)
@@ -30,7 +27,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!email.EmailEhValido())
                 throw new ScheduleIoException("Por favor, informe um e-mail válido.");
 
-            this.Email = email;
+            Email = email;
         }
 
         private ValidationResult NovoUsuarioEhValido()

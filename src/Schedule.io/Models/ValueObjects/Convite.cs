@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Schedule.io.Models.ValueObjects
 {
-    public class Convite
+    public class Convite : ValueObject<Convite>
     {
         public string UsuarioId { get; private set; }
         public string EventoId { get; private set; }
@@ -17,12 +17,12 @@ namespace Schedule.io.Models.ValueObjects
         public Convite(string usuarioId)
         {
             UsuarioId = usuarioId;
-            Status = EnumStatusConviteEvento.Aguardando_Confirmacao;
+            Status = EnumStatusConviteEvento.AGUARDANDO_CONFIRMACAO;
             Permissoes = new PermissoesConvite();
 
             var resultadoValidacao = NovoConviteEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(resultadoValidacao.Errors.Select(x => x.ErrorMessage).ToList());
         }
 
         private Convite()
@@ -59,6 +59,14 @@ namespace Schedule.io.Models.ValueObjects
         private ValidationResult NovoConviteEhValido()
         {
             return new ConviteValidation().Validate(this);
+        }
+
+        protected override bool EqualsCore(Convite other)
+        {
+            return other.UsuarioId == UsuarioId &&
+                   other.Status == Status &&
+                   other.EventoId == EventoId &&
+                   other.Permissoes == Permissoes;
         }
     }
 }

@@ -72,8 +72,6 @@ namespace Schedule.io.Services
 
             if (Commit())
                 _bus.PublicarEvento(new TipoEventoRegistradoEvent(tipoEvento.Id, tipoEvento.Nome, tipoEvento.Descricao));
-
-            ValidarComando();
         }
 
         private void Atualizar(TipoEvento tipoEvento)
@@ -82,8 +80,6 @@ namespace Schedule.io.Services
 
             if (Commit())
                 _bus.PublicarEvento(new TipoEventoAtualizadoEvent(tipoEvento.Id, tipoEvento.Nome, tipoEvento.Descricao));
-
-            ValidarComando();
         }
         #endregion
     }

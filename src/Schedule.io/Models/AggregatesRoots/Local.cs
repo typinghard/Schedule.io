@@ -16,11 +16,11 @@ namespace Schedule.io.Models.AggregatesRoots
 
         public Local(string nomeLocal)
         {
-            this.Nome = nomeLocal;
+            Nome = nomeLocal;
 
-            var resultadoValidacao = this.NovoLocalEhValido();
+            var resultadoValidacao = NovoLocalEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join(", ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(resultadoValidacao.Errors.Select(x => x.ErrorMessage).ToList());
         }
 
         private Local()
@@ -33,7 +33,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!nomeLocal.ValidarTamanho(2, 200))
                 throw new ScheduleIoException("O nome do local deve ter entre 2 e 200 caracteres.");
 
-            this.Nome = nomeLocal;
+            Nome = nomeLocal;
         }
 
         public void DefinirIdentificadorExterno(string identificadorExterno)
@@ -41,7 +41,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!identificadorExterno.EhVazio() && !identificadorExterno.ValidarTamanho(2, 200))
                 throw new ScheduleIoException("O Identificador Extorno deve ter entre 2 e 200 caracteres.");
 
-            this.IdentificadorExterno = identificadorExterno;
+            IdentificadorExterno = identificadorExterno;
         }
 
         public void DefinirDescricao(string descricao)
@@ -49,17 +49,17 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!descricao.EhVazio() && !descricao.ValidarTamanho(2, 500))
                 throw new ScheduleIoException("A descrição do local deve ter entre 2 e 500 caracteres.");
 
-            this.Descricao = descricao;
+            Descricao = descricao;
         }
 
         public void ReservarLocal()
         {
-            this.Reserva = true;
+            Reserva = true;
         }
 
         public void RemoverReservaLocal()
         {
-            this.Reserva = false;
+            Reserva = false;
         }
 
         public void DefinirLotacaoMaxima(int lotacaoMaxima)
@@ -67,7 +67,7 @@ namespace Schedule.io.Models.AggregatesRoots
             if (lotacaoMaxima < 0)
                 throw new ScheduleIoException("Por favor, certifique-se qua a lotação máxima de usuários para o local não é menor que 0.");
 
-            this.LotacaoMaxima = lotacaoMaxima;
+            LotacaoMaxima = lotacaoMaxima;
         }
 
         private ValidationResult NovoLocalEhValido()

@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{28C2BC5E-7B5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{A3619F2A-A0FD-4922-AE17-D8221CD13B2E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{9DC00D4B-45EF-45FE-8BC4-23CDBB9A2068}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{9DC00D4B-45EF-45FE-8BC4-23CDBB9A2068}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspecs", "nuspecs", "{C17C2947-9E62-4D69-8C7C-FE82D99B2CC1}"
 	ProjectSection(SolutionItems) = preProject

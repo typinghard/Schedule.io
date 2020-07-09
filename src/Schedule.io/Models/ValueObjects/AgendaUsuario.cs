@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Schedule.io.Models.ValueObjects
 {
-    public class AgendaUsuario
+    public class AgendaUsuario : ValueObject<AgendaUsuario>
     {
         public string AgendaId { get; protected set; }
         public string UsuarioId { get; protected set; }
@@ -19,7 +19,7 @@ namespace Schedule.io.Models.ValueObjects
 
             var resultadoValidacao = NovaAgendaUsuarioEhValido();
             if (!resultadoValidacao.IsValid)
-                throw new ScheduleIoException(string.Join("## ", resultadoValidacao.Errors.Select(x => x.ErrorMessage)));
+                throw new ScheduleIoException(resultadoValidacao.Errors.Select(x => x.ErrorMessage).ToList());
         }
 
         private AgendaUsuario()

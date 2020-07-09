@@ -8,10 +8,7 @@ namespace Schedule.io.Core.Data.Configurations
         public static IDataBaseConfig DataBaseConfig { get; private set; }
         public static void SetDataBaseConfig(IDataBaseConfig dataBaseConfig)
         {
-            if (dataBaseConfig == null)
-                throw new ScheduleIoException(new List<string> { "Configurações do banco de dados não informadas" });
-
-            DataBaseConfig = dataBaseConfig;
+            DataBaseConfig = dataBaseConfig ?? throw new ScheduleIoException(new List<string> { "Configurações do banco de dados não informadas" });
         }
     }
 }

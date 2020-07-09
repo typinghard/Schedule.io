@@ -63,17 +63,6 @@ namespace Schedule.io.Services
             ValidarComando();
         }
 
-        public void Gravar(Usuario usuario)
-        {
-            var usuarioQuery = _usuarioRepository.Obter(usuario.Id);
-            if (usuarioQuery == null)
-                Registrar(usuario);
-            else
-                Atualizar(usuario);
-
-            ValidarComando();
-        }
-
         public Usuario Obter(string usuarioId)
         {
             return _usuarioRepository.Obter(usuarioId);

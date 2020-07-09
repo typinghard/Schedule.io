@@ -2,15 +2,14 @@
 {
     public enum EnumFrequencia
     {
-        Nao_Repete,
-        Diario,
-        Semanal,
-        Quinzenal,
-        Mensal,
-        Bimestral,
-        Trimestral,
-        Semestral,
-        Anual
+        NAO_REPETE,
+        DIARIO,
+        SEMANAL,
+        QUINZENAL,
+        MENSAL,
+        BIMESTRAL,
+        TRIMESTRAL,
+        SEMESTRAL,
+        ANUAL
     }
-
 }

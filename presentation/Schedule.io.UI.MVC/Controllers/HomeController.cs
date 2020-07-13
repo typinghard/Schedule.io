@@ -25,6 +25,8 @@ namespace Schedule.io.UI.Web.Controllers
 
         public IActionResult Index()
         {
+            _scheduleIo.Locais().Gravar(new Local("teste"));
+
             _bus.PublicarEvento(new AgendaAtualizadaEvent("", "", "", "", false));
 
             return View();

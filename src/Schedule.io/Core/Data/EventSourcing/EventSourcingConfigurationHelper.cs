@@ -6,12 +6,7 @@ namespace Schedule.io.Core.Data.EventSourcing
 {
     public static class EventSourcingConfigurationHelper
     {
-        public static bool Use { get; private set; }
-        public static void SetUse(bool use)
-        {
-            Use = use;
-        }
-
+        public static bool Use { get; set; }
 
         public static StoredEvent FormatarEvento<TEvent>(TEvent evento) where TEvent : Event
         {

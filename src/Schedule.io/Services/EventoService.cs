@@ -11,6 +11,7 @@ using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.ValueObjects;
 using Schedule.io.Events.EventoAgendaEvents;
 using Schedule.io.Core.Helpers;
+using Schedule.io.Configs;
 
 namespace Schedule.io.Services
 {
@@ -122,8 +123,11 @@ namespace Schedule.io.Services
 
         private void Validar(Evento evento)
         {
-            ValidarEventosOcupadoNoMesmoHorario(evento);
-            ValidaQuantidadeUsuarioReferenteAoLocal(evento);
+            if(ScheduleIoConfigurationHelper.BloquearEventosOcupadosNoMesmoHorario)
+                ValidarEventosOcupadoNoMesmoHorario(evento);
+
+            if (ScheduleIoConfigurationHelper.ValidarLimiteDeQuantidadePorLocal)
+                ValidaQuantidadeUsuarioReferenteAoLocal(evento);
         }
 
         private void ValidaQuantidadeUsuarioReferenteAoLocal(Evento evento)

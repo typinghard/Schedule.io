@@ -13,8 +13,7 @@ namespace Schedule.io.Events.Handlers
         public Task Handle(AgendaAtualizadaEvent notification, CancellationToken cancellationToken)
         {
             Console.WriteLine("Handler1");
-            throw new NotImplementedException();
-            //return Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
     public class TesteHandler2 : INotificationHandler<AgendaAtualizadaEvent>
@@ -22,8 +21,7 @@ namespace Schedule.io.Events.Handlers
         public Task Handle(AgendaAtualizadaEvent notification, CancellationToken cancellationToken)
         {
             Console.WriteLine("Handler2");
-            throw new NotImplementedException();
-            //return Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

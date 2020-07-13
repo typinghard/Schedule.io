@@ -19,7 +19,11 @@ namespace Schedule.io.Configs
 
         private static void SetConfigurations(ScheduleIoConfigurations scheduleIoConfigurations)
         {
-            EventSourcingConfigurationHelper.SetUse(scheduleIoConfigurations.UseEventSourcing);
+            EventSourcingConfigurationHelper.Use = scheduleIoConfigurations.UseEventSourcing;
+            ScheduleIoConfigurationHelper.BloquearEventosOcupadosNoMesmoHorario = scheduleIoConfigurations.BloquearEventosOcupadosNoMesmoHorario;
+            ScheduleIoConfigurationHelper.BloquearEventosOcupadosNoMesmoLocal = scheduleIoConfigurations.BloquearEventosOcupadosNoMesmoLocal;
+            ScheduleIoConfigurationHelper.BloquearEventosOcupadosNoMesmoHorarioParaConvidados = scheduleIoConfigurations.BloquearEventosOcupadosNoMesmoHorarioParaConvidados;
+            ScheduleIoConfigurationHelper.ValidarLimiteDeQuantidadePorLocal = scheduleIoConfigurations.ValidarLimiteDeQuantidadePorLocal;
         }
     }
 }

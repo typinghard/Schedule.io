@@ -11,6 +11,7 @@ namespace Schedule.io.Test.Testes_Unitários.Core.Helpers
         [Theory(DisplayName = "StringExtension - EhVazio - Deve Ser True")]
         [InlineData("")]
         [InlineData(" ")]
+        [InlineData(null)]
         public void StringExtension_EhVazio_DeveSerTrue(string str)
         {
             var result = str.EhVazio();

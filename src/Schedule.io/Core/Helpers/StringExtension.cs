@@ -25,7 +25,7 @@ namespace Schedule.io.Core.Helpers
 
         public static bool EhVazio(this string str)
         {
-            return string.IsNullOrEmpty(str.Trim());
+            return string.IsNullOrEmpty(str?.Trim());
         }
 
         /// <summary>

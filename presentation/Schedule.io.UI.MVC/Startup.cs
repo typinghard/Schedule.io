@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using MediatR;
 using Schedule.io.Configs;
 using Schedule.io.Infra.SqlServerDB.Configs;
-using Schedule.io.Infra.RavenDB.Configs;
+//using Schedule.io.Infra.RavenDB.Configs;
 using System;
 
 namespace Schedule.io.UI.Web
@@ -29,14 +29,15 @@ namespace Schedule.io.UI.Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddMediatR(typeof(Startup));
-            services.AddScheduleIo(new ScheduleIoConfigurations() {
+            services.AddScheduleIo(new ScheduleIoConfigurations()
+            {
                 UseEventSourcing = true
             });
-            services.AddScheduleIoRavenDb(new RavenDBConfig(new[] { Configuration["RavebDb:Url"] },
-                                                                    Configuration["RavebDb:DataBase"],
-                                                                    Configuration["RavebDb:Certificate:FileName"]));
+            //services.AddScheduleIoRavenDb(new RavenDBConfig(new[] { Configuration["RavebDb:Url"] },
+            //                                                        Configuration["RavebDb:DataBase"],
+            //                                                        Configuration["RavebDb:Certificate:FileName"]));
 
-            //services.AddScheduleioSqlServerDb(new SqlServerDBConfig(Configuration["SqlServer:ConnectionString"]));
+            services.AddScheduleioSqlServerDb(new SqlServerDBConfig(Configuration["SqlServer:ConnectionString"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -24,12 +24,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink.Loader" Version="14.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Infra\Schedule.io.Infra.RavenDB\Schedule.io.Infra.RavenDB.csproj" />
-    <ProjectReference Include="..\..\src\Infra\Schedule.io.Infra.SqlServerDB\Schedule.io.Infra.SqlServerDB.csproj" />
-    <ProjectReference Include="..\..\src\Schedule.io\Schedule.io.csproj" />
+    <PackageReference Include="Schedule.io.SqlServer" Version="1.0.0" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -12,10 +12,7 @@
   <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="4.2.101" />
     <PackageReference Include="RavenDB.DependencyInjection" Version="3.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Schedule.io\Schedule.io.csproj" />
+    <PackageReference Include="Schedule.io" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

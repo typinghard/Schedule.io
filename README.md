@@ -6,8 +6,21 @@ O objetivo desse projeto é fazer com que os desenvolvedores não precisem perde
  
 Schedule.io tem suporte a .**Net Core 2.0+** e aos banco de dados **MongoDb**, **RavenDb** e **SqlServer**.
 
-## Instalação
-> Estamos trabalhando para disponibilizar o Schedule.io no nuget.org.
+# Instalação
+```c#
+PM > Install-Package Schedule.io -Version 1.0.0
+``` 
+> O Schedule.io já vem com a compatibilidade de utiliação do SqlServer, para utilizar outros bancos, é só instalar os respectivos pacotes.
+
+## Banco de Dados
+### MongoDB
+```c#
+PM > Install-Package Schedule.io.MongoDB -Version 1.0.0
+``` 
+### RavenDB
+```c#
+PM > Install-Package Schedule.io.RavenDB -Version 1.0.0
+``` 
 
 Para instruções de instalação e exemplos, acesse nossa [Wiki](https://github.com/typinghard/Schedule.io/wiki/Home).
 

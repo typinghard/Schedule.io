@@ -26,6 +26,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public int QuantidadeMinimaDeUsuarios { get; private set; }
         public bool OcupaUsuario { get; private set; }
         public bool Publico { get; private set; }
+        public bool Finalizado { get { return VerificaSeFinalizado(); } }
         public EnumFrequencia Frequencia { get; private set; }
 
         public Evento(string agendaId, string usuarioIdCriador, string titulo, DateTime dataInicio)
@@ -158,6 +159,14 @@ namespace Schedule.io.Models.AggregatesRoots
         public void DefinirFrequencia(EnumFrequencia frequencia)
         {
             Frequencia = frequencia;
+        }
+
+        public bool VerificaSeFinalizado()
+        {
+            if (DataFinal.GetValueOrDefault() == DateTime.MinValue)
+                return false;
+
+            return DataFinal.Value < DateTime.UtcNow;
         }
 
         private ValidationResult NovoEventoEhValido()

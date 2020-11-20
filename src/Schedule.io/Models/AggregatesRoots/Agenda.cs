@@ -10,6 +10,7 @@ namespace Schedule.io.Models.AggregatesRoots
 {
     public class Agenda : Entity, IAggregateRoot
     {
+        public string IdentificadorExterno { get; private set; }
         public string Titulo { get; private set; }
         public string Descricao { get; private set; }
         public bool Publico { get; private set; }
@@ -59,6 +60,14 @@ namespace Schedule.io.Models.AggregatesRoots
                 throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um usuarioId." });
 
             UsuarioIdCriador = usuarioId;
+        }
+
+        public void DefinirIdentificadorExterno(string identificadorId)
+        {
+            if (identificadorId.EhVazio())
+                throw new ScheduleIoException(new List<string>() { "Por favor, certifique-se que digitou um Identificador Externo." });
+
+            IdentificadorExterno = identificadorId;
         }
 
         public void TornarAgendaPublica()

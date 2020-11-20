@@ -47,6 +47,33 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             Assert.Contains(validacao, x => x.Contains("O título não pode ser vazio e deve ter entre 2 e 150 caracteres."));
         }
 
+        [Theory(DisplayName = "Agenda - DefinirIdentificadorExterno - Identificador Externo deve ser definido")]
+        [InlineData("123")]
+        [InlineData("123-abc")]
+        [InlineData(".")]
+        [InlineData("5e75555f-3f74-40ee-9846-969a6eaaa792")]
+        public void Agenda_DefinirIdentificadorExterno_IdentificadorExternoDeveSerDefinido(string identificadorExterno)
+        {
+            //Act
+            agenda.DefinirIdentificadorExterno(identificadorExterno);
+
+            //Assert
+            Assert.Equal(identificadorExterno, agenda.IdentificadorExterno);
+        }
+
+        [Theory(DisplayName = "Agenda - DefinirIdentificadorExterno - Identificador Externo deve ser inválido")]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void Agenda_DefinirIdentificadorExterno_IdentificadorExternoDeveSerInvalido(string identificadorExterno)
+        {
+            //Act
+            var validacao = Assert.Throws<ScheduleIoException>(() => agenda.DefinirIdentificadorExterno(identificadorExterno)).ScheduleIoMessages;
+
+            //Assert
+            Assert.Contains(validacao, x => x.Contains("Por favor, certifique-se que digitou um Identificador Externo."));
+        }
+
         [Fact(DisplayName = "Agenda - DefinirTítulo - Título deve ser inválido pelo tamanho")]
         public void Agenda_DefinirTitulo_TituloDeveSerInValidoPeloTamanho()
         {

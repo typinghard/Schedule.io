@@ -17,7 +17,7 @@ namespace Schedule.io.Validations.AgendaValidations
 
             RuleFor(e => e.Permissoes.ModificaEvento)
                 .NotNull()
-                .WithMessage("Permissão Mdificar Evento não pode ser nulo!");
+                .WithMessage("Permissão Modificar Evento não pode ser nulo!");
 
             RuleFor(e => e.Permissoes.ConvidaUsuario)
                 .NotNull()

@@ -147,6 +147,26 @@ namespace Schedule.io.Test.Testes_Unitários.Models.AggregatesRoots
             Assert.False(agenda.Publico);
         }
 
+        [Fact(DisplayName = "Agenda - TornarEditavel - Agenda Deve Ser Editável")]
+        public void Agenda_TornarEditavel_AgendaDeveSerEditavel()
+        {
+            //Act
+            agenda.TornarEditavel();
+
+            //Assert
+            Assert.True(agenda.Editavel);
+        }
+
+        [Fact(DisplayName = "Agenda - NaoTornarEditavel - Agenda Não Deve Ser Editável")]
+        public void Agenda_NaoTornarEditavel_AgendaNaoDeveSerEditavel()
+        {
+            //Act
+            agenda.NaoTornarEditavel();
+
+            //Assert
+            Assert.False(agenda.Editavel);
+        }
+
         [Fact(DisplayName = "Agenda - AdicionarAgendaDoUsuario - AgendaUsuario deve ser adicionado")]
         public void Agenda_AdicionarAgendaDoUsuario_AgendaUsuarioDeveSerAdicionado()
         {

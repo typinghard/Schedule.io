@@ -15,6 +15,7 @@ namespace Schedule.io.Models.AggregatesRoots
         public string Descricao { get; private set; }
         public bool Publico { get; private set; }
         public string UsuarioIdCriador { get; private set; }
+        public bool Editavel { get; private set; }
         public List<AgendaUsuario> Usuarios { get; private set; }
         public List<string> Eventos { get; private set; }
 
@@ -29,13 +30,19 @@ namespace Schedule.io.Models.AggregatesRoots
             if (!resultadoValidacao.IsValid)
                 throw new ScheduleIoException(resultadoValidacao.Errors.Select(x => x.ErrorMessage).ToList());
 
-            AdicionarUsuarioCriador();
+            Inicializar();
         }
 
         private Agenda()
         {
             Usuarios = new List<AgendaUsuario>();
             Eventos = new List<string>();
+        }
+
+        private void Inicializar()
+        {
+            TornarEditavel();
+            AdicionarUsuarioCriador();
         }
 
         public void DefinirTitulo(string titulo)
@@ -78,6 +85,16 @@ namespace Schedule.io.Models.AggregatesRoots
         public void TornarAgendaPrivado()
         {
             Publico = false;
+        }
+
+        public void TornarEditavel()
+        {
+            Editavel = true;
+        }
+
+        public void NaoTornarEditavel()
+        {
+            Editavel = false;
         }
 
         public void AdicionarUsuario(AgendaUsuario usuario)

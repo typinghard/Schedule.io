@@ -16,9 +16,7 @@ namespace Schedule.io.Infra.SqlServerDB
         private readonly string convite_split = "convite_split";
 
         public EventoRepository(AgendaContext context) : base(context)
-        {
-
-        }
+        { }
 
         public override Evento Obter(string eventoId)
         {
@@ -149,6 +147,8 @@ namespace Schedule.io.Infra.SqlServerDB
             if (datasFinal.Any())
                 foreach (var dataFinal in datasFinal)
                     whereDinamico = whereDinamico.And(x => x.DataFinal == null || x.DataFinal.Value.Ticks <= dataFinal.Value.Ticks);
+
+            whereDinamico = whereDinamico.And(x => x.AgendaId == agendaId);
 
             return DbSet
                    .Where(whereDinamico)

@@ -49,6 +49,8 @@ namespace Schedule.io.Infra.MongoDB
                 foreach (var dataFinal in datasFinal)
                     whereDinamico = whereDinamico.And(x => x.DataFinal == null || x.DataFinal.Value.Ticks <= dataFinal.Value.Ticks);
 
+            whereDinamico = whereDinamico.And(x => x.AgendaId == agendaId);
+
             return Db.Evento
                     .Find(whereDinamico)
                     .ToList();

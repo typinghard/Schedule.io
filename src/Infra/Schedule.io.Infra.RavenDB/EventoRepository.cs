@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Documents.Session;
+using Schedule.io.Extensions;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.AggregatesRoots;
 using Schedule.io.Models.ValueObjects;
@@ -11,9 +12,7 @@ namespace Schedule.io.Infra.RavenDB
     public class EventoRepository : Repository<Evento>, IEventoRepository
     {
         public EventoRepository(IDocumentSession session) : base(session)
-        {
-
-        }
+        { }
 
         public IList<Convite> ListarConvites(string eventoId)
         {
@@ -39,6 +38,24 @@ namespace Schedule.io.Infra.RavenDB
                        && x.DataInicio >= dataInicio
                        && (x.DataFinal == null || x.DataFinal <= dataFinal))
                 .ToList();
+        }
+
+        public IList<Evento> Listar(string agendaId, List<DateTime> datasInicio, List<DateTime?> datasFinal)
+        {
+            var whereDinamico = PredicadoExtensions.Iniciar<Evento>();
+            foreach (var dataInicio in datasInicio)
+                whereDinamico = whereDinamico.And(x => x.DataInicio.Ticks >= dataInicio.Ticks);
+
+            if (datasFinal.Any())
+                foreach (var dataFinal in datasFinal)
+                    whereDinamico = whereDinamico.And(x => x.DataFinal == null || x.DataFinal.Value.Ticks <= dataFinal.Value.Ticks);
+
+            whereDinamico = whereDinamico.And(x => x.AgendaId == agendaId);
+
+            return Sessao
+                    .Query<Evento>()
+                    .Where(whereDinamico)
+                    .ToList();
         }
 
         public IList<Evento> Listar(string agendaId, string usuarioId)

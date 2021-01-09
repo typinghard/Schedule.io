@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Schedule.io.Extensions;
 using Schedule.io.Infra.SqlServerDB.Extensions;
 using Schedule.io.Interfaces.Repositories;
 using Schedule.io.Models.AggregatesRoots;
@@ -15,9 +16,7 @@ namespace Schedule.io.Infra.SqlServerDB
         private readonly string convite_split = "convite_split";
 
         public EventoRepository(AgendaContext context) : base(context)
-        {
-
-        }
+        { }
 
         public override Evento Obter(string eventoId)
         {
@@ -137,6 +136,23 @@ namespace Schedule.io.Infra.SqlServerDB
             }
 
             return eventos.ToList();
+        }
+
+        public IList<Evento> Listar(string agendaId, List<DateTime> datasInicio, List<DateTime?> datasFinal)
+        {
+            var whereDinamico = PredicadoExtensions.Iniciar<Evento>();
+            foreach (var dataInicio in datasInicio)
+                whereDinamico = whereDinamico.And(x => x.DataInicio.Ticks >= dataInicio.Ticks);
+
+            if (datasFinal.Any())
+                foreach (var dataFinal in datasFinal)
+                    whereDinamico = whereDinamico.And(x => x.DataFinal == null || x.DataFinal.Value.Ticks <= dataFinal.Value.Ticks);
+
+            whereDinamico = whereDinamico.And(x => x.AgendaId == agendaId);
+
+            return DbSet
+                   .Where(whereDinamico)
+                   .ToList();
         }
     }
 }

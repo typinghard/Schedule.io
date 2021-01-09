@@ -1,6 +1,5 @@
 ﻿using Schedule.io.Core.Data;
 using Schedule.io.Models.AggregatesRoots;
-using Schedule.io.Models.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -11,5 +10,6 @@ namespace Schedule.io.Interfaces.Repositories
         IList<Evento> Listar(string agendaId, string usuarioId);
         IList<Evento> Listar(string agendaId);
         IList<Evento> Listar(string agendaId, DateTime dataInicio, DateTime dataFinal);
+        IList<Evento> Listar(string agendaId, List<DateTime> datasInicio, List<DateTime?> datasFinal);
     }
 }
